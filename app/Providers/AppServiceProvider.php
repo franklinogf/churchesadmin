@@ -49,6 +49,7 @@ final class AppServiceProvider extends ServiceProvider
     {
 
         Model::unguard();
+        Model::shouldBeStrict(! app()->isProduction());
         Relation::enforceMorphMap([]);
     }
 
