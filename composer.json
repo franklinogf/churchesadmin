@@ -17,13 +17,15 @@
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
+        "larastan/larastan": "^3.2",
         "laravel/pail": "^1.2.2",
         "laravel/pint": "^1.18",
         "laravel/sail": "^1.41",
         "mockery/mockery": "^1.6",
         "nunomaduro/collision": "^8.6",
         "pestphp/pest": "^3.8",
-        "pestphp/pest-plugin-laravel": "^3.1"
+        "pestphp/pest-plugin-laravel": "^3.1",
+        "rector/rector": "^2.0"
     },
     "autoload": {
         "psr-4": {
@@ -61,6 +63,18 @@
             "npm run build:ssr",
             "Composer\\Config::disableProcessTimeout",
             "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" \"php artisan inertia:start-ssr\" --names=server,queue,logs,ssr"
+        ],
+        "lint": "pint",
+        "refactor": "rector",
+        "test:refactor": "rector --dry-run",
+        "test:lint": "pint --test",
+        "test:unit": "pest --parallel --coverage",
+        "test:types": "phpstan",
+        "test": [
+            "@test:unit",
+            "@test:lint",
+            "@test:refactor",
+            "@test:types"
         ]
     },
     "extra": {
