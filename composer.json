@@ -10,21 +10,22 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "inertiajs/inertia-laravel": "^2.0",
-        "laravel/framework": "^12.0",
+        "inertiajs/inertia-laravel": "^2.0.1",
+        "laravel/framework": "^12.6",
         "laravel/tinker": "^2.10.1",
-        "tightenco/ziggy": "^2.4"
+        "stancl/tenancy": "dev-master",
+        "tightenco/ziggy": "^2.5.2"
     },
     "require-dev": {
-        "fakerphp/faker": "^1.23",
+        "fakerphp/faker": "^1.24.1",
         "laravel/pail": "^1.2.2",
-        "laravel/pint": "^1.18",
+        "laravel/pint": "^1.21.2",
         "laravel/sail": "^1.41",
-        "mockery/mockery": "^1.6",
-        "nunomaduro/collision": "^8.6",
+        "mockery/mockery": "^1.6.12",
+        "nunomaduro/collision": "^8.7",
         "pestphp/pest": "^3.8",
         "pestphp/pest-plugin-laravel": "^3.1",
-        "rector/rector": "^2.0"
+        "rector/rector": "^2.0.11"
     },
     "autoload": {
         "psr-4": {
@@ -88,6 +89,6 @@
             "php-http/discovery": true
         }
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "RC",
     "prefer-stable": true
 }

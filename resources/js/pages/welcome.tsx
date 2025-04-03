@@ -2,12 +2,11 @@ import { Head } from '@inertiajs/react';
 
 export default function Welcome() {
     return (
-        <>
+        <div className="container flex h-screen flex-col items-center justify-center">
             <Head title="Welcome" />
-            <h1>Welcome to the application!</h1>
-            <p>This is the welcome page.</p>
-            <p>You can customize this page as per your requirements.</p>
-            <p>Enjoy your stay!</p>
-        </>
+            <a href="http://tenant1.churchroll.test" className="btn btn-primary">
+                Go to tenant
+            </a>
+        </div>
     );
 }
