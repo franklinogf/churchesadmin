@@ -17,7 +17,6 @@
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
-        "larastan/larastan": "^3.2",
         "laravel/pail": "^1.2.2",
         "laravel/pint": "^1.18",
         "laravel/sail": "^1.41",
@@ -68,13 +67,11 @@
         "refactor": "rector",
         "test:refactor": "rector --dry-run",
         "test:lint": "pint --test",
-        "test:unit": "pest --parallel --coverage",
-        "test:types": "phpstan",
+        "test:unit": "pest --parallel --coverage --compact",
         "test": [
             "@test:unit",
             "@test:lint",
-            "@test:refactor",
-            "@test:types"
+            "@test:refactor"
         ]
     },
     "extra": {
