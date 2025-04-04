@@ -53,6 +53,7 @@ final class HandleInertiaRequests extends Middleware
                 'location' => $request->url(),
             ],
             'sidebarOpen' => $request->cookie('sidebar_state') === 'true',
+            'locale' => app()->getLocale(),
         ];
     }
 }

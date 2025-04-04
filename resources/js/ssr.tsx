@@ -1,5 +1,6 @@
 import { createInertiaApp } from '@inertiajs/react';
 import createServer from '@inertiajs/react/server';
+import { LaravelReactI18nProvider } from 'laravel-react-i18n';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import ReactDOMServer from 'react-dom/server';
 import { type RouteName, route } from 'ziggy-js';
@@ -24,7 +25,11 @@ createServer((page) =>
                 });
             /* eslint-enable */
 
-            return <App {...props} />;
+            return (
+                <LaravelReactI18nProvider fallbackLocale="en" files={import.meta.glob('./lang/**/*.json', { eager: true })}>
+                    <App {...props} />
+                </LaravelReactI18nProvider>
+            );
         },
     }),
 );
