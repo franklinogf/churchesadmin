@@ -10,13 +10,11 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route as RouteFacade;
 use Illuminate\Support\ServiceProvider;
 use Stancl\JobPipeline\JobPipeline;
-use Stancl\Tenancy\Actions\CloneRoutesAsTenant;
 use Stancl\Tenancy\Controllers\TenantAssetController;
 use Stancl\Tenancy\Events;
 use Stancl\Tenancy\Jobs;
 use Stancl\Tenancy\Listeners;
 use Stancl\Tenancy\Middleware;
-use Stancl\Tenancy\Middleware\InitializeTenancyByPath;
 use Stancl\Tenancy\ResourceSyncing;
 
 final class TenancyServiceProvider extends ServiceProvider
@@ -38,7 +36,7 @@ final class TenancyServiceProvider extends ServiceProvider
 
                     // Your own jobs to prepare the tenant.
                     // Provision API keys, create S3 buckets, anything you want!
-                ])->send(fn(Events\TenantCreated $event): \Stancl\Tenancy\Contracts\Tenant => $event->tenant)->shouldBeQueued(false), // `false` by default, but you likely want to make this `true` in production.
+                ])->send(fn (Events\TenantCreated $event): \Stancl\Tenancy\Contracts\Tenant => $event->tenant)->shouldBeQueued(false), // `false` by default, but you likely want to make this `true` in production.
 
                 Listeners\CreateTenantStorage::class,
             ],
@@ -50,14 +48,14 @@ final class TenancyServiceProvider extends ServiceProvider
                 JobPipeline::make([
                     Jobs\DeleteDomains::class,
                     // Jobs\RemoveStorageSymlinks::class,
-                ])->send(fn(Events\DeletingTenant $event): \Stancl\Tenancy\Contracts\Tenant => $event->tenant)->shouldBeQueued(false),
+                ])->send(fn (Events\DeletingTenant $event): \Stancl\Tenancy\Contracts\Tenant => $event->tenant)->shouldBeQueued(false),
 
                 Listeners\DeleteTenantStorage::class,
             ],
             Events\TenantDeleted::class => [
                 JobPipeline::make([
                     Jobs\DeleteDatabase::class,
-                ])->send(fn(Events\TenantDeleted $event): \Stancl\Tenancy\Contracts\Tenant => $event->tenant)->shouldBeQueued(false), // `false` by default, but you probably want to make this `true` for production.
+                ])->send(fn (Events\TenantDeleted $event): \Stancl\Tenancy\Contracts\Tenant => $event->tenant)->shouldBeQueued(false), // `false` by default, but you probably want to make this `true` for production.
             ],
 
             Events\TenantMaintenanceModeEnabled::class => [],

@@ -72,7 +72,8 @@
         "test:unit": "pest --parallel --coverage --compact",
         "test": [
             "@test:lint",
-            "@test:refactor"
+            "@test:refactor",
+            "npm run test"
         ]
     },
     "extra": {

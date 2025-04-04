@@ -8,7 +8,7 @@ use Inertia\Inertia;
 
 foreach (config('tenancy.identification.central_domains') as $domain) {
     Route::domain($domain)->group(function (): void {
-        Route::get('/', fn() => redirect(app()->getLocale()));
+        Route::get('/', fn () => redirect(app()->getLocale()));
         Route::prefix('{locale}')
             ->where(['locale' => '[a-zA-Z]{2}'])
             ->middleware([SetLocale::class])
