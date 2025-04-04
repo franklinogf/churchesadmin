@@ -5,13 +5,13 @@ declare(strict_types=1);
 uses(Illuminate\Foundation\Testing\RefreshDatabase::class);
 
 test('registration screen can be rendered', function (): void {
-    $response = $this->get('/register');
+    $response = $this->get(route('register'));
 
     $response->assertStatus(200);
 });
 
 test('new users can register', function (): void {
-    $response = $this->post('/register', [
+    $response = $this->post(route('register'), [
         'name' => 'Test User',
         'email' => 'test@example.com',
         'password' => 'password',
