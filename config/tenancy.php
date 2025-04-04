@@ -13,7 +13,7 @@ return [
      * Configuration for the models used by Tenancy.
      */
     'models' => [
-        'tenant' => App\Models\Tenant::class,
+        'tenant' => App\Models\Church::class,
         'domain' => Stancl\Tenancy\Database\Models\Domain::class,
         'impersonation_token' => Stancl\Tenancy\Database\Models\ImpersonationToken::class,
 
@@ -447,7 +447,7 @@ return [
      * Parameters used by the tenants:seed command.
      */
     'seeder_parameters' => [
-        '--class' => 'Database\Seeders\DatabaseSeeder', // root seeder class
+        '--class' => Database\Seeders\TenantDatabaseSeeder::class, // root seeder class
         // '--force' => true,
     ],
 ];

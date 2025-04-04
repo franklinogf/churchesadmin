@@ -6,36 +6,35 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasOneThrough;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
+/**
+ * Address model.
+ *
+ * @property-read int $id
+ * @property-read string $addressable_type
+ * @property-read int $addressable_id
+ * @property-read string $address_1
+ * @property-read string $address_2
+ * @property-read string $city
+ * @property-read string $state
+ * @property-read string $country
+ * @property-read string $postal_code
+ * @property-read \Carbon\CarbonImmutable|null $created_at
+ * @property-read \Carbon\CarbonImmutable|null $updated_at
+ */
 final class Address extends Model
 {
     /** @use HasFactory<\Database\Factories\AddressFactory> */
     use HasFactory;
 
     /**
-     * Get the profile that owns the address.
+     * Get the address model that this address belongs to.
      *
-     * @return BelongsTo<Profile, Address>
+     * @return MorphTo<Model, Address>
      */
-    public function profile(): BelongsTo
+    public function addresable(): MorphTo
     {
-        return $this->belongsTo(Profile::class);
-    }
-
-    /**
-     * Get the user that owns the address.
-     *
-     * @return HasOneThrough<User, Profile>
-     */
-    public function user(): HasOneThrough
-    {
-        return $this->hasOneThrough(
-            User::class,
-            Profile::class,
-            'id',
-            'profile_id',
-        );
+        return $this->morphTo();
     }
 }

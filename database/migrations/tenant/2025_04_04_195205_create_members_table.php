@@ -13,20 +13,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('profiles', function (Blueprint $table) {
+        Schema::create('members', function (Blueprint $table) {
             $table->id();
-            $table->foreignUuid('user_id')->unique()->constrained()->cascadeOnDelete();
             $table->string('name');
-            $table->string('lastname');
-            $table->date('dob');
-            $table->tinyText('gender')->index();
-            $table->string('civil_status')->index();
-            $table->boolean('is_active')->index();
+            $table->string('last_name');
+            $table->string('email')->unique();
             $table->string('phone')->unique()->nullable();
-            $table->string('language', 2);
+            $table->string('gender');
+            $table->date('dob');
+            $table->string('civil_status');
+            $table->softDeletes();
             $table->timestamps();
-
         });
+
     }
 
     /**
@@ -34,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('profiles');
+        Schema::dropIfExists('members');
     }
 };

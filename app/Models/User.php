@@ -8,12 +8,22 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+/**
+ * Model used for authentication in the Tenant environment and admin panel.
+ *
+ * @property-read string $id
+ * @property-read string $name
+ * @property-read string $email
+ * @property-read \Carbon\CarbonImmutable|null $email_verified_at
+ * @property-read string $password
+ * @property-read \App\Enums\LanguageCode $language
+ * @property-read string $remember_token
+ * @property-read \Carbon\CarbonImmutable|null $created_at
+ * @property-read \Carbon\CarbonImmutable|null $updated_at
+ */
 final class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -30,41 +40,6 @@ final class User extends Authenticatable
     ];
 
     /**
-     * Get the user's profile.
-     *
-     * @return HasOne<Profile, User>
-     */
-    public function profile(): HasOne
-    {
-        return $this->hasOne(Profile::class);
-    }
-
-    /**
-     * Get the user's addresses.
-     *
-     * @return HasManyThrough<Address, Profile>
-     */
-    public function addresses(): HasManyThrough
-    {
-        return $this->hasManyThrough(
-            Address::class,
-            Profile::class,
-            'user_id',
-            'profile_id',
-        );
-    }
-
-    /**
-     * Get the user's primary address.
-     *
-     * @return HasOneThrough<Address, Profile>
-     */
-    public function primaryAddress(): HasOneThrough
-    {
-        return $this->addresses()->one()->where('is_primary', true);
-    }
-
-    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
@@ -74,6 +49,7 @@ final class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'language' => \App\Enums\LanguageCode::class,
         ];
     }
 }

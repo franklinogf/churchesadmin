@@ -17,9 +17,9 @@ return new class extends Migration
             $table->string('id')->primary();
 
             // your custom columns may go here
-
-            $table->timestamps();
+            $table->string('name');
             $table->json('data')->nullable();
+            $table->timestamps();
         });
     }
 

@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Models\Tenant;
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware;
 

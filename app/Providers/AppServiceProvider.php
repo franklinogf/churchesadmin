@@ -50,7 +50,10 @@ final class AppServiceProvider extends ServiceProvider
 
         Model::unguard();
         Model::shouldBeStrict(! app()->isProduction());
-        Relation::enforceMorphMap([]);
+        Relation::enforceMorphMap([
+            'member' => \App\Models\Member::class,
+            'missionarie' => \App\Models\Missionary::class,
+        ]);
     }
 
     private function configureValidations(): void

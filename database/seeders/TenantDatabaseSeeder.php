@@ -4,32 +4,31 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
-use App\Models\Church;
+use App\Models\Address;
+use App\Models\Member;
+use App\Models\Missionary;
+use App\Models\Skill;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Artisan;
 
-final class DatabaseSeeder extends Seeder
+final class TenantDatabaseSeeder extends Seeder
 {
     /**
      * Seed the application's database.
      */
     public function run(): void
     {
-        // User::factory(10)->create();
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
 
-        $church = Church::create([
-            'name' => 'Test Church',
-        ]);
-        $church->createDomain('tenant1');
+        Skill::factory(5)->create();
 
-        Artisan::call('tenants:seed', [
-            '--tenants' => [$church->id],
-        ]);
+        Member::factory(5)->hasAttached(Skill::all()->random())->has(Address::factory())->create();
+
+        Missionary::factory(5)->has(Address::factory())->create();
+
     }
 }
