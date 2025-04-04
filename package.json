@@ -6,9 +6,10 @@
         "build:ssr": "vite build && vite build --ssr",
         "dev": "vite",
         "format": "prettier --write resources/",
-        "format:check": "prettier --check resources/",
         "lint": "eslint . --fix",
-        "types": "tsc --noEmit"
+        "test:format": "prettier --check resources/",
+        "test:types": "tsc --noEmit",
+        "test": "npm run test:format && npm run test:types"
     },
     "devDependencies": {
         "@eslint/js": "^9.19.0",
