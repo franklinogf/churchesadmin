@@ -23,8 +23,8 @@ Route::middleware([
     Middleware\InitializeTenancyBySubdomain::class,
     Middleware\PreventAccessFromUnwantedDomains::class,
     Middleware\ScopeSessions::class,
-])->group(function () {
-    Route::get('/', function () {
+])->group(function (): void {
+    Route::get('/', function (): string {
 
         echo tenant_asset('foto.jpg');
         echo '<br>';

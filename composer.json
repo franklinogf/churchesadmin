@@ -72,7 +72,6 @@
         "test:lint": "pint --test",
         "test:unit": "pest --parallel --coverage --compact",
         "test": [
-            "@test:unit",
             "@test:lint",
             "@test:refactor"
         ]

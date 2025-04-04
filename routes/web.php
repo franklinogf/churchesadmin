@@ -7,14 +7,12 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 foreach (config('tenancy.identification.central_domains') as $domain) {
-    Route::domain($domain)->group(function () {
-        Route::get('/', function () {
-            return redirect(app()->getLocale());
-        });
+    Route::domain($domain)->group(function (): void {
+        Route::get('/', fn() => redirect(app()->getLocale()));
         Route::prefix('{locale}')
             ->where(['locale' => '[a-zA-Z]{2}'])
             ->middleware([SetLocale::class])
-            ->group(function () {
+            ->group(function (): void {
 
                 Route::get('/', fn () => Inertia::render('welcome'))->name('home');
 
