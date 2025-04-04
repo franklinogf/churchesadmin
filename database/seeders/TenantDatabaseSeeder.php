@@ -15,7 +15,7 @@ use Illuminate\Database\Seeder;
 final class TenantDatabaseSeeder extends Seeder
 {
     /**
-     * Seed the application's database.
+     * Seed the tenants's database.
      */
     public function run(): void
     {
