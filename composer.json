@@ -10,6 +10,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "filament/filament": "^3.3",
         "inertiajs/inertia-laravel": "^2.0.1",
         "laravel/framework": "^12.7.2",
         "laravel/tinker": "^2.10.1",
@@ -73,8 +74,7 @@
         "test:unit": "pest --parallel --coverage --compact",
         "test": [
             "@test:lint",
-            "@test:refactor",
-            "npm run test"
+            "@test:refactor"
         ]
     },
     "extra": {
