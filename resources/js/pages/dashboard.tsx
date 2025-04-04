@@ -1,17 +1,16 @@
 import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
-import { Head, usePage } from '@inertiajs/react';
+import { Head } from '@inertiajs/react';
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
         title: 'Dashboard',
-        href: '/dashboard',
+        href: route('dashboard'),
     },
 ];
 
 export default function Dashboard() {
-    console.log(usePage());
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard" />
