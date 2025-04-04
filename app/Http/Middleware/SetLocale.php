@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
-use App\Enums\LanguageEnum;
+use App\Enums\LanguageCode;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
@@ -21,7 +21,7 @@ final class SetLocale
     {
         $locale = $request->segment(1);
 
-        if (! in_array($locale, LanguageEnum::values(), true)) {
+        if (! in_array($locale, LanguageCode::values(), true)) {
             abort(404);
         }
 
