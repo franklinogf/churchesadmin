@@ -3,8 +3,8 @@
 declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
+use Rector\DeadCode\Rector\ClassMethod\RemoveUselessReturnTagRector;
 use Rector\EarlyReturn\Rector\Return_\ReturnBinaryOrToEarlyReturnRector;
-use Rector\Php83\Rector\ClassMethod\AddOverrideAttributeToOverriddenMethodsRector;
 
 return RectorConfig::configure()
     ->withPaths([
@@ -14,8 +14,8 @@ return RectorConfig::configure()
         __DIR__.'/tests',
     ])
     ->withSkip([
-        AddOverrideAttributeToOverriddenMethodsRector::class,
         ReturnBinaryOrToEarlyReturnRector::class,
+        RemoveUselessReturnTagRector::class,
     ])
     ->withPreparedSets(
         deadCode: true,
