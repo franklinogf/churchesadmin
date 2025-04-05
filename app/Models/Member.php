@@ -6,8 +6,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Spatie\Tags\HasTags;
 
 /**
  * Member model.
@@ -27,7 +27,12 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 final class Member extends Model
 {
     /** @use HasFactory<\Database\Factories\MemberFactory> */
-    use HasFactory;
+    use HasFactory, HasTags;
+
+    public static function getTagClassName(): string
+    {
+        return Tag::class;
+    }
 
     /**
      * The address that has the member.
@@ -37,16 +42,6 @@ final class Member extends Model
     public function address(): MorphOne
     {
         return $this->morphOne(Address::class, 'addressable');
-    }
-
-    /**
-     * The skills that belong to the member.
-     *
-     * @return BelongsToMany<Skill, Member>
-     */
-    public function skills(): BelongsToMany
-    {
-        return $this->belongsToMany(Skill::class);
     }
 
     /**
