@@ -22,8 +22,8 @@ return new class extends Migration
             $table->string('gender');
             $table->date('dob');
             $table->string('civil_status');
-            $table->softDeletes();
             $table->timestamps();
+            $table->softDeletes();
         });
 
     }
