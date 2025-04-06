@@ -24,7 +24,7 @@ Route::middleware([
     Middleware\PreventAccessFromUnwantedDomains::class,
     Middleware\ScopeSessions::class,
 ])->group(function (): void {
-    Route::get('/', fn () => redirect(app()->getLocale()));
+    Route::get('/', fn () => to_route('home', app()->getLocale()))->name('index');
 
     Route::prefix('{locale}')
         ->where(['locale' => '[a-zA-Z]{2}'])
