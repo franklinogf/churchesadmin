@@ -14,7 +14,9 @@ declare(strict_types=1);
 */
 
 pest()->extend(Tests\TestCase::class)->in('Feature');
-
+pest()->extend(Illuminate\Foundation\Testing\TestCase::class)->in('Unit');
+pest()->extend(Tests\TenantTestCase::class)->in('Tenants');
+pest()->printer()->compact();
 /*
 |--------------------------------------------------------------------------
 | Expectations

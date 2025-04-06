@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Models\Member;
+use App\Models\Tag;
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware;
 
@@ -25,8 +27,11 @@ Route::middleware([
 ])->group(function (): void {
     Route::get('/', function (): string {
 
-        echo tenant_asset('foto.jpg');
-        echo '<br>';
+        $tag = Tag::getTypes();
+        dd(app()->getLocale(), $tag);
+        // $member = Member::withAnyTags(['laravel'], 'skill')->get();
+
+        // dd($member);
 
         return 'This is your multi-tenant application. The id of the current tenant is '.tenant('id')."\n";
     })->name('tenant');
