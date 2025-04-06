@@ -31,6 +31,11 @@ final class Member extends Model
     /** @use HasFactory<\Database\Factories\MemberFactory> */
     use HasFactory, HasTags;
 
+    /**
+     * The name of the table associated with the Tag model.
+     *
+     * @return string
+     */
     public static function getTagClassName(): string
     {
         return Tag::class;
@@ -39,7 +44,7 @@ final class Member extends Model
     /**
      * The address that has the member.
      *
-     * @return MorphOne<Address, Member>
+     * @return MorphOne<Address, $this>
      */
     public function address(): MorphOne
     {

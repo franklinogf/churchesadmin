@@ -1,0 +1,18 @@
+includes:
+    - vendor/larastan/larastan/extension.neon
+    - vendor/nesbot/carbon/extension.neon
+    - phpstan-baseline.neon
+
+parameters:
+
+    paths:
+        - app/
+
+    level: max
+
+    editorUrl: 'vscode://file/%%file%%:%%line%%'
+
+    editorUrlTitle: '%%relFile%%:%%line%%'
+
+    excludePaths:
+        - app/Providers/TenancyServiceProvider.php

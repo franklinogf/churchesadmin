@@ -33,7 +33,7 @@ final class Missionary extends Model
     /**
      * Get the address of this model.
      *
-     * @return MorphOne<Address, Missionary>
+     * @return MorphOne<Address, $this>
      */
     public function address(): MorphOne
     {

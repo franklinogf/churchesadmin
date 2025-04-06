@@ -31,7 +31,7 @@ final class Address extends Model
     /**
      * Get the address model that this address belongs to.
      *
-     * @return MorphTo<Model, Address>
+     * @return MorphTo<Model,$this>
      */
     public function owner(): MorphTo
     {

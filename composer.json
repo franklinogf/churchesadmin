@@ -21,6 +21,7 @@
     },
     "require-dev": {
         "fakerphp/faker": "^1.24.1",
+        "larastan/larastan": "^3.3",
         "laravel-lang/lang": "^15.19.9",
         "laravel/pail": "^1.2.2",
         "laravel/pint": "^1.21.2",
@@ -72,12 +73,14 @@
         "refactor": "rector",
         "test:refactor": "rector --dry-run",
         "test:lint": "pint --test",
+        "test:types": "phpstan analyse",
         "test:unit": "pest --parallel --testsuite=Unit --stop-on-failure",
         "test:feature": "pest --parallel --testsuite=Feature --stop-on-failure",
         "test:tenants-unit": "pest --parallel --filter=Unit --testsuite=Tenants --stop-on-failure",
         "test:all": "pest --parallel --coverage --compact --stop-on-failure",
         "test:migrate": "php artisan migrate --database=testing",
         "test": [
+            "@test:types",
             "@test:refactor",
             "@test:lint",
             "@test:all"

@@ -15,7 +15,7 @@ use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
  *
  * @property-read string $id
  * @property-read string $name
- * @property-read array|null $data
+ * @property-read array<string,mixed>|null $data
  * @property-read \Carbon\CarbonImmutable|null $created_at
  * @property-read \Carbon\CarbonImmutable|null $updated_at
  */
@@ -26,11 +26,14 @@ final class Church extends BaseTenant implements TenantWithDatabase
     /**
      * Set the custom columns for the tenant model.
      *
-     * @return array
+     * @return array<int,string>
      */
     public static function getCustomColumns(): array
     {
-        return array_merge(parent::getCustomColumns(), [
+        /** @var array<int, string> $parentColumns */
+        $parentColumns = parent::getCustomColumns();
+
+        return array_merge($parentColumns, [
             'name',
         ]);
     }
