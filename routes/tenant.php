@@ -31,9 +31,7 @@ Route::middleware([
         ->where(['locale' => '[a-zA-Z]{2}'])
         ->middleware([SetLocale::class])
         ->group(function (): void {
-            Route::get('/', function () {
-                return 'Hello, world!';
-            })->name('home');
+            Route::get('/', fn (): string => 'Hello, world!')->name('home');
             Route::middleware(['auth'])->group(function (): void {
                 Route::get('dashboard', fn () => inertia('dashboard'))->name('dashboard');
             });

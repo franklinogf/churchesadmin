@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use function Pest\Laravel\get;
 
-test('redirects to locale home page', function () {
+test('redirects to locale home page', function (): void {
     get(route('root.index'))
         ->assertRedirect(route('root.home', ['locale' => app()->getLocale()]));
 
@@ -12,7 +12,7 @@ test('redirects to locale home page', function () {
 
 });
 
-test('home page is accessible', function () {
+test('home page is accessible', function (): void {
     get(route('root.home'))
         ->assertOk();
 
