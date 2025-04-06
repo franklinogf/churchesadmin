@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 use App\Models\User;
 
-uses(Illuminate\Foundation\Testing\RefreshDatabase::class);
-
 test('login screen can be rendered', function (): void {
     $response = $this->get(route('login'));
 

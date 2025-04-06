@@ -85,8 +85,9 @@ trait RefreshDatabaseWithTenant
 
         // Get the app url that is on the .env file.
         $appUrl = str(env('APP_URL'))->after('://')->before('/')->toString();
+        $http = str(env('APP_URL'))->before('://')->toString();
 
         // Set the root URL for the current tenant.
-        URL::forceRootUrl("http://{$tenant->id}.{$appUrl}");
+        URL::forceRootUrl("{$http}://{$tenant->id}.{$appUrl}");
     }
 }

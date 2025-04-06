@@ -2,8 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Models\Member;
-use App\Models\Tag;
+use App\Http\Middleware\SetLocale;
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware;
 
@@ -25,14 +24,21 @@ Route::middleware([
     Middleware\PreventAccessFromUnwantedDomains::class,
     Middleware\ScopeSessions::class,
 ])->group(function (): void {
-    Route::get('/', function (): string {
+    Route::get('/', fn () => redirect(app()->getLocale()));
 
-        $tag = Tag::getTypes();
-        dd(app()->getLocale(), $tag);
-        // $member = Member::withAnyTags(['laravel'], 'skill')->get();
+    Route::prefix('{locale}')
+        ->where(['locale' => '[a-zA-Z]{2}'])
+        ->middleware([SetLocale::class])
+        ->group(function (): void {
+            Route::get('/', function () {
+                return 'Hello, world!';
+            })->name('home');
+            Route::middleware(['auth'])->group(function (): void {
+                Route::get('dashboard', fn () => inertia('dashboard'))->name('dashboard');
+            });
 
-        // dd($member);
+            require __DIR__.'/settings.php';
+            require __DIR__.'/auth.php';
+        });
 
-        return 'This is your multi-tenant application. The id of the current tenant is '.tenant('id')."\n";
-    })->name('tenant');
 });
