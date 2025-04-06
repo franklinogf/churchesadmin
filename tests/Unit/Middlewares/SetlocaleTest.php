@@ -9,9 +9,7 @@ test('valid locale sets application locale and URL defaults', function (): void 
 
     $request = Request::create(route('home', ['locale' => 'en']));
 
-    $next = function () {
-        return response('Page');
-    };
+    $next = fn () => response('Page');
 
     $middleware = new App\Http\Middleware\SetLocale();
 
@@ -26,9 +24,7 @@ test('valid locale sets application locale and URL defaults', function (): void 
 test('invalid locale results in 404 response', function (): void {
     $request = Request::create(route('home', ['locale' => 'invalid-locale']));
 
-    $next = function () {
-        return response('Page');
-    };
+    $next = fn () => response('Page');
 
     $middleware = new App\Http\Middleware\SetLocale();
 

@@ -26,7 +26,7 @@ test('to array', function (): void {
     ]);
 });
 
-test('casts are applied correctly', function () {
+test('casts are applied correctly', function (): void {
 
     $missionary = Missionary::factory()->create();
     expect($missionary->gender)->toBeInstanceOf(Gender::class);
