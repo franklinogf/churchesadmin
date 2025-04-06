@@ -58,9 +58,12 @@ trait RefreshDatabaseWithTenant
              * Set the tenant prefix to the parallel testing token.
              * This is necessary to avoid database collisions when running tests in parallel.
              */
+            $token = ParallelTesting::token();
+
             config([
-                'tenancy.database.suffix' => config('tenancy.database.suffix').(($token = ParallelTesting::token()) !== null ? "_{$token}" : ''),
-                'tenancy.filesystem.suffix_base' => config('tenancy.filesystem.suffix_base').(($token = ParallelTesting::token()) !== null ? "{$token}_" : ''),
+                'tenancy.database.suffix' => config('tenancy.database.suffix').($token !== null ? "_{$token}" : ''),
+                'tenancy.filesystem.suffix_base' => config('tenancy.filesystem.suffix_base').($token !== null ? "{$token}_" : ''),
+                'tenancy.filesystem.url_override.public' => config('tenancy.filesystem.url_override.public').($token !== null ? "-{$token}" : ''),
             ]);
 
             // Define the database name for the tenant.
@@ -70,6 +73,7 @@ trait RefreshDatabaseWithTenant
             DB::unprepared("DROP DATABASE IF EXISTS `$dbName`");
 
             File::deleteDirectory(storage_path(config('tenancy.filesystem.suffix_base')."{$tenantId}"));
+            File::deleteDirectory(public_path("public-{$tenantId}".($token !== null ? "-{$token}" : '')));
 
             // Create the tenant and associated domain if they don't exist.
             $t = Church::create(['id' => $tenantId, 'name' => $this->tenantName]);
