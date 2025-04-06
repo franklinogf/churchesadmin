@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace App\Tests;
+namespace Tests;
 
-use App\Models\Central\Tenant;
 use App\Models\Church;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
@@ -28,7 +27,7 @@ trait RefreshDatabaseWithTenant
      * `null` is the default landlord connection, used for system-wide operations.
      * `tenant` is the tenant connection, specific to each tenant in the multi-tenant system.
      */
-    // protected array $connectionsToTransact = [null, 'tenant'];
+    protected array $connectionsToTransact = [null, 'tenant'];
 
     /**
      * We need to hook initialize tenancy _before_ we start the database
