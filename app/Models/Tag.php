@@ -25,6 +25,11 @@ final class Tag extends SpatieTag
     /** @use HasFactory<\Database\Factories\TagFactory> */
     use HasFactory;
 
+    /**
+     * Members that have this tag.
+     *
+     * @return MorphToMany<Member, $this>
+     */
     public function members(): MorphToMany
     {
         return $this->morphedByMany(Member::class, 'taggable', 'taggables');

@@ -17,3 +17,13 @@ test('to array', function (): void {
         'updated_at',
     ]);
 });
+
+test('tags can have members', function (): void {
+    $tag = Tag::factory()->create();
+
+    $members = App\Models\Member::factory(2)->create();
+
+    $members->each->attachTag($tag);
+
+    expect($tag->members()->count())->toBe(2);
+});
