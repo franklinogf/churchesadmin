@@ -7,6 +7,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Missionary model.
@@ -28,7 +29,7 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 final class Missionary extends Model
 {
     /** @use HasFactory<\Database\Factories\MissionaryFactory> */
-    use HasFactory;
+    use HasFactory,SoftDeletes;
 
     /**
      * Get the address of this model.

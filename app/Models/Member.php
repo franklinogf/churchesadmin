@@ -7,6 +7,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Tags\HasTags;
 
 /**
@@ -29,7 +30,7 @@ use Spatie\Tags\HasTags;
 final class Member extends Model
 {
     /** @use HasFactory<\Database\Factories\MemberFactory> */
-    use HasFactory, HasTags;
+    use HasFactory,HasTags, SoftDeletes;
 
     /**
      * The name of the table associated with the Tag model.
