@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Enums\Gender;
+use App\Enums\OfferingFrequency;
 use App\Models\Address;
 use App\Models\Missionary;
 
@@ -22,6 +24,13 @@ test('to array', function (): void {
         'updated_at',
         'deleted_at',
     ]);
+});
+
+test('casts are applied correctly', function () {
+
+    $missionary = Missionary::factory()->create();
+    expect($missionary->gender)->toBeInstanceOf(Gender::class);
+    expect($missionary->offering_frequency)->toBeInstanceOf(OfferingFrequency::class);
 });
 
 it('has an address', function (): void {

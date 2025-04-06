@@ -30,6 +30,7 @@ it('can have a member owner', function (): void {
     expect($address->owner->id)->toBe($address->owner_id);
     expect($address->owner->getMorphClass())->toBe($address->owner_type);
 });
+
 it('can have a missionary owner', function (): void {
     $address = Address::factory()->forMissionary()
         ->create();

@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Enums\LanguageCode;
 use App\Models\User;
 
 test('to array', function (): void {
@@ -16,4 +17,10 @@ test('to array', function (): void {
         'created_at',
         'updated_at',
     ]);
+});
+
+test('casts are applied correctly', function (): void {
+    $user = User::factory()->create()->fresh();
+
+    expect($user->language)->toBeInstanceOf(LanguageCode::class);
 });

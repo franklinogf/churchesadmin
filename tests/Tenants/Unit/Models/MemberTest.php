@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Enums\CivilStatus;
+use App\Enums\Gender;
 use App\Models\Address;
 use App\Models\Member;
 
@@ -21,6 +23,14 @@ test('to array', function (): void {
         'updated_at',
         'deleted_at',
     ]);
+});
+
+test('casts are applied correctly', function (): void {
+    $member = Member::factory()->create()->fresh();
+
+    expect($member->gender)->toBeInstanceOf(Gender::class);
+    expect($member->dob)->toBeInstanceOf(Carbon\CarbonImmutable::class);
+    expect($member->civil_status)->toBeInstanceOf(CivilStatus::class);
 });
 
 it('has an address', function (): void {
