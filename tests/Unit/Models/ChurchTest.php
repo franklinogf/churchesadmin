@@ -8,6 +8,7 @@ uses(Illuminate\Foundation\Testing\RefreshDatabase::class);
 
 test('to array', function (): void {
     $church = Church::createQuietly([
+        'id' => 1,
         'name' => 'Test Church',
     ])->fresh();
 
