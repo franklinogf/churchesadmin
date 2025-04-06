@@ -69,7 +69,7 @@
             "Composer\\Config::disableProcessTimeout",
             "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" \"php artisan inertia:start-ssr\" --names=server,queue,logs,ssr"
         ],
-        "lint": "pint",
+        "lint": "pint -v",
         "refactor": "rector",
         "test:refactor": "rector --dry-run",
         "test:lint": "pint --test",
@@ -79,8 +79,8 @@
         "test:all": "pest --parallel --coverage --compact --stop-on-failure",
         "test:migrate": "php artisan migrate --database=testing",
         "test": [
-            "@test:types",
             "@test:refactor",
+            "@test:types",
             "@test:lint",
             "@test:all"
         ]

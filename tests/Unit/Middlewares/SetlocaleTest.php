@@ -11,7 +11,7 @@ test('valid locale sets application locale and URL defaults', function (): void 
 
     $next = fn () => response('Page');
 
-    $middleware = new App\Http\Middleware\SetLocale();
+    $middleware = new App\Http\Middleware\SetLocale;
 
     $response = $middleware->handle($request, $next);
 
@@ -26,7 +26,7 @@ test('invalid locale results in 404 response', function (): void {
 
     $next = fn () => response('Page');
 
-    $middleware = new App\Http\Middleware\SetLocale();
+    $middleware = new App\Http\Middleware\SetLocale;
 
     $response = $middleware->handle($request, $next);
     expect($response->getContent())->not->toBe('Page');
