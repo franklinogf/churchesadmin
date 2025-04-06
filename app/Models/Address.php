@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property-read int $id
  * @property-read string $owner_type
  * @property-read int $owner_id
+ * @property-read Member|Missionary $owner
  * @property-read string $address_1
  * @property-read string $address_2
  * @property-read string $city
