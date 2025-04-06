@@ -25,22 +25,4 @@ trait EnumToArray
     {
         return array_column(self::cases(), 'name');
     }
-
-    /**
-     * Get the enum cases as an associative array.
-     *
-     * @return array<string, string>
-     */
-    public static function toArray(): array
-    {
-        if (self::values() === []) {
-            return self::names();
-        }
-
-        if (self::names() === []) {
-            return self::values();
-        }
-
-        return array_column(self::cases(), 'value', 'name');
-    }
 }
