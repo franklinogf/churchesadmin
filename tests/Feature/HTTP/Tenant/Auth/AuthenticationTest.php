@@ -3,41 +3,51 @@
 declare(strict_types=1);
 
 use App\Models\User;
+use Inertia\Testing\AssertableInertia as Assert;
+
+use function Pest\Laravel\actingAs;
+use function Pest\Laravel\assertAuthenticated;
+use function Pest\Laravel\assertGuest;
+use function Pest\Laravel\get;
+use function Pest\Laravel\post;
 
 test('login screen can be rendered', function (): void {
-    $response = $this->get(route('login'));
-
-    $response->assertStatus(200);
+    get(route('login'))->assertOk()
+        ->assertInertia(
+            fn (Assert $page): Assert => $page
+                ->component('auth/login')
+        );
 });
 
 test('users can authenticate using the login screen', function (): void {
     $user = User::factory()->create();
 
-    $response = $this->post(route('login.store'), [
+    post(route('login.store'), [
         'email' => $user->email,
         'password' => 'password',
-    ]);
+    ])
+        ->assertRedirect(route('dashboard', absolute: false));
 
-    $this->assertAuthenticated();
-    $response->assertRedirect(route('dashboard', absolute: false));
+    assertAuthenticated();
+
 });
 
 test('users can not authenticate with invalid password', function (): void {
     $user = User::factory()->create();
 
-    $this->post(route('login.store'), [
+    post(route('login.store'), [
         'email' => $user->email,
         'password' => 'wrong-password',
     ]);
 
-    $this->assertGuest();
+    assertGuest();
 });
 
 test('users can logout', function (): void {
     $user = User::factory()->create();
 
-    $response = $this->actingAs($user)->post(route('logout'));
+    actingAs($user)->post(route('logout'))->assertRedirect(route('login'));
 
-    $this->assertGuest();
-    $response->assertRedirect('/');
+    assertGuest();
+
 });
