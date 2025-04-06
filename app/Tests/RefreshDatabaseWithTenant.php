@@ -8,6 +8,7 @@ use App\Models\Central\Tenant;
 use App\Models\Church;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\ParallelTesting;
 use Illuminate\Support\Facades\URL;
 
@@ -67,6 +68,8 @@ trait RefreshDatabaseWithTenant
 
             // Drop the database if it already exists.
             DB::unprepared("DROP DATABASE IF EXISTS `$dbName`");
+
+            File::deleteDirectory(storage_path("tenant_{$tenantId}"));
 
             // Create the tenant and associated domain if they don't exist.
             $t = Church::create(['id' => $tenantId, 'name' => $this->tenantName]);
