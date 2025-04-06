@@ -60,6 +60,7 @@ trait RefreshDatabaseWithTenant
              */
             config([
                 'tenancy.database.suffix' => config('tenancy.database.suffix').(($token = ParallelTesting::token()) !== null ? "_{$token}" : ''),
+                'tenancy.filesystem.suffix_base' => config('tenancy.filesystem.suffix_base').(($token = ParallelTesting::token()) !== null ? "{$token}_" : ''),
             ]);
 
             // Define the database name for the tenant.
@@ -68,7 +69,7 @@ trait RefreshDatabaseWithTenant
             // Drop the database if it already exists.
             DB::unprepared("DROP DATABASE IF EXISTS `$dbName`");
 
-            File::deleteDirectory(storage_path("tenant_{$tenantId}"));
+            File::deleteDirectory(storage_path(config('tenancy.filesystem.suffix_base')."{$tenantId}"));
 
             // Create the tenant and associated domain if they don't exist.
             $t = Church::create(['id' => $tenantId, 'name' => $this->tenantName]);

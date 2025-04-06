@@ -19,9 +19,9 @@ test('to array', function (): void {
 });
 
 test('tags can have members', function (): void {
-    $tag = Tag::factory()->create();
+    $tag = Tag::factory()->create()->fresh();
 
-    $members = App\Models\Member::factory(2)->create();
+    $members = App\Models\Member::factory(2)->create()->fresh();
 
     $members->each->attachTag($tag);
 

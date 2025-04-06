@@ -24,7 +24,7 @@ test('to array', function (): void {
 
 it('can have a member owner', function (): void {
     $address = Address::factory()->forMember()
-        ->create();
+        ->create()->fresh();
 
     expect($address->owner)->toBeInstanceOf(App\Models\Member::class);
     expect($address->owner->id)->toBe($address->owner_id);
@@ -33,7 +33,7 @@ it('can have a member owner', function (): void {
 
 it('can have a missionary owner', function (): void {
     $address = Address::factory()->forMissionary()
-        ->create();
+        ->create()->fresh();
 
     expect($address->owner)->toBeInstanceOf(App\Models\Missionary::class);
     expect($address->owner->id)->toBe($address->owner_id);

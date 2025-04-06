@@ -35,7 +35,7 @@ test('casts are applied correctly', function (): void {
 
 it('has an address', function (): void {
     $member = Member::factory()
-        ->has(Address::factory())->create();
+        ->has(Address::factory())->create()->fresh();
 
     expect($member->address)->toBeInstanceOf(Address::class);
     expect($member->address->owner_id)->toBe($member->id);

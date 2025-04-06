@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+use Tests\RefreshDatabaseWithTenant;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,10 +14,9 @@ declare(strict_types=1);
 |
 */
 
-pest()->extend(Tests\TestCase::class)->in('Feature');
-pest()->extend(Illuminate\Foundation\Testing\TestCase::class)->in('Unit');
-pest()->extend(Tests\TenantTestCase::class)->in('Tenants');
 pest()->printer()->compact();
+pest()->extend(Tests\TestCase::class)->in('Feature', 'Unit');
+pest()->use(RefreshDatabaseWithTenant::class)->in('Feature/**/Tenant', 'Unit/**/Tenant');
 /*
 |--------------------------------------------------------------------------
 | Expectations
