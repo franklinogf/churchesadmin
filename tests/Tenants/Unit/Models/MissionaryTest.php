@@ -29,7 +29,7 @@ it('has an address', function (): void {
         ->has(Address::factory())->create();
 
     expect($missionary->address)->toBeInstanceOf(Address::class);
-    expect($missionary->address->addressable_id)->toBe($missionary->id);
-    expect($missionary->address->addressable_type)->toBe($missionary->getMorphClass());
+    expect($missionary->address->owner_id)->toBe($missionary->id);
+    expect($missionary->address->owner_type)->toBe($missionary->getMorphClass());
 
 });

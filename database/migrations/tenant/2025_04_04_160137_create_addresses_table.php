@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('addresses', function (Blueprint $table) {
             $table->id();
-            $table->morphs('addressable');
+            $table->morphs('owner');
             $table->string('address_1');
             $table->string('address_2')->nullable();
             $table->string('city');

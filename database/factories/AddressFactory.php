@@ -20,11 +20,11 @@ final class AddressFactory extends Factory
      */
     public function definition(): array
     {
-        $addressable = fake()->randomElement([Member::factory()->create(), Missionary::factory()->create()]);
+        $owner = fake()->randomElement([Member::factory()->create(), Missionary::factory()->create()]);
 
         return [
-            'addressable_id' => $addressable,
-            'addressable_type' => $addressable->getMorphClass(),
+            'owner_id' => $owner,
+            'owner_type' => $owner->getMorphClass(),
             'address_1' => fake()->streetAddress(),
             'address_2' => fake()->secondaryAddress(),
             'city' => fake()->city(),
@@ -40,8 +40,8 @@ final class AddressFactory extends Factory
             $member = Member::factory()->create();
 
             return [
-                'addressable_id' => $member,
-                'addressable_type' => $member->getMorphClass(),
+                'owner_id' => $member,
+                'owner_type' => $member->getMorphClass(),
             ];
         });
     }
@@ -52,8 +52,8 @@ final class AddressFactory extends Factory
             $missionary = Missionary::factory()->create();
 
             return [
-                'addressable_id' => $missionary,
-                'addressable_type' => $missionary->getMorphClass(),
+                'owner_id' => $missionary,
+                'owner_type' => $missionary->getMorphClass(),
             ];
         });
     }

@@ -33,7 +33,7 @@ final class Address extends Model
      *
      * @return MorphTo<Model, Address>
      */
-    public function addresable(): MorphTo
+    public function owner(): MorphTo
     {
         return $this->morphTo();
     }

@@ -28,8 +28,8 @@ it('has an address', function (): void {
         ->has(Address::factory())->create();
 
     expect($member->address)->toBeInstanceOf(Address::class);
-    expect($member->address->addressable_id)->toBe($member->id);
-    expect($member->address->addressable_type)->toBe($member->getMorphClass());
+    expect($member->address->owner_id)->toBe($member->id);
+    expect($member->address->owner_type)->toBe($member->getMorphClass());
 
 });
 

@@ -89,14 +89,4 @@ trait RefreshDatabaseWithTenant
         // Set the root URL for the current tenant.
         URL::forceRootUrl("http://{$tenant->id}.{$appUrl}");
     }
-
-    protected function setTenantId(string $tenantId): void
-    {
-        $this->tenantId = $tenantId;
-    }
-
-    protected function setTenantName(string $tenantName): void
-    {
-        $this->tenantName = $tenantName;
-    }
 }
