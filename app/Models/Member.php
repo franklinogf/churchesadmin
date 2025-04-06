@@ -23,6 +23,8 @@ use Spatie\Tags\HasTags;
  * @property-read \Carbon\CarbonImmutable|null $deleted_at
  * @property-read \Carbon\CarbonImmutable|null $created_at
  * @property-read \Carbon\CarbonImmutable|null $updated_at
+ * @property-read Address $address
+ * @property-read \Illuminate\Database\Eloquent\Collection|Tag[] $tags
  */
 final class Member extends Model
 {

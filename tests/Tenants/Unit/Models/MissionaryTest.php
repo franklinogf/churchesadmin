@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Models\Address;
 use App\Models\Missionary;
 
 test('to array', function (): void {
@@ -21,4 +22,14 @@ test('to array', function (): void {
         'updated_at',
         'deleted_at',
     ]);
+});
+
+it('has an address', function (): void {
+    $missionary = Missionary::factory()
+        ->has(Address::factory())->create();
+
+    expect($missionary->address)->toBeInstanceOf(Address::class);
+    expect($missionary->address->addressable_id)->toBe($missionary->id);
+    expect($missionary->address->addressable_type)->toBe($missionary->getMorphClass());
+
 });

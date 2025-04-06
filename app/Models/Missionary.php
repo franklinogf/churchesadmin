@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
  * @property-read \Carbon\CarbonImmutable|null $deleted_at
  * @property-read \Carbon\CarbonImmutable|null $created_at
  * @property-read \Carbon\CarbonImmutable|null $updated_at
+ * @property-read Address $address
  */
 final class Missionary extends Model
 {
