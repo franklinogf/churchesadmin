@@ -12,8 +12,8 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * Address model.
  *
  * @property-read int $id
- * @property-read string $addressable_type
- * @property-read int $addressable_id
+ * @property-read string $owner_type
+ * @property-read int $owner_id
  * @property-read string $address_1
  * @property-read string $address_2
  * @property-read string $city
