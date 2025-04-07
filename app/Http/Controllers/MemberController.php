@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Enums\CivilStatus;
+use App\Enums\FlashMessageKey;
 use App\Enums\Gender;
 use App\Models\Member;
 use Illuminate\Http\RedirectResponse;
@@ -13,7 +14,7 @@ use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
 
-final class MembersController extends Controller
+final class MemberController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -47,13 +48,13 @@ final class MembersController extends Controller
             'email' => ['required', 'email', 'unique:members,email'],
             'phone' => ['required', 'phone'],
             'gender' => ['required', 'string', Rule::enum(Gender::class)],
-            'dob' => ['required', 'date'],
+            'dob' => ['required', 'date:Y-m-d'],
             'civil_status' => ['required', 'string', Rule::enum(CivilStatus::class)],
         ]);
 
         Member::create($validated);
 
-        return redirect()->route('members.index')->with('success', 'Member created successfully.');
+        return redirect()->route('members.index')->with(FlashMessageKey::SUCCESS->value, 'Member created successfully.');
     }
 
     /**
@@ -95,7 +96,7 @@ final class MembersController extends Controller
 
         $member->update($validated);
 
-        return redirect()->route('members.index')->with('success', 'Member updated successfully.');
+        return redirect()->route('members.index')->with(FlashMessageKey::SUCCESS->value, 'Member updated successfully.');
     }
 
     /**
@@ -105,6 +106,6 @@ final class MembersController extends Controller
     {
         $member->delete();
 
-        return redirect()->route('members.index')->with('success', 'Member deleted successfully.');
+        return redirect()->route('members.index')->with(FlashMessageKey::SUCCESS->value, 'Member deleted successfully.');
     }
 }
