@@ -4,6 +4,7 @@ import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMe
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import {
+    Column,
     ColumnDef,
     flexRender,
     getCoreRowModel,
@@ -26,7 +27,7 @@ interface DataTableProps<TData, TValue> {
     buttonLabel?: string;
     filter?: boolean;
     selectOne?: boolean;
-    rowId: keyof TData;
+    rowId?: keyof TData;
     headerButton?: React.ReactNode;
 }
 
@@ -58,9 +59,10 @@ export function DataTable<TData, TValue>({
         enableMultiRowSelection: !selectOne,
         onColumnVisibilityChange: setColumnVisibility,
         state: { sorting, globalFilter, rowSelection, columnVisibility },
-        getRowId: (row: TData) => row[rowId as keyof TData] as string,
+        getRowId: rowId ? (row: TData) => row[rowId as keyof TData] as string : undefined,
     });
     const { t } = useLaravelReactI18n();
+    const enabledHidingColumns = table.getAllColumns().filter((column) => column.getCanHide());
     return (
         <div>
             <div className="flex items-center justify-between py-2">
@@ -93,30 +95,7 @@ export function DataTable<TData, TValue>({
                 </div>
 
                 <div className="ml-auto">
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button variant="outline" className="ml-auto">
-                                {t('Columns')}
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                            {table
-                                .getAllColumns()
-                                .filter((column) => column.getCanHide())
-                                .map((column) => {
-                                    return (
-                                        <DropdownMenuCheckboxItem
-                                            key={column.id}
-                                            className="capitalize"
-                                            checked={column.getIsVisible()}
-                                            onCheckedChange={(value) => column.toggleVisibility(!!value)}
-                                        >
-                                            {column.columnDef?.meta?.toString() || column.id.replaceAll('_', ' ')}
-                                        </DropdownMenuCheckboxItem>
-                                    );
-                                })}
-                        </DropdownMenuContent>
-                    </DropdownMenu>
+                    <VisibilityDropdownMenu columns={enabledHidingColumns} />
                 </div>
             </div>
             <div className="rounded-md border">
@@ -125,7 +104,7 @@ export function DataTable<TData, TValue>({
                         {table.getHeaderGroups().map((headerGroup) => (
                             <TableRow key={headerGroup.id} className="hover:bg-background">
                                 {headerGroup.headers.map((header) => (
-                                    <TableHead key={header.id} className="text-primary-foreground py-1" style={{ width: `${header.getSize()}px` }}>
+                                    <TableHead key={header.id} className="py-1" style={{ width: `${header.getSize()}px` }}>
                                         {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                                     </TableHead>
                                 ))}
@@ -152,7 +131,7 @@ export function DataTable<TData, TValue>({
                         ) : (
                             <TableRow>
                                 <TableCell colSpan={columns.length} className="h-24 text-center">
-                                    {t('No hay resultados')}
+                                    {t('No data')}
                                 </TableCell>
                             </TableRow>
                         )}
@@ -180,5 +159,33 @@ export function DataTable<TData, TValue>({
                 </div>
             )}
         </div>
+    );
+}
+
+function VisibilityDropdownMenu({ columns }: { columns: Column<any, unknown>[] }) {
+    const { t } = useLaravelReactI18n();
+    if (columns.length === 0) return null;
+    return (
+        <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="ml-auto">
+                    {t('Columns')}
+                </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+                {columns.map((column) => {
+                    return (
+                        <DropdownMenuCheckboxItem
+                            key={column.id}
+                            className="capitalize"
+                            checked={column.getIsVisible()}
+                            onCheckedChange={(value) => column.toggleVisibility(!!value)}
+                        >
+                            {column.columnDef?.meta?.toString() || column.id.replaceAll('_', ' ')}
+                        </DropdownMenuCheckboxItem>
+                    );
+                })}
+            </DropdownMenuContent>
+        </DropdownMenu>
     );
 }
