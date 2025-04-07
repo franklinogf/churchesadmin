@@ -34,7 +34,7 @@ use Spatie\Tags\HasTags;
 final class Member extends Model
 {
     /** @use HasFactory<\Database\Factories\MemberFactory> */
-    use HasFactory,HasTags, SoftDeletes;
+    use HasFactory, HasTags, SoftDeletes;
 
     /**
      * The name of the table associated with the Tag model.
