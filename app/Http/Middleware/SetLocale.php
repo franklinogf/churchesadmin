@@ -7,7 +7,6 @@ namespace App\Http\Middleware;
 use App\Enums\LanguageCode;
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\URL;
 use Symfony\Component\HttpFoundation\Response;
 
 final class SetLocale
@@ -19,15 +18,21 @@ final class SetLocale
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $locale = $request->segment(1);
+
+        $locale = $request->user()?->language->value
+            ?? $request->cookie('locale')
+            ?? session('locale')
+            ?? config('app.locale');
 
         if (! in_array($locale, LanguageCode::values(), true)) {
-            abort(404);
+            $locale = config('app.locale');
         }
 
         app()->setLocale($locale);
 
-        URL::defaults(['locale' => $locale]);
+        session(['locale' => $locale]);
+
+        cookie()->queue(cookie('locale', $locale, 60 * 24 * 30)); // 30 days
 
         return $next($request);
     }
