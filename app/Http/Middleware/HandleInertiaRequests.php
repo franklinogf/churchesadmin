@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
+use App\Enums\FlashMessageKey;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tighten\Ziggy\Ziggy;
@@ -53,6 +54,21 @@ final class HandleInertiaRequests extends Middleware
                 'location' => $request->url(),
             ],
             'sidebarOpen' => $request->cookie('sidebar_state') === 'true',
+            'flash' => $this->getFlashMessages($request),
+        ];
+    }
+
+    /**
+     * Get flash messages from the session.
+     *
+     * @param  Request  $request
+     * @return array<string, mixed>
+     */
+    protected function getFlashMessages(Request $request): array
+    {
+        return [
+            FlashMessageKey::SUCCESS->value => $request->session()->get(FlashMessageKey::SUCCESS->value),
+            FlashMessageKey::ERROR->value => $request->session()->get(FlashMessageKey::ERROR->value),
         ];
     }
 }
