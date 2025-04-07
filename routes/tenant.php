@@ -31,15 +31,17 @@ Route::middleware([
         ->where(['locale' => '[a-zA-Z]{2}'])
         ->middleware([SetLocale::class])
         ->group(function (): void {
+
             Route::get('/', fn (): string => 'Hello, world!')->name('home');
-            Route::middleware(['auth'])->group(function (): void {
+
+            Route::middleware('auth')->group(function (): void {
                 Route::get('dashboard', fn () => inertia('dashboard'))->name('dashboard');
+                Route::resource('members', MembersController::class)->names('members');
             });
 
             require __DIR__.'/settings.php';
             require __DIR__.'/auth.php';
 
-            Route::resource('members', MembersController::class)->names('members');
         });
 
 });

@@ -38,7 +38,8 @@ test('users can not authenticate with invalid password', function (): void {
     post(route('login.store'), [
         'email' => $user->email,
         'password' => 'wrong-password',
-    ]);
+    ])
+        ->assertSessionHas('errors');
 
     assertGuest();
 });
