@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\Gender;
+use App\Enums\OfferingFrequency;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
@@ -16,14 +19,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read string $name
  * @property-read string $last_name
  * @property-read string $email
- * @property-read string|null $phone
- * @property-read \App\Enums\Gender $gender
+ * @property-read string $phone
+ * @property-read Gender $gender
  * @property-read string $church
  * @property-read float|null $offering
- * @property-read \App\Enums\OfferingFrequency|null $offering_frequency
- * @property-read \Carbon\CarbonImmutable|null $deleted_at
- * @property-read \Carbon\CarbonImmutable|null $created_at
- * @property-read \Carbon\CarbonImmutable|null $updated_at
+ * @property-read OfferingFrequency|null $offering_frequency
+ * @property-read CarbonImmutable|null $deleted_at
+ * @property-read CarbonImmutable $created_at
+ * @property-read CarbonImmutable $updated_at
  * @property-read Address|null $address
  */
 final class Missionary extends Model
@@ -49,8 +52,8 @@ final class Missionary extends Model
     protected function casts(): array
     {
         return [
-            'gender' => \App\Enums\Gender::class,
-            'offering_frequency' => \App\Enums\OfferingFrequency::class,
+            'gender' => Gender::class,
+            'offering_frequency' => OfferingFrequency::class,
         ];
     }
 }

@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\CivilStatus;
+use App\Enums\Gender;
+use Carbon\CarbonImmutable;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
@@ -17,15 +21,15 @@ use Spatie\Tags\HasTags;
  * @property-read string $name
  * @property-read string $last_name
  * @property-read string $email
- * @property-read string|null $phone
- * @property-read \App\Enums\Gender $gender
- * @property-read \Carbon\CarbonImmutable $dob
- * @property-read \App\Enums\CivilStatus $civil_status
- * @property-read \Carbon\CarbonImmutable|null $deleted_at
- * @property-read \Carbon\CarbonImmutable|null $created_at
- * @property-read \Carbon\CarbonImmutable|null $updated_at
+ * @property-read string $phone
+ * @property-read Gender $gender
+ * @property-read CarbonImmutable $dob
+ * @property-read CivilStatus $civil_status
+ * @property-read CarbonImmutable|null $deleted_at
+ * @property-read CarbonImmutable $created_at
+ * @property-read CarbonImmutable $updated_at
  * @property-read Address|null $address
- * @property-read \Illuminate\Database\Eloquent\Collection<int,Tag> $tags
+ * @property-read Collection<int,Tag> $tags
  */
 final class Member extends Model
 {
@@ -61,9 +65,9 @@ final class Member extends Model
     {
 
         return [
-            'gender' => \App\Enums\Gender::class,
+            'gender' => Gender::class,
             'dob' => 'date',
-            'civil_status' => \App\Enums\CivilStatus::class,
+            'civil_status' => CivilStatus::class,
         ];
     }
 }

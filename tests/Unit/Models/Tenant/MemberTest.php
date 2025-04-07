@@ -6,6 +6,7 @@ use App\Enums\CivilStatus;
 use App\Enums\Gender;
 use App\Models\Address;
 use App\Models\Member;
+use Carbon\CarbonImmutable;
 
 test('to array', function (): void {
     $member = Member::factory()->create()->fresh();
@@ -29,7 +30,7 @@ test('casts are applied correctly', function (): void {
     $member = Member::factory()->create()->fresh();
 
     expect($member->gender)->toBeInstanceOf(Gender::class);
-    expect($member->dob)->toBeInstanceOf(Carbon\CarbonImmutable::class);
+    expect($member->dob)->toBeInstanceOf(CarbonImmutable::class);
     expect($member->civil_status)->toBeInstanceOf(CivilStatus::class);
 });
 
