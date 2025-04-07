@@ -6,7 +6,7 @@ interface SubmitButtonProps extends React.ComponentProps<typeof Button> {
     loadingIcon?: React.ReactNode;
     isSubmitting?: boolean;
 }
-export default function SubmitButton({ children, isSubmitting = false, className, loadingIcon, disabled, ...props }: SubmitButtonProps) {
+export function SubmitButton({ children, isSubmitting = false, className, loadingIcon, disabled, ...props }: SubmitButtonProps) {
     return (
         <Button
             className={cn('cursor-pointer', className, {

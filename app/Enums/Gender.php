@@ -13,24 +13,29 @@ enum Gender: string implements Labeable
     case MALE = 'male';
     case FEMALE = 'female';
 
+    /**
+     * Get the options.
+     *
+     * @return array<{value:string,label:string}>
+     */
     public static function options(): array
     {
-        return [
-            self::MALE->value => self::MALE->label(),
-            self::FEMALE->value => self::FEMALE->label(),
-        ];
+        return collect(self::cases())->map(fn (Gender $case) => [
+            'value' => $case->value,
+            'label' => $case->label(),
+        ])->toArray();
     }
 
     /**
-     * Get the label for the gender.
+     * Get the label.
      *
      * @return string
      */
     public function label(): string
     {
         return match ($this) {
-            self::MALE => 'Male',
-            self::FEMALE => 'Female',
+            self::MALE => __('Male'),
+            self::FEMALE => __('Female'),
         };
     }
 }

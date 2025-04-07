@@ -3,10 +3,10 @@ import { FieldError } from '@/components/forms/inputs/FieldError';
 import { FieldLabel } from '@/components/forms/inputs/FieldLabel';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectSeparator, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Translations, useTranslations } from '@/hooks/translations';
 import { cn } from '@/lib/utils';
+import { SelectOption } from '@/types';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 import React, { useId } from 'react';
-export type SelectItemType = { value: string; label: string };
 
 interface DefaultSelectFieldProps {
     required?: boolean;
@@ -21,11 +21,11 @@ interface DefaultSelectFieldProps {
 }
 
 type SelectFieldPropsWithItems = DefaultSelectFieldProps & {
-    items: SelectItemType[];
+    options: SelectOption[];
     children?: never;
 };
 type SelectFieldPropsWithChildren = DefaultSelectFieldProps & {
-    items?: never;
+    options?: never;
     children: React.ReactNode;
 };
 type SelectFieldProps = SelectFieldPropsWithItems | SelectFieldPropsWithChildren;
@@ -36,14 +36,14 @@ export function SelectField({
     disabled,
     className,
     placeholder,
-    items,
+    options,
     children,
     value,
     clearable = false,
     onChange,
     required,
 }: SelectFieldProps) {
-    const { t } = useTranslations();
+    const { t } = useLaravelReactI18n();
     const id = useId();
     return (
         <FieldContainer className={className}>
@@ -51,17 +51,17 @@ export function SelectField({
             <Select required={required} name={id} disabled={disabled} value={value} onValueChange={onChange}>
                 <SelectTrigger
                     id={id}
-                    className={cn('bg-input w-full', {
+                    className={cn('w-full', {
                         'border-destructive ring-offset-destructive focus-visible:ring-destructive': error,
                     })}
                 >
                     <SelectValue placeholder={placeholder} />
                 </SelectTrigger>
                 <SelectContent>
-                    {items
-                        ? items.map((item) => (
+                    {options
+                        ? options.map((item) => (
                               <SelectItem key={item.value} value={item.value.toString()}>
-                                  {t(item.label as Translations)}
+                                  {item.label}
                               </SelectItem>
                           ))
                         : children}

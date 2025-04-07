@@ -17,23 +17,20 @@ enum CivilStatus: string implements Labeable
     case SEPARATED = 'separated';
 
     /**
-     * Get the options for the civil status.
+     * Get the options.
      *
-     * @return array<string, string>
+     * @return array<{value:string,label:string}>
      */
     public static function options(): array
     {
-        return [
-            self::SINGLE->value => self::SINGLE->label(),
-            self::MARRIED->value => self::MARRIED->label(),
-            self::DIVORCED->value => self::DIVORCED->label(),
-            self::WIDOWED->value => self::WIDOWED->label(),
-            self::SEPARATED->value => self::SEPARATED->label(),
-        ];
+        return collect(self::cases())->map(fn (CivilStatus $case) => [
+            'value' => $case->value,
+            'label' => $case->label(),
+        ])->toArray();
     }
 
     /**
-     * Get the label for the civil status.
+     * Get the label.
      *
      * @return string
      */

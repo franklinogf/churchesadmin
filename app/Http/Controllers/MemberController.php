@@ -31,7 +31,13 @@ final class MemberController extends Controller
      */
     public function create(): Response
     {
-        return Inertia::render('members/create');
+        $genders = Gender::options();
+        $civilStatuses = CivilStatus::options();
+
+        return Inertia::render('members/create', [
+            'genders' => $genders,
+            'civilStatuses' => $civilStatuses,
+        ]);
     }
 
     /**
