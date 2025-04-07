@@ -18,6 +18,11 @@ const mainNavItems: NavItem[] = [
         href: route('members.index'),
         icon: Users2Icon,
     },
+    {
+        title: 'Skills',
+        href: route('skills.index'),
+        icon: LayoutGridIcon,
+    },
 ];
 
 const footerNavItems: NavItem[] = [];

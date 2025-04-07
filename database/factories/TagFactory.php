@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Enums\TagType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -24,7 +25,7 @@ final class TagFactory extends Factory
         return [
             'name' => fake()->word(),
             'slug' => Str::slug($name),
-            'type' => null,
+            'type' => fake()->optional()->randomElement(TagType::values()),
             'order_column' => 0,
         ];
     }
