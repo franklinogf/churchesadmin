@@ -1,0 +1,184 @@
+import { DataTablePagination } from '@/components/custom-ui/datatable/DataTablePagination';
+import { Button } from '@/components/ui/button';
+import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Input } from '@/components/ui/input';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import {
+    ColumnDef,
+    flexRender,
+    getCoreRowModel,
+    getFilteredRowModel,
+    getPaginationRowModel,
+    getSortedRowModel,
+    SortingState,
+    useReactTable,
+    VisibilityState,
+} from '@tanstack/react-table';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { XSquare } from 'lucide-react';
+import { useState } from 'react';
+import { toast } from 'sonner';
+
+interface DataTableProps<TData, TValue> {
+    columns: ColumnDef<TData, TValue>[];
+    data: TData[];
+    onButtonClick?: (data: TData[]) => void;
+    buttonLabel?: string;
+    filter?: boolean;
+    selectOne?: boolean;
+    rowId: keyof TData;
+    headerButton?: React.ReactNode;
+}
+
+export function DataTable<TData, TValue>({
+    columns,
+    data,
+    onButtonClick,
+    buttonLabel,
+    filter = true,
+    selectOne = false,
+    rowId,
+    headerButton,
+}: DataTableProps<TData, TValue>) {
+    const [sorting, setSorting] = useState<SortingState>([]);
+    const [globalFilter, setGlobalFilter] = useState<string>('');
+    const [rowSelection, setRowSelection] = useState({});
+    const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+    const table = useReactTable({
+        columns,
+        data,
+        getCoreRowModel: getCoreRowModel(),
+        getPaginationRowModel: getPaginationRowModel(),
+        getSortedRowModel: getSortedRowModel(),
+        onSortingChange: setSorting,
+        onGlobalFilterChange: setGlobalFilter,
+        getFilteredRowModel: getFilteredRowModel(),
+        globalFilterFn: 'includesString',
+        onRowSelectionChange: setRowSelection,
+        enableMultiRowSelection: !selectOne,
+        onColumnVisibilityChange: setColumnVisibility,
+        state: { sorting, globalFilter, rowSelection, columnVisibility },
+        getRowId: (row: TData) => row[rowId as keyof TData] as string,
+    });
+    const { t } = useLaravelReactI18n();
+    return (
+        <div>
+            <div className="flex items-center justify-between py-2">
+                <div className="flex items-center gap-2">
+                    {headerButton}
+                    {filter && (
+                        <div className="relative mr-auto">
+                            <Input
+                                placeholder="Filter"
+                                value={globalFilter}
+                                onChange={(e) => {
+                                    table.setGlobalFilter(e.target.value);
+                                }}
+                            />
+                            {globalFilter && (
+                                <Button
+                                    onClick={() => {
+                                        table.setGlobalFilter('');
+                                    }}
+                                    asChild
+                                    className="size-4"
+                                    size="icon"
+                                    variant="ghost"
+                                >
+                                    <XSquare className="hover:text-primary absolute top-1/2 right-2 -translate-y-1/2 hover:cursor-pointer" />
+                                </Button>
+                            )}
+                        </div>
+                    )}
+                </div>
+
+                <div className="ml-auto">
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="outline" className="ml-auto">
+                                {t('Columns')}
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                            {table
+                                .getAllColumns()
+                                .filter((column) => column.getCanHide())
+                                .map((column) => {
+                                    return (
+                                        <DropdownMenuCheckboxItem
+                                            key={column.id}
+                                            className="capitalize"
+                                            checked={column.getIsVisible()}
+                                            onCheckedChange={(value) => column.toggleVisibility(!!value)}
+                                        >
+                                            {column.id.replaceAll('_', ' ')}
+                                        </DropdownMenuCheckboxItem>
+                                    );
+                                })}
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </div>
+            </div>
+            <div className="rounded-md border">
+                <Table>
+                    <TableHeader>
+                        {table.getHeaderGroups().map((headerGroup) => (
+                            <TableRow key={headerGroup.id} className="hover:bg-background">
+                                {headerGroup.headers.map((header) => (
+                                    <TableHead key={header.id} className="text-primary-foreground py-1" style={{ width: `${header.getSize()}px` }}>
+                                        {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
+                                    </TableHead>
+                                ))}
+                            </TableRow>
+                        ))}
+                    </TableHeader>
+                    <TableBody className="bg-background/80">
+                        {table.getRowModel().rows?.length ? (
+                            table.getRowModel().rows.map((row) => (
+                                <TableRow
+                                    onClick={() => {
+                                        buttonLabel && row.toggleSelected();
+                                    }}
+                                    key={row.id}
+                                    data-state={row.getIsSelected() && 'selected'}
+                                >
+                                    {row.getVisibleCells().map((cell) => (
+                                        <TableCell className="p-3" key={cell.id}>
+                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                        </TableCell>
+                                    ))}
+                                </TableRow>
+                            ))
+                        ) : (
+                            <TableRow>
+                                <TableCell colSpan={columns.length} className="h-24 text-center">
+                                    {t('No hay resultados')}
+                                </TableCell>
+                            </TableRow>
+                        )}
+                    </TableBody>
+                </Table>
+            </div>
+            <div className="mt-1">
+                <DataTablePagination table={table} />
+            </div>
+            {buttonLabel && (
+                <div className="mt-4 flex justify-center">
+                    <Button
+                        className="cursor-pointer"
+                        onClick={() => {
+                            if (!onButtonClick) return;
+                            if (table.getSelectedRowModel().rows.length === 0) {
+                                toast.info('Please select at least one row');
+                            } else {
+                                onButtonClick(table.getSelectedRowModel().rows.map((row) => row.original));
+                            }
+                        }}
+                    >
+                        {buttonLabel}
+                    </Button>
+                </div>
+            )}
+        </div>
+    );
+}
