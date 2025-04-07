@@ -59,7 +59,7 @@ final class MembersController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id): void
+    public function show(Member $member): void
     {
         //
     }
@@ -67,24 +67,44 @@ final class MembersController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id): void
+    public function edit(Member $member): Response
     {
-        //
+        return Inertia::render('members/edit', [
+            'member' => $member,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id): void
+    public function update(Request $request, Member $member): RedirectResponse
     {
-        //
+
+        /**
+         * @var array<string,mixed> $validated
+         */
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'min:2', 'max:255'],
+            'last_name' => ['required', 'string', 'min:2', 'max:255'],
+            'email' => ['required', 'email', Rule::unique('members')->ignore($member->id)],
+            'phone' => ['required', 'phone'],
+            'gender' => ['required', 'string', Rule::enum(Gender::class)],
+            'dob' => ['required', 'date'],
+            'civil_status' => ['required', 'string', Rule::enum(CivilStatus::class)],
+        ]);
+
+        $member->update($validated);
+
+        return redirect()->route('members.index')->with('success', 'Member updated successfully.');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id): void
+    public function destroy(Member $member): RedirectResponse
     {
-        //
+        $member->delete();
+
+        return redirect()->route('members.index')->with('success', 'Member deleted successfully.');
     }
 }

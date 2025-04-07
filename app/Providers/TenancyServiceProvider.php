@@ -47,7 +47,7 @@ final class TenancyServiceProvider extends ServiceProvider
             Events\DeletingTenant::class => [
                 JobPipeline::make([
                     Jobs\DeleteDomains::class,
-                    // Jobs\RemoveStorageSymlinks::class,
+                    Jobs\RemoveStorageSymlinks::class,
                 ])->send(fn (Events\DeletingTenant $event): \Stancl\Tenancy\Contracts\Tenant => $event->tenant)->shouldBeQueued(false),
 
                 Listeners\DeleteTenantStorage::class,

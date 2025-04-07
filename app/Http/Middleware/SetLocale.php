@@ -18,13 +18,18 @@ final class SetLocale
      */
     public function handle(Request $request, Closure $next): Response
     {
-
+        /**
+         * @var string $locale
+         */
         $locale = $request->user()?->language->value
-            ?? $request->cookie('locale')
-            ?? session('locale')
-            ?? config('app.locale');
+        ?? $request->cookie('locale')
+        ?? session('locale')
+        ?? config('app.locale');
 
         if (! in_array($locale, LanguageCode::values(), true)) {
+            /**
+             * @var string $locale
+             */
             $locale = config('app.locale');
         }
 

@@ -25,18 +25,21 @@ Route::middleware([
     Middleware\PreventAccessFromUnwantedDomains::class,
     Middleware\ScopeSessions::class,
 ])->group(function (): void {
-    Route::get('/', fn () => to_route('home', app()->getLocale()))->name('index');
 
-    Route::prefix('{locale}')
-        ->where(['locale' => '[a-zA-Z]{2}'])
-        ->middleware([SetLocale::class])
+    Route::get('/locale/{locale}', function (string $locale) {
+        session(['locale' => $locale]);
+
+        return redirect()->back();
+    })->name('locale');
+
+    Route::middleware(SetLocale::class)
         ->group(function (): void {
 
-            Route::get('/', fn (): string => 'Hello, world!')->name('home');
+            Route::get('/', fn (): string => app()->getLocale())->name('home');
 
             Route::middleware('auth')->group(function (): void {
                 Route::get('dashboard', fn () => inertia('dashboard'))->name('dashboard');
-                Route::resource('members', MembersController::class)->names('members');
+                Route::resource('members', MembersController::class);
             });
 
             require __DIR__.'/settings.php';

@@ -61,9 +61,9 @@ trait RefreshDatabaseWithTenant
             $token = ParallelTesting::token();
 
             config([
-                'tenancy.database.suffix' => config('tenancy.database.suffix').($token !== null ? "_{$token}" : ''),
-                'tenancy.filesystem.suffix_base' => config('tenancy.filesystem.suffix_base').($token !== null ? "{$token}_" : ''),
-                'tenancy.filesystem.url_override.public' => config('tenancy.filesystem.url_override.public').($token !== null ? "-{$token}" : ''),
+                'tenancy.database.suffix' => config('tenancy.database.suffix').($token ? "_{$token}" : ''),
+                'tenancy.filesystem.suffix_base' => config('tenancy.filesystem.suffix_base').($token ? "{$token}_" : ''),
+                'tenancy.filesystem.url_override.public' => config('tenancy.filesystem.url_override.public').($token ? "-{$token}" : ''),
             ]);
 
             // Define the database name for the tenant.
@@ -71,9 +71,9 @@ trait RefreshDatabaseWithTenant
 
             // Drop the database if it already exists.
             DB::unprepared("DROP DATABASE IF EXISTS `$dbName`");
-
-            File::deleteDirectory(storage_path(config('tenancy.filesystem.suffix_base')."{$tenantId}"));
-            File::deleteDirectory(public_path("public-{$tenantId}".($token !== null ? "-{$token}" : '')));
+            $storagePath = storage_path(config('tenancy.filesystem.suffix_base')."{$tenantId}");
+            File::deleteDirectory(storage_path($storagePath));
+            File::deleteDirectory(public_path("public-{$tenantId}".($token ? "-{$token}" : '')));
 
             // Create the tenant and associated domain if they don't exist.
             $t = Church::create(['id' => $tenantId, 'name' => $this->tenantName]);
