@@ -12,7 +12,7 @@ use function Pest\Laravel\actingAs;
 use function Pest\Laravel\get;
 
 test('edit page can be rendered if authenticated', function (): void {
-    $member = Member::factory()->create()->refresh();
+    $member = Member::factory()->create()->fresh();
     actingAs(User::factory()->create())
         ->get(route('members.edit', ['member' => $member]))
         ->assertStatus(200)
