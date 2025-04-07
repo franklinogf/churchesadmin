@@ -46,6 +46,7 @@ export const columns: ColumnDef<Member>[] = [
         id: 'actions',
         enableHiding: false,
         enableSorting: false,
+        size: 0,
         cell: ({ row }) => {
             const { t } = useLaravelReactI18n();
             const { openConfirmation } = useConfirmationStore();
