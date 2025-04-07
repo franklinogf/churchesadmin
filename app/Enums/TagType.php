@@ -11,4 +11,6 @@ enum TagType: string
     use EnumToArray;
     case SKILL = 'skill';
 
+    case CATEGORY = 'category';
+
 }
