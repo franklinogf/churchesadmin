@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\MembersController;
+use App\Http\Controllers\MemberController;
 use App\Http\Middleware\SetLocale;
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware;
@@ -39,7 +39,7 @@ Route::middleware([
 
             Route::middleware('auth')->group(function (): void {
                 Route::get('dashboard', fn () => inertia('dashboard'))->name('dashboard');
-                Route::resource('members', MembersController::class);
+                Route::resource('members', MemberController::class);
             });
 
             require __DIR__.'/settings.php';
