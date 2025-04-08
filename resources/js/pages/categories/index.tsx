@@ -1,12 +1,13 @@
 import { DataTable } from '@/components/custom-ui/datatable/data-table';
-import { InputField } from '@/components/forms/inputs/InputField';
 import { SwitchField } from '@/components/forms/inputs/SwitchField';
+import TranslatableInput from '@/components/forms/inputs/TranslatableInputField';
 import { SubmitButton } from '@/components/forms/SubmitButton';
 import { PageTitle } from '@/components/PageTitle';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader } from '@/components/ui/dialog';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import AppLayout from '@/layouts/app-layout';
+import { emptyTranslations } from '@/lib/utils';
 import useConfirmationStore from '@/stores/confirmationStore';
 import type { BreadcrumbItem } from '@/types';
 import { Tag } from '@/types/models/tag';
@@ -111,7 +112,7 @@ function CategoryForm({ category, children }: { category?: Tag; children: React.
     const [open, setOpen] = useState(false);
     const { t } = useLaravelReactI18n();
     const { data, setData, post, put, errors, reset, processing } = useForm({
-        name: category?.name ?? '',
+        name: category?.nameTranslations ?? emptyTranslations(),
         is_regular: category?.isRegular ?? false,
     });
 
@@ -143,13 +144,11 @@ function CategoryForm({ category, children }: { category?: Tag; children: React.
                 </DialogHeader>
 
                 <form className="space-y-4" onSubmit={handleSubmit}>
-                    <InputField
+                    <TranslatableInput
                         label={t('Name')}
-                        placeholder={t('Enter category name')}
-                        required
-                        value={data.name}
-                        onChange={(value) => setData('name', value)}
-                        error={errors.name}
+                        values={data.name}
+                        onChange={(locale, value) => setData(`name`, { ...data.name, [locale]: value })}
+                        errors={{ errors, name: 'name' }}
                     />
                     <SwitchField
                         description={t('Only admins would be allowed to edit and delete this category')}

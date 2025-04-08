@@ -1,16 +1,17 @@
 import { DataTable } from '@/components/custom-ui/datatable/data-table';
-import { InputField } from '@/components/forms/inputs/InputField';
 import { SwitchField } from '@/components/forms/inputs/SwitchField';
+import TranslatableInput from '@/components/forms/inputs/TranslatableInputField';
 import { SubmitButton } from '@/components/forms/SubmitButton';
 import { PageTitle } from '@/components/PageTitle';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader } from '@/components/ui/dialog';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import AppLayout from '@/layouts/app-layout';
+import { emptyTranslations } from '@/lib/utils';
 import useConfirmationStore from '@/stores/confirmationStore';
 import type { BreadcrumbItem } from '@/types';
 import { Tag } from '@/types/models/tag';
-import { router, useForm } from '@inertiajs/react';
+import { router, useForm, usePage } from '@inertiajs/react';
 import { DialogTitle, DialogTrigger } from '@radix-ui/react-dialog';
 import { ColumnDef } from '@tanstack/react-table';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
@@ -109,7 +110,7 @@ function SkillForm({ skill, children }: { skill?: Tag; children: React.ReactNode
     const [open, setOpen] = useState(false);
     const { t } = useLaravelReactI18n();
     const { data, setData, post, put, errors, reset, processing } = useForm({
-        name: skill?.name ?? '',
+        name: skill?.nameTranslations ?? emptyTranslations(),
         is_regular: skill?.isRegular ?? false,
     });
 
@@ -130,7 +131,7 @@ function SkillForm({ skill, children }: { skill?: Tag; children: React.ReactNode
             });
         }
     }
-
+    console.log(usePage().props);
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>{children}</DialogTrigger>
@@ -141,14 +142,13 @@ function SkillForm({ skill, children }: { skill?: Tag; children: React.ReactNode
                 </DialogHeader>
 
                 <form className="space-y-4" onSubmit={handleSubmit}>
-                    <InputField
+                    <TranslatableInput
                         label={t('Name')}
-                        placeholder={t('Enter skill name')}
-                        required
-                        value={data.name}
-                        onChange={(value) => setData('name', value)}
-                        error={errors.name}
+                        values={data.name}
+                        onChange={(locale, value) => setData(`name`, { ...data.name, [locale]: value })}
+                        errors={{ errors, name: 'name' }}
                     />
+
                     <SwitchField
                         description={t('Only admins would be allowed to edit and delete this skill')}
                         label={t('Mark this skill as regular')}

@@ -37,7 +37,7 @@ final class CategoryController extends Controller
          * @var array{name:string,is_regular:bool}
          */
         $validated = $request->validate([
-            'name' => ['required', 'string', 'min:3', 'max:255', UniqueTranslationRule::for('tags')->where('type', TagType::CATEGORY->value)],
+            'name.*' => ['required', 'string', 'min:3', 'max:255', UniqueTranslationRule::for('tags')->where('type', TagType::CATEGORY->value)],
             'is_regular' => ['required', 'boolean'],
         ]);
 
@@ -64,7 +64,7 @@ final class CategoryController extends Controller
          * @var array{name:string,is_regular:bool}
          */
         $validated = $request->validate([
-            'name' => ['required', 'string', 'min:3', 'max:255',
+            'name.*' => ['required', 'string', 'min:3', 'max:255',
                 UniqueTranslationRule::for('tags')
                     ->ignore($tag->id)
                     ->where('type', TagType::CATEGORY->value),

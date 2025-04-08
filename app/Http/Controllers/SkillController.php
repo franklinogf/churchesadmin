@@ -37,7 +37,7 @@ final class SkillController extends Controller
          * @var array{name:string}
          */
         $validated = $request->validate([
-            'name' => ['required', 'string', 'min:3', 'max:255', UniqueTranslationRule::for('tags')->where('type', TagType::SKILL->value)],
+            'name.*' => ['required', 'string', 'min:3', 'max:255', UniqueTranslationRule::for('tags')->where('type', TagType::SKILL->value)],
             'is_regular' => ['required', 'boolean'],
         ]);
 
@@ -65,7 +65,7 @@ final class SkillController extends Controller
          * @var array{name:string,is_regular:bool}
          */
         $validated = $request->validate([
-            'name' => ['required', 'string', 'min:3', 'max:255',
+            'name.*' => ['required', 'string', 'min:3', 'max:255',
                 UniqueTranslationRule::for('tags')
                     ->ignore($tag->id)
                     ->where('type', TagType::SKILL->value),
