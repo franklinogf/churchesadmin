@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
-use App\Enums\Interfaces\Labeable;
 use App\Enums\Traits\EnumToArray;
+use App\Enums\Traits\HasOptions;
 
-enum CivilStatus: string implements Labeable
+enum CivilStatus: string
 {
-    use EnumToArray;
+    use EnumToArray, HasOptions;
     case SINGLE = 'single';
     case MARRIED = 'married';
     case DIVORCED = 'divorced';

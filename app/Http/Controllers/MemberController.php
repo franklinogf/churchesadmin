@@ -55,8 +55,11 @@ final class MemberController extends Controller
     {
         $skills = collect($request->safe()->only(['skills']))->flatten()->toArray();
         $categories = collect($request->safe()->only(['categories']))->flatten()->toArray();
-
-        $member = Member::create($request->safe()->except(['skills', 'categories']));
+        /**
+         * @var array<string, mixed> $validated
+         */
+        $validated = $request->safe()->except(['skills', 'categories']);
+        $member = Member::create($validated);
         $member->attachTags($skills, TagType::SKILL->value);
         $member->attachTags($categories, TagType::CATEGORY->value);
 
@@ -97,13 +100,13 @@ final class MemberController extends Controller
     public function update(UpdateMemberRequest $request, Member $member): RedirectResponse
     {
 
-        /**
-         * @var array<string,mixed> $validated
-         */
         $skills = collect($request->safe()->only(['skills']))->flatten()->toArray();
         $categories = collect($request->safe()->only(['categories']))->flatten()->toArray();
-
-        $member->update($request->safe()->except(['skills', 'categories']));
+        /**
+         * @var array<string, mixed> $validated
+         */
+        $validated = $request->safe()->except(['skills', 'categories']);
+        $member->update($validated);
         $member->syncTagsWithType($skills, TagType::SKILL->value);
         $member->syncTagsWithType($categories, TagType::CATEGORY->value);
 

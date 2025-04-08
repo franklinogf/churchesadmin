@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
-use App\Enums\Interfaces\Labeable;
 use App\Enums\Traits\EnumToArray;
+use App\Enums\Traits\HasOptions;
 
-enum Gender: string implements Labeable
+enum Gender: string
 {
-    use EnumToArray;
+    use EnumToArray, HasOptions;
     case MALE = 'male';
     case FEMALE = 'female';
 

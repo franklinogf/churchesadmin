@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Enums;
 
-use App\Enums\Interfaces\Labeable;
 use App\Enums\Traits\EnumToArray;
+use App\Enums\Traits\HasOptions;
 
-enum OfferingFrequency: string implements Labeable
+enum OfferingFrequency: string
 {
-    use EnumToArray;
+    use EnumToArray, HasOptions;
     case WEEKLY = 'weekly';
     case BIWEEKLY = 'biweekly';
     case MONTHLY = 'monthly';

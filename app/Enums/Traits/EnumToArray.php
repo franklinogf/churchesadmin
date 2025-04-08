@@ -25,17 +25,4 @@ trait EnumToArray
     {
         return array_column(self::cases(), 'name');
     }
-
-    /**
-     * Get the options for the enum cases.
-     *
-     * @return array<mixed>
-     */
-    public static function options(): array
-    {
-        return collect(self::cases())->map(fn (self $case): array => [
-            'value' => $case->value,
-            'label' => $case->label() ?? $case->name(),
-        ])->toArray();
-    }
 }
