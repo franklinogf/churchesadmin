@@ -34,7 +34,7 @@ export function SwitchField({ label, disabled, value, error, description, onChan
                     </p>
                 )}
             </div>
-            {error && <FieldError error={error} />}
+            <FieldError error={error} />
         </FieldContainer>
     );
 }
