@@ -1,8 +1,8 @@
-import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { useId } from 'react';
 import { FieldContainer } from './FieldContainer';
 import { FieldError } from './FieldError';
+import { FieldLabel } from './FieldLabel';
 
 interface SwitchFieldProps {
     label: string;
@@ -26,7 +26,7 @@ export function SwitchField({ label, disabled, value, error, description, onChan
                         onCheckedChange={onChange}
                         id={id}
                     />
-                    <Label htmlFor={id}>{label}</Label>
+                    <FieldLabel disabled={disabled} error={error !== undefined} id={id} label={label} />
                 </div>
                 {description && (
                     <p className="text-muted-foreground text-sm" id={`${id}-description`}>

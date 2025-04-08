@@ -9,7 +9,7 @@ export function FieldLabel({
     className,
 }: {
     label?: string;
-    error?: string;
+    error?: boolean;
     disabled?: boolean;
     id?: string;
     className?: string;

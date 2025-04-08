@@ -16,7 +16,7 @@ export function InputField({ error, label, disabled, className, value, onChange,
     const id = useId();
     return (
         <FieldContainer className={className}>
-            <FieldLabel disabled={disabled} error={error} id={id} label={label} />
+            <FieldLabel disabled={disabled} error={error !== undefined} id={id} label={label} />
             <Input
                 disabled={disabled}
                 id={id}
