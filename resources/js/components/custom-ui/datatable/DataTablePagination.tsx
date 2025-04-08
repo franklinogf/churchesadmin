@@ -14,14 +14,16 @@ export function DataTablePagination<TData>({ table, isSelectable = false }: Data
     const { t } = useLaravelReactI18n();
     return (
         <div className="flex items-center justify-between px-2">
-            {isSelectable && (
-                <div className="text-muted-foreground flex-1 text-sm">
-                    {t(':selected of :total rows selected', {
-                        selected: table.getFilteredSelectedRowModel().rows.length,
-                        total: table.getFilteredRowModel().rows.length,
-                    })}
-                </div>
-            )}
+            <div className="text-muted-foreground flex-1 text-sm">
+                {isSelectable
+                    ? t(':selected of :total rows selected', {
+                          selected: table.getFilteredSelectedRowModel().rows.length,
+                          total: table.getFilteredRowModel().rows.length,
+                      })
+                    : t(':total rows', {
+                          total: table.getFilteredRowModel().rows.length,
+                      })}
+            </div>
             <div className="ml-auto flex items-center space-x-6 lg:space-x-8">
                 <div className="flex items-center space-x-2">
                     <p className="text-sm font-medium">{t('Rows per page')}</p>
