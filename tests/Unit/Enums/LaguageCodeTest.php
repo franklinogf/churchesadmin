@@ -24,9 +24,15 @@ test('options return an array', function (): void {
 
     expect(LanguageCode::options())->toBeArray();
     expect(LanguageCode::options())->toHaveCount(2);
-    expect(LanguageCode::options())->toHaveKeys([
-        'en',
-        'es',
+    expect(LanguageCode::options())->toBe([
+        [
+            'value' => 'en',
+            'label' => __('English'),
+        ],
+        [
+            'value' => 'es',
+            'label' => __('Spanish'),
+        ],
     ]);
 
 });

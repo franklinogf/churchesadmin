@@ -24,9 +24,15 @@ test('options return an array', function (): void {
 
     expect(Gender::options())->toBeArray();
     expect(Gender::options())->toHaveCount(2);
-    expect(Gender::options())->toHaveKeys([
-        'male',
-        'female',
+    expect(Gender::options())->toBe([
+        [
+            'value' => 'male',
+            'label' => __('Male'),
+        ],
+        [
+            'value' => 'female',
+            'label' => __('Female'),
+        ],
     ]);
 
 });

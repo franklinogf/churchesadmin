@@ -37,15 +37,15 @@ test('options return an array', function (): void {
 
     expect(OfferingFrequency::options())->toBeArray();
     expect(OfferingFrequency::options())->toHaveCount(8);
-    expect(OfferingFrequency::options())->toHaveKeys([
-        'weekly',
-        'biweekly',
-        'monthly',
-        'bimonthly',
-        'quarterly',
-        'semiannually',
-        'annually',
-        'one_time',
+    expect(OfferingFrequency::options())->toBe([
+        ['value' => 'weekly', 'label' => __('Every week')],
+        ['value' => 'biweekly', 'label' => __('Every two weeks')],
+        ['value' => 'monthly', 'label' => __('Every month')],
+        ['value' => 'bimonthly', 'label' => __('Every two months')],
+        ['value' => 'quarterly', 'label' => __('Every three months')],
+        ['value' => 'semiannually', 'label' => __('Every six months')],
+        ['value' => 'annually', 'label' => __('Every year')],
+        ['value' => 'one_time', 'label' => __('One time only')],
     ]);
 
 });

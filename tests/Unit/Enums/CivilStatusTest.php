@@ -30,12 +30,29 @@ test('options return an array', function (): void {
 
     expect(CivilStatus::options())->toBeArray();
     expect(CivilStatus::options())->toHaveCount(5);
-    expect(CivilStatus::options())->toHaveKeys([
-        'single',
-        'married',
-        'divorced',
-        'widowed',
-        'separated',
-    ]);
+    expect(CivilStatus::options())->toBe(
+        [
+            [
+                'value' => 'single',
+                'label' => __('Single'),
+            ],
+            [
+                'value' => 'married',
+                'label' => __('Married'),
+            ],
+            [
+                'value' => 'divorced',
+                'label' => __('Divorced'),
+            ],
+            [
+                'value' => 'widowed',
+                'label' => __('Widowed'),
+            ],
+            [
+                'value' => 'separated',
+                'label' => __('Separated'),
+            ],
+        ]
+    );
 
 });
