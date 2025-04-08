@@ -20,25 +20,6 @@ enum OfferingFrequency: string implements Labeable
     case ONE_TIME = 'one_time';
 
     /**
-     * Get the options for the enum.
-     *
-     * @return array<string,string>
-     */
-    public static function options(): array
-    {
-        return [
-            self::WEEKLY->value => self::WEEKLY->label(),
-            self::BIWEEKLY->value => self::BIWEEKLY->label(),
-            self::MONTHLY->value => self::MONTHLY->label(),
-            self::BIMONTHLY->value => self::BIMONTHLY->label(),
-            self::QUARTERLY->value => self::QUARTERLY->label(),
-            self::SEMIANNUALLY->value => self::SEMIANNUALLY->label(),
-            self::ANNUALLY->value => self::ANNUALLY->label(),
-            self::ONE_TIME->value => self::ONE_TIME->label(),
-        ];
-    }
-
-    /**
      * Get the label for the enum value.
      *
      * @return string
@@ -46,14 +27,14 @@ enum OfferingFrequency: string implements Labeable
     public function label(): string
     {
         return match ($this) {
-            self::WEEKLY => 'Every week',
-            self::BIWEEKLY => 'Every two weeks',
-            self::MONTHLY => 'Every month',
-            self::BIMONTHLY => 'Every two months',
-            self::QUARTERLY => 'Every three months',
-            self::SEMIANNUALLY => 'Every six months',
-            self::ANNUALLY => 'Every year',
-            self::ONE_TIME => 'One time only',
+            self::WEEKLY => __('Every week'),
+            self::BIWEEKLY => __('Every two weeks'),
+            self::MONTHLY => __('Every month'),
+            self::BIMONTHLY => __('Every two months'),
+            self::QUARTERLY => __('Every three months'),
+            self::SEMIANNUALLY => __('Every six months'),
+            self::ANNUALLY => __('Every year'),
+            self::ONE_TIME => __('One time only'),
         };
     }
 

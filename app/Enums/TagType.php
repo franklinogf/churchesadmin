@@ -13,4 +13,11 @@ enum TagType: string
 
     case CATEGORY = 'category';
 
+    public function label(): string
+    {
+        return match ($this) {
+            self::SKILL => __('Skill'),
+            self::CATEGORY => __('Category'),
+        };
+    }
 }

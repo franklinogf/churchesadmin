@@ -14,19 +14,6 @@ enum LanguageCode: string implements Labeable
     case ES = 'es';
 
     /**
-     * Get the options for the language code.
-     *
-     * @return array<string, string>
-     */
-    public static function options(): array
-    {
-        return [
-            self::EN->value => self::EN->label(),
-            self::ES->value => self::ES->label(),
-        ];
-    }
-
-    /**
      * Get the label for the language code.
      *
      * @return string

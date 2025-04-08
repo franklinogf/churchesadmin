@@ -14,19 +14,6 @@ enum Gender: string implements Labeable
     case FEMALE = 'female';
 
     /**
-     * Get the options.
-     *
-     * @return array<{value:string,label:string}>
-     */
-    public static function options(): array
-    {
-        return collect(self::cases())->map(fn (Gender $case) => [
-            'value' => $case->value,
-            'label' => $case->label(),
-        ])->toArray();
-    }
-
-    /**
      * Get the label.
      *
      * @return string
