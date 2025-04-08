@@ -20,7 +20,8 @@ interface TranslatableInputProps {
 export default function TranslatableInput({ id, label, error, values, disabled, onChange }: TranslatableInputProps) {
     const locales = usePage<SharedData>().props.availableLocales;
     const [activeLocale, setActiveLocale] = React.useState(locales[0].value);
-    const { t } = useLaravelReactI18n();
+    const { t, tChoice } = useLaravelReactI18n();
+    console.log(tChoice('(and :count more errors)', 1, { count: 2 }));
     return (
         <FieldContainer className="space-y-2">
             <FieldLabel disabled={disabled} error={error !== undefined} id={id} label={label} />
