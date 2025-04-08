@@ -97,7 +97,7 @@ export default function Index({ skills }: IndexPageProps) {
 function SkillForm({ skill, children }: { skill?: Tag; children: React.ReactNode }) {
     const [open, setOpen] = useState(false);
     const { t } = useLaravelReactI18n();
-    const { data, setData, post, put, errors, reset } = useForm({
+    const { data, setData, post, put, errors, reset, processing } = useForm({
         name: skill?.name ?? '',
     });
 
@@ -124,21 +124,21 @@ function SkillForm({ skill, children }: { skill?: Tag; children: React.ReactNode
             <DialogTrigger asChild>{children}</DialogTrigger>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>{t('Add Skill')}</DialogTitle>
-                    <DialogDescription>{t('Add a new skill.')}</DialogDescription>
+                    <DialogTitle>{skill ? t('Edit Skill') : t('Add Skill')}</DialogTitle>
+                    <DialogDescription hidden></DialogDescription>
                 </DialogHeader>
 
                 <form className="space-y-4" onSubmit={handleSubmit}>
                     <InputField
-                        label="Name"
-                        placeholder="Enter skill name"
+                        label={t('Name')}
+                        placeholder={t('Enter skill name')}
                         required
                         value={data.name}
                         onChange={(value) => setData('name', value)}
                         error={errors.name}
                     />
                     <div className="flex justify-end">
-                        <SubmitButton>{t('Save')}</SubmitButton>
+                        <SubmitButton isSubmitting={processing}>{t('Save')}</SubmitButton>
                     </div>
                 </form>
             </DialogContent>
