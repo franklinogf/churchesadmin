@@ -1,5 +1,5 @@
 import { Option } from '@/components/custom-ui/MultiSelect';
-import { Tag } from '@/types/models/tags';
+import { Tag } from '@/types/models/tag';
 
 export function convertTagsToMultiselectOptions(tags: Tag[]): Option[] {
     return tags.map((tag) => ({

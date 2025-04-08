@@ -3,7 +3,7 @@ import { FieldContainer } from '@/components/forms/inputs/FieldContainer';
 import { FieldError } from '@/components/forms/inputs/FieldError';
 import { FieldLabel } from '@/components/forms/inputs/FieldLabel';
 import { convertTagsToMultiselectOptions } from '@/lib/mutliselect';
-import { Tag } from '@/types/models/tags';
+import { Tag } from '@/types/models/tag';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { useId } from 'react';
 
