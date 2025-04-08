@@ -66,13 +66,13 @@ final class MemberController extends Controller
         return to_route('members.index')->with(FlashMessageKey::SUCCESS->value, 'Member created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Member $member): void
-    {
-        //
-    }
+    // /**
+    //  * Display the specified resource.
+    //  */
+    // public function show(Member $member): void
+    // {
+    //     //
+    // }
 
     /**
      * Show the form for editing the specified resource.
