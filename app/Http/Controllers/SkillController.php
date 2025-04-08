@@ -51,9 +51,9 @@ final class SkillController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $tag): RedirectResponse
+    public function update(Request $request, string $id): RedirectResponse
     {
-        $tag = Tag::findOrFail($tag);
+        $tag = Tag::findOrFail($id);
 
         /**
          * @var array{name:string}
@@ -76,9 +76,9 @@ final class SkillController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $tag): RedirectResponse
+    public function destroy(string $id): RedirectResponse
     {
-        $tag = Tag::findOrFail($tag);
+        $tag = Tag::findOrFail($id);
         $tag->delete();
 
         return to_route('skills.index')->with(FlashMessageKey::SUCCESS->value, __('Skill deleted successfully.'));
