@@ -61,10 +61,9 @@ final class HandleInertiaRequests extends Middleware
     /**
      * Get flash messages from the session.
      *
-     * @param  Request  $request
      * @return array<string, mixed>
      */
-    protected function getFlashMessages(Request $request): array
+    private function getFlashMessages(Request $request): array
     {
         return [
             FlashMessageKey::SUCCESS->value => $request->session()->get(FlashMessageKey::SUCCESS->value),

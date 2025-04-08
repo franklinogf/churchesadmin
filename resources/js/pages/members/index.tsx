@@ -78,6 +78,7 @@ export const columns: ColumnDef<Member>[] = [
                                     title: t('Are you sure you want to delete this member?'),
                                     description: t('You can restore it any time.'),
                                     actionLabel: t('Delete'),
+                                    actionVariant: 'destructive',
                                     cancelLabel: t('Cancel'),
                                     onAction: () => {
                                         router.delete(route('members.destroy', row.original.id), {

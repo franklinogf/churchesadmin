@@ -41,7 +41,7 @@ Route::middleware([
             Route::middleware('auth')->group(function (): void {
                 Route::get('dashboard', fn () => inertia('dashboard'))->name('dashboard');
                 Route::resource('members', MemberController::class);
-                Route::resource('skills', SkillController::class);
+                Route::resource('skills', SkillController::class)->except(['show', 'create', 'edit']);
             });
 
             require __DIR__.'/settings.php';

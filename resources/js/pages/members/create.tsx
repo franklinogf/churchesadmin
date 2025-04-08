@@ -76,7 +76,7 @@ export default function Create({ genders, civilStatuses }: CreatePageProps) {
                             </FieldsGrid>
                         </CardContent>
                         <CardFooter className="flex justify-end">
-                            <SubmitButton isSubmitting={processing}>{t('Add')}</SubmitButton>
+                            <SubmitButton isSubmitting={processing}>{t('Save')}</SubmitButton>
                         </CardFooter>
                     </Card>
                 </form>
