@@ -1,14 +1,16 @@
+import { Tag } from './tags';
+
 export interface Member {
     id: number;
     name: string;
-    last_name: string;
+    lastName: string;
     email: string;
     phone: string;
     gender: string;
     dob: string;
-    civil_status: string;
-    deleted_at: string | null;
-    created_at: string;
-    updated_at: string;
+    civilStatus: string;
+    createdAt: string;
+    updatedAt: string;
+    skills: Tag[];
+    categories: Tag[];
 }
-// export interface MemberWithAddress extends Member

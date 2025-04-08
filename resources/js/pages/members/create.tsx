@@ -1,36 +1,59 @@
+import { Option } from '@/components/custom-ui/MultiSelect';
 import { DateField } from '@/components/forms/inputs/DateField';
 import { FieldsGrid } from '@/components/forms/inputs/FieldsGrid';
 import { InputField } from '@/components/forms/inputs/InputField';
+import { MultiSelectField } from '@/components/forms/inputs/MultiSelectField';
 import { SelectField } from '@/components/forms/inputs/SelectField';
 import { SubmitButton } from '@/components/forms/SubmitButton';
 import { PageTitle } from '@/components/PageTitle';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { CivilStatus, Gender } from '@/enums';
 import AppLayout from '@/layouts/app-layout';
+import { getMultiselecOptionsLabels } from '@/lib/mutliselect';
 import { SelectOption } from '@/types';
-import { Member } from '@/types/models/member';
+import { Tag } from '@/types/models/tags';
 import { useForm, usePage } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
-type CreateForm = Required<Omit<Member, 'id' | 'deleted_at' | 'created_at' | 'updated_at'>>;
+export type CreateForm = {
+    name: string;
+    last_name: string;
+    email: string;
+    phone: string;
+    dob: string;
+    gender: string;
+    civil_status: string;
+    skills: Option[];
+    categories: Option[];
+};
 
 interface CreatePageProps {
     genders: SelectOption[];
     civilStatuses: SelectOption[];
+    skills: Tag[];
+    categories: Tag[];
 }
 
-export default function Create({ genders, civilStatuses }: CreatePageProps) {
+export default function Create({ genders, civilStatuses, skills, categories }: CreatePageProps) {
     console.log(usePage().props);
     const { t } = useLaravelReactI18n();
-    const { data, setData, post, errors, processing } = useForm<CreateForm>({
+    const { data, setData, post, errors, processing, transform } = useForm<CreateForm>({
         name: '',
         last_name: '',
         email: '',
         phone: '',
-        dob: '2020-01-01',
+        dob: '',
         gender: Gender.MALE,
         civil_status: CivilStatus.SINGLE,
+        skills: [],
+        categories: [],
     });
+
+    transform((data) => ({
+        ...data,
+        skills: getMultiselecOptionsLabels(data.skills),
+        categories: getMultiselecOptionsLabels(data.categories),
+    }));
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -72,6 +95,23 @@ export default function Create({ genders, civilStatuses }: CreatePageProps) {
                                     onChange={(value) => setData('civil_status', value)}
                                     options={civilStatuses}
                                     error={errors.civil_status}
+                                />
+                            </FieldsGrid>
+
+                            <FieldsGrid>
+                                <MultiSelectField
+                                    label={t('Skills')}
+                                    value={data.skills}
+                                    onChange={(value) => setData('skills', value)}
+                                    options={skills}
+                                    error={errors.skills}
+                                />
+                                <MultiSelectField
+                                    label={t('Categories')}
+                                    value={data.categories}
+                                    onChange={(value) => setData('categories', value)}
+                                    options={categories}
+                                    error={errors.categories}
                                 />
                             </FieldsGrid>
                         </CardContent>

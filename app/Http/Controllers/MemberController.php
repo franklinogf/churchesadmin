@@ -7,10 +7,14 @@ namespace App\Http\Controllers;
 use App\Enums\CivilStatus;
 use App\Enums\FlashMessageKey;
 use App\Enums\Gender;
+use App\Enums\TagType;
+use App\Http\Requests\CreateMemberRequest;
+use App\Http\Requests\UpdateMemberRequest;
+use App\Http\Resources\Member\MemberResource;
+use App\Http\Resources\TagResource;
 use App\Models\Member;
+use App\Models\Tag;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -21,7 +25,7 @@ final class MemberController extends Controller
      */
     public function index(): Response
     {
-        $members = Member::all();
+        $members = Member::latest()->get();
 
         return Inertia::render('members/index', ['members' => $members]);
     }
@@ -33,34 +37,30 @@ final class MemberController extends Controller
     {
         $genders = Gender::options();
         $civilStatuses = CivilStatus::options();
+        $skills = Tag::getWithType(TagType::SKILL->value);
+        $categories = Tag::getWithType(TagType::CATEGORY->value);
 
         return Inertia::render('members/create', [
             'genders' => $genders,
             'civilStatuses' => $civilStatuses,
+            'skills' => TagResource::collection($skills),
+            'categories' => TagResource::collection($categories),
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(CreateMemberRequest $request): RedirectResponse
     {
-        /**
-         * @var array<string,mixed> $validated
-         */
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'min:2', 'max:255'],
-            'last_name' => ['required', 'string', 'min:2', 'max:255'],
-            'email' => ['required', 'email', 'unique:members,email'],
-            'phone' => ['required', 'phone'],
-            'gender' => ['required', 'string', Rule::enum(Gender::class)],
-            'dob' => ['required', 'date:Y-m-d'],
-            'civil_status' => ['required', 'string', Rule::enum(CivilStatus::class)],
-        ]);
+        $skills = collect($request->safe()->only(['skills']))->flatten()->toArray();
+        $categories = collect($request->safe()->only(['categories']))->flatten()->toArray();
 
-        Member::create($validated);
+        $member = Member::create($request->safe()->except(['skills', 'categories']));
+        $member->attachTags($skills, TagType::SKILL->value);
+        $member->attachTags($categories, TagType::CATEGORY->value);
 
-        return redirect()->route('members.index')->with(FlashMessageKey::SUCCESS->value, 'Member created successfully.');
+        return to_route('members.index')->with(FlashMessageKey::SUCCESS->value, 'Member created successfully.');
     }
 
     /**
@@ -76,31 +76,36 @@ final class MemberController extends Controller
      */
     public function edit(Member $member): Response
     {
+
+        $genders = Gender::options();
+        $civilStatuses = CivilStatus::options();
+        $skills = Tag::getWithType(TagType::SKILL->value);
+        $categories = Tag::getWithType(TagType::CATEGORY->value);
+
         return Inertia::render('members/edit', [
-            'member' => $member,
+            'member' => new MemberResource($member),
+            'genders' => $genders,
+            'civilStatuses' => $civilStatuses,
+            'skills' => TagResource::collection($skills),
+            'categories' => TagResource::collection($categories),
         ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Member $member): RedirectResponse
+    public function update(UpdateMemberRequest $request, Member $member): RedirectResponse
     {
 
         /**
          * @var array<string,mixed> $validated
          */
-        $validated = $request->validate([
-            'name' => ['required', 'string', 'min:2', 'max:255'],
-            'last_name' => ['required', 'string', 'min:2', 'max:255'],
-            'email' => ['required', 'email', Rule::unique('members')->ignore($member->id)],
-            'phone' => ['required', 'phone'],
-            'gender' => ['required', 'string', Rule::enum(Gender::class)],
-            'dob' => ['required', 'date'],
-            'civil_status' => ['required', 'string', Rule::enum(CivilStatus::class)],
-        ]);
+        $skills = collect($request->safe()->only(['skills']))->flatten()->toArray();
+        $categories = collect($request->safe()->only(['categories']))->flatten()->toArray();
 
-        $member->update($validated);
+        $member->update($request->safe()->except(['skills', 'categories']));
+        $member->syncTagsWithType($skills, TagType::SKILL->value);
+        $member->syncTagsWithType($categories, TagType::CATEGORY->value);
 
         return redirect()->route('members.index')->with(FlashMessageKey::SUCCESS->value, 'Member updated successfully.');
     }
