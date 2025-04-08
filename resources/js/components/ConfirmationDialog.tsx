@@ -9,6 +9,7 @@ import {
     AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
 import useConfirmationStore from '@/stores/confirmationStore';
+import { Fragment } from 'react';
 import { buttonVariants } from './ui/button';
 
 const ConfirmationDialog = () => {
@@ -19,7 +20,16 @@ const ConfirmationDialog = () => {
             <AlertDialogContent>
                 <AlertDialogHeader>
                     <AlertDialogTitle>{title}</AlertDialogTitle>
-                    <AlertDialogDescription>{description ?? null}</AlertDialogDescription>
+                    <AlertDialogDescription>
+                        {description
+                            ? description.split(/\r?\n/).map((line, index) => (
+                                  <Fragment key={index}>
+                                      {line}
+                                      {index < description.split(/\r?\n/).length - 1 && <br />}
+                                  </Fragment>
+                              ))
+                            : null}
+                    </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
                     <AlertDialogCancel>{cancelLabel}</AlertDialogCancel>
