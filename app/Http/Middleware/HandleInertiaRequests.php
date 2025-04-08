@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Middleware;
 
 use App\Enums\FlashMessageKey;
+use App\Enums\LanguageCode;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tighten\Ziggy\Ziggy;
@@ -55,6 +56,7 @@ final class HandleInertiaRequests extends Middleware
             ],
             'sidebarOpen' => $request->cookie('sidebar_state') === 'true',
             'flash' => $this->getFlashMessages($request),
+            'availableLocales' => LanguageCode::options(),
         ];
     }
 
