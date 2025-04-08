@@ -7,6 +7,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader } from '@/compon
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import AppLayout from '@/layouts/app-layout';
 import useConfirmationStore from '@/stores/confirmationStore';
+import type { BreadcrumbItem } from '@/types';
 import { Tag } from '@/types/models/tags';
 import { router, useForm } from '@inertiajs/react';
 import { DialogTitle, DialogTrigger } from '@radix-ui/react-dialog';
@@ -71,25 +72,32 @@ export const columns: ColumnDef<Tag>[] = [
         },
     },
 ];
-
+const breadcrumbs: BreadcrumbItem[] = [
+    {
+        title: 'Skills',
+        href: route('skills.index'),
+    },
+];
 interface IndexPageProps {
     skills: Tag[];
 }
 export default function Index({ skills }: IndexPageProps) {
     const { t } = useLaravelReactI18n();
     return (
-        <AppLayout title={t('Skills')}>
+        <AppLayout breadcrumbs={breadcrumbs} title={t('Skills')}>
             <PageTitle>{t('Skills')}</PageTitle>
-            <DataTable
-                headerButton={
-                    <SkillForm>
-                        <Button>{t('Add skill')}</Button>
-                    </SkillForm>
-                }
-                columns={columns}
-                data={skills}
-                rowId="id"
-            />
+            <div className="mx-auto max-w-3xl">
+                <DataTable
+                    headerButton={
+                        <SkillForm>
+                            <Button>{t('Add skill')}</Button>
+                        </SkillForm>
+                    }
+                    columns={columns}
+                    data={skills}
+                    rowId="id"
+                />
+            </div>
         </AppLayout>
     );
 }

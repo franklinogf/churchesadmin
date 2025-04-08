@@ -9,11 +9,12 @@ import { PageTitle } from '@/components/PageTitle';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
 import { convertTagsToMultiselectOptions, getMultiselecOptionsLabels } from '@/lib/mutliselect';
-import { SelectOption } from '@/types';
+import type { BreadcrumbItem, SelectOption } from '@/types';
 import { Member } from '@/types/models/member';
 import { Tag } from '@/types/models/tags';
 import { useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+
 export type EditForm = {
     name: string;
     last_name: string;
@@ -57,8 +58,18 @@ export default function Edit({ member, genders, civilStatuses, skills, categorie
         e.preventDefault();
         put(route('members.update', member.id));
     };
+    const breadcrumbs: BreadcrumbItem[] = [
+        {
+            title: 'Members',
+            href: route('members.index'),
+        },
+        {
+            title: 'Edit Member',
+            href: route('members.edit', member.id),
+        },
+    ];
     return (
-        <AppLayout title={t('Members')}>
+        <AppLayout breadcrumbs={breadcrumbs} title={t('Members')}>
             <PageTitle>{t('Edit Member')}</PageTitle>
             <div className="mt-2 flex items-center justify-center">
                 <form className="w-full max-w-2xl" onSubmit={handleSubmit}>

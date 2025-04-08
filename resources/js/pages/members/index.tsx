@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import AppLayout from '@/layouts/app-layout';
 import useConfirmationStore from '@/stores/confirmationStore';
+import type { BreadcrumbItem } from '@/types';
 import { Member } from '@/types/models/member';
 import { Link, router } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
@@ -98,13 +99,19 @@ export const columns: ColumnDef<Member>[] = [
         },
     },
 ];
+const breadcrumbs: BreadcrumbItem[] = [
+    {
+        title: 'Members',
+        href: route('members.index'),
+    },
+];
 interface IndexProps {
     members: Member[];
 }
 export default function Index({ members }: IndexProps) {
     const { t } = useLaravelReactI18n();
     return (
-        <AppLayout title={t('Members')}>
+        <AppLayout breadcrumbs={breadcrumbs} title={t('Members')}>
             <PageTitle>{t('Members')}</PageTitle>
             <DataTable
                 headerButton={

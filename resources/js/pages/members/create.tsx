@@ -10,9 +10,9 @@ import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { CivilStatus, Gender } from '@/enums';
 import AppLayout from '@/layouts/app-layout';
 import { getMultiselecOptionsLabels } from '@/lib/mutliselect';
-import { SelectOption } from '@/types';
-import { Tag } from '@/types/models/tags';
-import { useForm, usePage } from '@inertiajs/react';
+import type { BreadcrumbItem, SelectOption } from '@/types';
+import type { Tag } from '@/types/models/tags';
+import { useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export type CreateForm = {
@@ -27,15 +27,23 @@ export type CreateForm = {
     categories: Option[];
 };
 
+const breadcrumbs: BreadcrumbItem[] = [
+    {
+        title: 'Members',
+        href: route('members.index'),
+    },
+    {
+        title: 'Add Member',
+        href: route('members.create'),
+    },
+];
 interface CreatePageProps {
     genders: SelectOption[];
     civilStatuses: SelectOption[];
     skills: Tag[];
     categories: Tag[];
 }
-
 export default function Create({ genders, civilStatuses, skills, categories }: CreatePageProps) {
-    console.log(usePage().props);
     const { t } = useLaravelReactI18n();
     const { data, setData, post, errors, processing, transform } = useForm<CreateForm>({
         name: '',
@@ -61,7 +69,7 @@ export default function Create({ genders, civilStatuses, skills, categories }: C
     };
 
     return (
-        <AppLayout title={t('Members')}>
+        <AppLayout breadcrumbs={breadcrumbs} title={t('Members')}>
             <PageTitle>{t('Add Member')}</PageTitle>
             <div className="mt-2 flex items-center justify-center">
                 <form className="w-full max-w-2xl" onSubmit={handleSubmit}>
