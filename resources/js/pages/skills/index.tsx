@@ -86,7 +86,7 @@ export default function Index({ skills }: IndexPageProps) {
     return (
         <AppLayout breadcrumbs={breadcrumbs} title={t('Skills')}>
             <PageTitle>{t('Skills')}</PageTitle>
-            <div className="mx-auto max-w-3xl">
+            <div className="mx-auto w-full max-w-3xl">
                 <DataTable
                     headerButton={
                         <SkillForm>
