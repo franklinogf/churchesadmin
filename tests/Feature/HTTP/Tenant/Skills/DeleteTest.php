@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Enums\FlashMessageKey;
 use App\Models\Tag;
 use App\Models\User;
 
@@ -22,7 +23,7 @@ test('non admin users cannot delete regular skills', function (): void {
     actingAs(User::factory()->create())
         ->delete(route('skills.destroy', ['skill' => $skill]))
         ->assertRedirect(route('skills.index'))
-        ->assertSessionHasErrors();
+        ->assertSessionHas(FlashMessageKey::ERROR->value);
 
     expect(Tag::find($skill->id))->not()->toBeNull();
 });

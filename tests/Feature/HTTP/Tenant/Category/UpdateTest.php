@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Enums\FlashMessageKey;
 use App\Enums\TagType;
 use App\Models\Tag;
 use App\Models\User;
@@ -15,7 +16,7 @@ test('can be updated', function (): void {
     actingAs(User::factory()->create())
         ->from(route('categories.index'))
         ->put(route('categories.update', ['category' => $category]), [
-            'name' => 'tag name',
+            'name' => ['en' => 'tag name'],
             'is_regular' => false,
         ])->assertRedirect(route('categories.index'));
 
@@ -26,13 +27,13 @@ test('can be updated', function (): void {
         ->and($updatedCategory->is_regular)->toBe(false);
 });
 
-test('can not be updated with an empty name', function (): void {
+test('cannot be updated with an empty name', function (): void {
 
     $category = Tag::factory()->create(['type' => TagType::CATEGORY->value])->fresh();
     actingAs(User::factory()->create())
         ->from(route('categories.index'))
         ->put(route('categories.update', ['category' => $category]), [
-            'name' => '',
+            'name' => ['en' => ''],
             'is_regular' => true,
         ])->assertSessionHasErrors();
 
@@ -42,13 +43,13 @@ test('can not be updated with an empty name', function (): void {
         ->and($updatedCategory->is_regular)->toBe(false);
 });
 
-test('can not be updated with a name that is too short', function (): void {
+test('cannot be updated with a name that is too short', function (): void {
 
     $category = Tag::factory()->create(['type' => TagType::CATEGORY->value])->fresh();
     actingAs(User::factory()->create())
         ->from(route('categories.index'))
         ->put(route('categories.update', ['category' => $category]), [
-            'name' => 'a',
+            'name' => ['en' => 'a'],
             'is_regular' => true,
         ])->assertSessionHasErrors();
 
@@ -65,10 +66,10 @@ test('non admin users cannot update a regular category', function (): void {
     actingAs(User::factory()->create())
         ->from(route('categories.index'))
         ->put(route('categories.update', ['category' => $category]), [
-            'name' => 'tag name',
+            'name' => ['en' => 'tag name'],
             'is_regular' => false,
         ])->assertRedirect(route('categories.index'))
-        ->assertSessionHasErrors();
+        ->assertSessionHas(FlashMessageKey::ERROR->value);
 
     $updatedCategory = Tag::withType(TagType::CATEGORY->value)->first();
     expect($updatedCategory)->not->toBeNull()
@@ -83,7 +84,7 @@ test('admin users can update a regular category', function (): void {
     actingAs(User::factory()->admin()->create())
         ->from(route('categories.index'))
         ->put(route('categories.update', ['category' => $category]), [
-            'name' => 'tag name',
+            'name' => ['en' => 'tag name'],
             'is_regular' => false,
         ])->assertRedirect(route('categories.index'));
 

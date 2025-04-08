@@ -34,7 +34,7 @@ final class SkillController extends Controller
     public function store(Request $request): RedirectResponse
     {
         /**
-         * @var array{name:string}
+         * @var array{name:string,is_regular:bool}
          */
         $validated = $request->validate([
             'name.*' => ['required', 'string', 'min:3', 'max:255', UniqueTranslationRule::for('tags')->where('type', TagType::SKILL->value)],

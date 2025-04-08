@@ -13,7 +13,7 @@ test('can be stored', function (): void {
     actingAs(User::factory()->create())
         ->from(route('categories.index'))
         ->post(route('categories.store'), [
-            'name' => 'tag name',
+            'name' => ['en' => 'tag name'],
             'is_regular' => false,
         ])->assertRedirect(route('categories.index'));
 
@@ -25,12 +25,12 @@ test('can be stored', function (): void {
 
 });
 
-test('can not be stored with an empty name', function (): void {
+test('cannot be stored with an empty name', function (): void {
 
     actingAs(User::factory()->create())
         ->from(route('categories.index'))
         ->post(route('categories.store'), [
-            'name' => '',
+            'name' => ['en' => ''],
             'is_regular' => false,
         ])->assertSessionHasErrors();
 
@@ -38,12 +38,12 @@ test('can not be stored with an empty name', function (): void {
     expect($category)->toBeNull();
 });
 
-test('can not be stored a category with a name that is too short', function (): void {
+test('cannot be stored a category with a name that is too short', function (): void {
 
     actingAs(User::factory()->create())
         ->from(route('categories.index'))
         ->post(route('categories.store'), [
-            'name' => 'a',
+            'name' => ['en' => 'a'],
             'is_regular' => false,
         ])->assertSessionHasErrors();
 
@@ -51,20 +51,20 @@ test('can not be stored a category with a name that is too short', function (): 
     expect($category)->toBeNull();
 });
 
-test('can not be stored a category with an existing name', function (): void {
+test('cannot be stored a category with an existing name', function (): void {
     $user = User::factory()->create();
 
     actingAs($user)
         ->from(route('categories.index'))
         ->post(route('categories.store'), [
-            'name' => 'tag name',
+            'name' => ['en' => 'tag name'],
             'is_regular' => false,
         ])->assertRedirect(route('categories.index'));
 
     actingAs($user)
         ->from(route('categories.index'))
         ->post(route('categories.store'), [
-            'name' => 'tag name',
+            'name' => ['en' => 'tag name'],
             'is_regular' => false,
         ])->assertRedirect(route('categories.index'));
     $categories = Tag::withType(TagType::CATEGORY->value)->count();

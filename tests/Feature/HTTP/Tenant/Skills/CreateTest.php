@@ -13,7 +13,7 @@ test('stores a skill', function (): void {
     actingAs(User::factory()->create())
         ->from(route('skills.index'))
         ->post(route('skills.store'), [
-            'name' => 'tag name',
+            'name' => ['en' => 'tag name'],
             'is_regular' => false,
         ])->assertRedirect(route('skills.index'));
 
@@ -25,12 +25,12 @@ test('stores a skill', function (): void {
 
 });
 
-test('can not store a skill with an empty name', function (): void {
+test('cannot store a skill with an empty name', function (): void {
 
     actingAs(User::factory()->create())
         ->from(route('skills.index'))
         ->post(route('skills.store'), [
-            'name' => '',
+            'name' => ['en' => ''],
             'is_regular' => false,
         ])->assertSessionHasErrors();
 
@@ -38,12 +38,12 @@ test('can not store a skill with an empty name', function (): void {
     expect($skill)->toBeNull();
 });
 
-test('can not store a skill with a name that is too short', function (): void {
+test('cannot store a skill with a name that is too short', function (): void {
 
     actingAs(User::factory()->create())
         ->from(route('skills.index'))
         ->post(route('skills.store'), [
-            'name' => 'a',
+            'name' => ['en' => 'a'],
             'is_regular' => false,
         ])->assertSessionHasErrors();
 
@@ -51,20 +51,20 @@ test('can not store a skill with a name that is too short', function (): void {
     expect($skill)->toBeNull();
 });
 
-test('can not store a skill with an existing name', function (): void {
+test('cannot store a skill with an existing name', function (): void {
     $user = User::factory()->create();
 
     actingAs($user)
         ->from(route('skills.index'))
         ->post(route('skills.store'), [
-            'name' => 'tag name',
+            'name' => ['en' => 'tag name'],
             'is_regular' => false,
         ])->assertRedirect(route('skills.index'));
 
     actingAs($user)
         ->from(route('skills.index'))
         ->post(route('skills.store'), [
-            'name' => 'tag name',
+            'name' => ['en' => 'tag name'],
             'is_regular' => false,
         ])->assertRedirect(route('skills.index'));
     $skills = Tag::withType(TagType::SKILL->value)->count();

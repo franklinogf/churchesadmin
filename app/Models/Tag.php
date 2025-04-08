@@ -35,4 +35,11 @@ final class Tag extends SpatieTag
     {
         return $this->morphedByMany(Member::class, 'taggable', 'taggables');
     }
+
+    protected function casts(): array
+    {
+        return [
+            'is_regular' => 'boolean',
+        ];
+    }
 }
