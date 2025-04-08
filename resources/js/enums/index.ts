@@ -9,3 +9,7 @@ export enum CivilStatus {
     WIDOWED = 'widowed',
     SEPARATED = 'separated',
 }
+export enum LanguageCode {
+    EN = 'en',
+    ES = 'es',
+}

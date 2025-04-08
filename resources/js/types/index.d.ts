@@ -1,3 +1,4 @@
+import { LanguageCode } from '@/enums';
 import { LucideIcon } from 'lucide-react';
 import type { Config } from 'ziggy-js';
 
@@ -48,3 +49,7 @@ export interface SelectOption {
     label: string;
     value: string | number;
 }
+
+export type Locale = `${LanguageCode}`;
+
+export type LanguageTranslations = Record<Locale, string | undefined>;
