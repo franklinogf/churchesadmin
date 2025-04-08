@@ -34,15 +34,17 @@ final class CategoryController extends Controller
     public function store(Request $request): RedirectResponse
     {
         /**
-         * @var array{name:string}
+         * @var array{name:string,is_regular:bool}
          */
         $validated = $request->validate([
             'name' => ['required', 'string', 'min:3', 'max:255', UniqueTranslationRule::for('tags')->where('type', TagType::CATEGORY->value)],
+            'is_regular' => ['required', 'boolean'],
         ]);
 
         Tag::create([
             'name' => $validated['name'],
             'type' => TagType::CATEGORY->value,
+            'is_regular' => $validated['is_regular'],
         ]);
 
         return to_route('categories.index')->with(FlashMessageKey::SUCCESS->value, __('Category created successfully.'));
@@ -54,9 +56,12 @@ final class CategoryController extends Controller
     public function update(Request $request, string $id): RedirectResponse
     {
         $tag = Tag::findOrFail($id);
+        if ($tag->is_regular) {
+            return to_route('categories.index')->with(FlashMessageKey::ERROR->value, __('Cannot update a regular category.'));
+        }
 
         /**
-         * @var array{name:string}
+         * @var array{name:string,is_regular:bool}
          */
         $validated = $request->validate([
             'name' => ['required', 'string', 'min:3', 'max:255',
@@ -64,10 +69,12 @@ final class CategoryController extends Controller
                     ->ignore($tag->id)
                     ->where('type', TagType::CATEGORY->value),
             ],
+            'is_regular' => ['required', 'boolean'],
         ]);
 
         $tag->update([
             'name' => $validated['name'],
+            'is_regular' => $validated['is_regular'],
         ]);
 
         return to_route('categories.index')->with(FlashMessageKey::SUCCESS->value, __('Category updated successfully.'));
@@ -79,6 +86,9 @@ final class CategoryController extends Controller
     public function destroy(string $id): RedirectResponse
     {
         $tag = Tag::findOrFail($id);
+        if ($tag->is_regular) {
+            return to_route('categories.index')->with(FlashMessageKey::ERROR->value, __('Cannot delete a regular category.'));
+        }
         $tag->delete();
 
         return to_route('categories.index')->with(FlashMessageKey::SUCCESS->value, __('Category deleted successfully.'));

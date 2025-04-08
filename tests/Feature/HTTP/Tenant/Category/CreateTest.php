@@ -14,6 +14,7 @@ test('can be stored', function (): void {
         ->from(route('categories.index'))
         ->post(route('categories.store'), [
             'name' => 'tag name',
+            'is_regular' => false,
         ])->assertRedirect(route('categories.index'));
 
     $category = Tag::withType(TagType::CATEGORY->value)->first();
@@ -30,6 +31,7 @@ test('can not be stored with an empty name', function (): void {
         ->from(route('categories.index'))
         ->post(route('categories.store'), [
             'name' => '',
+            'is_regular' => false,
         ])->assertSessionHasErrors();
 
     $category = Tag::withType(TagType::CATEGORY->value)->first();
@@ -42,6 +44,7 @@ test('can not be stored a category with a name that is too short', function (): 
         ->from(route('categories.index'))
         ->post(route('categories.store'), [
             'name' => 'a',
+            'is_regular' => false,
         ])->assertSessionHasErrors();
 
     $category = Tag::withType(TagType::CATEGORY->value)->first();
@@ -55,12 +58,14 @@ test('can not be stored a category with an existing name', function (): void {
         ->from(route('categories.index'))
         ->post(route('categories.store'), [
             'name' => 'tag name',
+            'is_regular' => false,
         ])->assertRedirect(route('categories.index'));
 
     actingAs($user)
         ->from(route('categories.index'))
         ->post(route('categories.store'), [
             'name' => 'tag name',
+            'is_regular' => false,
         ])->assertRedirect(route('categories.index'));
     $categories = Tag::withType(TagType::CATEGORY->value)->count();
     expect($categories)->toBe(1);

@@ -13,6 +13,7 @@ test('to array', function (): void {
         'slug',
         'type',
         'order_column',
+        'is_regular',
         'created_at',
         'updated_at',
     ]);

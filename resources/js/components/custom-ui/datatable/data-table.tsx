@@ -62,8 +62,9 @@ export function DataTable<TData, TValue>({
         getRowId: rowId ? (row: TData) => row[rowId as keyof TData] as string : undefined,
     });
     const { t } = useLaravelReactI18n();
-    const enabledHidingColumns = table.getAllColumns().filter((column) => column.getCanHide());
-    const canSelect = table.getColumn('select') ? true : false;
+    const tableColumns = table.getAllColumns();
+    const enabledHidingColumns = tableColumns.filter((column) => column.getCanHide());
+    const canSelect = tableColumns.some((col) => col.id === 'select');
     return (
         <div>
             <div className="flex items-center justify-between py-2">

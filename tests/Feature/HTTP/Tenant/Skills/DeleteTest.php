@@ -16,3 +16,22 @@ test('can be deleted', function (): void {
     expect(Tag::find($skill->id))->toBeNull();
 
 });
+
+test('non admin users cannot delete regular skills', function (): void {
+    $skill = Tag::factory()->create(['is_regular' => true])->fresh();
+    actingAs(User::factory()->create())
+        ->delete(route('skills.destroy', ['skill' => $skill]))
+        ->assertRedirect(route('skills.index'))
+        ->assertSessionHasErrors();
+
+    expect(Tag::find($skill->id))->not()->toBeNull();
+});
+
+test('admin users can delete regular skills', function (): void {
+    $skill = Tag::factory()->create(['is_regular' => true])->fresh();
+    actingAs(User::factory()->admin()->create())
+        ->delete(route('skills.destroy', ['skill' => $skill]))
+        ->assertRedirect(route('skills.index'));
+
+    expect(Tag::find($skill->id))->toBeNull();
+})->skip();

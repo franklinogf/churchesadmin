@@ -11,7 +11,7 @@ import { CivilStatus, Gender } from '@/enums';
 import AppLayout from '@/layouts/app-layout';
 import { getMultiselecOptionsLabels } from '@/lib/mutliselect';
 import type { BreadcrumbItem, SelectOption } from '@/types';
-import type { Tag } from '@/types/models/tags';
+import type { Tag } from '@/types/models/tag';
 import { useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 

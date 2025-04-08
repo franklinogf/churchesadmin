@@ -16,6 +16,7 @@ use Spatie\Tags\Tag as SpatieTag;
  * @property-read string $slug
  * @property-read string|null $type
  * @property-read int|null $order_column
+ * @property-read bool $is_regular
  * @property-read \Illuminate\Database\Eloquent\Collection<int,Member> $members
  * @property-read \Carbon\CarbonImmutable $created_at
  * @property-read \Carbon\CarbonImmutable $updated_at

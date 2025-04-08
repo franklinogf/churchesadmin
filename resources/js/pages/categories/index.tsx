@@ -1,5 +1,6 @@
 import { DataTable } from '@/components/custom-ui/datatable/data-table';
 import { InputField } from '@/components/forms/inputs/InputField';
+import { SwitchField } from '@/components/forms/inputs/SwitchField';
 import { SubmitButton } from '@/components/forms/SubmitButton';
 import { PageTitle } from '@/components/PageTitle';
 import { Button } from '@/components/ui/button';
@@ -8,7 +9,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import AppLayout from '@/layouts/app-layout';
 import useConfirmationStore from '@/stores/confirmationStore';
 import type { BreadcrumbItem } from '@/types';
-import { Tag } from '@/types/models/tags';
+import { Tag } from '@/types/models/tag';
 import { router, useForm } from '@inertiajs/react';
 import { DialogTitle, DialogTrigger } from '@radix-ui/react-dialog';
 import { ColumnDef } from '@tanstack/react-table';
@@ -30,6 +31,8 @@ export const columns: ColumnDef<Tag>[] = [
         cell: ({ row }) => {
             const { t } = useLaravelReactI18n();
             const { openConfirmation } = useConfirmationStore();
+            const category = row.original;
+            if (category.isRegular) return null;
             return (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -39,23 +42,25 @@ export const columns: ColumnDef<Tag>[] = [
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
-                        <CategoryForm category={row.original}>
+                        <CategoryForm category={category}>
                             <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
                                 <Edit2Icon className="size-3" />
                                 <span>{t('Edit')}</span>
                             </DropdownMenuItem>
                         </CategoryForm>
+
                         <DropdownMenuItem
                             variant="destructive"
                             onClick={() => {
                                 openConfirmation({
                                     title: t('Are you sure you want to delete this category?'),
-                                    description: t('This action cannot be undone.'),
+                                    description:
+                                        (category.isRegular ? t('This is marked as regular.') + '\n' : '') + t('This action cannot be undone.'),
                                     actionLabel: t('Delete'),
                                     actionVariant: 'destructive',
                                     cancelLabel: t('Cancel'),
                                     onAction: () => {
-                                        router.delete(route('categories.destroy', row.original.id), {
+                                        router.delete(route('categories.destroy', category.id), {
                                             preserveState: true,
                                             preserveScroll: true,
                                         });
@@ -107,6 +112,7 @@ function CategoryForm({ category, children }: { category?: Tag; children: React.
     const { t } = useLaravelReactI18n();
     const { data, setData, post, put, errors, reset, processing } = useForm({
         name: category?.name ?? '',
+        is_regular: category?.isRegular ?? false,
     });
 
     function handleSubmit(e: React.FormEvent) {
@@ -144,6 +150,13 @@ function CategoryForm({ category, children }: { category?: Tag; children: React.
                         value={data.name}
                         onChange={(value) => setData('name', value)}
                         error={errors.name}
+                    />
+                    <SwitchField
+                        description={t('Only admins would be allowed to edit and delete this category')}
+                        label={t('Mark this category as regular')}
+                        value={data.is_regular}
+                        onChange={(value) => setData('is_regular', value)}
+                        error={errors.is_regular}
                     />
                     <div className="flex justify-end">
                         <SubmitButton isSubmitting={processing}>{t('Save')}</SubmitButton>

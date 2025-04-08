@@ -27,6 +27,7 @@ final class TagFactory extends Factory
             'slug' => Str::slug($name),
             'type' => fake()->optional()->randomElement(TagType::values()),
             'order_column' => 0,
+            'is_regular' => false,
         ];
     }
 }
