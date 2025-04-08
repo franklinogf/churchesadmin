@@ -14,14 +14,19 @@ const mainNavItems: NavItem[] = [
         icon: LayoutGridIcon,
     },
     {
-        title: 'Members',
-        href: route('members.index'),
-        icon: Users2Icon,
-    },
-    {
         title: 'Skills',
         href: route('skills.index'),
         icon: LayoutGridIcon,
+    },
+    {
+        title: 'Categories',
+        href: route('categories.index'),
+        icon: LayoutGridIcon,
+    },
+    {
+        title: 'Members',
+        href: route('members.index'),
+        icon: Users2Icon,
     },
 ];
 

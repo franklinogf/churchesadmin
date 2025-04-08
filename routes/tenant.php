@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\SkillController;
 use App\Http\Middleware\SetLocale;
@@ -42,6 +43,7 @@ Route::middleware([
                 Route::get('dashboard', fn () => inertia('dashboard'))->name('dashboard');
                 Route::resource('members', MemberController::class);
                 Route::resource('skills', SkillController::class)->except(['show', 'create', 'edit']);
+                Route::resource('categories', CategoryController::class)->except(['show', 'create', 'edit']);
             });
 
             require __DIR__.'/settings.php';
