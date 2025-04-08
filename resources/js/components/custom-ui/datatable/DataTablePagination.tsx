@@ -7,19 +7,22 @@ import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 interface DataTablePaginationProps<TData> {
     table: Table<TData>;
+    isSelectable?: boolean;
 }
 
-export function DataTablePagination<TData>({ table }: DataTablePaginationProps<TData>) {
+export function DataTablePagination<TData>({ table, isSelectable = false }: DataTablePaginationProps<TData>) {
     const { t } = useLaravelReactI18n();
     return (
         <div className="flex items-center justify-between px-2">
-            <div className="text-muted-foreground flex-1 text-sm">
-                {t(':selected of :total rows selected', {
-                    selected: table.getFilteredSelectedRowModel().rows.length,
-                    total: table.getFilteredRowModel().rows.length,
-                })}
-            </div>
-            <div className="flex items-center space-x-6 lg:space-x-8">
+            {isSelectable && (
+                <div className="text-muted-foreground flex-1 text-sm">
+                    {t(':selected of :total rows selected', {
+                        selected: table.getFilteredSelectedRowModel().rows.length,
+                        total: table.getFilteredRowModel().rows.length,
+                    })}
+                </div>
+            )}
+            <div className="ml-auto flex items-center space-x-6 lg:space-x-8">
                 <div className="flex items-center space-x-2">
                     <p className="text-sm font-medium">{t('Rows per page')}</p>
                     <Select

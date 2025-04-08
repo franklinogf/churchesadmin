@@ -24,7 +24,7 @@ interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[];
     data: TData[];
     onButtonClick?: (data: TData[]) => void;
-    buttonLabel?: string;
+    selectedActionButtonLabel?: string;
     filter?: boolean;
     selectOne?: boolean;
     rowId?: keyof TData;
@@ -35,7 +35,7 @@ export function DataTable<TData, TValue>({
     columns,
     data,
     onButtonClick,
-    buttonLabel,
+    selectedActionButtonLabel,
     filter = true,
     selectOne = false,
     rowId,
@@ -63,6 +63,7 @@ export function DataTable<TData, TValue>({
     });
     const { t } = useLaravelReactI18n();
     const enabledHidingColumns = table.getAllColumns().filter((column) => column.getCanHide());
+    const canSelect = table.getColumn('select') ? true : false;
     return (
         <div>
             <div className="flex items-center justify-between py-2">
@@ -116,7 +117,7 @@ export function DataTable<TData, TValue>({
                             table.getRowModel().rows.map((row) => (
                                 <TableRow
                                     onClick={() => {
-                                        buttonLabel && row.toggleSelected();
+                                        selectedActionButtonLabel && row.toggleSelected();
                                     }}
                                     key={row.id}
                                     data-state={row.getIsSelected() && 'selected'}
@@ -139,9 +140,9 @@ export function DataTable<TData, TValue>({
                 </Table>
             </div>
             <div className="mt-1">
-                <DataTablePagination table={table} />
+                <DataTablePagination isSelectable={canSelect} table={table} />
             </div>
-            {buttonLabel && (
+            {canSelect && (
                 <div className="mt-4 flex justify-center">
                     <Button
                         className="cursor-pointer"
@@ -154,7 +155,7 @@ export function DataTable<TData, TValue>({
                             }
                         }}
                     >
-                        {buttonLabel}
+                        {selectedActionButtonLabel ?? t('Continue')}
                     </Button>
                 </div>
             )}
