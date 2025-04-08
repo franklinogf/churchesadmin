@@ -10,13 +10,14 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "codezero/laravel-unique-translation": "^4.3",
-        "filament/filament": "^3.3.8",
+        "codezero/laravel-unique-translation": "^4.3.1",
+        "filament/filament": "^3.3.10",
         "inertiajs/inertia-laravel": "^2.0.1",
-        "laravel/framework": "^12.7.2",
+        "laravel/framework": "^12.8.1",
         "laravel/tinker": "^2.10.1",
         "propaganistas/laravel-phone": "^5.3.6",
         "spatie/laravel-tags": "^4.10",
+        "spatie/laravel-translatable": "^6.11.4",
         "stancl/tenancy": "dev-master",
         "tightenco/ziggy": "^2.5.2"
     },
