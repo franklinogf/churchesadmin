@@ -20,7 +20,7 @@ test('stores a skill', function (): void {
 
     expect($skill)->not->toBeNull()
         ->and($skill->name)->toBe('tag name')
-        ->and($skill->type)->toBe(TagType::SKILL);
+        ->and($skill->type)->toBe(TagType::SKILL->value);
 
 });
 
