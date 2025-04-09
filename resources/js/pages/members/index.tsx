@@ -8,7 +8,7 @@ import AppLayout from '@/layouts/app-layout';
 import useConfirmationStore from '@/stores/confirmationStore';
 import type { BreadcrumbItem } from '@/types';
 import { Member } from '@/types/models/member';
-import { Link, router } from '@inertiajs/react';
+import { Link, router, usePage } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { Edit2Icon, MoreHorizontalIcon, Trash2Icon, User2Icon } from 'lucide-react';
@@ -110,6 +110,7 @@ interface IndexProps {
 }
 export default function Index({ members }: IndexProps) {
     const { t } = useLaravelReactI18n();
+    console.log(usePage().props);
     return (
         <AppLayout breadcrumbs={breadcrumbs} title={t('Members')}>
             <PageTitle>{t('Members')}</PageTitle>

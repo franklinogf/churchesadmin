@@ -14,12 +14,20 @@ use App\Http\Resources\Member\MemberResource;
 use App\Http\Resources\TagResource;
 use App\Models\Member;
 use App\Models\Tag;
+use App\Models\User;
+use Illuminate\Container\Attributes\CurrentUser;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 
 final class MemberController extends Controller
 {
+    public function __construct(#[CurrentUser] protected User $user)
+    {
+        //
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -33,8 +41,14 @@ final class MemberController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(): Response
+    public function create(): Response|RedirectResponse
     {
+        $response = Gate::inspect('create', Member::class);
+
+        if ($response->denied()) {
+            return to_route('members.index')->with(FlashMessageKey::ERROR->value, $response->message());
+        }
+
         $genders = Gender::options();
         $civilStatuses = CivilStatus::options();
         $skills = Tag::getWithType(TagType::SKILL->value);
@@ -53,6 +67,12 @@ final class MemberController extends Controller
      */
     public function store(CreateMemberRequest $request): RedirectResponse
     {
+        $response = Gate::inspect('create', Member::class);
+
+        if ($response->denied()) {
+            return to_route('members.index')->with(FlashMessageKey::ERROR->value, $response->message());
+        }
+
         $skills = collect($request->safe()->only(['skills']))->flatten()->toArray();
         $categories = collect($request->safe()->only(['categories']))->flatten()->toArray();
         /**
@@ -77,8 +97,13 @@ final class MemberController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Member $member): Response
+    public function edit(Member $member): Response|RedirectResponse
     {
+        $response = Gate::inspect('update', $member);
+
+        if ($response->denied()) {
+            return to_route('members.index')->with(FlashMessageKey::ERROR->value, $response->message());
+        }
 
         $genders = Gender::options();
         $civilStatuses = CivilStatus::options();
@@ -99,6 +124,11 @@ final class MemberController extends Controller
      */
     public function update(UpdateMemberRequest $request, Member $member): RedirectResponse
     {
+        $response = Gate::inspect('update', $member);
+
+        if ($response->denied()) {
+            return to_route('members.index')->with(FlashMessageKey::ERROR->value, $response->message());
+        }
 
         $skills = collect($request->safe()->only(['skills']))->flatten()->toArray();
         $categories = collect($request->safe()->only(['categories']))->flatten()->toArray();
@@ -110,7 +140,8 @@ final class MemberController extends Controller
         $member->syncTagsWithType($skills, TagType::SKILL->value);
         $member->syncTagsWithType($categories, TagType::CATEGORY->value);
 
-        return redirect()->route('members.index')->with(FlashMessageKey::SUCCESS->value, 'Member updated successfully.');
+        return to_route('members.index')->with(FlashMessageKey::SUCCESS->value, 'Member updated successfully.');
+
     }
 
     /**
@@ -118,8 +149,15 @@ final class MemberController extends Controller
      */
     public function destroy(Member $member): RedirectResponse
     {
+        $response = Gate::inspect('delete', $member);
+
+        if ($response->denied()) {
+
+            return to_route('members.index')->with(FlashMessageKey::ERROR->value, $response->message());
+        }
+
         $member->delete();
 
-        return redirect()->route('members.index')->with(FlashMessageKey::SUCCESS->value, 'Member deleted successfully.');
+        return to_route('members.index')->with(FlashMessageKey::SUCCESS->value, 'Member deleted successfully.');
     }
 }
