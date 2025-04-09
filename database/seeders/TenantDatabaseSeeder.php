@@ -7,6 +7,7 @@ namespace Database\Seeders;
 use App\Models\Address;
 use App\Models\Member;
 use App\Models\Missionary;
+use App\Models\Tag;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -19,27 +20,25 @@ final class TenantDatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
+            Tenants\PermissionSeeder::class,
             Tenants\RoleSeeder::class,
             Tenants\CategorySeeder::class,
         ]);
 
-        User::factory()->superAdmin()->create([
-            'name' => 'Super Admin',
-            'email' => 'superadmin@example.com',
-        ]);
-        User::factory()->admin()->create([
-            'name' => 'Admin',
-            'email' => 'admin@example.com',
-        ]);
+        User::factory()->admin()->create();
+        User::factory()->secretary()->create();
 
-        User::factory()->secretary()->create([
-            'name' => 'Secretary',
-            'email' => 'secretary@example.com',
-        ]);
+        Member::factory(10)->has(Address::factory())->create();
 
-        Member::factory(5)->has(Address::factory())->create();
+        Missionary::factory(10)->has(Address::factory())->create();
 
-        Missionary::factory(5)->has(Address::factory())->create();
+        Tag::factory(10)
+            ->category()
+            ->create();
+
+        Tag::factory(10)
+            ->skill()
+            ->create();
 
     }
 }

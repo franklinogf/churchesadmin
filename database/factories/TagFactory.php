@@ -30,4 +30,25 @@ final class TagFactory extends Factory
             'is_regular' => false,
         ];
     }
+
+    public function category(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'type' => TagType::CATEGORY->value,
+        ]);
+    }
+
+    public function skill(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'type' => TagType::SKILL->value,
+        ]);
+    }
+
+    public function regular(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'is_regular' => true,
+        ]);
+    }
 }

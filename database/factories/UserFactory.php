@@ -50,21 +50,24 @@ final class UserFactory extends Factory
 
     public function admin(): static
     {
-        return $this->afterCreating(function (User $user) {
+        return $this->state(function (array $attributes) {
+            return [
+                'name' => 'Admin',
+                'email' => 'admin@example.com',
+            ];
+        })->afterCreating(function (User $user) {
             $user->assignRole(TenantRoleName::ADMIN);
-        });
-    }
-
-    public function superAdmin(): static
-    {
-        return $this->afterCreating(function (User $user) {
-            $user->assignRole(TenantRoleName::SUPER_ADMIN);
         });
     }
 
     public function secretary(): static
     {
-        return $this->afterCreating(function (User $user) {
+        return $this->state(function (array $attributes) {
+            return [
+                'name' => 'Secretary',
+                'email' => 'secretary@example.com',
+            ];
+        })->afterCreating(function (User $user) {
             $user->assignRole(TenantRoleName::SECRETARY);
         });
     }

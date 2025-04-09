@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use App\Enums\TenantRoleName;
 use App\Models\Member;
 use App\Models\Missionary;
 use App\Models\User;
@@ -14,7 +13,6 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 
@@ -38,13 +36,6 @@ final class AppServiceProvider extends ServiceProvider
         $this->configureModels();
         $this->configureValidations();
         $this->configureJsonResources();
-
-        $this->configurePermissions();
-    }
-
-    private function configurePermissions(): void
-    {
-        Gate::before(fn (User $user): ?bool => $user->hasRole(TenantRoleName::SUPER_ADMIN) ? true : null);
     }
 
     private function configureCommands(): void
