@@ -13,7 +13,7 @@ test('index page can not be rendered if not authenticated', function (): void {
         ->assertRedirect(route('login'));
 });
 
-describe('user has permission', function () {
+describe('user has permission', function (): void {
     test('index page can be rendered if authenticated', function (): void {
         Tag::factory(10)->category()->create();
         asUserWithPermission(TenantPermissionName::MANAGE_CATEGORIES)->get(route('categories.index'))
@@ -26,7 +26,7 @@ describe('user has permission', function () {
 
 });
 
-describe('user does not have permission', function () {
+describe('user does not have permission', function (): void {
 
     test('index page can not be rendered', function (): void {
 

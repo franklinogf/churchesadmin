@@ -7,7 +7,7 @@ use App\Enums\TagType;
 use App\Enums\TenantPermissionName;
 use App\Models\Tag;
 
-describe('if user has permission', function () {
+describe('if user has permission', function (): void {
 
     test('can be stored', function (): void {
 
@@ -70,7 +70,7 @@ describe('if user has permission', function () {
     });
 });
 
-describe('if user doesn\'t have permission', function () {
+describe('if user doesn\'t have permission', function (): void {
 
     test('cannot be stored', function (): void {
 

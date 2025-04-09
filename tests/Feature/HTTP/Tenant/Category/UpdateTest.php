@@ -79,7 +79,7 @@ describe('user has permission', function (): void {
     });
 });
 
-describe('user does not have permission', function () {
+describe('user does not have permission', function (): void {
 
     test('cannot update', function (): void {
         $category = Tag::factory()->category()->create()->fresh();

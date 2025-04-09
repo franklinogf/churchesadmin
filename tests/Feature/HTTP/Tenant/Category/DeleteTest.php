@@ -6,7 +6,7 @@ use App\Enums\FlashMessageKey;
 use App\Enums\TenantPermissionName;
 use App\Models\Tag;
 
-describe('if user has permission', function () {
+describe('if user has permission', function (): void {
     test('can be deleted', function (): void {
         $category = Tag::factory()->category()->create();
         asUserWithPermission(TenantPermissionName::DELETE_CATEGORIES)
@@ -28,7 +28,7 @@ describe('if user has permission', function () {
     });
 });
 
-describe('if user doesn\'t have permission', function () {
+describe('if user doesn\'t have permission', function (): void {
     test('cannot be deleted', function (): void {
         $category = Tag::factory()->category()->create()->fresh();
         asUserWithoutPermission()
