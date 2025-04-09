@@ -14,8 +14,6 @@ use App\Http\Resources\Member\MemberResource;
 use App\Http\Resources\TagResource;
 use App\Models\Member;
 use App\Models\Tag;
-use App\Models\User;
-use Illuminate\Container\Attributes\CurrentUser;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
@@ -23,7 +21,7 @@ use Inertia\Response;
 
 final class MemberController extends Controller
 {
-    public function __construct(#[CurrentUser] protected User $user)
+    public function __construct()
     {
         //
     }

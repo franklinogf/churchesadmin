@@ -15,7 +15,7 @@ final class TagPolicy
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(User $user): bool
+    public function viewAny(): bool
     {
         return false;
     }
@@ -23,7 +23,7 @@ final class TagPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Tag $tag): bool
+    public function view(): bool
     {
         return false;
     }
@@ -61,10 +61,12 @@ final class TagPolicy
             return Response::allow();
         }
 
-        $tagType = TagType::tryFrom($tag->type);
+        if ($tag->type !== null) {
+            $tagType = TagType::tryFrom($tag->type);
 
-        if ($tagType) {
-            return Response::deny(__('You do not have permission to update this :tagType.', ['tagType' => mb_strtolower($tagType->label())]));
+            if ($tagType) {
+                return Response::deny(__('You do not have permission to update this :tagType.', ['tagType' => mb_strtolower($tagType->label())]));
+            }
         }
 
         return Response::deny(__('You do not have permission to update this tag.'));
@@ -86,9 +88,12 @@ final class TagPolicy
         if ($user->can(TenantPermissionName::DELETE_REGULAR_TAG) && $tag->is_regular) {
             return Response::allow();
         }
-        $tagType = TagType::tryFrom($tag->type);
-        if ($tagType) {
-            return Response::deny(__('You do not have permission to delete this :tagType.', ['tagType' => mb_strtolower($tagType->label())]));
+        if ($tag->type !== null) {
+
+            $tagType = TagType::tryFrom($tag->type);
+            if ($tagType) {
+                return Response::deny(__('You do not have permission to delete this :tagType.', ['tagType' => mb_strtolower($tagType->label())]));
+            }
         }
 
         return Response::deny(__('You do not have permission to delete this tag.'));
@@ -97,7 +102,7 @@ final class TagPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Tag $tag): bool
+    public function restore(): bool
     {
         return false;
     }
@@ -105,7 +110,7 @@ final class TagPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Tag $tag): bool
+    public function forceDelete(): bool
     {
         return false;
     }

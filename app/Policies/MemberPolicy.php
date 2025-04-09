@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Policies;
 
 use App\Enums\TenantPermissionName;
-use App\Models\Member;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
@@ -14,7 +13,7 @@ final class MemberPolicy
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(User $user): bool
+    public function viewAny(): bool
     {
         return false;
     }
@@ -22,7 +21,7 @@ final class MemberPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Member $member): bool
+    public function view(): bool
     {
         return false;
     }
@@ -42,7 +41,7 @@ final class MemberPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Member $member): Response
+    public function update(User $user): Response
     {
         if ($user->can(TenantPermissionName::UPDATE_MEMBERS)) {
             return Response::allow();
@@ -54,7 +53,7 @@ final class MemberPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Member $member): Response
+    public function delete(User $user): Response
     {
         if ($user->can(TenantPermissionName::DELETE_MEMBERS)) {
             return Response::allow();
@@ -67,7 +66,7 @@ final class MemberPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user, Member $member): bool
+    public function restore(): bool
     {
         return false;
     }
@@ -75,7 +74,7 @@ final class MemberPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user, Member $member): bool
+    public function forceDelete(): bool
     {
         return false;
     }
