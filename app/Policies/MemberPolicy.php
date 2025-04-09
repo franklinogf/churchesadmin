@@ -36,7 +36,7 @@ final class MemberPolicy
             return Response::allow();
         }
 
-        return Response::deny('You do not have permission to create members.');
+        return Response::deny(__('You do not have permission to create members.'));
     }
 
     /**
@@ -48,7 +48,7 @@ final class MemberPolicy
             return Response::allow();
         }
 
-        return Response::deny('You do not have permission to update this member.');
+        return Response::deny(__('You do not have permission to update this member.'));
     }
 
     /**
@@ -60,7 +60,7 @@ final class MemberPolicy
             return Response::allow();
         }
 
-        return Response::deny('You do not have permission to delete this member.');
+        return Response::deny(__('You do not have permission to delete this member.'));
 
     }
 
