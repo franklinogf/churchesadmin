@@ -34,11 +34,6 @@ final class CategoryController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $response = Gate::inspect('create', [Tag::class, TagType::CATEGORY]);
-
-        if ($response->denied()) {
-            return to_route('categories.index')->with(FlashMessageKey::ERROR->value, $response->message());
-        }
 
         /**
          * @var array{name:string,is_regular:bool}
@@ -47,6 +42,12 @@ final class CategoryController extends Controller
             'name.*' => ['required', 'string', 'min:3', 'max:255', UniqueTranslationRule::for('tags')->where('type', TagType::CATEGORY->value)],
             'is_regular' => ['required', 'boolean'],
         ]);
+
+        $response = Gate::inspect('create', [Tag::class, TagType::CATEGORY, $validated['is_regular']]);
+
+        if ($response->denied()) {
+            return to_route('categories.index')->with(FlashMessageKey::ERROR->value, $response->message());
+        }
 
         Tag::create([
             'name' => $validated['name'],

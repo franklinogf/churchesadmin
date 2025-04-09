@@ -34,12 +34,6 @@ final class SkillController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $response = Gate::inspect('create', [Tag::class, TagType::SKILL]);
-
-        if ($response->denied()) {
-            return to_route('skills.index')->with(FlashMessageKey::ERROR->value, $response->message());
-        }
-
         /**
          * @var array{name:string,is_regular:bool}
          */
@@ -47,6 +41,12 @@ final class SkillController extends Controller
             'name.*' => ['required', 'string', 'min:3', 'max:255', UniqueTranslationRule::for('tags')->where('type', TagType::SKILL->value)],
             'is_regular' => ['required', 'boolean'],
         ]);
+
+        $response = Gate::inspect('create', [Tag::class, TagType::SKILL, $validated['is_regular']]);
+
+        if ($response->denied()) {
+            return to_route('skills.index')->with(FlashMessageKey::ERROR->value, $response->message());
+        }
 
         Tag::create([
             'name' => $validated['name'],

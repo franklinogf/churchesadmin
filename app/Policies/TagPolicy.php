@@ -32,8 +32,12 @@ final class TagPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user, TagType $tagType): Response
+    public function create(User $user, TagType $tagType, bool $is_regular): Response
     {
+        if ($is_regular && $user->cannot(TenantPermission::CREATE_REGULAR_TAG)) {
+            return Response::deny(__('permission.create', ['label' => __('Regular tags')]));
+        }
+
         if ($tagType === TagType::CATEGORY) {
             if ($user->can(TenantPermission::CREATE_CATEGORIES)) {
                 return Response::allow();
@@ -58,15 +62,15 @@ final class TagPolicy
      */
     public function update(User $user, Tag $tag): Response
     {
+        if ($tag->is_regular && $user->cannot(TenantPermission::UPDATE_REGULAR_TAG)) {
+            return Response::deny(__('permission.update', ['label' => __('Regular tags')]));
+        }
+
         if ($user->can(TenantPermission::UPDATE_CATEGORIES) && $tag->type === TagType::CATEGORY->value) {
             return Response::allow();
         }
 
         if ($user->can(TenantPermission::UPDATE_SKILLS) && $tag->type === TagType::SKILL->value) {
-            return Response::allow();
-        }
-
-        if ($user->can(TenantPermission::UPDATE_REGULAR_TAG) && $tag->is_regular) {
             return Response::allow();
         }
 
