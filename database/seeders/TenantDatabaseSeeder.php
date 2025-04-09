@@ -19,12 +19,22 @@ final class TenantDatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
+            Tenants\RoleSeeder::class,
             Tenants\CategorySeeder::class,
         ]);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        User::factory()->superAdmin()->create([
+            'name' => 'Super Admin',
+            'email' => 'superadmin@example.com',
+        ]);
+        User::factory()->admin()->create([
+            'name' => 'Admin',
+            'email' => 'admin@example.com',
+        ]);
+
+        User::factory()->secretary()->create([
+            'name' => 'Secretary',
+            'email' => 'secretary@example.com',
         ]);
 
         Member::factory(5)->has(Address::factory())->create();

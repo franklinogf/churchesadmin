@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Enums\LanguageCode;
+use App\Enums\TenantRoleName;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -44,5 +46,26 @@ final class UserFactory extends Factory
         return $this->state(fn (array $attributes) => [
             'email_verified_at' => null,
         ]);
+    }
+
+    public function admin(): static
+    {
+        return $this->afterCreating(function (User $user) {
+            $user->assignRole(TenantRoleName::ADMIN);
+        });
+    }
+
+    public function superAdmin(): static
+    {
+        return $this->afterCreating(function (User $user) {
+            $user->assignRole(TenantRoleName::SUPER_ADMIN);
+        });
+    }
+
+    public function secretary(): static
+    {
+        return $this->afterCreating(function (User $user) {
+            $user->assignRole(TenantRoleName::SECRETARY);
+        });
     }
 }

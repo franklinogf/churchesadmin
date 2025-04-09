@@ -23,7 +23,7 @@ final class TagFactory extends Factory
         $name = fake()->word();
 
         return [
-            'name' => fake()->word(),
+            'name' => ['en' => fake('en')->word(), 'es' => fake('es')->word()],
             'slug' => Str::slug($name),
             'type' => fake()->optional()->randomElement(TagType::values()),
             'order_column' => 0,

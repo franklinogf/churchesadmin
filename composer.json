@@ -16,6 +16,7 @@
         "laravel/framework": "^12.8.1",
         "laravel/tinker": "^2.10.1",
         "propaganistas/laravel-phone": "^5.3.6",
+        "spatie/laravel-permission": "^6.16",
         "spatie/laravel-tags": "^4.10",
         "spatie/laravel-translatable": "^6.11.4",
         "stancl/tenancy": "dev-master",
