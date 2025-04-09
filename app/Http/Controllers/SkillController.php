@@ -11,6 +11,7 @@ use App\Models\Tag;
 use CodeZero\UniqueTranslation\UniqueTranslationRule;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -33,6 +34,12 @@ final class SkillController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        $response = Gate::inspect('create', Tag::class);
+
+        if ($response->denied()) {
+            return to_route('skills.index')->with(FlashMessageKey::ERROR->value, $response->message());
+        }
+
         /**
          * @var array{name:string,is_regular:bool}
          */
@@ -56,9 +63,10 @@ final class SkillController extends Controller
     public function update(Request $request, string $id): RedirectResponse
     {
         $tag = Tag::findOrFail($id);
+        $response = Gate::inspect('update', $tag);
 
-        if ($tag->is_regular) {
-            return to_route('skills.index')->with(FlashMessageKey::ERROR->value, __('Cannot update a regular skill.'));
+        if ($response->denied()) {
+            return to_route('skills.index')->with(FlashMessageKey::ERROR->value, $response->message());
         }
 
         /**
@@ -87,9 +95,13 @@ final class SkillController extends Controller
     public function destroy(string $id): RedirectResponse
     {
         $tag = Tag::findOrFail($id);
-        if ($tag->is_regular) {
-            return to_route('skills.index')->with(FlashMessageKey::ERROR->value, __('Cannot delete a regular skill.'));
+
+        $response = Gate::inspect('delete', $tag);
+
+        if ($response->denied()) {
+            return to_route('skills.index')->with(FlashMessageKey::ERROR->value, $response->message());
         }
+
         $tag->delete();
 
         return to_route('skills.index')->with(FlashMessageKey::SUCCESS->value, __('Skill deleted successfully.'));

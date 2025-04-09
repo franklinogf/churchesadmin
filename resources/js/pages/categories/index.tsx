@@ -6,8 +6,9 @@ import { PageTitle } from '@/components/PageTitle';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader } from '@/components/ui/dialog';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { UserPermission } from '@/enums/user';
 import AppLayout from '@/layouts/app-layout';
-import { emptyTranslations } from '@/lib/utils';
+import { emptyTranslations, userCan } from '@/lib/utils';
 import useConfirmationStore from '@/stores/confirmationStore';
 import type { BreadcrumbItem } from '@/types';
 import { Tag } from '@/types/models/tag';
@@ -33,7 +34,14 @@ export const columns: ColumnDef<Tag>[] = [
             const { t } = useLaravelReactI18n();
             const { openConfirmation } = useConfirmationStore();
             const category = row.original;
-            if (category.isRegular) return null;
+            if (category.isRegular && !userCan(UserPermission.UPDATE_REGULAR_TAG) && !userCan(UserPermission.DELETE_REGULAR_TAG)) {
+                return null;
+            }
+
+            if (!userCan(UserPermission.UPDATE_CATEGORIES) && !userCan(UserPermission.DELETE_CATEGORIES)) {
+                return null;
+            }
+
             return (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -43,35 +51,39 @@ export const columns: ColumnDef<Tag>[] = [
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
-                        <CategoryForm category={category}>
-                            <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                                <Edit2Icon className="size-3" />
-                                <span>{t('Edit')}</span>
-                            </DropdownMenuItem>
-                        </CategoryForm>
+                        {userCan(UserPermission.UPDATE_CATEGORIES) && (
+                            <CategoryForm category={category}>
+                                <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                                    <Edit2Icon className="size-3" />
+                                    <span>{t('Edit')}</span>
+                                </DropdownMenuItem>
+                            </CategoryForm>
+                        )}
 
-                        <DropdownMenuItem
-                            variant="destructive"
-                            onClick={() => {
-                                openConfirmation({
-                                    title: t('Are you sure you want to delete this category?'),
-                                    description:
-                                        (category.isRegular ? t('This is marked as regular.') + '\n' : '') + t('This action cannot be undone.'),
-                                    actionLabel: t('Delete'),
-                                    actionVariant: 'destructive',
-                                    cancelLabel: t('Cancel'),
-                                    onAction: () => {
-                                        router.delete(route('categories.destroy', category.id), {
-                                            preserveState: true,
-                                            preserveScroll: true,
-                                        });
-                                    },
-                                });
-                            }}
-                        >
-                            <Trash2Icon className="size-3" />
-                            <span>{t('Delete')}</span>
-                        </DropdownMenuItem>
+                        {userCan(UserPermission.DELETE_CATEGORIES) && (
+                            <DropdownMenuItem
+                                variant="destructive"
+                                onClick={() => {
+                                    openConfirmation({
+                                        title: t('Are you sure you want to delete this category?'),
+                                        description:
+                                            (category.isRegular ? t('This is marked as regular.') + '\n' : '') + t('This action cannot be undone.'),
+                                        actionLabel: t('Delete'),
+                                        actionVariant: 'destructive',
+                                        cancelLabel: t('Cancel'),
+                                        onAction: () => {
+                                            router.delete(route('categories.destroy', category.id), {
+                                                preserveState: true,
+                                                preserveScroll: true,
+                                            });
+                                        },
+                                    });
+                                }}
+                            >
+                                <Trash2Icon className="size-3" />
+                                <span>{t('Delete')}</span>
+                            </DropdownMenuItem>
+                        )}
                     </DropdownMenuContent>
                 </DropdownMenu>
             );
@@ -95,9 +107,11 @@ export default function Index({ categories }: IndexPageProps) {
             <div className="mx-auto w-full max-w-3xl">
                 <DataTable
                     headerButton={
-                        <CategoryForm>
-                            <Button>{t('Add category')}</Button>
-                        </CategoryForm>
+                        userCan(UserPermission.CREATE_CATEGORIES) && (
+                            <CategoryForm>
+                                <Button>{t('Add category')}</Button>
+                            </CategoryForm>
+                        )
                     }
                     columns={columns}
                     data={categories}

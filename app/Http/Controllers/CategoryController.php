@@ -11,6 +11,7 @@ use App\Models\Tag;
 use CodeZero\UniqueTranslation\UniqueTranslationRule;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -33,6 +34,12 @@ final class CategoryController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
+        $response = Gate::inspect('create', Tag::class);
+
+        if ($response->denied()) {
+            return to_route('categories.index')->with(FlashMessageKey::ERROR->value, $response->message());
+        }
+
         /**
          * @var array{name:string,is_regular:bool}
          */
@@ -56,8 +63,10 @@ final class CategoryController extends Controller
     public function update(Request $request, string $id): RedirectResponse
     {
         $tag = Tag::findOrFail($id);
-        if ($tag->is_regular) {
-            return to_route('categories.index')->with(FlashMessageKey::ERROR->value, __('Cannot update a regular category.'));
+        $response = Gate::inspect('update', $tag);
+
+        if ($response->denied()) {
+            return to_route('categories.index')->with(FlashMessageKey::ERROR->value, $response->message());
         }
 
         /**
@@ -86,8 +95,10 @@ final class CategoryController extends Controller
     public function destroy(string $id): RedirectResponse
     {
         $tag = Tag::findOrFail($id);
-        if ($tag->is_regular) {
-            return to_route('categories.index')->with(FlashMessageKey::ERROR->value, __('Cannot delete a regular category.'));
+        $response = Gate::inspect('delete', $tag);
+
+        if ($response->denied()) {
+            return to_route('categories.index')->with(FlashMessageKey::ERROR->value, $response->message());
         }
         $tag->delete();
 

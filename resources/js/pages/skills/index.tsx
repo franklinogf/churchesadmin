@@ -6,12 +6,13 @@ import { PageTitle } from '@/components/PageTitle';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader } from '@/components/ui/dialog';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { UserPermission } from '@/enums/user';
 import AppLayout from '@/layouts/app-layout';
-import { emptyTranslations } from '@/lib/utils';
+import { emptyTranslations, userCan } from '@/lib/utils';
 import useConfirmationStore from '@/stores/confirmationStore';
 import type { BreadcrumbItem } from '@/types';
 import { Tag } from '@/types/models/tag';
-import { router, useForm, usePage } from '@inertiajs/react';
+import { router, useForm } from '@inertiajs/react';
 import { DialogTitle, DialogTrigger } from '@radix-ui/react-dialog';
 import { ColumnDef } from '@tanstack/react-table';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
@@ -33,7 +34,14 @@ export const columns: ColumnDef<Tag>[] = [
             const { t } = useLaravelReactI18n();
             const { openConfirmation } = useConfirmationStore();
             const skill = row.original;
-            if (skill.isRegular) return null;
+            if (skill.isRegular && !userCan(UserPermission.UPDATE_REGULAR_TAG) && !userCan(UserPermission.DELETE_REGULAR_TAG)) {
+                return null;
+            }
+
+            if (!userCan(UserPermission.UPDATE_SKILLS) && !userCan(UserPermission.DELETE_SKILLS)) {
+                return null;
+            }
+
             return (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -43,33 +51,38 @@ export const columns: ColumnDef<Tag>[] = [
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
-                        <SkillForm skill={skill}>
-                            <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                                <Edit2Icon className="size-3" />
-                                <span>{t('Edit')}</span>
+                        {userCan(UserPermission.UPDATE_SKILLS) && (
+                            <SkillForm skill={skill}>
+                                <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                                    <Edit2Icon className="size-3" />
+                                    <span>{t('Edit')}</span>
+                                </DropdownMenuItem>
+                            </SkillForm>
+                        )}
+                        {userCan(UserPermission.DELETE_SKILLS) && (
+                            <DropdownMenuItem
+                                variant="destructive"
+                                onClick={() => {
+                                    openConfirmation({
+                                        title: t('Are you sure you want to delete this skill?'),
+                                        description:
+                                            (skill.isRegular ? t('This is marked as regular.') + '\n' : '') + t('This action cannot be undone.'),
+                                        actionLabel: t('Delete'),
+                                        actionVariant: 'destructive',
+                                        cancelLabel: t('Cancel'),
+                                        onAction: () => {
+                                            router.delete(route('skills.destroy', skill.id), {
+                                                preserveState: true,
+                                                preserveScroll: true,
+                                            });
+                                        },
+                                    });
+                                }}
+                            >
+                                <Trash2Icon className="size-3" />
+                                <span>{t('Delete')}</span>
                             </DropdownMenuItem>
-                        </SkillForm>
-                        <DropdownMenuItem
-                            variant="destructive"
-                            onClick={() => {
-                                openConfirmation({
-                                    title: t('Are you sure you want to delete this skill?'),
-                                    description: (skill.isRegular ? t('This is marked as regular.') + '\n' : '') + t('This action cannot be undone.'),
-                                    actionLabel: t('Delete'),
-                                    actionVariant: 'destructive',
-                                    cancelLabel: t('Cancel'),
-                                    onAction: () => {
-                                        router.delete(route('skills.destroy', skill.id), {
-                                            preserveState: true,
-                                            preserveScroll: true,
-                                        });
-                                    },
-                                });
-                            }}
-                        >
-                            <Trash2Icon className="size-3" />
-                            <span>{t('Delete')}</span>
-                        </DropdownMenuItem>
+                        )}
                     </DropdownMenuContent>
                 </DropdownMenu>
             );
@@ -93,9 +106,11 @@ export default function Index({ skills }: IndexPageProps) {
             <div className="mx-auto w-full max-w-3xl">
                 <DataTable
                     headerButton={
-                        <SkillForm>
-                            <Button>{t('Add skill')}</Button>
-                        </SkillForm>
+                        userCan(UserPermission.CREATE_SKILLS) && (
+                            <SkillForm>
+                                <Button>{t('Add skill')}</Button>
+                            </SkillForm>
+                        )
                     }
                     columns={columns}
                     data={skills}
@@ -131,7 +146,6 @@ function SkillForm({ skill, children }: { skill?: Tag; children: React.ReactNode
             });
         }
     }
-    console.log(usePage().props);
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>{children}</DialogTrigger>
