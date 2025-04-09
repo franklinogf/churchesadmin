@@ -4,5 +4,5 @@ interface FieldErrorProps {
 export function FieldError({ error }: FieldErrorProps) {
     if (!error) return null;
 
-    return <div className="text-destructive text-xs">{error}</div>;
+    return <p className="text-sm text-red-600 dark:text-red-400">{error}</p>;
 }

@@ -12,6 +12,7 @@ const mainNavItems: NavItem[] = [
         title: 'Dashboard',
         href: route('dashboard'),
         icon: LayoutGridIcon,
+        isActive: true,
     },
     {
         title: 'Skills',

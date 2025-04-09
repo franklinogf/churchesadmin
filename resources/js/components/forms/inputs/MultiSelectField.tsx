@@ -5,7 +5,6 @@ import { FieldLabel } from '@/components/forms/inputs/FieldLabel';
 import { convertTagsToMultiselectOptions } from '@/lib/mutliselect';
 import { Tag } from '@/types/models/tag';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { useId } from 'react';
 
 export interface MultiSelectFieldProps {
     required?: boolean;
@@ -22,14 +21,12 @@ export interface MultiSelectFieldProps {
 
 export function MultiSelectField({ error, label, disabled, className, placeholder, options, value, onChange }: MultiSelectFieldProps) {
     const { t } = useLaravelReactI18n();
-    const id = useId();
     const selectOptions = convertTagsToMultiselectOptions(options);
     return (
         <FieldContainer className={className}>
-            <FieldLabel disabled={disabled} error={error} id={id} label={label} />
+            <FieldLabel disabled={disabled} label={label} />
             <MultipleSelector
                 badgeClassName="[&_svg]:cursor-pointer"
-                inputProps={{ id }}
                 value={value ?? []}
                 onChange={onChange}
                 disabled={disabled}

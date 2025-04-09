@@ -1,11 +1,10 @@
 import { FieldContainer } from '@/components/forms/inputs/FieldContainer';
 import { FieldError } from '@/components/forms/inputs/FieldError';
 import { FieldLabel } from '@/components/forms/inputs/FieldLabel';
-import { format } from 'date-fns';
-import { useId } from 'react';
 
 import { DatePicker } from '@/components/custom-ui/DatePicker';
-import { formatStringToDate } from '@/lib/datetime';
+import { formatDateToString, formatStringToDate, getCurrentDateLocale } from '@/lib/datetime';
+
 interface DateFieldProps {
     error?: string;
     label?: string;
@@ -23,28 +22,22 @@ export function DateField({
     error,
     className,
     disabled,
-    clearable = true,
     value,
-    startYear = 2020,
-    endYear = 2030,
+    startYear = new Date().getFullYear() - 90,
+    endYear = new Date().getFullYear(),
     onChange,
 }: DateFieldProps) {
-    // const { t, currentLocale } = useLaravelReactI18n();
-
-    const id = useId();
-
     return (
         <FieldContainer className={className}>
-            <FieldLabel disabled={disabled} error={error} id={id} label={label} />
-
+            <FieldLabel disabled={disabled} label={label} />
             <DatePicker
+                locale={getCurrentDateLocale()}
                 disabled={disabled}
                 startYear={startYear}
                 endYear={endYear}
-                selected={value ? new Date(formatStringToDate(value) || '') : new Date()}
+                selected={value ? new Date(formatStringToDate(value)) : null}
                 onSelect={(date) => {
-                    const formattedDate = format(date, 'yyyy-MM-dd');
-                    onChange?.(formattedDate);
+                    onChange?.(formatDateToString(date));
                 }}
             />
 

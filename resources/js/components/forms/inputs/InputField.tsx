@@ -8,24 +8,23 @@ interface InputFieldProps extends Omit<React.ComponentProps<typeof Input>, 'onCh
     onChange?: (value: string) => void;
     error?: string;
     label?: string;
-    removeArrows?: boolean;
     fieldClassName?: string;
 }
 
-export function InputField({ error, label, disabled, className, value, onChange, removeArrows, fieldClassName, ...props }: InputFieldProps) {
+export function InputField({ error, label, disabled, className, value, onChange, fieldClassName, ...props }: InputFieldProps) {
     const id = useId();
     return (
         <FieldContainer className={className}>
-            <FieldLabel disabled={disabled} error={error !== undefined} id={id} label={label} />
+            <FieldLabel disabled={disabled} id={id} label={label} />
             <Input
                 disabled={disabled}
                 id={id}
                 value={value}
                 className={cn(
                     {
-                        'border-destructive ring-offset-destructive focus-visible:ring-destructive': error,
+                        'border-red-600 ring-offset-red-600 focus-visible:ring-red-600 dark:border-red-400 dark:ring-offset-red-400 dark:focus-visible:ring-red-400':
+                            error,
                     },
-                    { 'remove-arrows': removeArrows },
                     fieldClassName,
                 )}
                 onChange={(e) => {
