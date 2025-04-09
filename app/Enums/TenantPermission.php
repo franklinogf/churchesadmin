@@ -6,7 +6,7 @@ namespace App\Enums;
 
 use App\Enums\Traits\EnumToArray;
 
-enum TenantPermissionName: string
+enum TenantPermission: string
 {
     use EnumToArray;
     case UPDATE_REGULAR_TAG = 'update_regular_tag';

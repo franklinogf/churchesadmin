@@ -6,7 +6,7 @@ namespace App\Enums;
 
 use App\Enums\Traits\EnumToArray;
 
-enum TenantRoleName: string
+enum TenantRole: string
 {
     use EnumToArray;
     case ADMIN = 'admin';

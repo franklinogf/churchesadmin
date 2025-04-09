@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Enums\LanguageCode;
-use App\Enums\TenantRoleName;
+use App\Enums\TenantRole;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
@@ -56,7 +56,7 @@ final class UserFactory extends Factory
                 'email' => 'admin@example.com',
             ];
         })->afterCreating(function (User $user) {
-            $user->assignRole(TenantRoleName::ADMIN);
+            $user->assignRole(TenantRole::ADMIN);
         });
     }
 
@@ -68,7 +68,7 @@ final class UserFactory extends Factory
                 'email' => 'secretary@example.com',
             ];
         })->afterCreating(function (User $user) {
-            $user->assignRole(TenantRoleName::SECRETARY);
+            $user->assignRole(TenantRole::SECRETARY);
         });
     }
 }

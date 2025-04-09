@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Seeders\Tenants;
 
-use App\Enums\TenantPermissionName;
+use App\Enums\TenantPermission;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\PermissionRegistrar;
@@ -18,7 +18,7 @@ final class PermissionSeeder extends Seeder
     {
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
-        $permissions = collect(TenantPermissionName::values())
+        $permissions = collect(TenantPermission::values())
             ->map(fn ($permission) => ['name' => $permission, 'guard_name' => 'web']);
 
         Permission::insert($permissions->toArray());

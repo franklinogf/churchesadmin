@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Policies;
 
 use App\Enums\TagType;
-use App\Enums\TenantPermissionName;
+use App\Enums\TenantPermission;
 use App\Models\Tag;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
@@ -35,7 +35,7 @@ final class TagPolicy
     public function create(User $user, TagType $tagType): Response
     {
         if ($tagType === TagType::CATEGORY) {
-            if ($user->can(TenantPermissionName::CREATE_CATEGORIES)) {
+            if ($user->can(TenantPermission::CREATE_CATEGORIES)) {
                 return Response::allow();
             }
 
@@ -43,7 +43,7 @@ final class TagPolicy
         }
 
         if ($tagType === TagType::SKILL) {
-            if ($user->can(TenantPermissionName::CREATE_SKILLS)) {
+            if ($user->can(TenantPermission::CREATE_SKILLS)) {
                 return Response::allow();
             }
 
@@ -58,15 +58,15 @@ final class TagPolicy
      */
     public function update(User $user, Tag $tag): Response
     {
-        if ($user->can(TenantPermissionName::UPDATE_CATEGORIES) && $tag->type === TagType::CATEGORY->value) {
+        if ($user->can(TenantPermission::UPDATE_CATEGORIES) && $tag->type === TagType::CATEGORY->value) {
             return Response::allow();
         }
 
-        if ($user->can(TenantPermissionName::UPDATE_SKILLS) && $tag->type === TagType::SKILL->value) {
+        if ($user->can(TenantPermission::UPDATE_SKILLS) && $tag->type === TagType::SKILL->value) {
             return Response::allow();
         }
 
-        if ($user->can(TenantPermissionName::UPDATE_REGULAR_TAG) && $tag->is_regular) {
+        if ($user->can(TenantPermission::UPDATE_REGULAR_TAG) && $tag->is_regular) {
             return Response::allow();
         }
 
@@ -86,16 +86,16 @@ final class TagPolicy
      */
     public function delete(User $user, Tag $tag): Response
     {
-        if ($tag->is_regular && $user->cannot(TenantPermissionName::DELETE_REGULAR_TAG)) {
+        if ($tag->is_regular && $user->cannot(TenantPermission::DELETE_REGULAR_TAG)) {
 
             return Response::deny(__('permission.delete', ['label' => __('Regular tags')]));
         }
 
-        if ($user->can(TenantPermissionName::DELETE_CATEGORIES) && $tag->type === TagType::CATEGORY->value) {
+        if ($user->can(TenantPermission::DELETE_CATEGORIES) && $tag->type === TagType::CATEGORY->value) {
             return Response::allow();
         }
 
-        if ($user->can(TenantPermissionName::DELETE_SKILLS) && $tag->type === TagType::SKILL->value) {
+        if ($user->can(TenantPermission::DELETE_SKILLS) && $tag->type === TagType::SKILL->value) {
             return Response::allow();
         }
 

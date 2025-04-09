@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Enums\TenantPermissionName;
+use App\Enums\TenantPermission;
 use App\Models\Tag;
 use Inertia\Testing\AssertableInertia as Assert;
 
@@ -16,7 +16,7 @@ test('index page can not be rendered if not authenticated', function (): void {
 describe('user has permission', function (): void {
     test('index page can be rendered if authenticated', function (): void {
         Tag::factory(10)->category()->create();
-        asUserWithPermission(TenantPermissionName::MANAGE_CATEGORIES)->get(route('categories.index'))
+        asUserWithPermission(TenantPermission::MANAGE_CATEGORIES)->get(route('categories.index'))
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page): Assert => $page
                 ->component('categories/index')

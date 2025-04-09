@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 use App\Enums\FlashMessageKey;
 use App\Enums\TagType;
-use App\Enums\TenantPermissionName;
+use App\Enums\TenantPermission;
 use App\Models\Tag;
 
 describe('if user has permission', function (): void {
 
     test('can be stored', function (): void {
 
-        asUserWithPermission(TenantPermissionName::CREATE_CATEGORIES)
+        asUserWithPermission(TenantPermission::CREATE_CATEGORIES)
             ->from(route('categories.index'))
             ->post(route('categories.store'), [
                 'name' => ['en' => 'tag name'],
@@ -28,7 +28,7 @@ describe('if user has permission', function (): void {
 
     test('cannot be stored with an empty name', function (): void {
 
-        asUserWithPermission(TenantPermissionName::CREATE_CATEGORIES)
+        asUserWithPermission(TenantPermission::CREATE_CATEGORIES)
             ->from(route('categories.index'))
             ->post(route('categories.store'), [
                 'name' => ['en' => ''],
@@ -41,7 +41,7 @@ describe('if user has permission', function (): void {
 
     test('cannot be stored with a name that is too short', function (): void {
 
-        asUserWithPermission(TenantPermissionName::CREATE_CATEGORIES)
+        asUserWithPermission(TenantPermission::CREATE_CATEGORIES)
             ->from(route('categories.index'))
             ->post(route('categories.store'), [
                 'name' => ['en' => 'a'],
@@ -58,7 +58,7 @@ describe('if user has permission', function (): void {
             'type' => TagType::CATEGORY->value,
         ]);
 
-        asUserWithPermission(TenantPermissionName::CREATE_CATEGORIES)
+        asUserWithPermission(TenantPermission::CREATE_CATEGORIES)
             ->from(route('categories.index'))
             ->post(route('categories.store'), [
                 'name' => ['en' => 'tag name'],

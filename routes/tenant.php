@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Enums\TenantPermissionName;
+use App\Enums\TenantPermission;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\SkillController;
@@ -45,15 +45,15 @@ Route::middleware([
                 Route::get('dashboard', fn () => inertia('dashboard'))->name('dashboard');
 
                 Route::resource('members', MemberController::class)
-                    ->middleware(Authorize::using(TenantPermissionName::MANAGE_MEMBERS->value));
+                    ->middleware(Authorize::using(TenantPermission::MANAGE_MEMBERS->value));
 
                 Route::resource('skills', SkillController::class)
                     ->except(['show', 'create', 'edit'])
-                    ->middleware(Authorize::using(TenantPermissionName::MANAGE_SKILLS->value));
+                    ->middleware(Authorize::using(TenantPermission::MANAGE_SKILLS->value));
 
                 Route::resource('categories', CategoryController::class)
                     ->except(['show', 'create', 'edit'])
-                    ->middleware(Authorize::using(TenantPermissionName::MANAGE_CATEGORIES->value));
+                    ->middleware(Authorize::using(TenantPermission::MANAGE_CATEGORIES->value));
             });
 
             require __DIR__.'/settings.php';

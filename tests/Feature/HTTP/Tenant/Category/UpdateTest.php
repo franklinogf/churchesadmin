@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use App\Enums\FlashMessageKey;
 use App\Enums\TagType;
-use App\Enums\TenantPermissionName;
+use App\Enums\TenantPermission;
 use App\Models\Tag;
 
 describe('user has permission', function (): void {
@@ -13,7 +13,7 @@ describe('user has permission', function (): void {
 
         $category = Tag::factory()->category()->create()->fresh();
 
-        asUserWithPermission(TenantPermissionName::UPDATE_CATEGORIES)
+        asUserWithPermission(TenantPermission::UPDATE_CATEGORIES)
             ->from(route('categories.index'))
             ->put(route('categories.update', ['category' => $category->id]), [
                 'name' => ['en' => 'tag name'],
@@ -31,7 +31,7 @@ describe('user has permission', function (): void {
         $category = Tag::factory()->category()->create([
             'is_regular' => false,
         ])->fresh();
-        asUserWithPermission(TenantPermissionName::UPDATE_CATEGORIES)
+        asUserWithPermission(TenantPermission::UPDATE_CATEGORIES)
             ->from(route('categories.index'))
             ->put(route('categories.update', ['category' => $category->id]), [
                 'name' => ['en' => ''],
@@ -49,7 +49,7 @@ describe('user has permission', function (): void {
         $category = Tag::factory()->category()->create([
             'is_regular' => false,
         ])->fresh();
-        asUserWithPermission(TenantPermissionName::UPDATE_CATEGORIES)
+        asUserWithPermission(TenantPermission::UPDATE_CATEGORIES)
             ->from(route('categories.index'))
             ->put(route('categories.update', ['category' => $category]), [
                 'name' => ['en' => 'a'],
@@ -65,7 +65,7 @@ describe('user has permission', function (): void {
 
     test('can update a regular category', function (): void {
         $category = Tag::factory()->category()->regular()->create()->fresh();
-        asUserWithPermission(TenantPermissionName::UPDATE_REGULAR_TAG, TenantPermissionName::UPDATE_CATEGORIES)
+        asUserWithPermission(TenantPermission::UPDATE_REGULAR_TAG, TenantPermission::UPDATE_CATEGORIES)
             ->from(route('categories.index'))
             ->put(route('categories.update', ['category' => $category]), [
                 'name' => ['en' => 'tag name'],
@@ -104,7 +104,7 @@ describe('user does not have permission', function (): void {
 
         $category = Tag::factory()->category()->regular()->create()->fresh();
 
-        asUserWithPermission(TenantPermissionName::UPDATE_CATEGORIES)
+        asUserWithPermission(TenantPermission::UPDATE_CATEGORIES)
             ->from(route('categories.index'))
             ->put(route('categories.update', ['category' => $category]), [
                 'name' => ['en' => 'tag name'],

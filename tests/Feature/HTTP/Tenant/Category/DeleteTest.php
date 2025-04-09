@@ -3,13 +3,13 @@
 declare(strict_types=1);
 
 use App\Enums\FlashMessageKey;
-use App\Enums\TenantPermissionName;
+use App\Enums\TenantPermission;
 use App\Models\Tag;
 
 describe('if user has permission', function (): void {
     test('can be deleted', function (): void {
         $category = Tag::factory()->category()->create();
-        asUserWithPermission(TenantPermissionName::DELETE_CATEGORIES)
+        asUserWithPermission(TenantPermission::DELETE_CATEGORIES)
             ->from(route('categories.index'))
             ->delete(route('categories.destroy', ['category' => $category->id]))
             ->assertRedirect(route('categories.index'));
@@ -19,7 +19,7 @@ describe('if user has permission', function (): void {
     });
     test('can delete regular categories', function (): void {
         $category = Tag::factory()->category()->regular()->create();
-        asUserWithPermission(TenantPermissionName::DELETE_REGULAR_TAG, TenantPermissionName::DELETE_CATEGORIES)
+        asUserWithPermission(TenantPermission::DELETE_REGULAR_TAG, TenantPermission::DELETE_CATEGORIES)
             ->from(route('categories.index'))
             ->delete(route('categories.destroy', ['category' => $category->id]))
             ->assertRedirect(route('categories.index'));
@@ -43,7 +43,7 @@ describe('if user doesn\'t have permission', function (): void {
 
     test('cannot delete regular categories', function (): void {
         $category = Tag::factory()->category()->regular()->create();
-        asUserWithPermission(TenantPermissionName::DELETE_CATEGORIES)
+        asUserWithPermission(TenantPermission::DELETE_CATEGORIES)
             ->from(route('categories.index'))
             ->delete(route('categories.destroy', ['category' => $category->id]))
             ->assertRedirect(route('categories.index'))

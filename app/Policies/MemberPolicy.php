@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
-use App\Enums\TenantPermissionName;
+use App\Enums\TenantPermission;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
@@ -31,7 +31,7 @@ final class MemberPolicy
      */
     public function create(User $user): Response
     {
-        if ($user->can(TenantPermissionName::CREATE_MEMBERS)) {
+        if ($user->can(TenantPermission::CREATE_MEMBERS)) {
             return Response::allow();
         }
 
@@ -43,7 +43,7 @@ final class MemberPolicy
      */
     public function update(User $user): Response
     {
-        if ($user->can(TenantPermissionName::UPDATE_MEMBERS)) {
+        if ($user->can(TenantPermission::UPDATE_MEMBERS)) {
             return Response::allow();
         }
 
@@ -55,7 +55,7 @@ final class MemberPolicy
      */
     public function delete(User $user): Response
     {
-        if ($user->can(TenantPermissionName::DELETE_MEMBERS)) {
+        if ($user->can(TenantPermission::DELETE_MEMBERS)) {
             return Response::allow();
         }
 
@@ -67,7 +67,7 @@ final class MemberPolicy
      */
     public function restore(User $user): Response
     {
-        if ($user->can(TenantPermissionName::RESTORE_MEMBERS)) {
+        if ($user->can(TenantPermission::RESTORE_MEMBERS)) {
             return Response::allow();
         }
 
@@ -79,7 +79,7 @@ final class MemberPolicy
      */
     public function forceDelete(User $user): Response
     {
-        if ($user->can(TenantPermissionName::FORCE_DELETE_MEMBERS)) {
+        if ($user->can(TenantPermission::FORCE_DELETE_MEMBERS)) {
             return Response::allow();
         }
 

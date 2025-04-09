@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Database\Seeders\Tenants;
 
-use App\Enums\TenantPermissionName;
-use App\Enums\TenantRoleName;
+use App\Enums\TenantPermission;
+use App\Enums\TenantRole;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\PermissionRegistrar;
@@ -19,23 +19,23 @@ final class RoleSeeder extends Seeder
     {
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
-        Role::create(['name' => TenantRoleName::ADMIN])
-            ->givePermissionTo(TenantPermissionName::cases());
+        Role::create(['name' => TenantRole::ADMIN])
+            ->givePermissionTo(TenantPermission::cases());
 
-        Role::create(['name' => TenantRoleName::SECRETARY])
+        Role::create(['name' => TenantRole::SECRETARY])
             ->givePermissionTo([
-                TenantPermissionName::MANAGE_SKILLS,
-                TenantPermissionName::CREATE_SKILLS,
-                TenantPermissionName::UPDATE_SKILLS,
-                TenantPermissionName::MANAGE_CATEGORIES,
-                TenantPermissionName::CREATE_CATEGORIES,
-                TenantPermissionName::UPDATE_CATEGORIES,
-                TenantPermissionName::MANAGE_MEMBERS,
-                TenantPermissionName::CREATE_MEMBERS,
-                TenantPermissionName::UPDATE_MEMBERS,
-                TenantPermissionName::MANAGE_MISSIONARIES,
-                TenantPermissionName::CREATE_MISSIONARIES,
-                TenantPermissionName::UPDATE_MISSIONARIES,
+                TenantPermission::MANAGE_SKILLS,
+                TenantPermission::CREATE_SKILLS,
+                TenantPermission::UPDATE_SKILLS,
+                TenantPermission::MANAGE_CATEGORIES,
+                TenantPermission::CREATE_CATEGORIES,
+                TenantPermission::UPDATE_CATEGORIES,
+                TenantPermission::MANAGE_MEMBERS,
+                TenantPermission::CREATE_MEMBERS,
+                TenantPermission::UPDATE_MEMBERS,
+                TenantPermission::MANAGE_MISSIONARIES,
+                TenantPermission::CREATE_MISSIONARIES,
+                TenantPermission::UPDATE_MISSIONARIES,
 
             ]);
 

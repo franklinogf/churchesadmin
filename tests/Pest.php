@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Enums\TenantPermissionName;
+use App\Enums\TenantPermission;
 use App\Models\User;
 use Tests\RefreshDatabaseWithTenant;
 use Tests\TestCase;
@@ -45,7 +45,7 @@ expect()->extend('toBeOne', fn () => $this->toBe(1));
 |
 */
 
-function asUserWithPermission(TenantPermissionName ...$permission): TestCase
+function asUserWithPermission(TenantPermission ...$permission): TestCase
 {
     test()->seed([\Database\Seeders\Tenants\PermissionSeeder::class]);
     $user = User::factory()->create();
