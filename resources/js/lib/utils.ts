@@ -1,3 +1,4 @@
+import { UserPermission } from '@/enums/user';
 import { LanguageTranslations, SharedData } from '@/types';
 import { usePage } from '@inertiajs/react';
 import { clsx, type ClassValue } from 'clsx';
@@ -29,4 +30,13 @@ export function emptyTranslations() {
         acc[value as keyof LanguageTranslations] = '';
         return acc;
     }, {} as LanguageTranslations);
+}
+
+export function userCan(permission: UserPermission) {
+    const {
+        props: {
+            auth: { permissions },
+        },
+    } = usePage<SharedData>();
+    return permissions.includes(permission);
 }

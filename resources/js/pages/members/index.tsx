@@ -4,11 +4,13 @@ import { PageTitle } from '@/components/PageTitle';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { UserPermission } from '@/enums/user';
 import AppLayout from '@/layouts/app-layout';
+import { userCan } from '@/lib/utils';
 import useConfirmationStore from '@/stores/confirmationStore';
 import type { BreadcrumbItem } from '@/types';
 import { Member } from '@/types/models/member';
-import { Link, router, usePage } from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
 import { ColumnDef } from '@tanstack/react-table';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { Edit2Icon, MoreHorizontalIcon, Trash2Icon, User2Icon } from 'lucide-react';
@@ -66,33 +68,37 @@ export const columns: ColumnDef<Member>[] = [
                                 <span>{t('View')}</span>
                             </Link>
                         </DropdownMenuItem>
-                        <DropdownMenuItem asChild>
-                            <Link href={route('members.edit', row.original.id)}>
-                                <Edit2Icon className="size-3" />
-                                <span>{t('Edit')}</span>
-                            </Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem
-                            variant="destructive"
-                            onClick={() => {
-                                openConfirmation({
-                                    title: t('Are you sure you want to delete this member?'),
-                                    description: t('You can restore it any time.'),
-                                    actionLabel: t('Delete'),
-                                    actionVariant: 'destructive',
-                                    cancelLabel: t('Cancel'),
-                                    onAction: () => {
-                                        router.delete(route('members.destroy', row.original.id), {
-                                            preserveState: true,
-                                            preserveScroll: true,
-                                        });
-                                    },
-                                });
-                            }}
-                        >
-                            <Trash2Icon className="size-3" />
-                            <span>{t('Delete')}</span>
-                        </DropdownMenuItem>
+                        {userCan(UserPermission.UPDATE_MEMBERS) && (
+                            <DropdownMenuItem asChild>
+                                <Link href={route('members.edit', row.original.id)}>
+                                    <Edit2Icon className="size-3" />
+                                    <span>{t('Edit')}</span>
+                                </Link>
+                            </DropdownMenuItem>
+                        )}
+                        {userCan(UserPermission.DELETE_MEMBERS) && (
+                            <DropdownMenuItem
+                                variant="destructive"
+                                onClick={() => {
+                                    openConfirmation({
+                                        title: t('Are you sure you want to delete this member?'),
+                                        description: t('You can restore it any time.'),
+                                        actionLabel: t('Delete'),
+                                        actionVariant: 'destructive',
+                                        cancelLabel: t('Cancel'),
+                                        onAction: () => {
+                                            router.delete(route('members.destroy', row.original.id), {
+                                                preserveState: true,
+                                                preserveScroll: true,
+                                            });
+                                        },
+                                    });
+                                }}
+                            >
+                                <Trash2Icon className="size-3" />
+                                <span>{t('Delete')}</span>
+                            </DropdownMenuItem>
+                        )}
                     </DropdownMenuContent>
                 </DropdownMenu>
             );
@@ -110,15 +116,16 @@ interface IndexProps {
 }
 export default function Index({ members }: IndexProps) {
     const { t } = useLaravelReactI18n();
-    console.log(usePage().props);
     return (
         <AppLayout breadcrumbs={breadcrumbs} title={t('Members')}>
             <PageTitle>{t('Members')}</PageTitle>
             <DataTable
                 headerButton={
-                    <Button asChild>
-                        <Link href={route('members.create')}>{t('Add Member')}</Link>
-                    </Button>
+                    userCan(UserPermission.CREATE_MEMBERS) && (
+                        <Button asChild>
+                            <Link href={route('members.create')}>{t('Add Member')}</Link>
+                        </Button>
+                    )
                 }
                 data={members}
                 rowId="id"

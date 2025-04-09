@@ -49,6 +49,7 @@ final class HandleInertiaRequests extends Middleware
             ...$parentShare,
             'auth' => [
                 'user' => $request->user(),
+                'permissions' => $request->user()?->getAllPermissions()->pluck('name')->toArray(),
             ],
             'ziggy' => fn (): array => [
                 ...(new Ziggy)->toArray(),
