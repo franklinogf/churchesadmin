@@ -3,36 +3,52 @@
 declare(strict_types=1);
 
 use App\Enums\FlashMessageKey;
+use App\Enums\TenantPermissionName;
 use App\Models\Tag;
-use App\Models\User;
 
-use function Pest\Laravel\actingAs;
+describe('if user has permission', function () {
+    test('can be deleted', function (): void {
+        $category = Tag::factory()->category()->create();
+        asUserWithPermission(TenantPermissionName::DELETE_CATEGORIES)
+            ->from(route('categories.index'))
+            ->delete(route('categories.destroy', ['category' => $category->id]))
+            ->assertRedirect(route('categories.index'));
 
-test('can be deleted', function (): void {
-    $category = Tag::factory()->create()->fresh();
-    actingAs(User::factory()->create())
-        ->delete(route('categories.destroy', ['category' => $category]))
-        ->assertRedirect(route('categories.index'));
+        expect(Tag::find($category->id))->toBeNull();
 
-    expect(Tag::find($category->id))->toBeNull();
+    });
+    test('can delete regular categories', function (): void {
+        $category = Tag::factory()->category()->regular()->create();
+        asUserWithPermission(TenantPermissionName::DELETE_REGULAR_TAG, TenantPermissionName::DELETE_CATEGORIES)
+            ->from(route('categories.index'))
+            ->delete(route('categories.destroy', ['category' => $category->id]))
+            ->assertRedirect(route('categories.index'));
 
+        expect(Tag::find($category->id))->toBeNull();
+    });
 });
 
-test('non admin users cannot delete regular categories', function (): void {
-    $category = Tag::factory()->create(['is_regular' => true])->fresh();
-    actingAs(User::factory()->create())
-        ->delete(route('categories.destroy', ['category' => $category]))
-        ->assertRedirect(route('categories.index'))
-        ->assertSessionHas(FlashMessageKey::ERROR->value);
+describe('if user doesn\'t have permission', function () {
+    test('cannot be deleted', function (): void {
+        $category = Tag::factory()->category()->create()->fresh();
+        asUserWithoutPermission()
+            ->from(route('categories.index'))
+            ->delete(route('categories.destroy', ['category' => $category->id]))
+            ->assertRedirect(route('categories.index'))
+            ->assertSessionHas(FlashMessageKey::ERROR->value);
 
-    expect(Tag::find($category->id))->not()->toBeNull();
+        expect(Tag::find($category->id))->not->toBeNull();
+
+    });
+
+    test('cannot delete regular categories', function (): void {
+        $category = Tag::factory()->category()->regular()->create();
+        asUserWithPermission(TenantPermissionName::DELETE_CATEGORIES)
+            ->from(route('categories.index'))
+            ->delete(route('categories.destroy', ['category' => $category->id]))
+            ->assertRedirect(route('categories.index'))
+            ->assertSessionHas(FlashMessageKey::ERROR->value);
+
+        expect(Tag::find($category->id))->not->toBeNull();
+    });
 });
-
-test('admin users can delete regular categories', function (): void {
-    $category = Tag::factory()->create(['is_regular' => true])->fresh();
-    actingAs(User::factory()->admin()->create())
-        ->delete(route('categories.destroy', ['category' => $category]))
-        ->assertRedirect(route('categories.index'));
-
-    expect(Tag::find($category->id))->toBeNull();
-})->skip();
