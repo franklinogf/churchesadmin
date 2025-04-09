@@ -28,9 +28,13 @@ enum TenantPermissionName: string
     case CREATE_MEMBERS = 'create_members';
     case UPDATE_MEMBERS = 'update_members';
     case DELETE_MEMBERS = 'delete_members';
+    case FORCE_DELETE_MEMBERS = 'force_delete_members';
+    case RESTORE_MEMBERS = 'restore_members';
     case MANAGE_MISSIONARIES = 'manage_missionaries';
     case CREATE_MISSIONARIES = 'create_missionaries';
     case UPDATE_MISSIONARIES = 'update_missionaries';
     case DELETE_MISSIONARIES = 'delete_missionaries';
+    case FORCE_DELETE_MISSIONARIES = 'force_delete_missionaries';
+    case RESTORE_MISSIONARIES = 'restore_missionaries';
 
 }
