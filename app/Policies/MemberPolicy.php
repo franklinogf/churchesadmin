@@ -35,7 +35,7 @@ final class MemberPolicy
             return Response::allow();
         }
 
-        return Response::deny(__('You do not have permission to create members.'));
+        return Response::deny(__('permission.create', ['label' => __('Members')]));
     }
 
     /**
@@ -47,7 +47,7 @@ final class MemberPolicy
             return Response::allow();
         }
 
-        return Response::deny(__('You do not have permission to update this member.'));
+        return Response::deny(__('permission.update', ['label' => __('Members')]));
     }
 
     /**
@@ -59,23 +59,30 @@ final class MemberPolicy
             return Response::allow();
         }
 
-        return Response::deny(__('You do not have permission to delete this member.'));
-
+        return Response::deny(__('permission.delete', ['label' => __('Members')]));
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(): bool
+    public function restore(User $user): Response
     {
-        return false;
+        if ($user->can(TenantPermissionName::RESTORE_MEMBERS)) {
+            return Response::allow();
+        }
+
+        return Response::deny(__('permission.restore', ['label' => __('Members')]));
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(): bool
+    public function forceDelete(User $user): Response
     {
-        return false;
+        if ($user->can(TenantPermissionName::FORCE_DELETE_MEMBERS)) {
+            return Response::allow();
+        }
+
+        return Response::deny(__('permission.force_delete', ['label' => __('Members')]));
     }
 }

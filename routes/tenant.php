@@ -2,10 +2,12 @@
 
 declare(strict_types=1);
 
+use App\Enums\TenantPermissionName;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\SkillController;
 use App\Http\Middleware\SetLocale;
+use Illuminate\Auth\Middleware\Authorize;
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware;
 
@@ -41,9 +43,17 @@ Route::middleware([
 
             Route::middleware('auth')->group(function (): void {
                 Route::get('dashboard', fn () => inertia('dashboard'))->name('dashboard');
-                Route::resource('members', MemberController::class);
-                Route::resource('skills', SkillController::class)->except(['show', 'create', 'edit']);
-                Route::resource('categories', CategoryController::class)->except(['show', 'create', 'edit']);
+
+                Route::resource('members', MemberController::class)
+                    ->middleware(Authorize::using(TenantPermissionName::MANAGE_MEMBERS->value));
+
+                Route::resource('skills', SkillController::class)
+                    ->except(['show', 'create', 'edit'])
+                    ->middleware(Authorize::using(TenantPermissionName::MANAGE_SKILLS->value));
+
+                Route::resource('categories', CategoryController::class)
+                    ->except(['show', 'create', 'edit'])
+                    ->middleware(Authorize::using(TenantPermissionName::MANAGE_CATEGORIES->value));
             });
 
             require __DIR__.'/settings.php';

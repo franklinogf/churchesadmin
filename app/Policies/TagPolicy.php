@@ -15,9 +15,10 @@ final class TagPolicy
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(): bool
+    public function viewAny(): Response
     {
-        return false;
+
+        return Response::deny();
     }
 
     /**
@@ -31,17 +32,25 @@ final class TagPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): Response
+    public function create(User $user, TagType $tagType): Response
     {
-        if ($user->can(TenantPermissionName::CREATE_CATEGORIES)) {
-            return Response::allow();
+        if ($tagType === TagType::CATEGORY) {
+            if ($user->can(TenantPermissionName::CREATE_CATEGORIES)) {
+                return Response::allow();
+            }
+
+            return Response::deny(__('permission.create', ['label' => $tagType->label()]));
         }
 
-        if ($user->can(TenantPermissionName::CREATE_SKILLS)) {
-            return Response::allow();
+        if ($tagType === TagType::SKILL) {
+            if ($user->can(TenantPermissionName::CREATE_SKILLS)) {
+                return Response::allow();
+            }
+
+            return Response::deny(__('permission.create', ['label' => $tagType->label()]));
         }
 
-        return Response::deny(__('You do not have permission to create tags.'));
+        return Response::deny(__('permission.create', ['label' => __('Tags')]));
     }
 
     /**
@@ -65,11 +74,11 @@ final class TagPolicy
             $tagType = TagType::tryFrom($tag->type);
 
             if ($tagType) {
-                return Response::deny(__('You do not have permission to update this :tagType.', ['tagType' => mb_strtolower($tagType->label())]));
+                return Response::deny(__('permission.update', ['label' => $tagType->label()]));
             }
         }
 
-        return Response::deny(__('You do not have permission to update this tag.'));
+        return Response::deny(__('permission.update', ['label' => __('Tags')]));
     }
 
     /**
@@ -79,14 +88,7 @@ final class TagPolicy
     {
         if ($tag->is_regular && $user->cannot(TenantPermissionName::DELETE_REGULAR_TAG)) {
 
-            if ($tag->type !== null) {
-                $tagType = TagType::tryFrom($tag->type);
-                if ($tagType) {
-                    return Response::deny(__('You do not have permission to delete this :tagType.', ['tagType' => mb_strtolower($tagType->label())]));
-                }
-            }
-
-            return Response::deny(__('You do not have permission to delete this tag.'));
+            return Response::deny(__('permission.delete', ['label' => __('Regular tags')]));
         }
 
         if ($user->can(TenantPermissionName::DELETE_CATEGORIES) && $tag->type === TagType::CATEGORY->value) {
@@ -101,11 +103,11 @@ final class TagPolicy
 
             $tagType = TagType::tryFrom($tag->type);
             if ($tagType) {
-                return Response::deny(__('You do not have permission to delete this :tagType.', ['tagType' => mb_strtolower($tagType->label())]));
+                return Response::deny(__('permission.delete', ['label' => $tagType->label()]));
             }
         }
 
-        return Response::deny(__('You do not have permission to delete this tag.'));
+        return Response::deny(__('permission.delete', ['label' => __('Tags')]));
     }
 
     /**

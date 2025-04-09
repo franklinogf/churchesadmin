@@ -41,11 +41,6 @@ final class MemberController extends Controller
      */
     public function create(): Response|RedirectResponse
     {
-        $response = Gate::inspect('create', Member::class);
-
-        if ($response->denied()) {
-            return to_route('members.index')->with(FlashMessageKey::ERROR->value, $response->message());
-        }
 
         $genders = Gender::options();
         $civilStatuses = CivilStatus::options();
@@ -97,12 +92,6 @@ final class MemberController extends Controller
      */
     public function edit(Member $member): Response|RedirectResponse
     {
-        $response = Gate::inspect('update', $member);
-
-        if ($response->denied()) {
-            return to_route('members.index')->with(FlashMessageKey::ERROR->value, $response->message());
-        }
-
         $genders = Gender::options();
         $civilStatuses = CivilStatus::options();
         $skills = Tag::getWithType(TagType::SKILL->value);
