@@ -163,13 +163,15 @@ function SkillForm({ skill, children }: { skill?: Tag; children: React.ReactNode
                         errors={{ errors, name: 'name' }}
                     />
 
-                    <SwitchField
-                        description={t('Only admins would be allowed to edit and delete this skill')}
-                        label={t('Mark this skill as regular')}
-                        value={data.is_regular}
-                        onChange={(value) => setData('is_regular', value)}
-                        error={errors.is_regular}
-                    />
+                    {userCan(skill ? UserPermission.UPDATE_REGULAR_TAG : UserPermission.CREATE_REGULAR_TAG) && (
+                        <SwitchField
+                            description={t('Only admins would be allowed to edit and delete this skill')}
+                            label={t('Mark this skill as regular')}
+                            value={data.is_regular}
+                            onChange={(value) => setData('is_regular', value)}
+                            error={errors.is_regular}
+                        />
+                    )}
                     <div className="flex justify-end">
                         <SubmitButton isSubmitting={processing}>{t('Save')}</SubmitButton>
                     </div>

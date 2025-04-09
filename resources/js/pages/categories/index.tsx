@@ -164,13 +164,15 @@ function CategoryForm({ category, children }: { category?: Tag; children: React.
                         onChange={(locale, value) => setData(`name`, { ...data.name, [locale]: value })}
                         errors={{ errors, name: 'name' }}
                     />
-                    <SwitchField
-                        description={t('Only admins would be allowed to edit and delete this category')}
-                        label={t('Mark this category as regular')}
-                        value={data.is_regular}
-                        onChange={(value) => setData('is_regular', value)}
-                        error={errors.is_regular}
-                    />
+                    {userCan(category ? UserPermission.UPDATE_REGULAR_TAG : UserPermission.CREATE_REGULAR_TAG) && (
+                        <SwitchField
+                            description={t('Only admins would be allowed to edit and delete this category')}
+                            label={t('Mark this category as regular')}
+                            value={data.is_regular}
+                            onChange={(value) => setData('is_regular', value)}
+                            error={errors.is_regular}
+                        />
+                    )}
                     <div className="flex justify-end">
                         <SubmitButton isSubmitting={processing}>{t('Save')}</SubmitButton>
                     </div>
