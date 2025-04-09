@@ -77,6 +77,18 @@ final class TagPolicy
      */
     public function delete(User $user, Tag $tag): Response
     {
+        if ($tag->is_regular && $user->cannot(TenantPermissionName::DELETE_REGULAR_TAG)) {
+
+            if ($tag->type !== null) {
+                $tagType = TagType::tryFrom($tag->type);
+                if ($tagType) {
+                    return Response::deny(__('You do not have permission to delete this :tagType.', ['tagType' => mb_strtolower($tagType->label())]));
+                }
+            }
+
+            return Response::deny(__('You do not have permission to delete this tag.'));
+        }
+
         if ($user->can(TenantPermissionName::DELETE_CATEGORIES) && $tag->type === TagType::CATEGORY->value) {
             return Response::allow();
         }
@@ -85,9 +97,6 @@ final class TagPolicy
             return Response::allow();
         }
 
-        if ($user->can(TenantPermissionName::DELETE_REGULAR_TAG) && $tag->is_regular) {
-            return Response::allow();
-        }
         if ($tag->type !== null) {
 
             $tagType = TagType::tryFrom($tag->type);
