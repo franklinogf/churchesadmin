@@ -16,12 +16,11 @@ export function PhoneField({ error, label, disabled, className, placeholder, val
     const id = useId();
     return (
         <FieldContainer className={className}>
-            <FieldLabel disabled={disabled} error={error} id={id} label={label} />
+            <FieldLabel disabled={disabled} id={id} label={label} />
             <PhoneInput
                 countrySelectProps={{ id: `${id}-country` }}
-                numberInputProps={{ id, className: 'bg-input' }}
+                numberInputProps={{ id }}
                 international
-                countryCallingCodeEditable={false}
                 placeholder={placeholder}
                 defaultCountry="PR"
                 disabled={disabled}

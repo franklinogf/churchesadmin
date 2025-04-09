@@ -3,6 +3,7 @@ import { DateField } from '@/components/forms/inputs/DateField';
 import { FieldsGrid } from '@/components/forms/inputs/FieldsGrid';
 import { InputField } from '@/components/forms/inputs/InputField';
 import { MultiSelectField } from '@/components/forms/inputs/MultiSelectField';
+import { PhoneField } from '@/components/forms/inputs/PhoneField';
 import { SelectField } from '@/components/forms/inputs/SelectField';
 import { SubmitButton } from '@/components/forms/SubmitButton';
 import { PageTitle } from '@/components/PageTitle';
@@ -84,7 +85,7 @@ export default function Edit({ member, genders, civilStatuses, skills, categorie
                             />
                             <FieldsGrid>
                                 <InputField label="Email" value={data.email} onChange={(value) => setData('email', value)} error={errors.email} />
-                                <InputField label="Phone" value={data.phone} onChange={(value) => setData('phone', value)} error={errors.phone} />
+                                <PhoneField label="Phone" value={data.phone} onChange={(value) => setData('phone', value)} error={errors.phone} />
                             </FieldsGrid>
 
                             <DateField label="Date of Birth" value={data.dob} onChange={(value) => setData('dob', value)} error={errors.dob} />
