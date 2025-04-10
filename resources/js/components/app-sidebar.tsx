@@ -29,6 +29,11 @@ const mainNavItems: NavItem[] = [
         href: route('members.index'),
         icon: Users2Icon,
     },
+    {
+        title: 'Missionaries',
+        href: route('missionaries.index'),
+        icon: Users2Icon,
+    },
 ];
 
 const footerNavItems: NavItem[] = [];

@@ -1,12 +1,14 @@
-import { MemberMorphClass } from '@/types/models/member';
+import { Member, MemberMorphClass } from '@/types/models/member';
+import { Missionary, MissionaryMorphClass } from './missionary';
 
-type MorphClasses = MemberMorphClass;
+type MorphClasses = MemberMorphClass | MissionaryMorphClass;
+type AddressOwner = Member | Missionary;
 
 export interface Address {
     id: number;
     ownerId: number;
     ownerType: MorphClasses;
-    owner: Member;
+    owner: AddressOwner;
     address1: string;
     address2: string;
     city: string;

@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Enums\TenantPermission;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MemberController;
+use App\Http\Controllers\MissionaryController;
 use App\Http\Controllers\SkillController;
 use App\Http\Middleware\SetLocale;
 use Illuminate\Auth\Middleware\Authorize;
@@ -46,6 +47,9 @@ Route::middleware([
 
                 Route::resource('members', MemberController::class)
                     ->middleware(Authorize::using(TenantPermission::MANAGE_MEMBERS->value));
+
+                Route::resource('missionaries', MissionaryController::class)
+                    ->middleware(Authorize::using(TenantPermission::MANAGE_MISSIONARIES->value));
 
                 Route::resource('skills', SkillController::class)
                     ->parameter('skills', 'tag')

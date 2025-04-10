@@ -23,7 +23,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read Gender $gender
  * @property-read string $church
  * @property-read float|null $offering
- * @property-read OfferingFrequency|null $offering_frequency
+ * @property-read OfferingFrequency $offering_frequency
  * @property-read CarbonImmutable|null $deleted_at
  * @property-read CarbonImmutable $created_at
  * @property-read CarbonImmutable $updated_at

@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('gender');
             $table->string('church');
             $table->decimal('offering', 10, 2)->nullable();
-            $table->string('offering_frequency')->nullable();
+            $table->string('offering_frequency');
             $table->timestamps();
             $table->softDeletes();
         });
