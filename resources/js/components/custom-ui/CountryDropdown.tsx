@@ -10,12 +10,13 @@ import { cn } from '@/lib/utils';
 // assets
 import { useCountries } from '@/hooks/use-countries';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { CheckIcon, ChevronDown } from 'lucide-react';
+import { CheckIcon, ChevronDown, XSquare } from 'lucide-react';
+import { Button } from '../ui/button';
 
 // Dropdown props
 interface CountryDropdownProps {
     onChange?: (country: string) => void;
-    defaultValue?: string | null;
+    defaultValue?: string;
     disabled?: boolean;
     placeholder?: string;
     ref?: Ref<HTMLButtonElement>;
@@ -24,7 +25,7 @@ interface CountryDropdownProps {
 export function CountryDropdown({ onChange, defaultValue, disabled = false, placeholder, ref }: CountryDropdownProps) {
     const { countries, getCurrentCountryName } = useCountries();
     const [open, setOpen] = useState(false);
-    const [selectedCountry, setSelectedCountry] = useState<string | null>(null);
+    const [selectedCountry, setSelectedCountry] = useState('');
     const { t } = useLaravelReactI18n();
 
     useEffect(() => {
@@ -34,11 +35,11 @@ export function CountryDropdown({ onChange, defaultValue, disabled = false, plac
                 setSelectedCountry(initialCountry.code);
             } else {
                 // Reset selected country if defaultValue is not found
-                setSelectedCountry(null);
+                setSelectedCountry('');
             }
         } else {
-            // Reset selected country if defaultValue is null or null
-            setSelectedCountry(null);
+            // Reset selected country if defaultValue is null or undefined
+            setSelectedCountry('');
         }
     }, [defaultValue, countries]);
 
@@ -59,8 +60,19 @@ export function CountryDropdown({ onChange, defaultValue, disabled = false, plac
         <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger ref={ref} className={triggerClasses} disabled={disabled}>
                 {selectedCountry ? (
-                    <div className="flex w-0 flex-grow items-center gap-2 overflow-hidden">
+                    <div className="flex flex-grow items-center gap-2 overflow-hidden">
                         <span className="overflow-hidden text-ellipsis whitespace-nowrap">{getCurrentCountryName(selectedCountry)}</span>
+                        <Button
+                            className="hover:text-primary size-4 cursor-pointer"
+                            size="sm"
+                            variant="ghost"
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                handleSelect('');
+                            }}
+                        >
+                            <XSquare />
+                        </Button>
                     </div>
                 ) : (
                     <span>{placeholder}</span>
