@@ -10,6 +10,7 @@ use App\Enums\Traits\HasOptions;
 enum OfferingFrequency: string
 {
     use EnumToArray, HasOptions;
+    case ONE_TIME = 'one_time';
     case WEEKLY = 'weekly';
     case BIWEEKLY = 'biweekly';
     case MONTHLY = 'monthly';
@@ -17,7 +18,6 @@ enum OfferingFrequency: string
     case QUARTERLY = 'quarterly';
     case SEMIANNUALLY = 'semiannually';
     case ANNUALLY = 'annually';
-    case ONE_TIME = 'one_time';
 
     /**
      * Get the label for the enum value.

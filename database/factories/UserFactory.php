@@ -48,6 +48,18 @@ final class UserFactory extends Factory
         ]);
     }
 
+    public function superAdmin(): static
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'name' => 'Super Admin',
+                'email' => 'superadmin@example.com',
+            ];
+        })->afterCreating(function (User $user) {
+            $user->assignRole(TenantRole::SUPER_ADMIN);
+        });
+    }
+
     public function admin(): static
     {
         return $this->state(function (array $attributes) {
