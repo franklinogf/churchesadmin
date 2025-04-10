@@ -14,7 +14,18 @@ import { Missionary, MissionaryFormData } from '@/types/models/missionary';
 import { useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
-export type EditForm = MissionaryFormData & {
+const breadcrumbs: BreadcrumbItem[] = [
+    {
+        title: 'Missionaries',
+        href: route('missionaries.index'),
+    },
+    {
+        title: 'Edit Missionary',
+        href: '',
+    },
+];
+
+type EditForm = MissionaryFormData & {
     address: AddressFormData;
 };
 interface EditPageProps {
@@ -22,6 +33,7 @@ interface EditPageProps {
     missionary: Missionary;
     offeringFrequencies: SelectOption[];
 }
+
 export default function Edit({ genders, missionary, offeringFrequencies }: EditPageProps) {
     const { t } = useLaravelReactI18n();
     const { data, setData, put, errors, processing } = useForm<EditForm>({
@@ -45,17 +57,7 @@ export default function Edit({ genders, missionary, offeringFrequencies }: EditP
     const handleSubmit = () => {
         put(route('missionaries.update', missionary.id));
     };
-    const breadcrumbs: BreadcrumbItem[] = [
-        {
-            title: 'Missionaries',
-            href: route('missionaries.index'),
-        },
-        {
-            title: 'Edit Missionary',
-            href: route('missionaries.edit', missionary.id),
-        },
-    ];
-    console.log('missionary', missionary);
+
     return (
         <AppLayout breadcrumbs={breadcrumbs} title={t('Missionaries')}>
             <PageTitle>{t('Edit Missionary')}</PageTitle>
