@@ -1,6 +1,5 @@
-import { Option } from '@/components/custom-ui/MultiSelect';
+import { AddressFormSkeleton } from '@/components/forms/AddressFormSkeleton';
 import { Form } from '@/components/forms/Form';
-import { CountryField } from '@/components/forms/inputs/CountryField';
 import { DateField } from '@/components/forms/inputs/DateField';
 import { FieldsGrid } from '@/components/forms/inputs/FieldsGrid';
 import { InputField } from '@/components/forms/inputs/InputField';
@@ -12,29 +11,14 @@ import { Separator } from '@/components/ui/separator';
 import AppLayout from '@/layouts/app-layout';
 import { convertTagsToMultiselectOptions, getMultiselecOptionsLabels } from '@/lib/mutliselect';
 import type { BreadcrumbItem, SelectOption } from '@/types';
-import { Member } from '@/types/models/member';
+import { AddressFormData } from '@/types/models/address';
+import { Member, MemberFormData } from '@/types/models/member';
 import { Tag } from '@/types/models/tag';
 import { useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
-export type EditForm = {
-    name: string;
-    last_name: string;
-    email: string;
-    phone: string;
-    dob: string;
-    gender: string;
-    civil_status: string;
-    skills: Option[];
-    categories: Option[];
-    address: {
-        address_1: string;
-        address_2: string;
-        city: string;
-        state: string;
-        country: string;
-        zip_code: string;
-    };
+export type EditForm = MemberFormData & {
+    address: AddressFormData;
 };
 
 interface EditPageProps {
@@ -147,47 +131,17 @@ export default function Edit({ member, genders, civilStatuses, skills, categorie
                             error={errors.categories}
                         />
                     </FieldsGrid>
-                    <Separator className="my-4" />
-                    <div className="space-y-2">
-                        <InputField
-                            label="Address line 1"
-                            value={data.address.address_1}
-                            onChange={(value) => setData('address', { ...data.address, address_1: value })}
-                            error={errors['address.address_1' as keyof EditForm]}
-                        />
-                        <InputField
-                            label="Address line 2"
-                            value={data.address.address_2}
-                            onChange={(value) => setData('address', { ...data.address, address_2: value })}
-                            error={errors['address.address_2' as keyof EditForm]}
-                        />
-                        <CountryField
-                            label="Country"
-                            value={data.address.country}
-                            onChange={(country) => setData('address', { ...data.address, country })}
-                            error={errors['address.country' as keyof EditForm]}
-                        />
-                        <FieldsGrid cols={3}>
-                            <InputField
-                                label="City"
-                                value={data.address.city}
-                                onChange={(value) => setData('address', { ...data.address, city: value })}
-                                error={errors['address.city' as keyof EditForm]}
-                            />
-                            <InputField
-                                label="State"
-                                value={data.address.state}
-                                onChange={(value) => setData('address', { ...data.address, state: value })}
-                                error={errors['address.state' as keyof EditForm]}
-                            />
-                            <InputField
-                                label="Zip Code"
-                                value={data.address.zip_code}
-                                onChange={(value) => setData('address', { ...data.address, zip_code: value })}
-                                error={errors['address.zip_code' as keyof EditForm]}
-                            />
-                        </FieldsGrid>
-                    </div>
+                    <Separator className="my-8" />
+
+                    <AddressFormSkeleton
+                        data={data.address}
+                        setData={(value) => {
+                            console.log(value);
+                            setData('address', value);
+                        }}
+                        errors={errors}
+                        errorsName="address"
+                    />
                 </Form>
             </div>
         </AppLayout>

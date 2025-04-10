@@ -18,3 +18,12 @@ export interface Address {
 }
 
 export type AddressRelationship = Omit<Address, 'createdAt' | 'updatedAt' | 'ownerId' | 'ownerType' | 'owner'>;
+
+export type AddressFormData = {
+    address_1: string;
+    address_2: string;
+    city: string;
+    state: string;
+    country: string;
+    zip_code: string;
+};

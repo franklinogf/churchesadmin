@@ -1,6 +1,5 @@
-import { Option } from '@/components/custom-ui/MultiSelect';
+import { AddressFormSkeleton } from '@/components/forms/AddressFormSkeleton';
 import { Form } from '@/components/forms/Form';
-import { CountryField } from '@/components/forms/inputs/CountryField';
 import { DateField } from '@/components/forms/inputs/DateField';
 import { FieldsGrid } from '@/components/forms/inputs/FieldsGrid';
 import { InputField } from '@/components/forms/inputs/InputField';
@@ -13,28 +12,14 @@ import { CivilStatus, Gender } from '@/enums';
 import AppLayout from '@/layouts/app-layout';
 import { getMultiselecOptionsLabels } from '@/lib/mutliselect';
 import type { BreadcrumbItem, SelectOption } from '@/types';
+import { AddressFormData } from '@/types/models/address';
+import { MemberFormData } from '@/types/models/member';
 import type { Tag } from '@/types/models/tag';
 import { useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
-export type CreateForm = {
-    name: string;
-    last_name: string;
-    email: string;
-    phone: string;
-    dob: string;
-    gender: string;
-    civil_status: string;
-    skills: Option[];
-    categories: Option[];
-    address: {
-        address_1: string;
-        address_2: string;
-        city: string;
-        state: string;
-        country: string;
-        zip_code: string;
-    };
+export type CreateForm = MemberFormData & {
+    address: AddressFormData;
 };
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -147,47 +132,10 @@ export default function Create({ genders, civilStatuses, skills, categories }: C
                             error={errors.categories}
                         />
                     </FieldsGrid>
-                    <Separator className="my-4" />
-                    <div className="space-y-2">
-                        <InputField
-                            label="Address line 1"
-                            value={data.address.address_1}
-                            onChange={(value) => setData('address', { ...data.address, address_1: value })}
-                            error={errors['address.address_1' as keyof CreateForm]}
-                        />
-                        <InputField
-                            label="Address line 2"
-                            value={data.address.address_2}
-                            onChange={(value) => setData('address', { ...data.address, address_2: value })}
-                            error={errors['address.address_2' as keyof CreateForm]}
-                        />
-                        <CountryField
-                            label="Country"
-                            value={data.address.country}
-                            onChange={(country) => setData('address', { ...data.address, country })}
-                            error={errors['address.country' as keyof CreateForm]}
-                        />
-                        <FieldsGrid cols={3}>
-                            <InputField
-                                label="City"
-                                value={data.address.city}
-                                onChange={(value) => setData('address', { ...data.address, city: value })}
-                                error={errors['address.city' as keyof CreateForm]}
-                            />
-                            <InputField
-                                label="State"
-                                value={data.address.state}
-                                onChange={(value) => setData('address', { ...data.address, state: value })}
-                                error={errors['address.state' as keyof CreateForm]}
-                            />
-                            <InputField
-                                label="Zip Code"
-                                value={data.address.zip_code}
-                                onChange={(value) => setData('address', { ...data.address, zip_code: value })}
-                                error={errors['address.zip_code' as keyof CreateForm]}
-                            />
-                        </FieldsGrid>
-                    </div>
+
+                    <Separator className="my-8" />
+
+                    <AddressFormSkeleton data={data.address} setData={(value) => setData('address', value)} errors={errors} errorsName="address" />
                 </Form>
             </div>
         </AppLayout>

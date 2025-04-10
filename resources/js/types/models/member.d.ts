@@ -1,3 +1,4 @@
+import { Option } from '@/components/custom-ui/MultiSelect';
 import { AddressRelationship } from '@/types/models/address';
 import { RelationshipTag } from '@/types/models/tag';
 
@@ -20,3 +21,15 @@ export interface Member {
     updatedAt: string;
     deletedAt: string | null;
 }
+
+export type MemberFormData = {
+    name: string;
+    last_name: string;
+    email: string;
+    phone: string;
+    dob: string;
+    gender: string;
+    civil_status: string;
+    skills: Option[];
+    categories: Option[];
+};
