@@ -12,3 +12,5 @@ export interface Tag {
     createdAt: string;
     updatedAt: string;
 }
+
+export type RelationshipTag = Pick<Tag, 'id' | 'name' | 'slug'>;

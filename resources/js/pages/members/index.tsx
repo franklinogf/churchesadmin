@@ -24,7 +24,7 @@ export const columns: ColumnDef<Member>[] = [
     {
         header: ({ column }) => <DataTableColumnHeader column={column} title="Last name" />,
         enableHiding: false,
-        accessorKey: 'last_name',
+        accessorKey: 'lastName',
     },
     {
         header: ({ column }) => <DataTableColumnHeader column={column} title="Phone" />,
@@ -40,9 +40,9 @@ export const columns: ColumnDef<Member>[] = [
     },
     {
         header: ({ column }) => <DataTableColumnHeader column={column} title="Civil Status" />,
-        accessorKey: 'civil_status',
+        accessorKey: 'civilStatus',
         cell: ({ row }) => {
-            return <Badge className="w-24">{row.getValue('civil_status')}</Badge>;
+            return <Badge className="w-24">{row.getValue('civilStatus')}</Badge>;
         },
     },
     {
@@ -116,6 +116,7 @@ interface IndexProps {
 }
 export default function Index({ members }: IndexProps) {
     const { t } = useLaravelReactI18n();
+    console.log(members);
     return (
         <AppLayout breadcrumbs={breadcrumbs} title={t('Members')}>
             <PageTitle>{t('Members')}</PageTitle>

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Resources\Member;
 
 use App\Enums\TagType;
-use App\Http\Resources\AddressResource;
-use App\Http\Resources\TagResource;
+use App\Http\Resources\Address\AddressRelationshipResource;
+use App\Http\Resources\Tag\TagRelationshipResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -31,10 +31,14 @@ final class MemberResource extends JsonResource
             'gender' => $this->gender->value,
             'dob' => $this->dob->format('Y-m-d'),
             'civilStatus' => $this->civil_status->value,
+            'skills' => TagRelationshipResource::collection($this->tagsWithType(TagType::SKILL->value)),
+            'skillsCount' => $this->whenCounted('skills', $this->tagsWithType(TagType::SKILL->value)->count()),
+            'categories' => TagRelationshipResource::collection($this->tagsWithType(TagType::CATEGORY->value)),
+            'categoriesCount' => $this->whenCounted('categories', $this->tagsWithType(TagType::CATEGORY->value)->count()),
+            'address' => new AddressRelationshipResource($this->whenLoaded('address')),
             'createdAt' => $this->created_at->format('Y-m-d H:i:s'),
-            'skills' => TagResource::collection($this->tagsWithType(TagType::SKILL->value)),
-            'categories' => TagResource::collection($this->tagsWithType(TagType::CATEGORY->value)),
-            'address' => new AddressResource($this->address),
+            'updatedAt' => $this->updated_at->format('Y-m-d H:i:s'),
+            'deletedAt' => $this->deleted_at?->format('Y-m-d H:i:s'),
         ];
     }
 }

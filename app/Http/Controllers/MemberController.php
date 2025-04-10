@@ -11,7 +11,7 @@ use App\Enums\TagType;
 use App\Http\Requests\CreateMemberRequest;
 use App\Http\Requests\UpdateMemberRequest;
 use App\Http\Resources\Member\MemberResource;
-use App\Http\Resources\TagResource;
+use App\Http\Resources\Tag\TagResource;
 use App\Models\Member;
 use App\Models\Tag;
 use Illuminate\Http\RedirectResponse;
@@ -33,7 +33,7 @@ final class MemberController extends Controller
     {
         $members = Member::latest()->get();
 
-        return Inertia::render('members/index', ['members' => $members]);
+        return Inertia::render('members/index', ['members' => MemberResource::collection($members)]);
     }
 
     /**

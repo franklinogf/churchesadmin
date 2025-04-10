@@ -58,12 +58,12 @@ export default function Edit({ member, genders, civilStatuses, skills, categorie
         skills: convertTagsToMultiselectOptions(member.skills),
         categories: convertTagsToMultiselectOptions(member.categories),
         address: {
-            address_1: member.address.address1,
-            address_2: member.address.address2,
-            city: member.address.city,
-            state: member.address.state,
-            country: member.address.country,
-            zip_code: member.address.zipCode,
+            address_1: member.address?.address1 ?? '',
+            address_2: member.address?.address2 ?? '',
+            city: member.address?.city ?? '',
+            state: member.address?.state ?? '',
+            country: member.address?.country ?? '',
+            zip_code: member.address?.zipCode ?? '',
         },
     });
 

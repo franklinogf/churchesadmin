@@ -1,5 +1,7 @@
-import { Tag } from './tag';
+import { AddressRelationship } from '@/types/models/address';
+import { RelationshipTag } from '@/types/models/tag';
 
+export type MemberMorphClass = 'member';
 export interface Member {
     id: number;
     name: string;
@@ -9,16 +11,12 @@ export interface Member {
     gender: string;
     dob: string;
     civilStatus: string;
+    skills: RelationshipTag[];
+    skillsCount?: number;
+    categories: RelationshipTag[];
+    categoriesCount?: number;
+    address?: AddressRelationship | null;
     createdAt: string;
     updatedAt: string;
-    skills: Tag[];
-    categories: Tag[];
-    address: {
-        address1: string;
-        address2: string;
-        city: string;
-        state: string;
-        country: string;
-        zipCode: string;
-    };
+    deletedAt: string | null;
 }

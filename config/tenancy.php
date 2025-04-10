@@ -112,7 +112,7 @@ return [
          */
         'resolvers' => [
             Resolvers\DomainTenantResolver::class => [
-                'cache' => true,
+                'cache' => false,
                 'cache_ttl' => 3600, // seconds
                 'cache_store' => null, // null = default
             ],
