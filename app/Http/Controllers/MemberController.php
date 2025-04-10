@@ -67,19 +67,19 @@ final class MemberController extends Controller
             return to_route('members.index')->with(FlashMessageKey::ERROR->value, $response->message());
         }
 
-        $memberData = $request->safe()->except(['skills', 'categories', 'address']);
+        $memberData = $request->getMemberData();
 
-        $skills = collect($request->safe()->only(['skills']))->flatten()->toArray();
-        $categories = collect($request->safe()->only(['categories']))->flatten()->toArray();
-        $addressData = $request->safe()->only(['address']);
+        $skillData = $request->getSkillData();
+        $categoryData = $request->getCategoryData();
+        $addressData = $request->getAddressData();
 
         $member = Member::create($memberData);
 
-        $member->attachTags($skills, TagType::SKILL->value);
-        $member->attachTags($categories, TagType::CATEGORY->value);
+        $member->attachTags($skillData, TagType::SKILL->value);
+        $member->attachTags($categoryData, TagType::CATEGORY->value);
 
-        if (array_key_exists('address', $addressData)) {
-            $member->address()->create($addressData['address']);
+        if ($addressData !== null) {
+            $member->address()->create($addressData);
         }
 
         return to_route('members.index')->with(FlashMessageKey::SUCCESS->value, 'Member created successfully.');
@@ -124,19 +124,21 @@ final class MemberController extends Controller
             return to_route('members.index')->with(FlashMessageKey::ERROR->value, $response->message());
         }
 
-        $memberData = $request->safe()->except(['skills', 'categories', 'address']);
+        $memberData = $request->getMemberData();
 
-        $skills = collect($request->safe()->only(['skills']))->flatten()->toArray();
-        $categories = collect($request->safe()->only(['categories']))->flatten()->toArray();
-        $addressData = $request->safe()->only(['address']);
+        $skillData = $request->getSkillData();
+        $categoryData = $request->getCategoryData();
+        $addressData = $request->getAddressData();
 
         $member->update($memberData);
 
-        $member->syncTagsWithType($skills, TagType::SKILL->value);
-        $member->syncTagsWithType($categories, TagType::CATEGORY->value);
+        $member->syncTagsWithType($skillData, TagType::SKILL->value);
+        $member->syncTagsWithType($categoryData, TagType::CATEGORY->value);
 
-        if (array_key_exists('address', $addressData)) {
-            $member->address()->update($addressData['address']);
+        if ($addressData !== null) {
+            $member->address()->update($addressData);
+        } else {
+            $member->address()->delete();
         }
 
         return to_route('members.index')->with(FlashMessageKey::SUCCESS->value, 'Member updated successfully.');

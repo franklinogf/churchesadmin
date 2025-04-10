@@ -47,4 +47,29 @@ final class CreateMemberRequest extends FormRequest
             'address.country' => ['required_unless:address.address_1,null', 'nullable', 'string', 'uppercase', 'min:2', 'max:2'],
         ];
     }
+
+    public function getMemberData(): array
+    {
+        return $this->safe()->except(['skills', 'categories', 'address']);
+    }
+
+    public function getSkillData(): array
+    {
+        return collect($this->safe()->only(['skills']))->flatten()->toArray();
+    }
+
+    public function getCategoryData(): array
+    {
+        return collect($this->safe()->only(['categories']))->flatten()->toArray();
+    }
+
+    public function getAddressData(): ?array
+    {
+        $addressData = $this->safe()->only(['address']);
+        if (array_key_exists('address', $addressData)) {
+            return $addressData['address'];
+        }
+
+        return null;
+    }
 }

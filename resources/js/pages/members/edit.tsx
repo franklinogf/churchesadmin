@@ -136,7 +136,6 @@ export default function Edit({ member, genders, civilStatuses, skills, categorie
                     <AddressFormSkeleton
                         data={data.address}
                         setData={(value) => {
-                            console.log(value);
                             setData('address', value);
                         }}
                         errors={errors}
