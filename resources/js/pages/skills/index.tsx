@@ -99,7 +99,6 @@ interface IndexPageProps {
     skills: Tag[];
 }
 export default function Index({ skills }: IndexPageProps) {
-    console.log(skills);
     const { t } = useLaravelReactI18n();
     return (
         <AppLayout breadcrumbs={breadcrumbs} title={t('Skills')}>

@@ -1,4 +1,5 @@
 import { LanguageCode } from '@/enums';
+import { UserPermission } from '@/enums/user';
 import { LucideIcon } from 'lucide-react';
 import type { Config } from 'ziggy-js';
 
@@ -22,6 +23,7 @@ export interface NavItem {
     href: string;
     icon?: LucideIcon | null;
     isActive?: boolean;
+    permissionNeeded?: UserPermission;
 }
 
 export interface SharedData {
