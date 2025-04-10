@@ -14,7 +14,7 @@ import { CheckIcon, ChevronDown } from 'lucide-react';
 
 // Dropdown props
 interface CountryDropdownProps {
-    onChange?: (country: any) => void;
+    onChange?: (country: string) => void;
     defaultValue?: string | null;
     disabled?: boolean;
     placeholder?: string;

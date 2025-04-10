@@ -66,13 +66,18 @@ final class MemberController extends Controller
             return to_route('members.index')->with(FlashMessageKey::ERROR->value, $response->message());
         }
 
+        $member = $request->safe()->except(['skills', 'categories', 'address']);
+
         $skills = collect($request->safe()->only(['skills']))->flatten()->toArray();
         $categories = collect($request->safe()->only(['categories']))->flatten()->toArray();
-        /**
-         * @var array<string, mixed> $validated
-         */
-        $validated = $request->safe()->except(['skills', 'categories']);
-        $member = Member::create($validated);
+        $address = $request->safe()->only(['address'])['address'];
+
+        $member = Member::create($member);
+
+        if (count($address) > 0) {
+            $member->address()->create($address);
+        }
+
         $member->attachTags($skills, TagType::SKILL->value);
         $member->attachTags($categories, TagType::CATEGORY->value);
 

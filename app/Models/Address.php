@@ -36,6 +36,6 @@ final class Address extends Model
      */
     public function owner(): MorphTo
     {
-        return $this->morphTo();
+        return $this->morphTo('addresses', 'owner_type', 'owner_id');
     }
 }

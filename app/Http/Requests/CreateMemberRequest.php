@@ -38,6 +38,13 @@ final class CreateMemberRequest extends FormRequest
             'skills.*' => ['string'],
             'categories' => ['array'],
             'categories.*' => ['string'],
+            'address' => ['required_unless:address.address_1,null', 'exclude_if:address.address_1,null'],
+            'address.address_1' => ['required_with:address.city,address.state,address.zip_code,address.country', 'nullable', 'string', 'min:2', 'max:255'],
+            'address.address_2' => ['nullable', 'string', 'min:2', 'max:255'],
+            'address.city' => ['required_unless:address.address_1,null', 'nullable', 'string', 'min:2', 'max:255'],
+            'address.state' => ['required_unless:address.address_1,null', 'nullable', 'string', 'min:2', 'max:255'],
+            'address.zip_code' => ['required_unless:address.address_1,null', 'nullable', 'string', 'min:2', 'max:255'],
+            'address.country' => ['required_unless:address.address_1,null', 'nullable', 'string', 'uppercase', 'min:2', 'max:2'],
         ];
     }
 }

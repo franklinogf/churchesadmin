@@ -22,7 +22,7 @@ export function CountryField({ error, label, disabled, className, value, onChang
                 placeholder={placeholder}
                 defaultValue={value}
                 onChange={(country) => {
-                    onChange?.(country.iso3);
+                    onChange?.(country);
                 }}
             />
             <FieldError error={error} />

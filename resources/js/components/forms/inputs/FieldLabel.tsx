@@ -1,19 +1,46 @@
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';
+import { RequiredFieldIcon } from '../RequiredFieldIcon';
 
-export function FieldLabel({ label, disabled, id, className }: { label?: string; disabled?: boolean; id?: string; className?: string }) {
+export function FieldLabel({
+    required,
+    label,
+    disabled,
+    id,
+    className,
+}: {
+    required?: boolean;
+    label?: string;
+    disabled?: boolean;
+    id?: string;
+    className?: string;
+}) {
     if (!label) return null;
 
     return (
         <Label
             asChild={id === undefined}
             aria-disabled={disabled}
-            className={cn(className, {
-                'text-muted-foreground/80': disabled,
-            })}
+            className={cn(
+                'flex gap-x-0.5',
+                {
+                    'text-muted-foreground/80': disabled,
+                },
+                className,
+            )}
             htmlFor={id}
         >
-            {id === undefined ? <p>{label}</p> : label}
+            {id === undefined ? (
+                <div>
+                    {label}
+                    {required && <RequiredFieldIcon />}
+                </div>
+            ) : (
+                <>
+                    <span>{label}</span>
+                    {required && <RequiredFieldIcon />}
+                </>
+            )}
         </Label>
     );
 }

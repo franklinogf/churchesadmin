@@ -19,12 +19,12 @@ export interface MultiSelectFieldProps {
     options: Tag[];
 }
 
-export function MultiSelectField({ error, label, disabled, className, placeholder, options, value, onChange }: MultiSelectFieldProps) {
+export function MultiSelectField({ error, label, disabled, className, placeholder, options, value, onChange, required }: MultiSelectFieldProps) {
     const { t } = useLaravelReactI18n();
     const selectOptions = convertTagsToMultiselectOptions(options);
     return (
         <FieldContainer className={className}>
-            <FieldLabel disabled={disabled} label={label} />
+            <FieldLabel disabled={disabled} label={label} required={required} />
             <MultipleSelector
                 badgeClassName="[&_svg]:cursor-pointer"
                 value={value ?? []}

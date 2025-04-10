@@ -15,6 +15,7 @@ interface DateFieldProps {
     value?: string;
     startYear?: number;
     endYear?: number;
+    required?: boolean;
     onChange?: (value: string) => void;
 }
 export function DateField({
@@ -26,10 +27,11 @@ export function DateField({
     startYear = new Date().getFullYear() - 90,
     endYear = new Date().getFullYear(),
     onChange,
+    required,
 }: DateFieldProps) {
     return (
         <FieldContainer className={className}>
-            <FieldLabel disabled={disabled} label={label} />
+            <FieldLabel disabled={disabled} label={label} required={required} />
             <DatePicker
                 locale={getCurrentDateLocale()}
                 disabled={disabled}

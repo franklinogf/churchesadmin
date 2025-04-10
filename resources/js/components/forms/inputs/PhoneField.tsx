@@ -11,13 +11,14 @@ interface PhoneFieldProps {
     placeholder?: string;
     value?: string;
     onChange?: (value: string) => void;
+    required?: boolean;
 }
 
-export function PhoneField({ error, label, disabled, className, placeholder, value, onChange }: PhoneFieldProps) {
+export function PhoneField({ error, label, disabled, className, placeholder, value, onChange, required }: PhoneFieldProps) {
     const id = useId();
     return (
         <FieldContainer className={className}>
-            <FieldLabel disabled={disabled} id={id} label={label} />
+            <FieldLabel disabled={disabled} id={id} label={label} required={required} />
             <PhoneInput
                 countrySelectProps={{ id: `${id}-country` }}
                 numberInputProps={{ id }}

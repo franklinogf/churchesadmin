@@ -11,12 +11,13 @@ interface InputFieldProps extends Omit<React.ComponentProps<typeof Input>, 'onCh
     fieldClassName?: string;
 }
 
-export function InputField({ error, label, disabled, className, value, onChange, fieldClassName, ...props }: InputFieldProps) {
+export function InputField({ required, error, label, disabled, className, value, onChange, fieldClassName, ...props }: InputFieldProps) {
     const id = useId();
     return (
         <FieldContainer className={className}>
-            <FieldLabel disabled={disabled} id={id} label={label} />
+            <FieldLabel disabled={disabled} id={id} label={label} required={required} />
             <Input
+                required={required}
                 disabled={disabled}
                 id={id}
                 value={value}

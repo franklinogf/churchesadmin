@@ -47,7 +47,7 @@ export function SelectField({
     const id = useId();
     return (
         <FieldContainer className={className}>
-            <FieldLabel disabled={disabled} error={error} id={id} label={label} />
+            <FieldLabel disabled={disabled} id={id} label={label} required={required} />
             <Select required={required} name={id} disabled={disabled} value={value} onValueChange={onChange}>
                 <SelectTrigger
                     id={id}
