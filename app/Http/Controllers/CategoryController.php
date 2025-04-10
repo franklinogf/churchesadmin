@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Actions\Tag\CreateTagAction;
+use App\Actions\Tag\DeleteTagAction;
+use App\Actions\Tag\UpdateTagAction;
 use App\Enums\FlashMessageKey;
 use App\Enums\TagType;
 use App\Http\Requests\Tag\Category\CreateCategoryRequest;
@@ -32,25 +35,21 @@ final class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CreateCategoryRequest $request): RedirectResponse
+    public function store(CreateCategoryRequest $request, CreateTagAction $action): RedirectResponse
     {
 
         /**
-         * @var array{name:string,is_regular:bool}
+         * @var array{name:string,is_regular:bool} $data
          */
-        $validated = $request->validated();
+        $data = $request->validated();
 
-        $response = Gate::inspect('create', [Tag::class, TagType::CATEGORY, $validated['is_regular']]);
+        $response = Gate::inspect('create', [Tag::class, TagType::CATEGORY, $data['is_regular']]);
 
         if ($response->denied()) {
             return to_route('categories.index')->with(FlashMessageKey::ERROR->value, $response->message());
         }
 
-        Tag::create([
-            'name' => $validated['name'],
-            'type' => TagType::CATEGORY->value,
-            'is_regular' => $validated['is_regular'],
-        ]);
+        $action->handle($data, TagType::CATEGORY);
 
         return to_route('categories.index')->with(FlashMessageKey::SUCCESS->value, __('Category created successfully.'));
     }
@@ -58,24 +57,15 @@ final class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCategoryRequest $request, string $id): RedirectResponse
+    public function update(UpdateCategoryRequest $request, Tag $tag, UpdateTagAction $action): RedirectResponse
     {
-        $tag = Tag::findOrFail($id);
         $response = Gate::inspect('update', $tag);
 
         if ($response->denied()) {
             return to_route('categories.index')->with(FlashMessageKey::ERROR->value, $response->message());
         }
 
-        /**
-         * @var array{name:string,is_regular:bool}
-         */
-        $validated = $request->validated();
-
-        $tag->update([
-            'name' => $validated['name'],
-            'is_regular' => $validated['is_regular'],
-        ]);
+        $action->handle($tag, $request->validated());
 
         return to_route('categories.index')->with(FlashMessageKey::SUCCESS->value, __('Category updated successfully.'));
     }
@@ -83,15 +73,15 @@ final class CategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id): RedirectResponse
+    public function destroy(Tag $tag, DeleteTagAction $action): RedirectResponse
     {
-        $tag = Tag::findOrFail($id);
         $response = Gate::inspect('delete', $tag);
 
         if ($response->denied()) {
             return to_route('categories.index')->with(FlashMessageKey::ERROR->value, $response->message());
         }
-        $tag->delete();
+
+        $action->handle($tag);
 
         return to_route('categories.index')->with(FlashMessageKey::SUCCESS->value, __('Category deleted successfully.'));
     }

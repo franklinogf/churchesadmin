@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Actions\Tag\CreateTagAction;
+use App\Actions\Tag\DeleteTagAction;
+use App\Actions\Tag\UpdateTagAction;
 use App\Enums\FlashMessageKey;
 use App\Enums\TagType;
 use App\Http\Requests\Tag\Skill\CreateSkillRequest;
@@ -32,24 +35,20 @@ final class SkillController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CreateSkillRequest $request): RedirectResponse
+    public function store(CreateSkillRequest $request, CreateTagAction $action): RedirectResponse
     {
         /**
-         * @var array{name:string,is_regular:bool}
+         * @var array{name:string,is_regular:bool} $data
          */
-        $validated = $request->validated();
+        $data = $request->validated();
 
-        $response = Gate::inspect('create', [Tag::class, TagType::SKILL, $validated['is_regular']]);
+        $response = Gate::inspect('create', [Tag::class, TagType::SKILL, $data['is_regular']]);
 
         if ($response->denied()) {
             return to_route('skills.index')->with(FlashMessageKey::ERROR->value, $response->message());
         }
 
-        Tag::create([
-            'name' => $validated['name'],
-            'type' => TagType::SKILL->value,
-            'is_regular' => $validated['is_regular'],
-        ]);
+        $action->handle($data, TagType::SKILL);
 
         return to_route('skills.index')->with(FlashMessageKey::SUCCESS->value, __('Skill created successfully.'));
     }
@@ -57,24 +56,15 @@ final class SkillController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateSkillRequest $request, string $id): RedirectResponse
+    public function update(UpdateSkillRequest $request, Tag $tag, UpdateTagAction $action): RedirectResponse
     {
-        $tag = Tag::findOrFail($id);
         $response = Gate::inspect('update', $tag);
 
         if ($response->denied()) {
             return to_route('skills.index')->with(FlashMessageKey::ERROR->value, $response->message());
         }
 
-        /**
-         * @var array{name:string,is_regular:bool}
-         */
-        $validated = $request->validated();
-
-        $tag->update([
-            'name' => $validated['name'],
-            'is_regular' => $validated['is_regular'],
-        ]);
+        $action->handle($tag, $request->validated());
 
         return to_route('skills.index')->with(FlashMessageKey::SUCCESS->value, __('Skill updated successfully.'));
     }
@@ -82,17 +72,15 @@ final class SkillController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id): RedirectResponse
+    public function destroy(Tag $tag, DeleteTagAction $action): RedirectResponse
     {
-        $tag = Tag::findOrFail($id);
-
         $response = Gate::inspect('delete', $tag);
 
         if ($response->denied()) {
             return to_route('skills.index')->with(FlashMessageKey::ERROR->value, $response->message());
         }
 
-        $tag->delete();
+        $action->handle($tag);
 
         return to_route('skills.index')->with(FlashMessageKey::SUCCESS->value, __('Skill deleted successfully.'));
     }

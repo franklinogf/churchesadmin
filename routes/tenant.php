@@ -48,10 +48,12 @@ Route::middleware([
                     ->middleware(Authorize::using(TenantPermission::MANAGE_MEMBERS->value));
 
                 Route::resource('skills', SkillController::class)
+                    ->parameter('skills', 'tag')
                     ->except(['show', 'create', 'edit'])
                     ->middleware(Authorize::using(TenantPermission::MANAGE_SKILLS->value));
 
                 Route::resource('categories', CategoryController::class)
+                    ->parameter('categories', 'tag')
                     ->except(['show', 'create', 'edit'])
                     ->middleware(Authorize::using(TenantPermission::MANAGE_CATEGORIES->value));
             });

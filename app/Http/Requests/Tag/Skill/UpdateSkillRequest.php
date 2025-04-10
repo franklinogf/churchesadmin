@@ -8,6 +8,9 @@ use App\Enums\TagType;
 use CodeZero\UniqueTranslation\UniqueTranslationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
+/**
+ * @property-read \App\Models\Tag $tag
+ */
 final class UpdateSkillRequest extends FormRequest
 {
     /**
@@ -28,7 +31,7 @@ final class UpdateSkillRequest extends FormRequest
         return [
             'name.*' => ['required', 'string', 'min:3', 'max:255',
                 UniqueTranslationRule::for('tags')
-                    ->ignore($this->route('skill'))
+                    ->ignore($this->tag->id)
                     ->where('type', TagType::SKILL->value),
             ],
             'is_regular' => ['required', 'boolean'],
