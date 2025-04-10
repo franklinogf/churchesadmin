@@ -38,7 +38,7 @@ final class CreateMemberRequest extends FormRequest
             'skills.*' => ['string'],
             'categories' => ['array'],
             'categories.*' => ['string'],
-            'address' => ['required_unless:address.address_1,null', 'exclude_if:address.address_1,null'],
+            'address' => ['exclude_if:address.address_1,null'],
             'address.address_1' => ['required_with:address.city,address.state,address.zip_code,address.country', 'nullable', 'string', 'min:2', 'max:255'],
             'address.address_2' => ['nullable', 'string', 'min:2', 'max:255'],
             'address.city' => ['required_unless:address.address_1,null', 'nullable', 'string', 'min:2', 'max:255'],

@@ -60,26 +60,27 @@ final class MemberController extends Controller
      */
     public function store(CreateMemberRequest $request): RedirectResponse
     {
+
         $response = Gate::inspect('create', Member::class);
 
         if ($response->denied()) {
             return to_route('members.index')->with(FlashMessageKey::ERROR->value, $response->message());
         }
 
-        $member = $request->safe()->except(['skills', 'categories', 'address']);
+        $memberData = $request->safe()->except(['skills', 'categories', 'address']);
 
         $skills = collect($request->safe()->only(['skills']))->flatten()->toArray();
         $categories = collect($request->safe()->only(['categories']))->flatten()->toArray();
-        $address = $request->safe()->only(['address'])['address'];
+        $addressData = $request->safe()->only(['address']);
 
-        $member = Member::create($member);
-
-        if (count($address) > 0) {
-            $member->address()->create($address);
-        }
+        $member = Member::create($memberData);
 
         $member->attachTags($skills, TagType::SKILL->value);
         $member->attachTags($categories, TagType::CATEGORY->value);
+
+        if (array_key_exists('address', $addressData)) {
+            $member->address()->create($addressData['address']);
+        }
 
         return to_route('members.index')->with(FlashMessageKey::SUCCESS->value, 'Member created successfully.');
     }
@@ -122,15 +123,20 @@ final class MemberController extends Controller
             return to_route('members.index')->with(FlashMessageKey::ERROR->value, $response->message());
         }
 
+        $memberData = $request->safe()->except(['skills', 'categories', 'address']);
+
         $skills = collect($request->safe()->only(['skills']))->flatten()->toArray();
         $categories = collect($request->safe()->only(['categories']))->flatten()->toArray();
-        /**
-         * @var array<string, mixed> $validated
-         */
-        $validated = $request->safe()->except(['skills', 'categories']);
-        $member->update($validated);
+        $addressData = $request->safe()->only(['address']);
+
+        $member->update($memberData);
+
         $member->syncTagsWithType($skills, TagType::SKILL->value);
         $member->syncTagsWithType($categories, TagType::CATEGORY->value);
+
+        if (array_key_exists('address', $addressData)) {
+            $member->address()->update($addressData['address']);
+        }
 
         return to_route('members.index')->with(FlashMessageKey::SUCCESS->value, 'Member updated successfully.');
 
