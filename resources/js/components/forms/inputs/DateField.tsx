@@ -3,7 +3,8 @@ import { FieldError } from '@/components/forms/inputs/FieldError';
 import { FieldLabel } from '@/components/forms/inputs/FieldLabel';
 
 import { DatePicker } from '@/components/custom-ui/DatePicker';
-import { formatDateToString, formatStringToDate, getCurrentDateLocale } from '@/lib/datetime';
+import { useLocaleDate } from '@/hooks/use-locale-date';
+import { formatDateToString, formatStringToDate } from '@/lib/datetime';
 
 interface DateFieldProps {
     error?: string;
@@ -29,6 +30,7 @@ export function DateField({
     onChange,
     required,
 }: DateFieldProps) {
+    const { getCurrentDateLocale } = useLocaleDate();
     return (
         <FieldContainer className={className}>
             <FieldLabel disabled={disabled} label={label} required={required} />

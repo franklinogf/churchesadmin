@@ -5,8 +5,9 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { UserPermission } from '@/enums/user';
+import { usePermissions } from '@/hooks/use-permissions';
 import AppLayout from '@/layouts/app-layout';
-import { userCan } from '@/lib/utils';
+
 import useConfirmationStore from '@/stores/confirmationStore';
 import type { BreadcrumbItem } from '@/types';
 import { Member } from '@/types/models/member';
@@ -50,9 +51,10 @@ export const columns: ColumnDef<Member>[] = [
         enableHiding: false,
         enableSorting: false,
         size: 0,
-        cell: ({ row }) => {
+        cell: function CellComponent({ row }) {
             const { t } = useLaravelReactI18n();
             const { openConfirmation } = useConfirmationStore();
+            const { userCan } = usePermissions();
             return (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -116,7 +118,7 @@ interface IndexProps {
 }
 export default function Index({ members }: IndexProps) {
     const { t } = useLaravelReactI18n();
-    console.log(members);
+    const { userCan } = usePermissions();
     return (
         <AppLayout breadcrumbs={breadcrumbs} title={t('Members')}>
             <PageTitle>{t('Members')}</PageTitle>

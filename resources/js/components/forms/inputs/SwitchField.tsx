@@ -26,7 +26,7 @@ export function SwitchField({ label, disabled, value, error, description, onChan
                         onCheckedChange={onChange}
                         id={id}
                     />
-                    <FieldLabel disabled={disabled} error={error !== undefined} id={id} label={label} />
+                    <FieldLabel disabled={disabled} id={id} label={label} />
                 </div>
                 {description && (
                     <p className="text-muted-foreground text-sm" id={`${id}-description`}>

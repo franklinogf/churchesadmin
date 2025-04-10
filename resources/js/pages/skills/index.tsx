@@ -7,8 +7,9 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader } from '@/components/ui/dialog';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { UserPermission } from '@/enums/user';
+import { useTranslations } from '@/hooks/use-empty-translations';
+import { usePermissions } from '@/hooks/use-permissions';
 import AppLayout from '@/layouts/app-layout';
-import { emptyTranslations, userCan } from '@/lib/utils';
 import useConfirmationStore from '@/stores/confirmationStore';
 import type { BreadcrumbItem } from '@/types';
 import { Tag } from '@/types/models/tag';
@@ -30,9 +31,10 @@ export const columns: ColumnDef<Tag>[] = [
         enableHiding: false,
         enableSorting: false,
         size: 0,
-        cell: ({ row }) => {
+        cell: function CellComponent({ row }) {
             const { t } = useLaravelReactI18n();
             const { openConfirmation } = useConfirmationStore();
+            const { userCan } = usePermissions();
             const skill = row.original;
             if (skill.isRegular && !userCan(UserPermission.UPDATE_REGULAR_TAG) && !userCan(UserPermission.DELETE_REGULAR_TAG)) {
                 return null;
@@ -100,6 +102,7 @@ interface IndexPageProps {
 }
 export default function Index({ skills }: IndexPageProps) {
     const { t } = useLaravelReactI18n();
+    const { userCan } = usePermissions();
     return (
         <AppLayout breadcrumbs={breadcrumbs} title={t('Skills')}>
             <PageTitle>{t('Skills')}</PageTitle>
@@ -124,8 +127,10 @@ export default function Index({ skills }: IndexPageProps) {
 function SkillForm({ skill, children }: { skill?: Tag; children: React.ReactNode }) {
     const [open, setOpen] = useState(false);
     const { t } = useLaravelReactI18n();
+    const { emptyTranslations } = useTranslations();
+    const { userCan } = usePermissions();
     const { data, setData, post, put, errors, reset, processing } = useForm({
-        name: skill?.nameTranslations ?? emptyTranslations(),
+        name: skill?.nameTranslations ?? emptyTranslations,
         is_regular: skill?.isRegular ?? false,
     });
 

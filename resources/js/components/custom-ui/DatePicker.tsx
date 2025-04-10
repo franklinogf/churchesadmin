@@ -48,7 +48,7 @@ export function DatePicker({ startYear, endYear, selected, disabled, locale, onS
             const newDate = new Date(parseInt(selectedYear), parseInt(selectedMonth), parseInt(selectedDay));
             onSelect(newDate);
         }
-    }, [selectedDay, selectedMonth, selectedYear]);
+    }, [selectedDay, selectedMonth, selectedYear, locale, onSelect]);
 
     return (
         <div className="grid w-full max-w-[275px] grid-cols-3 gap-4">

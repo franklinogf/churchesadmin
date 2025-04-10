@@ -71,7 +71,7 @@ export function SelectField({
                             <Button
                                 size="sm"
                                 onClick={() => {
-                                    onChange && onChange('');
+                                    onChange?.('');
                                 }}
                                 className="w-full"
                                 variant="secondary"

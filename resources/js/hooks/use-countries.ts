@@ -15,7 +15,7 @@ export function useCountries() {
             code: code.toUpperCase(),
             name,
         }));
-    }, [currentLocale()]);
+    }, [currentLocale]);
 
     function getCurrentCountryName(code: string) {
         return countries.find((country) => country.code.toUpperCase() === code.toUpperCase())?.name || code.toUpperCase();

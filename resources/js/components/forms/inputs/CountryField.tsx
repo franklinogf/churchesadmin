@@ -11,10 +11,9 @@ interface CountryFieldProps {
     onChange?: (value: string) => void;
     error?: string;
     label?: string;
-    fieldClassName?: string;
 }
 
-export function CountryField({ error, label, disabled, className, value, onChange, fieldClassName, placeholder }: CountryFieldProps) {
+export function CountryField({ error, label, disabled, className, value, onChange, placeholder }: CountryFieldProps) {
     return (
         <FieldContainer className={className}>
             <FieldLabel disabled={disabled} label={label} />

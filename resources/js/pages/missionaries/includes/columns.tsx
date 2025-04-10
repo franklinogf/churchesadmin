@@ -3,7 +3,8 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { UserPermission } from '@/enums/user';
-import { userCan } from '@/lib/utils';
+import { usePermissions } from '@/hooks/use-permissions';
+
 import useConfirmationStore from '@/stores/confirmationStore';
 import { Missionary } from '@/types/models/missionary';
 import { Link, router } from '@inertiajs/react';
@@ -39,9 +40,10 @@ export const columns: ColumnDef<Missionary>[] = [
         enableHiding: false,
         enableSorting: false,
         size: 0,
-        cell: ({ row }) => {
+        cell: function CellComponent({ row }) {
             const { t } = useLaravelReactI18n();
             const { openConfirmation } = useConfirmationStore();
+            const { userCan } = usePermissions();
             return (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>

@@ -40,8 +40,7 @@ export function CurrencyField({ required, error, label, disabled, className, val
                     value={value}
                     fixedDecimalLength={2}
                     decimalScale={2}
-                    onValueChange={(value, name, values) => {
-                        console.log('value', values);
+                    onValueChange={(value) => {
                         onChange?.(value ?? '');
                     }}
                     {...props}

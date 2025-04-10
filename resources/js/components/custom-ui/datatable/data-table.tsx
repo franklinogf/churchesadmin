@@ -118,7 +118,7 @@ export function DataTable<TData, TValue>({
                             table.getRowModel().rows.map((row) => (
                                 <TableRow
                                     onClick={() => {
-                                        selectedActionButtonLabel && row.toggleSelected();
+                                        if (selectedActionButtonLabel) row.toggleSelected();
                                     }}
                                     key={row.id}
                                     data-state={row.getIsSelected() && 'selected'}
@@ -164,7 +164,7 @@ export function DataTable<TData, TValue>({
     );
 }
 
-function VisibilityDropdownMenu({ columns }: { columns: Column<any, unknown>[] }) {
+function VisibilityDropdownMenu<TData>({ columns }: { columns: Column<TData, unknown>[] }) {
     const { t } = useLaravelReactI18n();
     if (columns.length === 0) return null;
     return (

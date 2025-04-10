@@ -1,18 +1,6 @@
-import { format, intlFormat, Locale, parse } from 'date-fns';
-import { enUS, es } from 'date-fns/locale';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { format, Locale, parse } from 'date-fns';
 
 /* ---------------------------- Dates formattters --------------------------- */
-export function formatDate(
-    date: string | Date = new Date(),
-    { dateStyle }: { dateStyle: Intl.DateTimeFormatOptions['dateStyle'] } = {
-        dateStyle: 'medium',
-    },
-) {
-    const { currentLocale } = useLaravelReactI18n();
-    if (!date) return undefined;
-    return intlFormat(date, { dateStyle }, { locale: currentLocale() });
-}
 
 export function formatDateToString(date = new Date()) {
     return format(date, 'yyyy-MM-dd');
@@ -85,13 +73,4 @@ export function genDays({
 
 export function genYears({ startYear, endYear }: { startYear: number; endYear: number }) {
     return Array.from({ length: endYear - startYear + 1 }, (_, i) => startYear + i);
-}
-
-export function getCurrentDateLocale() {
-    const { currentLocale } = useLaravelReactI18n();
-    const dateLocales: Record<string, Locale> = {
-        es: es,
-        en: enUS,
-    };
-    return dateLocales[currentLocale()] || enUS;
 }

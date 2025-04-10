@@ -11,7 +11,7 @@ import { FieldLabel } from './FieldLabel';
 interface TranslatableInputProps {
     id?: string;
     label: string;
-    errors?: { errors: Record<any, string>; name: string };
+    errors?: { errors: Record<string, string>; name: string };
     values: LanguageTranslations;
     disabled?: boolean;
     onChange: (locale: string, value: string) => void;

@@ -8,8 +8,6 @@ import { Link } from '@inertiajs/react';
 import { LayoutGridIcon, Users2Icon } from 'lucide-react';
 import AppLogo from './app-logo';
 
-const footerNavItems: NavItem[] = [];
-
 const mainNavItems: NavItem[] = [
     {
         title: 'Dashboard',
@@ -41,7 +39,7 @@ const mainNavItems: NavItem[] = [
         permissionNeeded: UserPermission.MANAGE_MISSIONARIES,
     },
 ];
-
+const footerNavItems: NavItem[] = [];
 export function AppSidebar() {
     return (
         <Sidebar collapsible="icon" variant="inset">
