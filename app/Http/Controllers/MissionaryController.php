@@ -38,7 +38,13 @@ final class MissionaryController extends Controller
      */
     public function create(): Response
     {
-        return Inertia::render('missionaries/create');
+        $offeringFrequencies = OfferingFrequency::options();
+        $genders = Gender::options();
+
+        return Inertia::render('missionaries/create', [
+            'offeringFrequencies' => $offeringFrequencies,
+            'genders' => $genders,
+        ]);
     }
 
     /**
