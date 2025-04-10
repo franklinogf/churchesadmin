@@ -98,6 +98,7 @@ final class MemberController extends Controller
      */
     public function edit(Member $member): Response|RedirectResponse
     {
+        $member->load('address');
         $genders = Gender::options();
         $civilStatuses = CivilStatus::options();
         $skills = Tag::getWithType(TagType::SKILL->value);

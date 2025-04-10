@@ -30,7 +30,7 @@ final class AddressFactory extends Factory
             'city' => fake()->city(),
             'state' => fake()->state(),
             'zip_code' => fake()->postcode(),
-            'country' => fake()->country(),
+            'country' => fake()->countryCode(),
         ];
     }
 

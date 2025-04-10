@@ -14,7 +14,7 @@ import { convertTagsToMultiselectOptions, getMultiselecOptionsLabels } from '@/l
 import type { BreadcrumbItem, SelectOption } from '@/types';
 import { Member } from '@/types/models/member';
 import { Tag } from '@/types/models/tag';
-import { useForm, usePage } from '@inertiajs/react';
+import { useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export type EditForm = {
@@ -46,7 +46,6 @@ interface EditPageProps {
 }
 export default function Edit({ member, genders, civilStatuses, skills, categories }: EditPageProps) {
     const { t } = useLaravelReactI18n();
-    console.log(usePage().props);
     const { data, setData, put, errors, processing, transform } = useForm<EditForm>({
         name: member.name,
         last_name: member.lastName,

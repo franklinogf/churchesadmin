@@ -63,15 +63,18 @@ export function CountryDropdown({ onChange, defaultValue, disabled = false, plac
                     <div className="flex flex-grow items-center gap-2 overflow-hidden">
                         <span className="overflow-hidden text-ellipsis whitespace-nowrap">{getCurrentCountryName(selectedCountry)}</span>
                         <Button
+                            asChild
                             className="hover:text-primary size-4 cursor-pointer"
                             size="sm"
-                            variant="ghost"
+                            variant="link"
                             onClick={(e) => {
                                 e.stopPropagation();
                                 handleSelect('');
                             }}
                         >
-                            <XSquare />
+                            <span>
+                                <XSquare />
+                            </span>
                         </Button>
                     </div>
                 ) : (
