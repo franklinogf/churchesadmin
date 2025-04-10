@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Actions\Member\CreateMemberAction;
+use App\Actions\Member\DeleteMemberAction;
+use App\Actions\Member\UpdateMemberAction;
 use App\Enums\CivilStatus;
 use App\Enums\FlashMessageKey;
 use App\Enums\Gender;
@@ -58,7 +61,7 @@ final class MemberController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CreateMemberRequest $request): RedirectResponse
+    public function store(CreateMemberRequest $request, CreateMemberAction $action): RedirectResponse
     {
 
         $response = Gate::inspect('create', Member::class);
@@ -67,20 +70,13 @@ final class MemberController extends Controller
             return to_route('members.index')->with(FlashMessageKey::ERROR->value, $response->message());
         }
 
-        $memberData = $request->getMemberData();
+        $data = $request->getMemberData();
 
-        $skillData = $request->getSkillData();
-        $categoryData = $request->getCategoryData();
-        $addressData = $request->getAddressData();
+        $skills = $request->getSkillData();
+        $categories = $request->getCategoryData();
+        $address = $request->getAddressData();
 
-        $member = Member::create($memberData);
-
-        $member->attachTags($skillData, TagType::SKILL->value);
-        $member->attachTags($categoryData, TagType::CATEGORY->value);
-
-        if ($addressData !== null) {
-            $member->address()->create($addressData);
-        }
+        $action->handle($data, $skills, $categories, $address);
 
         return to_route('members.index')->with(FlashMessageKey::SUCCESS->value, 'Member created successfully.');
     }
@@ -116,7 +112,7 @@ final class MemberController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateMemberRequest $request, Member $member): RedirectResponse
+    public function update(UpdateMemberRequest $request, Member $member, UpdateMemberAction $action): RedirectResponse
     {
         $response = Gate::inspect('update', $member);
 
@@ -124,22 +120,12 @@ final class MemberController extends Controller
             return to_route('members.index')->with(FlashMessageKey::ERROR->value, $response->message());
         }
 
-        $memberData = $request->getMemberData();
+        $data = $request->getMemberData();
+        $skills = $request->getSkillData();
+        $categories = $request->getCategoryData();
+        $address = $request->getAddressData();
 
-        $skillData = $request->getSkillData();
-        $categoryData = $request->getCategoryData();
-        $addressData = $request->getAddressData();
-
-        $member->update($memberData);
-
-        $member->syncTagsWithType($skillData, TagType::SKILL->value);
-        $member->syncTagsWithType($categoryData, TagType::CATEGORY->value);
-
-        if ($addressData !== null) {
-            $member->address()->update($addressData);
-        } else {
-            $member->address()->delete();
-        }
+        $action->handle($member, $data, $skills, $categories, $address);
 
         return to_route('members.index')->with(FlashMessageKey::SUCCESS->value, 'Member updated successfully.');
 
@@ -148,7 +134,7 @@ final class MemberController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Member $member): RedirectResponse
+    public function destroy(Member $member, DeleteMemberAction $action): RedirectResponse
     {
         $response = Gate::inspect('delete', $member);
 
@@ -157,7 +143,7 @@ final class MemberController extends Controller
             return to_route('members.index')->with(FlashMessageKey::ERROR->value, $response->message());
         }
 
-        $member->delete();
+        $action->handle($member);
 
         return to_route('members.index')->with(FlashMessageKey::SUCCESS->value, 'Member deleted successfully.');
     }
