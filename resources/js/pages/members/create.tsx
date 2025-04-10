@@ -18,7 +18,7 @@ import type { Tag } from '@/types/models/tag';
 import { useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
-export type CreateForm = MemberFormData & {
+type CreateForm = MemberFormData & {
     address: AddressFormData;
 };
 
