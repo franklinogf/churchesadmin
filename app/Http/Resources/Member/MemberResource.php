@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Resources\Member;
 
 use App\Enums\TagType;
+use App\Http\Resources\AddressResource;
 use App\Http\Resources\TagResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -33,6 +34,7 @@ final class MemberResource extends JsonResource
             'createdAt' => $this->created_at->format('Y-m-d H:i:s'),
             'skills' => TagResource::collection($this->tagsWithType(TagType::SKILL->value)),
             'categories' => TagResource::collection($this->tagsWithType(TagType::CATEGORY->value)),
+            'address' => new AddressResource($this->address),
         ];
     }
 }

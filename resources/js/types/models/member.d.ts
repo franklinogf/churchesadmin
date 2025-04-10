@@ -13,4 +13,12 @@ export interface Member {
     updatedAt: string;
     skills: Tag[];
     categories: Tag[];
+    address: {
+        address1: string;
+        address2: string;
+        city: string;
+        state: string;
+        country: string;
+        zipCode: string;
+    };
 }
