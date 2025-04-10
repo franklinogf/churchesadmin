@@ -99,6 +99,7 @@ interface IndexPageProps {
     skills: Tag[];
 }
 export default function Index({ skills }: IndexPageProps) {
+    console.log(skills);
     const { t } = useLaravelReactI18n();
     return (
         <AppLayout breadcrumbs={breadcrumbs} title={t('Skills')}>
@@ -157,6 +158,7 @@ function SkillForm({ skill, children }: { skill?: Tag; children: React.ReactNode
 
                 <form className="space-y-4" onSubmit={handleSubmit}>
                     <TranslatableInput
+                        required
                         label={t('Name')}
                         values={data.name}
                         onChange={(locale, value) => setData(`name`, { ...data.name, [locale]: value })}

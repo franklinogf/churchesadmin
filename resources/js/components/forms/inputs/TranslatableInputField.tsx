@@ -15,20 +15,20 @@ interface TranslatableInputProps {
     values: LanguageTranslations;
     disabled?: boolean;
     onChange: (locale: string, value: string) => void;
+    required?: boolean;
 }
 
-export default function TranslatableInput({ id, label, errors, values, disabled, onChange }: TranslatableInputProps) {
+export default function TranslatableInput({ id, label, errors, values, disabled, required, onChange }: TranslatableInputProps) {
     const locales = usePage<SharedData>().props.availableLocales;
     const [activeLocale, setActiveLocale] = React.useState(locales[0].value);
     const { t } = useLaravelReactI18n();
 
     const errorMessage = errors?.errors[`${errors.name}.${activeLocale}`];
     const localeError = (locale: string) => Object.keys(errors?.errors ?? {}).some((key) => key.endsWith(locale));
-    const isError = Object.keys(errors?.errors ?? {}).some((key) => key.startsWith(errors?.name ?? ''));
 
     return (
         <FieldContainer className="space-y-2">
-            <FieldLabel disabled={disabled} error={isError} id={id} label={label} />
+            <FieldLabel disabled={disabled} id={id} label={label} required={required} />
             <Tabs value={activeLocale} onValueChange={(val) => setActiveLocale(val)}>
                 <TabsList className="gap-0.5">
                     {locales.map(({ value, label }) => (
@@ -44,12 +44,13 @@ export default function TranslatableInput({ id, label, errors, values, disabled,
                 {locales.map(({ value: code, label: langLabel }) => (
                     <TabsContent key={code} value={code}>
                         <Input
+                            required={required}
                             name={`${id}[${code}]`}
                             value={values[code as keyof LanguageTranslations]}
                             onChange={(e) => onChange(code, e.target.value)}
-                            placeholder={t(`Enter :name in :langLabel`, {
+                            placeholder={t(`Enter :name in :Language`, {
                                 name: label.toLowerCase(),
-                                langLabel,
+                                language: langLabel,
                             })}
                         />
                     </TabsContent>

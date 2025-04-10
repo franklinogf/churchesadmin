@@ -6,11 +6,11 @@ namespace App\Http\Controllers;
 
 use App\Enums\FlashMessageKey;
 use App\Enums\TagType;
-use App\Http\Resources\TagResource;
+use App\Http\Requests\Tag\Skill\CreateSkillRequest;
+use App\Http\Requests\Tag\Skill\UpdateSkillRequest;
+use App\Http\Resources\Tag\TagResource;
 use App\Models\Tag;
-use CodeZero\UniqueTranslation\UniqueTranslationRule;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -22,7 +22,7 @@ final class SkillController extends Controller
      */
     public function index(): Response
     {
-        $skills = Tag::whereType(TagType::SKILL->value)->orderBy('created_at', 'desc')->get();
+        $skills = Tag::whereType(TagType::SKILL->value)->orderByDesc('order_column')->get();
 
         return Inertia::render('skills/index', [
             'skills' => TagResource::collection($skills),
@@ -32,15 +32,12 @@ final class SkillController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request): RedirectResponse
+    public function store(CreateSkillRequest $request): RedirectResponse
     {
         /**
          * @var array{name:string,is_regular:bool}
          */
-        $validated = $request->validate([
-            'name.*' => ['required', 'string', 'min:3', 'max:255', UniqueTranslationRule::for('tags')->where('type', TagType::SKILL->value)],
-            'is_regular' => ['required', 'boolean'],
-        ]);
+        $validated = $request->validated();
 
         $response = Gate::inspect('create', [Tag::class, TagType::SKILL, $validated['is_regular']]);
 
@@ -60,7 +57,7 @@ final class SkillController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id): RedirectResponse
+    public function update(UpdateSkillRequest $request, string $id): RedirectResponse
     {
         $tag = Tag::findOrFail($id);
         $response = Gate::inspect('update', $tag);
@@ -72,14 +69,7 @@ final class SkillController extends Controller
         /**
          * @var array{name:string,is_regular:bool}
          */
-        $validated = $request->validate([
-            'name.*' => ['required', 'string', 'min:3', 'max:255',
-                UniqueTranslationRule::for('tags')
-                    ->ignore($tag->id)
-                    ->where('type', TagType::SKILL->value),
-            ],
-            'is_regular' => ['required', 'boolean'],
-        ]);
+        $validated = $request->validated();
 
         $tag->update([
             'name' => $validated['name'],
