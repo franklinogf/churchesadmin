@@ -1,8 +1,10 @@
+import { MaxWidthSection } from '@/components/MaxWidthSection';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from '@/components/ui/navigation-menu';
 import { NavBar } from '@/lib/utils';
 import { Link } from '@radix-ui/react-navigation-menu';
-import { TvIcon } from 'lucide-react';
+import { ArrowRight, TvIcon } from 'lucide-react';
 
 export default function Welcome() {
     return (
@@ -19,11 +21,28 @@ export default function Welcome() {
                                     </Link>
                                 </NavigationMenuItem>
                             ))}
-                            <Button>Start free trial</Button>
+                            <Button className="bg-blue-500">Start free trial</Button>
                         </NavigationMenuList>
                     </NavigationMenu>
                 </nav>
             </header>
+            <MaxWidthSection>
+                <section>
+                    <div className="mx-auto flex justify-center">
+                        <Badge className="bg-neutral-300 text-black">
+                            Intro R&D Tax Credits <ArrowRight />
+                        </Badge>
+                    </div>
+                    <div className="my-2 flex flex-col items-center">
+                        <h1 className="my-2 w-2xl text-center text-6xl font-semibold">Magically simplify accounting and taxes</h1>
+                        <p>
+                            <Badge className="text-muted-foreground my-4 bg-slate-300 text-center font-light text-pretty">
+                                Automated bookkeeping effortless tax filing, real-time insights. Set up in 10 mins. Back to building by 1:41am
+                            </Badge>
+                        </p>
+                    </div>
+                </section>
+            </MaxWidthSection>
         </main>
     );
 }
