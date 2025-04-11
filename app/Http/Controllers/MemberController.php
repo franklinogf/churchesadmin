@@ -11,8 +11,8 @@ use App\Enums\CivilStatus;
 use App\Enums\FlashMessageKey;
 use App\Enums\Gender;
 use App\Enums\TagType;
-use App\Http\Requests\CreateMemberRequest;
-use App\Http\Requests\UpdateMemberRequest;
+use App\Http\Requests\Member\StoreMemberRequest;
+use App\Http\Requests\Member\UpdateMemberRequest;
 use App\Http\Resources\Member\MemberResource;
 use App\Http\Resources\Tag\TagResource;
 use App\Models\Member;
@@ -61,7 +61,7 @@ final class MemberController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CreateMemberRequest $request, CreateMemberAction $action): RedirectResponse
+    public function store(StoreMemberRequest $request, CreateMemberAction $action): RedirectResponse
     {
 
         $response = Gate::inspect('create', Member::class);

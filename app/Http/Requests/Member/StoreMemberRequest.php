@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Member;
 
 use App\Enums\CivilStatus;
 use App\Enums\Gender;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-final class CreateMemberRequest extends FormRequest
+final class StoreMemberRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

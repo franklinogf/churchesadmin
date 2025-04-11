@@ -2,17 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Missionary;
 
-use App\Enums\CivilStatus;
 use App\Enums\Gender;
+use App\Enums\OfferingFrequency;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-/**
- * @property-read \App\Models\Member $member
- */
-final class UpdateMemberRequest extends FormRequest
+final class StoreMissionaryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -32,16 +29,13 @@ final class UpdateMemberRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'min:2', 'max:255'],
             'last_name' => ['required', 'string', 'min:2', 'max:255'],
-            'email' => ['required', 'email', Rule::unique('members')->ignore($this->member->id)],
-            'phone' => ['required', 'phone', Rule::unique('members')->ignore($this->member->id)],
+            'email' => ['required', 'email', Rule::unique('missionaries')],
+            'phone' => ['required', 'phone', Rule::unique('missionaries')],
             'gender' => ['required', 'string', Rule::enum(Gender::class)],
-            'dob' => ['required', 'date:Y-m-d'],
-            'civil_status' => ['required', 'string', Rule::enum(CivilStatus::class)],
-            'skills' => ['array'],
-            'skills.*' => ['string'],
-            'categories' => ['array'],
-            'categories.*' => ['string'],
-            'address' => ['exclude_if:address.address_1,null'],
+            'church' => ['required', 'string', 'min:2', 'max:255'],
+            'offering' => ['required', 'decimal:2', 'min:1'],
+            'offering_frequency' => ['required', 'string', Rule::enum(OfferingFrequency::class)],
+            'address' => ['exclude_if:address.address_1,null', 'array'],
             'address.address_1' => ['required_with:address.city,address.state,address.zip_code,address.country', 'nullable', 'string', 'min:2', 'max:255'],
             'address.address_2' => ['nullable', 'string', 'min:2', 'max:255'],
             'address.city' => ['required_unless:address.address_1,null', 'nullable', 'string', 'min:2', 'max:255'],
@@ -51,19 +45,9 @@ final class UpdateMemberRequest extends FormRequest
         ];
     }
 
-    public function getMemberData(): array
+    public function getMissionaryData(): array
     {
-        return $this->safe()->except(['skills', 'categories', 'address']);
-    }
-
-    public function getSkillData(): array
-    {
-        return collect($this->safe()->only(['skills']))->flatten()->toArray();
-    }
-
-    public function getCategoryData(): array
-    {
-        return collect($this->safe()->only(['categories']))->flatten()->toArray();
+        return $this->safe()->except(['address']);
     }
 
     public function getAddressData(): ?array

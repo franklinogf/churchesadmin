@@ -10,7 +10,7 @@ use App\Actions\Missionary\UpdateMissionaryAction;
 use App\Enums\FlashMessageKey;
 use App\Enums\Gender;
 use App\Enums\OfferingFrequency;
-use App\Http\Requests\Missionary\CreateMissionaryRequest;
+use App\Http\Requests\Missionary\StoreMissionaryRequest;
 use App\Http\Requests\Missionary\UpdateMissionaryRequest;
 use App\Http\Resources\Missionary\MissionaryResource;
 use App\Models\Missionary;
@@ -50,7 +50,7 @@ final class MissionaryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CreateMissionaryRequest $request, CreateMissionaryAction $action): RedirectResponse
+    public function store(StoreMissionaryRequest $request, CreateMissionaryAction $action): RedirectResponse
     {
         $response = Gate::inspect('create', Missionary::class);
 
