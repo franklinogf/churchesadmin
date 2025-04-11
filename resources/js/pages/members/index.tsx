@@ -11,32 +11,32 @@ import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { columns } from './includes/columns';
 
 const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Members',
-        href: route('members.index'),
-    },
+  {
+    title: 'Members',
+    href: route('members.index'),
+  },
 ];
 interface IndexProps {
-    members: Member[];
+  members: Member[];
 }
 export default function Index({ members }: IndexProps) {
-    const { t } = useLaravelReactI18n();
-    const { userCan } = usePermissions();
-    return (
-        <AppLayout breadcrumbs={breadcrumbs} title={t('Members')}>
-            <PageTitle>{t('Members')}</PageTitle>
-            <DataTable
-                headerButton={
-                    userCan(UserPermission.CREATE_MEMBERS) && (
-                        <Button asChild>
-                            <Link href={route('members.create')}>{t('Add Member')}</Link>
-                        </Button>
-                    )
-                }
-                data={members}
-                rowId="id"
-                columns={columns}
-            />
-        </AppLayout>
-    );
+  const { t } = useLaravelReactI18n();
+  const { userCan } = usePermissions();
+  return (
+    <AppLayout breadcrumbs={breadcrumbs} title={t('Members')}>
+      <PageTitle>{t('Members')}</PageTitle>
+      <DataTable
+        headerButton={
+          userCan(UserPermission.CREATE_MEMBERS) && (
+            <Button asChild>
+              <Link href={route('members.create')}>{t('Add Member')}</Link>
+            </Button>
+          )
+        }
+        data={members}
+        rowId="id"
+        columns={columns}
+      />
+    </AppLayout>
+  );
 }

@@ -8,18 +8,18 @@ registerLocale(es);
 registerLocale(en);
 
 export function useCountries() {
-    const { currentLocale } = useLaravelReactI18n();
+  const { currentLocale } = useLaravelReactI18n();
 
-    const countries = useMemo(() => {
-        return Object.entries(getNames(currentLocale())).map(([code, name]) => ({
-            code: code.toUpperCase(),
-            name,
-        }));
-    }, [currentLocale]);
+  const countries = useMemo(() => {
+    return Object.entries(getNames(currentLocale())).map(([code, name]) => ({
+      code: code.toUpperCase(),
+      name,
+    }));
+  }, [currentLocale]);
 
-    function getCurrentCountryName(code: string) {
-        return countries.find((country) => country.code.toUpperCase() === code.toUpperCase())?.name || code.toUpperCase();
-    }
+  function getCurrentCountryName(code: string) {
+    return countries.find((country) => country.code.toUpperCase() === code.toUpperCase())?.name || code.toUpperCase();
+  }
 
-    return { countries, getCurrentCountryName };
+  return { countries, getCurrentCountryName };
 }

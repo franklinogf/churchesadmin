@@ -7,45 +7,45 @@ import { useLocaleDate } from '@/hooks/use-locale-date';
 import { formatDateToString, formatStringToDate } from '@/lib/datetime';
 
 interface DateFieldProps {
-    error?: string;
-    label?: string;
-    disabled?: boolean;
-    className?: string;
-    placeholder?: string;
-    clearable?: boolean;
-    value?: string;
-    startYear?: number;
-    endYear?: number;
-    required?: boolean;
-    onChange?: (value: string) => void;
+  error?: string;
+  label?: string;
+  disabled?: boolean;
+  className?: string;
+  placeholder?: string;
+  clearable?: boolean;
+  value?: string;
+  startYear?: number;
+  endYear?: number;
+  required?: boolean;
+  onChange?: (value: string) => void;
 }
 export function DateField({
-    label,
-    error,
-    className,
-    disabled,
-    value,
-    startYear = new Date().getFullYear() - 90,
-    endYear = new Date().getFullYear(),
-    onChange,
-    required,
+  label,
+  error,
+  className,
+  disabled,
+  value,
+  startYear = new Date().getFullYear() - 90,
+  endYear = new Date().getFullYear(),
+  onChange,
+  required,
 }: DateFieldProps) {
-    const { getCurrentDateLocale } = useLocaleDate();
-    return (
-        <FieldContainer className={className}>
-            <FieldLabel disabled={disabled} label={label} required={required} />
-            <DatePicker
-                locale={getCurrentDateLocale()}
-                disabled={disabled}
-                startYear={startYear}
-                endYear={endYear}
-                selected={value ? new Date(formatStringToDate(value)) : null}
-                onSelect={(date) => {
-                    onChange?.(formatDateToString(date));
-                }}
-            />
+  const { getCurrentDateLocale } = useLocaleDate();
+  return (
+    <FieldContainer className={className}>
+      <FieldLabel disabled={disabled} label={label} required={required} />
+      <DatePicker
+        locale={getCurrentDateLocale()}
+        disabled={disabled}
+        startYear={startYear}
+        endYear={endYear}
+        selected={value ? new Date(formatStringToDate(value)) : null}
+        onSelect={(date) => {
+          onChange?.(formatDateToString(date));
+        }}
+      />
 
-            <FieldError error={error} />
-        </FieldContainer>
-    );
+      <FieldError error={error} />
+    </FieldContainer>
+  );
 }

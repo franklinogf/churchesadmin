@@ -19,125 +19,112 @@ import { useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 type CreateForm = MemberFormData & {
-    address: AddressFormData;
+  address: AddressFormData;
 };
 
 const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Members',
-        href: route('members.index'),
-    },
-    {
-        title: 'Add Member',
-        href: route('members.create'),
-    },
+  {
+    title: 'Members',
+    href: route('members.index'),
+  },
+  {
+    title: 'Add Member',
+    href: route('members.create'),
+  },
 ];
 interface CreatePageProps {
-    genders: SelectOption[];
-    civilStatuses: SelectOption[];
-    skills: Tag[];
-    categories: Tag[];
+  genders: SelectOption[];
+  civilStatuses: SelectOption[];
+  skills: Tag[];
+  categories: Tag[];
 }
 export default function Create({ genders, civilStatuses, skills, categories }: CreatePageProps) {
-    const { t } = useLaravelReactI18n();
-    const { data, setData, post, errors, processing, transform } = useForm<CreateForm>({
-        name: '',
-        last_name: '',
-        email: '',
-        phone: '',
-        dob: '',
-        gender: Gender.MALE,
-        civil_status: CivilStatus.SINGLE,
-        skills: [],
-        categories: [],
-        address: {
-            address_1: '',
-            address_2: '',
-            city: '',
-            state: '',
-            country: '',
-            zip_code: '',
-        },
-    });
+  const { t } = useLaravelReactI18n();
+  const { data, setData, post, errors, processing, transform } = useForm<CreateForm>({
+    name: '',
+    last_name: '',
+    email: '',
+    phone: '',
+    dob: '',
+    gender: Gender.MALE,
+    civil_status: CivilStatus.SINGLE,
+    skills: [],
+    categories: [],
+    address: {
+      address_1: '',
+      address_2: '',
+      city: '',
+      state: '',
+      country: '',
+      zip_code: '',
+    },
+  });
 
-    transform((data) => ({
-        ...data,
-        skills: getMultiselecOptionsLabels(data.skills),
-        categories: getMultiselecOptionsLabels(data.categories),
-    }));
+  transform((data) => ({
+    ...data,
+    skills: getMultiselecOptionsLabels(data.skills),
+    categories: getMultiselecOptionsLabels(data.categories),
+  }));
 
-    const handleSubmit = () => {
-        post(route('members.store'));
-    };
+  const handleSubmit = () => {
+    post(route('members.store'));
+  };
 
-    return (
-        <AppLayout breadcrumbs={breadcrumbs} title={t('Members')}>
-            <PageTitle>{t('Add Member')}</PageTitle>
-            <div className="mt-2 flex items-center justify-center">
-                <Form isSubmitting={processing} className="w-full max-w-2xl" onSubmit={handleSubmit}>
-                    <InputField required label="Name" value={data.name} onChange={(value) => setData('name', value)} error={errors.name} />
-                    <InputField
-                        required
-                        label="Last Name"
-                        value={data.last_name}
-                        onChange={(value) => setData('last_name', value)}
-                        error={errors.last_name}
-                    />
-                    <FieldsGrid>
-                        <InputField
-                            required
-                            label="Email"
-                            type="email"
-                            value={data.email}
-                            onChange={(value) => setData('email', value)}
-                            error={errors.email}
-                        />
-                        <PhoneField required label="Phone" value={data.phone} onChange={(value) => setData('phone', value)} error={errors.phone} />
-                    </FieldsGrid>
+  return (
+    <AppLayout breadcrumbs={breadcrumbs} title={t('Members')}>
+      <PageTitle>{t('Add Member')}</PageTitle>
+      <div className="mt-2 flex items-center justify-center">
+        <Form isSubmitting={processing} className="w-full max-w-2xl" onSubmit={handleSubmit}>
+          <InputField required label="Name" value={data.name} onChange={(value) => setData('name', value)} error={errors.name} />
+          <InputField required label="Last Name" value={data.last_name} onChange={(value) => setData('last_name', value)} error={errors.last_name} />
+          <FieldsGrid>
+            <InputField required label="Email" type="email" value={data.email} onChange={(value) => setData('email', value)} error={errors.email} />
+            <PhoneField required label="Phone" value={data.phone} onChange={(value) => setData('phone', value)} error={errors.phone} />
+          </FieldsGrid>
 
-                    <DateField required label="Date of Birth" value={data.dob} onChange={(value) => setData('dob', value)} error={errors.dob} />
+          <DateField required label="Date of Birth" value={data.dob} onChange={(value) => setData('dob', value)} error={errors.dob} />
 
-                    <FieldsGrid>
-                        <SelectField
-                            required
-                            label="Gender"
-                            value={data.gender}
-                            onChange={(value) => setData('gender', value)}
-                            options={genders}
-                            error={errors.gender}
-                        />
-                        <SelectField
-                            required
-                            label="Civil Status"
-                            value={data.civil_status}
-                            onChange={(value) => setData('civil_status', value)}
-                            options={civilStatuses}
-                            error={errors.civil_status}
-                        />
-                    </FieldsGrid>
+          <FieldsGrid>
+            <SelectField
+              required
+              label="Gender"
+              value={data.gender}
+              onChange={(value) => setData('gender', value)}
+              options={genders}
+              error={errors.gender}
+            />
+            <SelectField
+              required
+              label="Civil Status"
+              value={data.civil_status}
+              onChange={(value) => setData('civil_status', value)}
+              options={civilStatuses}
+              error={errors.civil_status}
+            />
+          </FieldsGrid>
 
-                    <FieldsGrid>
-                        <MultiSelectField
-                            label={t('Skills')}
-                            value={data.skills}
-                            onChange={(value) => setData('skills', value)}
-                            options={skills}
-                            error={errors.skills}
-                        />
-                        <MultiSelectField
-                            label={t('Categories')}
-                            value={data.categories}
-                            onChange={(value) => setData('categories', value)}
-                            options={categories}
-                            error={errors.categories}
-                        />
-                    </FieldsGrid>
+          <FieldsGrid>
+            <MultiSelectField
+              label={t('Skills')}
+              value={data.skills}
+              onChange={(value) => setData('skills', value)}
+              options={skills}
+              error={errors.skills}
+            />
+            <MultiSelectField
+              label={t('Categories')}
+              value={data.categories}
+              onChange={(value) => setData('categories', value)}
+              options={categories}
+              error={errors.categories}
+            />
+          </FieldsGrid>
 
-                    <Separator className="my-8" />
+          <Separator className="my-8" />
 
-                    <AddressFormSkeleton data={data.address} setData={(value) => setData('address', value)} errors={errors} errorsName="address" />
-                </Form>
-            </div>
-        </AppLayout>
-    );
+          <AddressFormSkeleton data={data.address} setData={(value) => setData('address', value)} errors={errors} errorsName="address" />
+        </Form>
+      </div>
+    </AppLayout>
+  );
 }

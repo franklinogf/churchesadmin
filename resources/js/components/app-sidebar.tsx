@@ -9,66 +9,66 @@ import { LayoutGridIcon, Users2Icon } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
-    {
-        title: 'Dashboard',
-        href: route('dashboard'),
-        icon: LayoutGridIcon,
-    },
-    {
-        title: 'Skills',
-        href: route('skills.index'),
-        icon: LayoutGridIcon,
-        permissionNeeded: UserPermission.MANAGE_SKILLS,
-    },
-    {
-        title: 'Categories',
-        href: route('categories.index'),
-        icon: LayoutGridIcon,
-        permissionNeeded: UserPermission.MANAGE_CATEGORIES,
-    },
-    {
-        title: 'Members',
-        href: route('members.index'),
-        icon: Users2Icon,
-        permissionNeeded: UserPermission.MANAGE_MEMBERS,
-    },
-    {
-        title: 'Missionaries',
-        href: route('missionaries.index'),
-        icon: Users2Icon,
-        permissionNeeded: UserPermission.MANAGE_MISSIONARIES,
-    },
-    {
-        title: 'Users',
-        href: route('users.index'),
-        icon: Users2Icon,
-        permissionNeeded: UserPermission.MANAGE_USERS,
-    },
+  {
+    title: 'Dashboard',
+    href: route('dashboard'),
+    icon: LayoutGridIcon,
+  },
+  {
+    title: 'Skills',
+    href: route('skills.index'),
+    icon: LayoutGridIcon,
+    permissionNeeded: UserPermission.MANAGE_SKILLS,
+  },
+  {
+    title: 'Categories',
+    href: route('categories.index'),
+    icon: LayoutGridIcon,
+    permissionNeeded: UserPermission.MANAGE_CATEGORIES,
+  },
+  {
+    title: 'Members',
+    href: route('members.index'),
+    icon: Users2Icon,
+    permissionNeeded: UserPermission.MANAGE_MEMBERS,
+  },
+  {
+    title: 'Missionaries',
+    href: route('missionaries.index'),
+    icon: Users2Icon,
+    permissionNeeded: UserPermission.MANAGE_MISSIONARIES,
+  },
+  {
+    title: 'Users',
+    href: route('users.index'),
+    icon: Users2Icon,
+    permissionNeeded: UserPermission.MANAGE_USERS,
+  },
 ];
 const footerNavItems: NavItem[] = [];
 export function AppSidebar() {
-    return (
-        <Sidebar collapsible="icon" variant="inset">
-            <SidebarHeader>
-                <SidebarMenu>
-                    <SidebarMenuItem>
-                        <SidebarMenuButton size="lg" asChild>
-                            <Link href={route('dashboard')} prefetch>
-                                <AppLogo />
-                            </Link>
-                        </SidebarMenuButton>
-                    </SidebarMenuItem>
-                </SidebarMenu>
-            </SidebarHeader>
+  return (
+    <Sidebar collapsible="icon" variant="inset">
+      <SidebarHeader>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton size="lg" asChild>
+              <Link href={route('dashboard')} prefetch>
+                <AppLogo />
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarHeader>
 
-            <SidebarContent>
-                <NavMain items={mainNavItems} />
-            </SidebarContent>
+      <SidebarContent>
+        <NavMain items={mainNavItems} />
+      </SidebarContent>
 
-            <SidebarFooter>
-                <NavFooter items={footerNavItems} className="mt-auto" />
-                <NavUser />
-            </SidebarFooter>
-        </Sidebar>
-    );
+      <SidebarFooter>
+        <NavFooter items={footerNavItems} className="mt-auto" />
+        <NavUser />
+      </SidebarFooter>
+    </Sidebar>
+  );
 }

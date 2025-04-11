@@ -12,33 +12,33 @@ import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { columns } from './includes/columns';
 
 const breadcrumbs: BreadcrumbItem[] = [
-    {
-        title: 'Missionaries',
-        href: route('missionaries.index'),
-    },
+  {
+    title: 'Missionaries',
+    href: route('missionaries.index'),
+  },
 ];
 
 interface IndexPageProps {
-    missionaries: Missionary[];
+  missionaries: Missionary[];
 }
 
 export default function Index({ missionaries }: IndexPageProps) {
-    const { t } = useLaravelReactI18n();
-    const { userCan } = usePermissions();
-    return (
-        <AppLayout title={t('Missionaries')} breadcrumbs={breadcrumbs}>
-            <PageTitle>{t('Missionaries')}</PageTitle>
-            <DataTable
-                headerButton={
-                    userCan(UserPermission.CREATE_MISSIONARIES) && (
-                        <Button asChild>
-                            <Link href={route('missionaries.create')}>{t('Add Missionary')}</Link>
-                        </Button>
-                    )
-                }
-                data={missionaries}
-                columns={columns}
-            />
-        </AppLayout>
-    );
+  const { t } = useLaravelReactI18n();
+  const { userCan } = usePermissions();
+  return (
+    <AppLayout title={t('Missionaries')} breadcrumbs={breadcrumbs}>
+      <PageTitle>{t('Missionaries')}</PageTitle>
+      <DataTable
+        headerButton={
+          userCan(UserPermission.CREATE_MISSIONARIES) && (
+            <Button asChild>
+              <Link href={route('missionaries.create')}>{t('Add Missionary')}</Link>
+            </Button>
+          )
+        }
+        data={missionaries}
+        columns={columns}
+      />
+    </AppLayout>
+  );
 }

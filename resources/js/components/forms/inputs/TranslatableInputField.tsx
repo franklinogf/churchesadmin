@@ -9,54 +9,50 @@ import React from 'react';
 import { FieldLabel } from './FieldLabel';
 
 interface TranslatableInputProps {
-    id?: string;
-    label: string;
-    errors?: { errors: Record<string, string>; name: string };
-    values: LanguageTranslations;
-    disabled?: boolean;
-    onChange: (locale: string, value: string) => void;
-    required?: boolean;
+  id?: string;
+  label: string;
+  errors?: { errors: Record<string, string>; name: string };
+  values: LanguageTranslations;
+  disabled?: boolean;
+  onChange: (locale: string, value: string) => void;
+  required?: boolean;
 }
 
 export default function TranslatableInput({ id, label, errors, values, disabled, required, onChange }: TranslatableInputProps) {
-    const locales = usePage<SharedData>().props.availableLocales;
-    const [activeLocale, setActiveLocale] = React.useState(locales[0].value);
-    const { t } = useLaravelReactI18n();
+  const locales = usePage<SharedData>().props.availableLocales;
+  const [activeLocale, setActiveLocale] = React.useState(locales[0].value);
+  const { t } = useLaravelReactI18n();
 
-    const errorMessage = errors?.errors[`${errors.name}.${activeLocale}`];
-    const localeError = (locale: string) => Object.keys(errors?.errors ?? {}).some((key) => key.endsWith(locale));
+  const errorMessage = errors?.errors[`${errors.name}.${activeLocale}`];
+  const localeError = (locale: string) => Object.keys(errors?.errors ?? {}).some((key) => key.endsWith(locale));
 
-    return (
-        <FieldContainer className="space-y-2">
-            <FieldLabel disabled={disabled} id={id} label={label} required={required} />
-            <Tabs value={activeLocale} onValueChange={(val) => setActiveLocale(val)}>
-                <TabsList className="gap-0.5">
-                    {locales.map(({ value, label }) => (
-                        <TabsTrigger
-                            className={localeError(value) ? 'bg-destructive/20 data-[state=active]:bg-destructive/50' : ''}
-                            key={value}
-                            value={value}
-                        >
-                            {label}
-                        </TabsTrigger>
-                    ))}
-                </TabsList>
-                {locales.map(({ value: code, label: langLabel }) => (
-                    <TabsContent key={code} value={code}>
-                        <Input
-                            required={required}
-                            name={`${id}[${code}]`}
-                            value={values[code as keyof LanguageTranslations]}
-                            onChange={(e) => onChange(code, e.target.value)}
-                            placeholder={t(`Enter :name in :Language`, {
-                                name: label.toLowerCase(),
-                                language: langLabel,
-                            })}
-                        />
-                    </TabsContent>
-                ))}
-            </Tabs>
-            <FieldError error={errorMessage} />
-        </FieldContainer>
-    );
+  return (
+    <FieldContainer className="space-y-2">
+      <FieldLabel disabled={disabled} id={id} label={label} required={required} />
+      <Tabs value={activeLocale} onValueChange={(val) => setActiveLocale(val)}>
+        <TabsList className="gap-0.5">
+          {locales.map(({ value, label }) => (
+            <TabsTrigger className={localeError(value) ? 'bg-destructive/20 data-[state=active]:bg-destructive/50' : ''} key={value} value={value}>
+              {label}
+            </TabsTrigger>
+          ))}
+        </TabsList>
+        {locales.map(({ value: code, label: langLabel }) => (
+          <TabsContent key={code} value={code}>
+            <Input
+              required={required}
+              name={`${id}[${code}]`}
+              value={values[code as keyof LanguageTranslations]}
+              onChange={(e) => onChange(code, e.target.value)}
+              placeholder={t(`Enter :name in :Language`, {
+                name: label.toLowerCase(),
+                language: langLabel,
+              })}
+            />
+          </TabsContent>
+        ))}
+      </Tabs>
+      <FieldError error={errorMessage} />
+    </FieldContainer>
+  );
 }
