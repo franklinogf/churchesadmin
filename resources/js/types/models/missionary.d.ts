@@ -1,3 +1,4 @@
+import { Gender, OfferingFrequency } from '@/enums';
 import { AddressRelationship } from './address';
 
 export interface Missionary {
@@ -6,10 +7,10 @@ export interface Missionary {
     lastName: string;
     email: string;
     phone: string;
-    gender: string;
+    gender: Gender;
     church: string;
     offering: number;
-    offeringFrequency: string;
+    offeringFrequency: OfferingFrequency;
     address?: AddressRelationship | null;
     createdAt: string;
     updatedAt: string;

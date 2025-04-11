@@ -1,6 +1,7 @@
 import { Option } from '@/components/custom-ui/MultiSelect';
+import { CivilStatus, Gender } from '@/enums';
 import { AddressRelationship } from '@/types/models/address';
-import { RelationshipTag } from '@/types/models/tag';
+import { TagRelationship } from '@/types/models/tag';
 
 export type MemberMorphClass = 'member';
 export interface Member {
@@ -9,12 +10,12 @@ export interface Member {
     lastName: string;
     email: string;
     phone: string;
-    gender: string;
+    gender: Gender;
     dob: string;
-    civilStatus: string;
-    skills: RelationshipTag[];
+    civilStatus: CivilStatus;
+    skills: TagRelationship[];
     skillsCount?: number;
-    categories: RelationshipTag[];
+    categories: TagRelationship[];
     categoriesCount?: number;
     address?: AddressRelationship | null;
     createdAt: string;
