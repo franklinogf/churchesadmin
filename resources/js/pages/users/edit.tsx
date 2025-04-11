@@ -6,7 +6,7 @@ import { SwitchField } from '@/components/forms/inputs/SwitchField';
 import { PageTitle } from '@/components/PageTitle';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { UserRole } from '@/enums/user';
-import { usePermissions } from '@/hooks/use-permissions';
+import { useUser } from '@/hooks/use-permissions';
 import AppLayout from '@/layouts/app-layout';
 import { convertRolesToMultiselectOptions, getMultiselecOptionsValues } from '@/lib/mutliselect';
 import type { Permission, Role, User } from '@/types/models/user';
@@ -29,7 +29,7 @@ interface EditPageProps {
 
 export default function Edit({ user, permissions, roles }: EditPageProps) {
   const { t } = useLaravelReactI18n();
-  const { hasRole } = usePermissions();
+  const { hasRole } = useUser();
 
   const userPermissions = user.permissions?.map((permission) => permission.name);
   const { data, setData, errors, put, processing, transform } = useForm<EditForm>({

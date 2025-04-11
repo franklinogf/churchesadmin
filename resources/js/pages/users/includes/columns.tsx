@@ -3,7 +3,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { UserPermission } from '@/enums/user';
-import { usePermissions } from '@/hooks/use-permissions';
+import { useUser } from '@/hooks/use-permissions';
 import useConfirmationStore from '@/stores/confirmationStore';
 import { Role, User } from '@/types/models/user';
 import { Link, router } from '@inertiajs/react';
@@ -44,7 +44,7 @@ export const columns: ColumnDef<User>[] = [
     cell: function CellComponent({ row }) {
       const { t } = useLaravelReactI18n();
       const { openConfirmation } = useConfirmationStore();
-      const { can: userCan } = usePermissions();
+      const { can: userCan } = useUser();
       const user = row.original;
       return (
         <DropdownMenu>

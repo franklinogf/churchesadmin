@@ -8,7 +8,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader } from '@/compon
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { UserPermission } from '@/enums/user';
 import { useTranslations } from '@/hooks/use-empty-translations';
-import { usePermissions } from '@/hooks/use-permissions';
+import { useUser } from '@/hooks/use-permissions';
 import AppLayout from '@/layouts/app-layout';
 import useConfirmationStore from '@/stores/confirmationStore';
 import type { BreadcrumbItem } from '@/types';
@@ -34,7 +34,7 @@ export const columns: ColumnDef<Tag>[] = [
     cell: function CellComponent({ row }) {
       const { t } = useLaravelReactI18n();
       const { openConfirmation } = useConfirmationStore();
-      const { can: userCan } = usePermissions();
+      const { can: userCan } = useUser();
       const skill = row.original;
       if (skill.isRegular && !userCan(UserPermission.UPDATE_REGULAR_TAG) && !userCan(UserPermission.DELETE_REGULAR_TAG)) {
         return null;
@@ -101,7 +101,7 @@ interface IndexPageProps {
 }
 export default function Index({ skills }: IndexPageProps) {
   const { t } = useLaravelReactI18n();
-  const { can: userCan } = usePermissions();
+  const { can: userCan } = useUser();
   return (
     <AppLayout breadcrumbs={breadcrumbs} title={t('Skills')}>
       <PageTitle>{t('Skills')}</PageTitle>
@@ -127,7 +127,7 @@ function SkillForm({ skill, children }: { skill?: Tag; children: React.ReactNode
   const [open, setOpen] = useState(false);
   const { t } = useLaravelReactI18n();
   const { emptyTranslations } = useTranslations();
-  const { can: userCan } = usePermissions();
+  const { can: userCan } = useUser();
   const { data, setData, post, put, errors, reset, processing } = useForm({
     name: skill?.nameTranslations ?? emptyTranslations,
     is_regular: skill?.isRegular ?? false,

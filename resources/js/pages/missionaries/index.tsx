@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { UserPermission } from '@/enums/user';
 import AppLayout from '@/layouts/app-layout';
 
-import { usePermissions } from '@/hooks/use-permissions';
+import { useUser } from '@/hooks/use-permissions';
 import { BreadcrumbItem } from '@/types';
 import { Missionary } from '@/types/models/missionary';
 import { Link } from '@inertiajs/react';
@@ -24,7 +24,7 @@ interface IndexPageProps {
 
 export default function Index({ missionaries }: IndexPageProps) {
   const { t } = useLaravelReactI18n();
-  const { can: userCan } = usePermissions();
+  const { can: userCan } = useUser();
   return (
     <AppLayout title={t('Missionaries')} breadcrumbs={breadcrumbs}>
       <PageTitle>{t('Missionaries')}</PageTitle>

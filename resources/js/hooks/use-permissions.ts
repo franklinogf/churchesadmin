@@ -2,22 +2,20 @@ import { UserPermission, UserRole } from '@/enums/user';
 import { SharedData } from '@/types';
 import { usePage } from '@inertiajs/react';
 
-export function usePermissions() {
+export function useUser() {
   const {
     props: {
-      auth: {
-        user: { permissions, roles },
-      },
+      auth: { user },
     },
   } = usePage<SharedData>();
 
   const can = (permission: UserPermission) => {
-    return permissions.includes(permission);
+    return user.permissions.includes(permission);
   };
 
   const hasRole = (role: UserRole) => {
-    return roles.includes(role);
+    return user.roles.includes(role);
   };
 
-  return { can, hasRole };
+  return { user, can, hasRole };
 }

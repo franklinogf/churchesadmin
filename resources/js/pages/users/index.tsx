@@ -2,7 +2,7 @@ import { DataTable } from '@/components/custom-ui/datatable/data-table';
 import { PageTitle } from '@/components/PageTitle';
 import { Button } from '@/components/ui/button';
 import { UserPermission } from '@/enums/user';
-import { usePermissions } from '@/hooks/use-permissions';
+import { useUser } from '@/hooks/use-permissions';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem } from '@/types';
 import { User } from '@/types/models/user';
@@ -17,7 +17,7 @@ interface IndexPageProps {
 }
 export default function Index({ users }: IndexPageProps) {
   const { t } = useLaravelReactI18n();
-  const { can: userCan } = usePermissions();
+  const { can: userCan } = useUser();
   return (
     <AppLayout title={t('Users')} breadcrumbs={breadcrumbs}>
       <PageTitle>{t('Users')}</PageTitle>
