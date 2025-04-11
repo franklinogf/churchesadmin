@@ -21,7 +21,7 @@ interface IndexProps {
 }
 export default function Index({ members }: IndexProps) {
   const { t } = useLaravelReactI18n();
-  const { userCan } = usePermissions();
+  const { can: userCan } = usePermissions();
   return (
     <AppLayout breadcrumbs={breadcrumbs} title={t('Members')}>
       <PageTitle>{t('Members')}</PageTitle>

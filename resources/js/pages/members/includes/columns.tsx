@@ -49,7 +49,7 @@ export const columns: ColumnDef<Member>[] = [
     cell: function CellComponent({ row }) {
       const { t } = useLaravelReactI18n();
       const { openConfirmation } = useConfirmationStore();
-      const { userCan } = usePermissions();
+      const { can: userCan } = usePermissions();
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

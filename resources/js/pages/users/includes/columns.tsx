@@ -44,7 +44,7 @@ export const columns: ColumnDef<User>[] = [
     cell: function CellComponent({ row }) {
       const { t } = useLaravelReactI18n();
       const { openConfirmation } = useConfirmationStore();
-      const { userCan } = usePermissions();
+      const { can: userCan } = usePermissions();
       const user = row.original;
       return (
         <DropdownMenu>

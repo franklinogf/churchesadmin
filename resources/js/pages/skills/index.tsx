@@ -34,7 +34,7 @@ export const columns: ColumnDef<Tag>[] = [
     cell: function CellComponent({ row }) {
       const { t } = useLaravelReactI18n();
       const { openConfirmation } = useConfirmationStore();
-      const { userCan } = usePermissions();
+      const { can: userCan } = usePermissions();
       const skill = row.original;
       if (skill.isRegular && !userCan(UserPermission.UPDATE_REGULAR_TAG) && !userCan(UserPermission.DELETE_REGULAR_TAG)) {
         return null;
@@ -101,7 +101,7 @@ interface IndexPageProps {
 }
 export default function Index({ skills }: IndexPageProps) {
   const { t } = useLaravelReactI18n();
-  const { userCan } = usePermissions();
+  const { can: userCan } = usePermissions();
   return (
     <AppLayout breadcrumbs={breadcrumbs} title={t('Skills')}>
       <PageTitle>{t('Skills')}</PageTitle>
@@ -127,7 +127,7 @@ function SkillForm({ skill, children }: { skill?: Tag; children: React.ReactNode
   const [open, setOpen] = useState(false);
   const { t } = useLaravelReactI18n();
   const { emptyTranslations } = useTranslations();
-  const { userCan } = usePermissions();
+  const { can: userCan } = usePermissions();
   const { data, setData, post, put, errors, reset, processing } = useForm({
     name: skill?.nameTranslations ?? emptyTranslations,
     is_regular: skill?.isRegular ?? false,

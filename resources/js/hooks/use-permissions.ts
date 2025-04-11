@@ -11,7 +11,7 @@ export function usePermissions() {
     },
   } = usePage<SharedData>();
 
-  const userCan = (permission: UserPermission) => {
+  const can = (permission: UserPermission) => {
     return permissions.includes(permission);
   };
 
@@ -19,5 +19,5 @@ export function usePermissions() {
     return roles.includes(role);
   };
 
-  return { userCan, hasRole };
+  return { can, hasRole };
 }

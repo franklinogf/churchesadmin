@@ -24,7 +24,7 @@ interface IndexPageProps {
 
 export default function Index({ missionaries }: IndexPageProps) {
   const { t } = useLaravelReactI18n();
-  const { userCan } = usePermissions();
+  const { can: userCan } = usePermissions();
   return (
     <AppLayout title={t('Missionaries')} breadcrumbs={breadcrumbs}>
       <PageTitle>{t('Missionaries')}</PageTitle>

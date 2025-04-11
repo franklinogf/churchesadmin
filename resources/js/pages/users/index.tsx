@@ -17,7 +17,7 @@ interface IndexPageProps {
 }
 export default function Index({ users }: IndexPageProps) {
   const { t } = useLaravelReactI18n();
-  const { userCan } = usePermissions();
+  const { can: userCan } = usePermissions();
   return (
     <AppLayout title={t('Users')} breadcrumbs={breadcrumbs}>
       <PageTitle>{t('Users')}</PageTitle>

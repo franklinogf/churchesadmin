@@ -34,7 +34,7 @@ export const columns: ColumnDef<Tag>[] = [
     cell: function CellComponent({ row }) {
       const { t } = useLaravelReactI18n();
       const { openConfirmation } = useConfirmationStore();
-      const { userCan } = usePermissions();
+      const { can: userCan } = usePermissions();
       const category = row.original;
       if (category.isRegular && !userCan(UserPermission.UPDATE_REGULAR_TAG) && !userCan(UserPermission.DELETE_REGULAR_TAG)) {
         return null;
@@ -102,7 +102,7 @@ interface IndexPageProps {
 }
 export default function Index({ categories }: IndexPageProps) {
   const { t } = useLaravelReactI18n();
-  const { userCan } = usePermissions();
+  const { can: userCan } = usePermissions();
   return (
     <AppLayout breadcrumbs={breadcrumbs} title={t('Categories')}>
       <PageTitle>{t('Categories')}</PageTitle>
@@ -128,7 +128,7 @@ function CategoryForm({ category, children }: { category?: Tag; children: React.
   const [open, setOpen] = useState(false);
   const { t } = useLaravelReactI18n();
   const { emptyTranslations } = useTranslations();
-  const { userCan } = usePermissions();
+  const { can: userCan } = usePermissions();
   const { data, setData, post, put, errors, reset, processing } = useForm({
     name: category?.nameTranslations ?? emptyTranslations,
     is_regular: category?.isRegular ?? false,

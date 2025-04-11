@@ -6,7 +6,7 @@ import { Link, usePage } from '@inertiajs/react';
 
 export function NavMain({ items = [] }: { items: NavItem[] }) {
   const page = usePage<SharedData>();
-  const { userCan } = usePermissions();
+  const { can: userCan } = usePermissions();
   return (
     <SidebarGroup className="px-2 py-0">
       <SidebarGroupLabel>Main</SidebarGroupLabel>
