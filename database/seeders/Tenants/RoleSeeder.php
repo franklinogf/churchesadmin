@@ -25,15 +25,17 @@ final class RoleSeeder extends Seeder
         Role::create(['name' => TenantRole::ADMIN])
             ->givePermissionTo(
                 collect(TenantPermission::values())
-                    ->filter(fn (string $permission) => ! str_contains($permission, '_users'))
+                    ->filter(fn (string $permission) => ! str($permission)->startsWith('users'))
                     ->toArray()
             );
 
         Role::create(['name' => TenantRole::SECRETARY])
             ->givePermissionTo(collect(TenantPermission::values())
-                ->filter(fn (string $permission) => ! str_contains($permission, 'delete_'))
+                ->filter(fn (string $permission) => ! str($permission)->endsWith('delete') && ! str($permission)->startsWith('users'))
                 ->toArray()
             );
+
+        Role::create(['name' => TenantRole::NO_ROLE]);
 
     }
 }

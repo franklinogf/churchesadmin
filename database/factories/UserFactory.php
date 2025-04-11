@@ -83,4 +83,16 @@ final class UserFactory extends Factory
             $user->assignRole(TenantRole::SECRETARY);
         });
     }
+
+    public function noRole(): static
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'name' => 'No Role',
+                'email' => 'norole@example.com',
+            ];
+        })->afterCreating(function (User $user) {
+            $user->assignRole(TenantRole::NO_ROLE);
+        });
+    }
 }

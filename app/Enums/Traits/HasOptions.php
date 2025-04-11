@@ -20,4 +20,17 @@ trait HasOptions
             'label' => $case->label(),
         ])->toArray();
     }
+
+    /**
+     * Get the option object for the enum.
+     *
+     * @return array<value:mixed,label:string>
+     */
+    public function asOption(): array
+    {
+        return [
+            'value' => $this->value,
+            'label' => $this->label(),
+        ];
+    }
 }

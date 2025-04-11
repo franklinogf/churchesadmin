@@ -28,6 +28,7 @@ final class TenantDatabaseSeeder extends Seeder
         User::factory()->superAdmin()->create();
         User::factory()->admin()->create();
         User::factory()->secretary()->create();
+        User::factory()->noRole()->create();
 
         Member::factory(10)->has(Address::factory())->create();
 
