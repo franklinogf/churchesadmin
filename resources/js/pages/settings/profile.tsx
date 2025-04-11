@@ -80,7 +80,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
               <InputError className="mt-2" message={errors.email} />
             </div>
 
-            {mustVerifyEmail && auth.user.email_verified_at === null && (
+            {mustVerifyEmail && auth.user.emailVerifiedAt === null && (
               <div>
                 <p className="text-muted-foreground -mt-4 text-sm">
                   Your email address is unverified.{' '}

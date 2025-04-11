@@ -24,7 +24,7 @@ final class AuthUserResource extends JsonResource
             'name' => $this->name,
             'email' => $this->email,
             'language' => $this->language,
-            'email_verified_at' => $this->email_verified_at,
+            'emailVerifiedAt' => $this->email_verified_at,
             'roles' => $this->getRoleNames(),
             'permissions' => $this->getAllPermissions()->pluck('name')->toArray(),
         ];
