@@ -1,8 +1,9 @@
 import { LanguageCode } from '@/enums';
-import type { AuthenticatedUser } from '@/enums/models/user';
+
 import { UserPermission } from '@/enums/user';
 import { LucideIcon } from 'lucide-react';
 import type { Config } from 'ziggy-js';
+import { AuthenticatedUser } from './models/user';
 
 export interface Auth {
   user: AuthenticatedUser;

@@ -2,7 +2,7 @@ import { LanguageCode } from '@/enums';
 import { UserPermission, UserRole } from '@/enums/user';
 
 export interface User {
-  id: number;
+  id: string;
   name: string;
   email: string;
   roles?: Role[];
@@ -12,10 +12,12 @@ export interface User {
 }
 
 export interface AuthenticatedUser {
-  id: number;
+  id: string;
   name: string;
   email: string;
   language: LanguageCode;
+  roles: UserRole[];
+  permissions: UserPermission[];
   emailVerifiedAt: string | null;
 }
 

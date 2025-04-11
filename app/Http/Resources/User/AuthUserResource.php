@@ -7,6 +7,9 @@ namespace App\Http\Resources\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
+/**
+ * @mixin \App\Models\User
+ */
 final class AuthUserResource extends JsonResource
 {
     /**
@@ -22,6 +25,8 @@ final class AuthUserResource extends JsonResource
             'email' => $this->email,
             'language' => $this->language,
             'email_verified_at' => $this->email_verified_at,
+            'roles' => $this->getRoleNames(),
+            'permissions' => $this->getAllPermissions()->pluck('name')->toArray(),
         ];
     }
 }

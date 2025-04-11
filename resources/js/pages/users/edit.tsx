@@ -5,6 +5,8 @@ import { MultiSelectField } from '@/components/forms/inputs/MultiSelectField';
 import { SwitchField } from '@/components/forms/inputs/SwitchField';
 import { PageTitle } from '@/components/PageTitle';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { UserRole } from '@/enums/user';
+import { usePermissions } from '@/hooks/use-permissions';
 import AppLayout from '@/layouts/app-layout';
 import { convertRolesToMultiselectOptions, getMultiselecOptionsValues } from '@/lib/mutliselect';
 import type { Permission, Role, User } from '@/types/models/user';
@@ -27,6 +29,7 @@ interface EditPageProps {
 
 export default function Edit({ user, permissions, roles }: EditPageProps) {
   const { t } = useLaravelReactI18n();
+  const { hasRole } = usePermissions();
 
   const userPermissions = user.permissions?.map((permission) => permission.name);
   const { data, setData, errors, put, processing, transform } = useForm<EditForm>({
@@ -61,48 +64,53 @@ export default function Edit({ user, permissions, roles }: EditPageProps) {
             error={errors.email}
             onChange={(value) => setData('email', value)}
           />
-          <MultiSelectField
-            required
-            label={t('Roles')}
-            options={convertRolesToMultiselectOptions(roles)}
-            value={data.roles}
-            error={errors.roles}
-            onChange={(value) => {
-              setData('additional_permissions', []);
-              setData('roles', value);
-            }}
-          />
+          {hasRole(UserRole.SUPER_ADMIN) && (
+            <MultiSelectField
+              required
+              label={t('Roles')}
+              options={convertRolesToMultiselectOptions(roles)}
+              value={data.roles}
+              error={errors.roles}
+              onChange={(value) => {
+                setData('additional_permissions', []);
+                setData('roles', value);
+              }}
+            />
+          )}
 
-          <div className="space-y-4">
-            <p className="text-lg font-medium">{t('Assigned permissions')}</p>
-            <ScrollArea className="h-60 w-full">
-              <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-4">
-                {permissions.map((permission) => {
-                  const existsOnRoles = selectedRolesPermissions.some((p) => p.name === permission.name);
-                  const value = data.additional_permissions.includes(permission.name) || existsOnRoles;
+          {hasRole(UserRole.SUPER_ADMIN) ||
+            (hasRole(UserRole.ADMIN) && (
+              <div className="space-y-4">
+                <p className="text-lg font-medium">{t('Assigned permissions')}</p>
+                <ScrollArea className="h-60 w-full">
+                  <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-4">
+                    {permissions.map((permission) => {
+                      const existsOnRoles = selectedRolesPermissions.some((p) => p.name === permission.name);
+                      const value = data.additional_permissions.includes(permission.name) || existsOnRoles;
 
-                  return (
-                    <SwitchField
-                      disabled={existsOnRoles}
-                      key={permission.id}
-                      label={permission.label ?? ''}
-                      value={value}
-                      onChange={(checked) => {
-                        if (checked) {
-                          setData('additional_permissions', [...data.additional_permissions, permission.name.toString()]);
-                        } else {
-                          setData(
-                            'additional_permissions',
-                            data.additional_permissions.filter((id) => id !== permission.name.toString()),
-                          );
-                        }
-                      }}
-                    />
-                  );
-                })}
+                      return (
+                        <SwitchField
+                          disabled={existsOnRoles}
+                          key={permission.id}
+                          label={permission.label ?? ''}
+                          value={value}
+                          onChange={(checked) => {
+                            if (checked) {
+                              setData('additional_permissions', [...data.additional_permissions, permission.name.toString()]);
+                            } else {
+                              setData(
+                                'additional_permissions',
+                                data.additional_permissions.filter((id) => id !== permission.name.toString()),
+                              );
+                            }
+                          }}
+                        />
+                      );
+                    })}
+                  </div>
+                </ScrollArea>
               </div>
-            </ScrollArea>
-          </div>
+            ))}
         </Form>
       </div>
     </AppLayout>

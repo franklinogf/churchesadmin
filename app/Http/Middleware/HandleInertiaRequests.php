@@ -6,6 +6,7 @@ namespace App\Http\Middleware;
 
 use App\Enums\FlashMessageKey;
 use App\Enums\LanguageCode;
+use App\Http\Resources\User\AuthUserResource;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tighten\Ziggy\Ziggy;
@@ -48,8 +49,9 @@ final class HandleInertiaRequests extends Middleware
         return [
             ...$parentShare,
             'auth' => [
-                'user' => $request->user(),
-                'permissions' => $request->user()?->getAllPermissions()->pluck('name')->toArray(),
+                'user' => $request->user()
+                    ? AuthUserResource::make($request->user())
+                    : null,
             ],
             'ziggy' => fn (): array => [
                 ...(new Ziggy)->toArray(),
