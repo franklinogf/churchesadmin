@@ -1,7 +1,7 @@
 import { LanguageTranslations } from '@/types';
 
 export interface Tag {
-    id: string;
+    id: number;
     name: string;
     nameTranslations: LanguageTranslations;
     slug: string;
