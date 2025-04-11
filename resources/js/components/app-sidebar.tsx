@@ -38,6 +38,12 @@ const mainNavItems: NavItem[] = [
         icon: Users2Icon,
         permissionNeeded: UserPermission.MANAGE_MISSIONARIES,
     },
+    {
+        title: 'Users',
+        href: route('users.index'),
+        icon: Users2Icon,
+        permissionNeeded: UserPermission.MANAGE_USERS,
+    },
 ];
 const footerNavItems: NavItem[] = [];
 export function AppSidebar() {

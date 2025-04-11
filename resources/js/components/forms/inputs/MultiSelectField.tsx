@@ -3,6 +3,7 @@ import { FieldContainer } from '@/components/forms/inputs/FieldContainer';
 import { FieldError } from '@/components/forms/inputs/FieldError';
 import { FieldLabel } from '@/components/forms/inputs/FieldLabel';
 import { convertTagsToMultiselectOptions } from '@/lib/mutliselect';
+import { SelectOption } from '@/types';
 import { Tag } from '@/types/models/tag';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
@@ -16,7 +17,7 @@ export interface MultiSelectFieldProps {
     clearable?: boolean;
     value?: Option[];
     onChange?: (value: Option[]) => void;
-    options: Tag[];
+    options: Tag[] | Option[] | SelectOption[];
 }
 
 export function MultiSelectField({ error, label, disabled, className, placeholder, options, value, onChange, required }: MultiSelectFieldProps) {
