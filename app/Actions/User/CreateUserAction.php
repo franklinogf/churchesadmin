@@ -10,9 +10,16 @@ use Illuminate\Support\Facades\DB;
 
 final class CreateUserAction
 {
+    /**
+     * Handle the action.
+     *
+     * @param  array<string,mixed>  $data
+     * @param  array<int,string>|null  $roles
+     * @param  array<int,string>|null  $permissions
+     */
     public function handle(array $data, ?array $roles = null, ?array $permissions = null): void
     {
-        DB::transaction(function () use ($data, $roles, $permissions) {
+        DB::transaction(function () use ($data, $roles, $permissions): void {
             $user = User::create([
                 'language' => LanguageCode::ES->value,
                 ...$data,

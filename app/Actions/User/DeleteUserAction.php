@@ -8,6 +8,9 @@ use App\Models\User;
 
 final class DeleteUserAction
 {
+    /**
+     * Handle the action.
+     */
     public function handle(User $user): void
     {
         $user->delete();

@@ -37,7 +37,7 @@ final class MemberController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(): Response|RedirectResponse
+    public function create(): Response
     {
 
         $genders = Gender::options();
@@ -65,13 +65,7 @@ final class MemberController extends Controller
             return to_route('members.index')->with(FlashMessageKey::ERROR->value, $response->message());
         }
 
-        $data = $request->getMemberData();
-
-        $skills = $request->getSkillData();
-        $categories = $request->getCategoryData();
-        $address = $request->getAddressData();
-
-        $action->handle($data, $skills, $categories, $address);
+        $action->handle($request->getMemberData(), $request->getSkillData(), $request->getCategoryData(), $request->getAddressData());
 
         return to_route('members.index')->with(FlashMessageKey::SUCCESS->value, 'Member created successfully.');
     }
@@ -87,7 +81,7 @@ final class MemberController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Member $member): Response|RedirectResponse
+    public function edit(Member $member): Response
     {
         $member->load('address');
         $genders = Gender::options();

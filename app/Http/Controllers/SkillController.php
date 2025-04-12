@@ -42,7 +42,7 @@ final class SkillController extends Controller
          */
         $data = $request->validated();
 
-        $response = Gate::inspect('create', [Tag::class, TagType::SKILL, $data['is_regular']]);
+        $response = Gate::inspect('create', [Tag::class, $data['is_regular'], TagType::SKILL]);
 
         if ($response->denied()) {
             return to_route('skills.index')->with(FlashMessageKey::ERROR->value, $response->message());

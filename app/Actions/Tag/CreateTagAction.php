@@ -9,6 +9,11 @@ use App\Models\Tag;
 
 final class CreateTagAction
 {
+    /**
+     * Handle the action.
+     *
+     * @param  array<string,mixed>  $data
+     */
     public function handle(array $data, ?TagType $type): void
     {
 

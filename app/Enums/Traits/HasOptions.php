@@ -15,6 +15,7 @@ trait HasOptions
      */
     public static function options(): array
     {
+
         return collect(self::cases())->map(fn (self $case): array => [
             'value' => $case->value,
             'label' => $case->label(),
@@ -24,10 +25,13 @@ trait HasOptions
     /**
      * Get the option object for the enum.
      *
-     * @return array<value:mixed,label:string>
+     * @return array{value:mixed,label:string}
      */
     public function asOption(): array
     {
+        /**
+         * @return array{value:string|int,label:string}
+         */
         return [
             'value' => $this->value,
             'label' => $this->label(),

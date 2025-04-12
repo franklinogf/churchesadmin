@@ -8,6 +8,11 @@ use App\Models\Tag;
 
 final class UpdateTagAction
 {
+    /**
+     * Handle the action.
+     *
+     * @param  array<string,mixed>  $data
+     */
     public function handle(Tag $tag, array $data): void
     {
         $tag->update([

@@ -8,6 +8,12 @@ use App\Models\Missionary;
 
 final class UpdateMissionaryAction
 {
+    /**
+     * Handle the action.
+     *
+     * @param  array<string,mixed>  $data
+     * @param  array<string,mixed>|null  $address
+     */
     public function handle(Missionary $missionary, array $data, ?array $address = null): void
     {
 

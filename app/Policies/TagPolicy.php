@@ -32,29 +32,17 @@ final class TagPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user, TagType $tagType, bool $is_regular): Response
+    public function create(User $user, bool $is_regular, ?TagType $tagType): Response
     {
         if ($is_regular && $user->cannot(TenantPermission::CREATE_REGULAR_TAG)) {
             return Response::deny(__('permission.create', ['label' => __('Regular tags')]));
         }
 
-        if ($tagType === TagType::CATEGORY) {
-            if ($user->can(TenantPermission::CREATE_CATEGORIES)) {
-                return Response::allow();
-            }
-
-            return Response::deny(__('permission.create', ['label' => $tagType->label()]));
-        }
-
-        if ($tagType === TagType::SKILL) {
-            if ($user->can(TenantPermission::CREATE_SKILLS)) {
-                return Response::allow();
-            }
-
-            return Response::deny(__('permission.create', ['label' => $tagType->label()]));
-        }
-
-        return Response::deny(__('permission.create', ['label' => __('Tags')]));
+        return match ($tagType) {
+            TagType::CATEGORY => $user->can(TenantPermission::CREATE_CATEGORIES) ? Response::allow() : Response::deny(__('permission.create', ['label' => $tagType->label()])),
+            TagType::SKILL => $user->can(TenantPermission::CREATE_SKILLS) ? Response::allow() : Response::deny(__('permission.create', ['label' => $tagType->label()])),
+            default => Response::deny(__('permission.create', ['label' => __('Tags')]))
+        };
     }
 
     /**
@@ -65,24 +53,13 @@ final class TagPolicy
         if ($tag->is_regular && $user->cannot(TenantPermission::UPDATE_REGULAR_TAG)) {
             return Response::deny(__('permission.update', ['label' => __('Regular tags')]));
         }
+        $tagType = $tag->type ? TagType::tryFrom($tag->type) : null;
 
-        if ($user->can(TenantPermission::UPDATE_CATEGORIES) && $tag->type === TagType::CATEGORY->value) {
-            return Response::allow();
-        }
-
-        if ($user->can(TenantPermission::UPDATE_SKILLS) && $tag->type === TagType::SKILL->value) {
-            return Response::allow();
-        }
-
-        if ($tag->type !== null) {
-            $tagType = TagType::tryFrom($tag->type);
-
-            if ($tagType) {
-                return Response::deny(__('permission.update', ['label' => $tagType->label()]));
-            }
-        }
-
-        return Response::deny(__('permission.update', ['label' => __('Tags')]));
+        return match ($tagType) {
+            TagType::CATEGORY => $user->can(TenantPermission::UPDATE_CATEGORIES) ? Response::allow() : Response::deny(__('permission.update', ['label' => $tagType->label()])),
+            TagType::SKILL => $user->can(TenantPermission::UPDATE_SKILLS) ? Response::allow() : Response::deny(__('permission.update', ['label' => $tagType->label()])),
+            default => Response::deny(__('permission.update', ['label' => __('Tags')]))
+        };
     }
 
     /**
@@ -95,23 +72,13 @@ final class TagPolicy
             return Response::deny(__('permission.delete', ['label' => __('Regular tags')]));
         }
 
-        if ($user->can(TenantPermission::DELETE_CATEGORIES) && $tag->type === TagType::CATEGORY->value) {
-            return Response::allow();
-        }
+        $tagType = $tag->type ? TagType::tryFrom($tag->type) : null;
 
-        if ($user->can(TenantPermission::DELETE_SKILLS) && $tag->type === TagType::SKILL->value) {
-            return Response::allow();
-        }
-
-        if ($tag->type !== null) {
-
-            $tagType = TagType::tryFrom($tag->type);
-            if ($tagType) {
-                return Response::deny(__('permission.delete', ['label' => $tagType->label()]));
-            }
-        }
-
-        return Response::deny(__('permission.delete', ['label' => __('Tags')]));
+        return match ($tagType) {
+            TagType::CATEGORY => $user->can(TenantPermission::DELETE_CATEGORIES) ? Response::allow() : Response::deny(__('permission.delete', ['label' => $tagType->label()])),
+            TagType::SKILL => $user->can(TenantPermission::DELETE_SKILLS) ? Response::allow() : Response::deny(__('permission.delete', ['label' => $tagType->label()])),
+            default => Response::deny(__('permission.delete', ['label' => __('Tags')]))
+        };
     }
 
     /**

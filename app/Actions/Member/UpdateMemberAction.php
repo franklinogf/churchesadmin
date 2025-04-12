@@ -9,6 +9,14 @@ use App\Models\Member;
 
 final class UpdateMemberAction
 {
+    /**
+     * Handle the action.
+     *
+     * @param  array<string,mixed>  $data
+     * @param  array<int,string>|null  $skills
+     * @param  array<int,string>|null  $categories
+     * @param  array<string,mixed>|null  $address
+     */
     public function handle(Member $member, array $data, ?array $skills, ?array $categories, ?array $address): void
     {
 

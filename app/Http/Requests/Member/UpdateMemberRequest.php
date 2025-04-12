@@ -51,26 +51,69 @@ final class UpdateMemberRequest extends FormRequest
         ];
     }
 
+    /**
+     * Get the validated member data from the request.
+     *
+     * @return array<string,mixed>
+     */
     public function getMemberData(): array
     {
-        return $this->safe()->except(['skills', 'categories', 'address']);
+        /** @var array<string, mixed> $data */
+        $data = $this->safe()->except(['skills', 'categories', 'address']);
+
+        return $data;
     }
 
+    /**
+     * Get the validated skills data from the request.
+     *
+     * @return array<int,string>
+     */
     public function getSkillData(): array
     {
-        return collect($this->safe()->only(['skills']))->flatten()->toArray();
+        /**
+         * @var array<int,string> $data
+         */
+        $data = collect($this->safe()->only('skills'))->flatten()->toArray();
+
+        return $data;
     }
 
+    /**
+     * Get the validated category data from the request.
+     *
+     * @return array<int,string>
+     */
     public function getCategoryData(): array
     {
-        return collect($this->safe()->only(['categories']))->flatten()->toArray();
+        /**
+         * @var array<int,string> $data
+         */
+        $data = collect($this->safe()->only('categories'))->flatten()->toArray();
+
+        return $data;
     }
 
+    /**
+     * Get the validated address data from the request.
+     *
+     * @return array{address_1?: string, address_2?: string, city?: string, state?: string, zip_code?: string, country?: string}|null
+     */
     public function getAddressData(): ?array
     {
-        $addressData = $this->safe()->only(['address']);
-        if (array_key_exists('address', $addressData)) {
-            return $addressData['address'];
+        /**
+         * @var array<string|null, array{
+         *     address_1?: string,
+         *     address_2?: string,
+         *     city?: string,
+         *     state?: string,
+         *     zip_code?: string,
+         *     country?: string
+         * }> $data
+         */
+        $data = $this->safe()->only(['address']);
+        if (array_key_exists('address', $data)) {
+            return $data['address'];
         }
 
         return null;

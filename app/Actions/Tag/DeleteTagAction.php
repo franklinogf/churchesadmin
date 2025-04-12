@@ -8,6 +8,9 @@ use App\Models\Tag;
 
 final class DeleteTagAction
 {
+    /**
+     * Handle the action.
+     */
     public function handle(Tag $tag): void
     {
         $tag->delete();

@@ -36,21 +36,45 @@ final class StoreUserRequest extends FormRequest
         ];
     }
 
+    /**
+     * Get the validated user data from the request.
+     *
+     * @return array<string, mixed>
+     */
     public function getUserData(): array
     {
-        return $this->safe()->except([
+        /** @var array<string, mixed> $data */
+        $data = $this->safe()->except([
             'roles',
             'additional_permissions',
         ]);
+
+        return $data;
     }
 
+    /**
+     * Get the validated roles data from the request.
+     *
+     * @return array<int,string>
+     */
     public function getRoleData(): array
     {
-        return collect($this->safe()->only(['roles']))->flatten()->toArray();
+        /** @var array<int, string> $data */
+        $data = collect($this->safe()->only(['roles']))->flatten()->toArray();
+
+        return $data;
     }
 
+    /**
+     * Get the validated additional permissions data from the request.
+     *
+     * @return array<int,string>
+     */
     public function getAdditionalPermissionsData(): array
     {
-        return collect($this->safe()->only(['additional_permissions']))->flatten()->toArray();
+        /** @var array<int,string> $data */
+        $data = collect($this->safe()->only(['additional_permissions']))->flatten()->toArray();
+
+        return $data;
     }
 }

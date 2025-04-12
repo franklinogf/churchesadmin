@@ -21,8 +21,8 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property-read string $state
  * @property-read string $country
  * @property-read string $postal_code
- * @property-read \Carbon\CarbonImmutable|null $created_at
- * @property-read \Carbon\CarbonImmutable|null $updated_at
+ * @property-read \Carbon\CarbonImmutable $created_at
+ * @property-read \Carbon\CarbonImmutable $updated_at
  */
 final class Address extends Model
 {
@@ -36,6 +36,6 @@ final class Address extends Model
      */
     public function owner(): MorphTo
     {
-        return $this->morphTo('addresses', 'owner_type', 'owner_id');
+        return $this->morphTo();
     }
 }

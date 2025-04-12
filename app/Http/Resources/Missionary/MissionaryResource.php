@@ -9,6 +9,9 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Number;
 
+/**
+ * @mixin \App\Models\Missionary
+ */
 final class MissionaryResource extends JsonResource
 {
     /**

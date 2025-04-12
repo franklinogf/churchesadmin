@@ -48,16 +48,41 @@ final class UpdateMissionaryRequest extends FormRequest
         ];
     }
 
+    /**
+     * Get the validated missionary data from the request.
+     *
+     * @return array<string,mixed>
+     */
     public function getMissionaryData(): array
     {
-        return $this->safe()->except(['address']);
+        /** @var array<string, mixed> $data */
+        $data = $this->safe()->except([
+            'address',
+        ]);
+
+        return $data;
     }
 
+    /**
+     * Get the validated address data from the request.
+     *
+     * @return array{address_1?: string, address_2?: string, city?: string, state?: string, zip_code?: string, country?: string}|null
+     */
     public function getAddressData(): ?array
     {
-        $addressData = $this->safe()->only(['address']);
-        if (array_key_exists('address', $addressData)) {
-            return $addressData['address'];
+        /**
+         * @var array<string|null, array{
+         *     address_1?: string,
+         *     address_2?: string,
+         *     city?: string,
+         *     state?: string,
+         *     zip_code?: string,
+         *     country?: string
+         * }> $data
+         */
+        $data = $this->safe()->only(['address']);
+        if (array_key_exists('address', $data)) {
+            return $data['address'];
         }
 
         return null;

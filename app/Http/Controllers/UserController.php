@@ -16,7 +16,9 @@ use App\Http\Resources\User\RoleResource;
 use App\Http\Resources\User\UserResource;
 use App\Models\User;
 use Illuminate\Container\Attributes\CurrentUser;
+use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
+use Inertia\Response;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -25,7 +27,7 @@ final class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(#[CurrentUser] User $user)
+    public function index(#[CurrentUser] User $user): Response
     {
         $users = User::query()
             ->withoutRole(TenantRole::SUPER_ADMIN)
@@ -38,7 +40,7 @@ final class UserController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): Response
     {
         $roles = Role::query()
             ->whereNotIn('name', [TenantRole::SUPER_ADMIN->value])
@@ -56,7 +58,7 @@ final class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreUserRequest $request, CreateUserAction $action)
+    public function store(StoreUserRequest $request, CreateUserAction $action): RedirectResponse
     {
         $action->handle(
             $request->getUserData(),
@@ -71,7 +73,7 @@ final class UserController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(User $user)
+    public function show(User $user): void
     {
         //
     }
@@ -79,7 +81,7 @@ final class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user)
+    public function edit(User $user): Response
     {
         $user->load('roles', 'permissions');
         $roles = Role::query()
@@ -99,7 +101,7 @@ final class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateUserRequest $request, User $user, UpdateUserAction $action)
+    public function update(UpdateUserRequest $request, User $user, UpdateUserAction $action): RedirectResponse
     {
         $action->handle(
             $user,
@@ -116,7 +118,7 @@ final class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user, DeleteUserAction $action)
+    public function destroy(User $user, DeleteUserAction $action): RedirectResponse
     {
         $action->handle($user);
 

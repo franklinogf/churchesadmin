@@ -74,7 +74,7 @@ final class MissionaryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Missionary $missionary)
+    public function edit(Missionary $missionary): Response
     {
 
         $missionary->load('address');

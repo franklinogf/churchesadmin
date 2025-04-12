@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Policies;
 
 use App\Enums\TenantPermission;
-use App\Models\Missionary;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
@@ -14,7 +13,7 @@ final class MissionaryPolicy
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(User $user): bool
+    public function viewAny(): bool
     {
         return false;
     }
@@ -22,7 +21,7 @@ final class MissionaryPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(User $user, Missionary $missionary): bool
+    public function view(): bool
     {
         return false;
     }

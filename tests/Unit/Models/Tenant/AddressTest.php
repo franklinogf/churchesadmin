@@ -15,7 +15,7 @@ test('to array', function (): void {
         'city',
         'state',
         'country',
-        'postal_code',
+        'zip_code',
         'created_at',
         'updated_at',
 
@@ -26,16 +26,16 @@ it('can have a member owner', function (): void {
     $address = Address::factory()->forMember()
         ->create()->fresh();
 
-    expect($address->owner)->toBeInstanceOf(App\Models\Member::class);
-    expect($address->owner->id)->toBe($address->owner_id);
-    expect($address->owner->getMorphClass())->toBe($address->owner_type);
+    expect($address->owner->id)->toBe($address->owner_id)
+        ->and($address->owner->getMorphClass())->toBe($address->owner_type)
+        ->and($address->owner)->toBeInstanceOf(App\Models\Member::class);
 });
 
 it('can have a missionary owner', function (): void {
     $address = Address::factory()->forMissionary()
         ->create()->fresh();
 
-    expect($address->owner)->toBeInstanceOf(App\Models\Missionary::class);
-    expect($address->owner->id)->toBe($address->owner_id);
-    expect($address->owner->getMorphClass())->toBe($address->owner_type);
+    expect($address->owner->id)->toBe($address->owner_id)
+        ->and($address->owner->getMorphClass())->toBe($address->owner_type)
+        ->and($address->owner)->toBeInstanceOf(App\Models\Missionary::class);
 });

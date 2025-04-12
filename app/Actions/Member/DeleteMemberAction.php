@@ -8,6 +8,9 @@ use App\Models\Member;
 
 final class DeleteMemberAction
 {
+    /**
+     * Handle the action.
+     */
     public function handle(Member $member): void
     {
         $member->delete();

@@ -8,6 +8,9 @@ use App\Models\Missionary;
 
 final class DeleteMissionaryAction
 {
+    /**
+     * Handle the action.
+     */
     public function handle(Missionary $missionary): void
     {
         $missionary->delete();

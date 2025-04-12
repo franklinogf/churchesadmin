@@ -43,7 +43,7 @@ final class CategoryController extends Controller
          */
         $data = $request->validated();
 
-        $response = Gate::inspect('create', [Tag::class, TagType::CATEGORY, $data['is_regular']]);
+        $response = Gate::inspect('create', [Tag::class, $data['is_regular'], TagType::CATEGORY]);
 
         if ($response->denied()) {
             return to_route('categories.index')->with(FlashMessageKey::ERROR->value, $response->message());
