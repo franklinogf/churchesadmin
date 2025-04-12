@@ -50,6 +50,12 @@ Route::middleware([
                     ->except(['show'])
                     ->middleware(Authorize::using(TenantPermission::MANAGE_USERS->value));
 
+                Route::put('members/{member}/restore', [MemberController::class, 'restore'])
+                    ->withTrashed()
+                    ->name('members.restore');
+                Route::delete('members/{member}/forceDelete', [MemberController::class, 'forceDelete'])
+                    ->withTrashed()
+                    ->name('members.forceDelete');
                 Route::resource('members', MemberController::class)
                     ->middleware(Authorize::using(TenantPermission::MANAGE_MEMBERS->value));
 

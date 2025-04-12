@@ -156,4 +156,28 @@ describe('if user does not have permission', function (): void {
             ->assertRedirect(route('members.index'))
             ->assertSessionHas(FlashMessageKey::ERROR->value);
     });
+
+    it('cannot be updated', function (): void {
+        $member = Member::factory()->create();
+        from(route('members.edit', ['member' => $member]))
+            ->put(route('members.update', ['member' => $member]), [
+                'name' => 'John',
+                'last_name' => 'Doe',
+                'email' => 'john.doe@example.com',
+                'phone' => '+19293394305',
+                'gender' => Gender::MALE->value,
+                'dob' => '1990-01-01',
+                'civil_status' => CivilStatus::SINGLE->value,
+                'address' => [
+                    'address_1' => '123 Main St',
+                    'address_2' => 'Apt 4B',
+                    'city' => 'Anytown',
+                    'state' => 'CA',
+                    'country' => 'US',
+                    'zip_code' => '12345',
+                ],
+            ])
+            ->assertRedirect(route('members.index'))
+            ->assertSessionHas(FlashMessageKey::ERROR->value);
+    });
 });

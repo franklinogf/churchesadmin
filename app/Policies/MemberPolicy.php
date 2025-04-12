@@ -11,22 +11,6 @@ use Illuminate\Auth\Access\Response;
 final class MemberPolicy
 {
     /**
-     * Determine whether the user can view any models.
-     */
-    public function viewAny(): bool
-    {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(): bool
-    {
-        return false;
-    }
-
-    /**
      * Determine whether the user can create models.
      */
     public function create(User $user): Response

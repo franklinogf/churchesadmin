@@ -9,22 +9,6 @@ use App\Models\User;
 final class UserPolicy
 {
     /**
-     * Determine whether the user can view any models.
-     */
-    public function viewAny(): bool
-    {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(): bool
-    {
-        return false;
-    }
-
-    /**
      * Determine whether the user can create models.
      */
     public function create(): bool

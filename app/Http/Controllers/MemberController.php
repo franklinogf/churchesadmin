@@ -6,6 +6,8 @@ namespace App\Http\Controllers;
 
 use App\Actions\Member\CreateMemberAction;
 use App\Actions\Member\DeleteMemberAction;
+use App\Actions\Member\ForceDeleteMemberAction;
+use App\Actions\Member\RestoreMemberAction;
 use App\Actions\Member\UpdateMemberAction;
 use App\Enums\CivilStatus;
 use App\Enums\FlashMessageKey;
@@ -146,5 +148,33 @@ final class MemberController extends Controller
         $action->handle($member);
 
         return to_route('members.index')->with(FlashMessageKey::SUCCESS->value, 'Member deleted successfully.');
+    }
+
+    public function restore(Member $member, RestoreMemberAction $action): RedirectResponse
+    {
+        $response = Gate::inspect('restore', $member);
+
+        if ($response->denied()) {
+
+            return to_route('members.index')->with(FlashMessageKey::ERROR->value, $response->message());
+        }
+
+        $action->handle($member);
+
+        return to_route('members.index')->with(FlashMessageKey::SUCCESS->value, 'Member restored successfully.');
+    }
+
+    public function forceDelete(Member $member, ForceDeleteMemberAction $action): RedirectResponse
+    {
+        $response = Gate::inspect('forceDelete', $member);
+
+        if ($response->denied()) {
+
+            return to_route('members.index')->with(FlashMessageKey::ERROR->value, $response->message());
+        }
+
+        $action->handle($member);
+
+        return to_route('members.index')->with(FlashMessageKey::SUCCESS->value, 'Member restored successfully.');
     }
 }

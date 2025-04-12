@@ -13,23 +13,6 @@ use Illuminate\Auth\Access\Response;
 final class TagPolicy
 {
     /**
-     * Determine whether the user can view any models.
-     */
-    public function viewAny(): Response
-    {
-
-        return Response::deny();
-    }
-
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(): bool
-    {
-        return false;
-    }
-
-    /**
      * Determine whether the user can create models.
      */
     public function create(User $user, bool $is_regular, ?TagType $tagType): Response
