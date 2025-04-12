@@ -2,17 +2,23 @@
 
 declare(strict_types=1);
 
-use App\Enums\TagType;
+use App\Enums\TenantPermission;
 use App\Models\Tag;
-use App\Models\User;
 use Inertia\Testing\AssertableInertia as Assert;
 
-use function Pest\Laravel\actingAs;
 use function Pest\Laravel\get;
 
-test('index page can be rendered if authenticated', function (): void {
-    Tag::factory(10)->create(['type' => TagType::SKILL->value]);
-    actingAs(User::factory()->create())->get(route('skills.index'))
+it('cannot be rendered if does not have permission', function (): void {
+
+    asUserWithoutPermission()->get(route('skills.index'))
+        ->assertForbidden();
+});
+
+it('can be rendered if authenticated user has permission', function (): void {
+    Tag::factory(10)->skill()->create();
+
+    asUserWithPermission(TenantPermission::MANAGE_SKILLS)
+        ->get(route('skills.index'))
         ->assertStatus(200)
         ->assertInertia(fn (Assert $page): Assert => $page
             ->component('skills/index')
@@ -20,7 +26,8 @@ test('index page can be rendered if authenticated', function (): void {
         );
 });
 
-test('index page can not be rendered if not authenticated', function (): void {
+it('cannot be rendered if not authenticated', function (): void {
+
     get(route('skills.index'))
         ->assertRedirect(route('login'));
 });

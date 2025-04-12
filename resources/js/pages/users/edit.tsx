@@ -78,39 +78,38 @@ export default function Edit({ user, permissions, roles }: EditPageProps) {
             />
           )}
 
-          {hasRole(UserRole.SUPER_ADMIN) ||
-            (hasRole(UserRole.ADMIN) && (
-              <div className="space-y-4">
-                <p className="text-lg font-medium">{t('Assigned permissions')}</p>
-                <ScrollArea className="h-60 w-full">
-                  <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-4">
-                    {permissions.map((permission) => {
-                      const existsOnRoles = selectedRolesPermissions.some((p) => p.name === permission.name);
-                      const value = data.additional_permissions.includes(permission.name) || existsOnRoles;
+          {(hasRole(UserRole.SUPER_ADMIN) || hasRole(UserRole.ADMIN)) && (
+            <div className="space-y-4">
+              <p className="text-lg font-medium">{t('Assigned permissions')}</p>
+              <ScrollArea className="h-60 w-full">
+                <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-4">
+                  {permissions.map((permission) => {
+                    const existsOnRoles = selectedRolesPermissions.some((p) => p.name === permission.name);
+                    const value = data.additional_permissions.includes(permission.name) || existsOnRoles;
 
-                      return (
-                        <SwitchField
-                          disabled={existsOnRoles}
-                          key={permission.id}
-                          label={permission.label ?? ''}
-                          value={value}
-                          onChange={(checked) => {
-                            if (checked) {
-                              setData('additional_permissions', [...data.additional_permissions, permission.name.toString()]);
-                            } else {
-                              setData(
-                                'additional_permissions',
-                                data.additional_permissions.filter((id) => id !== permission.name.toString()),
-                              );
-                            }
-                          }}
-                        />
-                      );
-                    })}
-                  </div>
-                </ScrollArea>
-              </div>
-            ))}
+                    return (
+                      <SwitchField
+                        disabled={existsOnRoles}
+                        key={permission.id}
+                        label={permission.label ?? ''}
+                        value={value}
+                        onChange={(checked) => {
+                          if (checked) {
+                            setData('additional_permissions', [...data.additional_permissions, permission.name.toString()]);
+                          } else {
+                            setData(
+                              'additional_permissions',
+                              data.additional_permissions.filter((id) => id !== permission.name.toString()),
+                            );
+                          }
+                        }}
+                      />
+                    );
+                  })}
+                </div>
+              </ScrollArea>
+            </div>
+          )}
         </Form>
       </div>
     </AppLayout>

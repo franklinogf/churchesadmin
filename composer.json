@@ -79,7 +79,7 @@
         "test:types": "phpstan analyse",
         "test:unit": "pest --testsuite=Unit --stop-on-failure",
         "test:feature": "pest --testsuite=Feature --stop-on-failure",
-        "test:all": "pest --coverage --compact --stop-on-failure",
+        "test:all": "pest --coverage --compact",
         "test:migrate": "php artisan migrate --database=testing",
         "test": [
             "@test:refactor",

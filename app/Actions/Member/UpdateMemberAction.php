@@ -17,7 +17,7 @@ final class UpdateMemberAction
      * @param  array<int,string>|null  $categories
      * @param  array<string,mixed>|null  $address
      */
-    public function handle(Member $member, array $data, ?array $skills, ?array $categories, ?array $address): void
+    public function handle(Member $member, array $data, ?array $skills = null, ?array $categories = null, ?array $address = null): void
     {
 
         $member->update($data);
@@ -31,7 +31,11 @@ final class UpdateMemberAction
         }
 
         if ($address !== null) {
-            $member->address()->update($address);
+            if ($member->address !== null) {
+                $member->address()->update($address);
+            } else {
+                $member->address()->create($address);
+            }
         } else {
             $member->address()->delete();
         }

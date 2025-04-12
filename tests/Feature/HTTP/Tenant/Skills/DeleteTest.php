@@ -3,36 +3,59 @@
 declare(strict_types=1);
 
 use App\Enums\FlashMessageKey;
+use App\Enums\TenantPermission;
 use App\Models\Tag;
-use App\Models\User;
 
-use function Pest\Laravel\actingAs;
+use function Pest\Laravel\assertDatabaseCount;
+use function Pest\Laravel\from;
 
-test('can be deleted', function (): void {
-    $skill = Tag::factory()->create()->fresh();
-    actingAs(User::factory()->create())
-        ->delete(route('skills.destroy', ['skill' => $skill]))
-        ->assertRedirect(route('skills.index'));
+describe('if user has permission', function (): void {
+    beforeEach(function (): void {
+        asUserWithPermission(TenantPermission::MANAGE_SKILLS, TenantPermission::DELETE_SKILLS, TenantPermission::DELETE_REGULAR_TAG);
+    });
 
-    expect(Tag::find($skill->id))->toBeNull();
+    it('can be deleted', function (): void {
+        $skill = Tag::factory()->skill()->create()->fresh();
+
+        from(route('skills.index'))->delete(route('skills.destroy', ['tag' => $skill]))
+            ->assertRedirect(route('skills.index'));
+
+        assertDatabaseCount('tags', 0);
+
+        expect(Tag::find($skill->id))->toBeNull();
+
+    });
+
+    test('can delete a regular skill', function (): void {
+        $skill = Tag::factory()->skill()->regular()->create()->fresh();
+
+        from(route('skills.index'))
+            ->delete(route('skills.destroy', ['tag' => $skill]))
+            ->assertRedirect(route('skills.index'))
+            ->assertSessionHas(FlashMessageKey::SUCCESS->value);
+
+        assertDatabaseCount('tags', 0);
+
+        expect(Tag::find($skill->id))->toBeNull();
+    });
 
 });
 
-test('non admin users cannot delete regular skills', function (): void {
-    $skill = Tag::factory()->create(['is_regular' => true])->fresh();
-    actingAs(User::factory()->create())
-        ->delete(route('skills.destroy', ['skill' => $skill]))
-        ->assertRedirect(route('skills.index'))
-        ->assertSessionHas(FlashMessageKey::ERROR->value);
+describe('if user does not have permission', function (): void {
+    beforeEach(function (): void {
+        asUserWithPermission(TenantPermission::MANAGE_SKILLS);
+    });
 
-    expect(Tag::find($skill->id))->not()->toBeNull();
+    test('cannot delete a regular skill', function (): void {
+        $skill = Tag::factory()->skill()->regular()->create()->fresh();
+
+        from(route('skills.index'))
+            ->delete(route('skills.destroy', ['tag' => $skill]))
+            ->assertRedirect(route('skills.index'))
+            ->assertSessionHas(FlashMessageKey::ERROR->value);
+
+        assertDatabaseCount('tags', 1);
+
+        expect(Tag::find($skill->id))->not()->toBeNull();
+    });
 });
-
-test('admin users can delete regular skills', function (): void {
-    $skill = Tag::factory()->create(['is_regular' => true])->fresh();
-    actingAs(User::factory()->admin()->create())
-        ->delete(route('skills.destroy', ['skill' => $skill]))
-        ->assertRedirect(route('skills.index'));
-
-    expect(Tag::find($skill->id))->toBeNull();
-})->skip();

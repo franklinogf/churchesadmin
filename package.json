@@ -9,7 +9,7 @@
         "lint": "eslint . --fix",
         "test:format": "prettier --check resources/",
         "test:types": "tsc --noEmit",
-        "test": "npm run test:format && npm run test:types"
+        "test": "npm run test:format && npm run test:types && npm run lint"
     },
     "devDependencies": {
         "@eslint/js": "^9.19.0",

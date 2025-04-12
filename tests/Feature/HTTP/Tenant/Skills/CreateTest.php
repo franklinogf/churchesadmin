@@ -2,72 +2,133 @@
 
 declare(strict_types=1);
 
+use App\Enums\FlashMessageKey;
 use App\Enums\TagType;
+use App\Enums\TenantPermission;
 use App\Models\Tag;
-use App\Models\User;
 
-use function Pest\Laravel\actingAs;
+use function Pest\Laravel\assertDatabaseCount;
+use function Pest\Laravel\from;
 
-test('stores a skill', function (): void {
+describe('if user has permission', function (): void {
 
-    actingAs(User::factory()->create())
-        ->from(route('skills.index'))
-        ->post(route('skills.store'), [
+    beforeEach(function (): void {
+        asUserWithPermission(TenantPermission::MANAGE_SKILLS, TenantPermission::CREATE_SKILLS, TenantPermission::CREATE_REGULAR_TAG);
+    });
+
+    it('can be stored', function (): void {
+
+        from(route('skills.index'))
+            ->post(route('skills.store'), [
+                'name' => ['en' => 'tag name'],
+                'is_regular' => false,
+            ])->assertRedirect(route('skills.index'));
+
+        assertDatabaseCount('tags', 1);
+
+        $skill = Tag::withType(TagType::SKILL->value)->first();
+
+        expect($skill)->not->toBeNull()
+            ->and($skill->name)->toBe('tag name')
+            ->and($skill->type)->toBe(TagType::SKILL->value);
+
+    });
+
+    it('cannot be stored with an empty name', function (): void {
+
+        from(route('skills.index'))
+            ->post(route('skills.store'), [
+                'name' => ['en' => ''],
+                'is_regular' => false,
+            ])->assertSessionHasErrors();
+
+        assertDatabaseCount('tags', 0);
+
+        $skill = Tag::withType(TagType::SKILL->value)->first();
+        expect($skill)->toBeNull();
+    });
+
+    it('cannot be stored with a name that is too short', function (): void {
+
+        from(route('skills.index'))
+            ->post(route('skills.store'), [
+                'name' => ['en' => 'a'],
+                'is_regular' => false,
+            ])->assertSessionHasErrors();
+
+        assertDatabaseCount('tags', 0);
+
+        $skill = Tag::withType(TagType::SKILL->value)->first();
+        expect($skill)->toBeNull();
+    });
+
+    it('cannot be stored if the name already exists', function (): void {
+
+        Tag::factory()->skill()->create([
             'name' => ['en' => 'tag name'],
-            'is_regular' => false,
-        ])->assertRedirect(route('skills.index'));
+        ]);
+        from(route('skills.index'))
+            ->post(route('skills.store'), [
+                'name' => ['en' => 'tag name'],
+                'is_regular' => false,
+            ])->assertRedirect(route('skills.index'));
 
-    $skill = Tag::withType(TagType::SKILL->value)->first();
+        assertDatabaseCount('tags', 1);
 
-    expect($skill)->not->toBeNull()
-        ->and($skill->name)->toBe('tag name')
-        ->and($skill->type)->toBe(TagType::SKILL->value);
+    });
+
+    test('can store a regular skill', function (): void {
+
+        from(route('skills.index'))
+            ->post(route('skills.store'), [
+                'name' => ['en' => 'tag name'],
+                'is_regular' => true,
+            ])->assertRedirect(route('skills.index'));
+
+        assertDatabaseCount('tags', 1);
+
+        $skill = Tag::withType(TagType::SKILL->value)->first();
+
+        expect($skill)->not->toBeNull()
+            ->and($skill->name)->toBe('tag name')
+            ->and($skill->type)->toBe(TagType::SKILL->value)
+            ->and($skill->is_regular)->toBe(true);
+
+    });
 
 });
 
-test('cannot store a skill with an empty name', function (): void {
+describe('if user does not have permission', function (): void {
 
-    actingAs(User::factory()->create())
-        ->from(route('skills.index'))
-        ->post(route('skills.store'), [
-            'name' => ['en' => ''],
-            'is_regular' => false,
-        ])->assertSessionHasErrors();
+    beforeEach(function (): void {
+        asUserWithPermission(TenantPermission::MANAGE_SKILLS);
+    });
 
-    $skill = Tag::withType(TagType::SKILL->value)->first();
-    expect($skill)->toBeNull();
-});
+    it('cannot be stored', function (): void {
 
-test('cannot store a skill with a name that is too short', function (): void {
+        from(route('skills.index'))
+            ->post(route('skills.store'), [
+                'name' => ['en' => 'tag name'],
+                'is_regular' => false,
+            ])
+            ->assertRedirect(route('skills.index'))
+            ->assertSessionHas(FlashMessageKey::ERROR->value);
 
-    actingAs(User::factory()->create())
-        ->from(route('skills.index'))
-        ->post(route('skills.store'), [
-            'name' => ['en' => 'a'],
-            'is_regular' => false,
-        ])->assertSessionHasErrors();
+        assertDatabaseCount('tags', 0);
 
-    $skill = Tag::withType(TagType::SKILL->value)->first();
-    expect($skill)->toBeNull();
-});
+    });
 
-test('cannot store a skill with an existing name', function (): void {
-    $user = User::factory()->create();
+    test('cannot store a regular skill', function (): void {
 
-    actingAs($user)
-        ->from(route('skills.index'))
-        ->post(route('skills.store'), [
-            'name' => ['en' => 'tag name'],
-            'is_regular' => false,
-        ])->assertRedirect(route('skills.index'));
+        from(route('skills.index'))
+            ->post(route('skills.store'), [
+                'name' => ['en' => 'tag name'],
+                'is_regular' => true,
+            ])
+            ->assertRedirect(route('skills.index'))
+            ->assertSessionHas(FlashMessageKey::ERROR->value);
 
-    actingAs($user)
-        ->from(route('skills.index'))
-        ->post(route('skills.store'), [
-            'name' => ['en' => 'tag name'],
-            'is_regular' => false,
-        ])->assertRedirect(route('skills.index'));
-    $skills = Tag::withType(TagType::SKILL->value)->count();
-    expect($skills)->toBe(1);
+        assertDatabaseCount('tags', 0);
 
+    });
 });

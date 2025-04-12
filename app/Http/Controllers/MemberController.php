@@ -37,8 +37,13 @@ final class MemberController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(): Response
+    public function create(): Response|RedirectResponse
     {
+        $response = Gate::inspect('create', Member::class);
+
+        if ($response->denied()) {
+            return to_route('members.index')->with(FlashMessageKey::ERROR->value, $response->message());
+        }
 
         $genders = Gender::options();
         $civilStatuses = CivilStatus::options();
@@ -81,8 +86,14 @@ final class MemberController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Member $member): Response
+    public function edit(Member $member): Response|RedirectResponse
     {
+        $response = Gate::inspect('update', Member::class);
+
+        if ($response->denied()) {
+            return to_route('members.index')->with(FlashMessageKey::ERROR->value, $response->message());
+        }
+
         $member->load('address');
         $genders = Gender::options();
         $civilStatuses = CivilStatus::options();

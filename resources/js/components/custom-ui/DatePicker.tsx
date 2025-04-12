@@ -2,7 +2,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { genDays, genMonths, genYears } from '@/lib/datetime';
 import { Locale } from 'date-fns/locale';
-import { useEffect, useId, useState } from 'react';
+import { useId, useState } from 'react';
 
 export interface DatePickerProps {
   startYear: number;
@@ -14,8 +14,8 @@ export interface DatePickerProps {
 }
 
 export function DatePicker({ startYear, endYear, selected, disabled, locale, onSelect }: DatePickerProps) {
-  const [days, setDays] = useState(genDays({ locale, monthIndex: selected?.getMonth() || 0, year: selected?.getFullYear() || 0 }));
-  const [months, setMonths] = useState(genMonths({ locale }));
+  const days = genDays({ locale, monthIndex: selected?.getMonth() || 0, year: selected?.getFullYear() || 0 });
+  const months = genMonths({ locale });
 
   const [selectedMonth, setSelectedMonth] = useState(selected?.getMonth().toString() || undefined);
   const [selectedDay, setSelectedDay] = useState(selected?.getDate().toString() || undefined);
@@ -29,26 +29,24 @@ export function DatePicker({ startYear, endYear, selected, disabled, locale, onS
 
   const handleDayChange = (day: string) => {
     setSelectedDay(day);
+    if (selectedYear && selectedMonth) {
+      onSelect(new Date(parseInt(selectedYear), parseInt(selectedMonth), parseInt(day)));
+    }
   };
 
   const handleMonthChange = (month: string) => {
     setSelectedMonth(month);
+    if (selectedYear) {
+      onSelect(new Date(parseInt(selectedYear), parseInt(month), parseInt(selectedDay || '1')));
+    }
   };
 
   const handleYearChange = (year: string) => {
     setSelectedYear(year);
-  };
-
-  useEffect(() => {
-    if (!selectedMonth || !selectedYear) return;
-    setDays(genDays({ locale, monthIndex: parseInt(selectedMonth), year: parseInt(selectedYear) }));
-    setMonths(genMonths({ locale }));
-
-    if (selectedMonth && selectedYear && selectedDay) {
-      const newDate = new Date(parseInt(selectedYear), parseInt(selectedMonth), parseInt(selectedDay));
-      onSelect(newDate);
+    if (selectedMonth) {
+      onSelect(new Date(parseInt(year), parseInt(selectedMonth), parseInt(selectedDay || '1')));
     }
-  }, [selectedDay, selectedMonth, selectedYear, locale, onSelect]);
+  };
 
   return (
     <div className="grid w-full max-w-[275px] grid-cols-3 gap-4">

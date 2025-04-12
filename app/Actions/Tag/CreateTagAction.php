@@ -14,7 +14,7 @@ final class CreateTagAction
      *
      * @param  array<string,mixed>  $data
      */
-    public function handle(array $data, ?TagType $type): void
+    public function handle(array $data, ?TagType $type = null): void
     {
 
         Tag::create([

@@ -4,93 +4,127 @@ declare(strict_types=1);
 
 use App\Enums\FlashMessageKey;
 use App\Enums\TagType;
+use App\Enums\TenantPermission;
 use App\Models\Tag;
-use App\Models\User;
 
-use function Pest\Laravel\actingAs;
+use function Pest\Laravel\from;
 
-test('updates a skill', function (): void {
+describe('if user has permission', function (): void {
+    beforeEach(function (): void {
+        asUserWithPermission(TenantPermission::MANAGE_SKILLS, TenantPermission::UPDATE_SKILLS, TenantPermission::UPDATE_REGULAR_TAG);
+    });
 
-    $skill = Tag::factory()->create(['type' => TagType::SKILL->value])->fresh();
+    it('can be updated', function (): void {
 
-    actingAs(User::factory()->create())
-        ->from(route('skills.index'))
-        ->put(route('skills.update', ['skill' => $skill]), [
-            'name' => ['en' => 'tag name'],
-            'is_regular' => false,
-        ])->assertRedirect(route('skills.index'));
+        $skill = Tag::factory()->skill()->create([
+            'name' => ['en' => 'name'],
+        ])->fresh();
 
-    $updatedSkill = Tag::find($skill->id);
+        from(route('skills.index'))
+            ->put(route('skills.update', ['tag' => $skill]), [
+                'name' => ['en' => 'tag name'],
+                'is_regular' => false,
+            ])->assertRedirect(route('skills.index'));
 
-    expect($updatedSkill)->not->toBeNull()
-        ->and($updatedSkill->name)->toBe('tag name')
-        ->and($updatedSkill->is_regular)->toBe(false);
+        $updatedSkill = Tag::find($skill->id);
+
+        expect($updatedSkill)->not->toBeNull()
+            ->and($updatedSkill->name)->toBe('tag name')
+            ->and($updatedSkill->is_regular)->toBe(false);
+    });
+
+    it('cannot be updated with an empty name', function (): void {
+
+        $skill = Tag::factory()->skill()->create()->fresh();
+        from(route('skills.index'))
+            ->put(route('skills.update', ['tag' => $skill]), [
+                'name' => ['en' => ''],
+                'is_regular' => true,
+            ])->assertSessionHasErrors();
+
+        $updatedSkill = Tag::withType(TagType::SKILL->value)->first();
+        expect($updatedSkill->name)->not->toBe('')
+            ->and($updatedSkill->name)->not->toBeNull()
+            ->and($updatedSkill->name)->toBe($skill->name)
+            ->and($updatedSkill->is_regular)->toBe(false);
+    });
+
+    it('cannot be updated with a name that is too short', function (): void {
+
+        $skill = Tag::factory()->skill()->create()->fresh();
+        from(route('skills.index'))
+            ->put(route('skills.update', ['tag' => $skill]), [
+                'name' => ['en' => 'a'],
+                'is_regular' => true,
+            ])->assertSessionHasErrors();
+
+        $skill->refresh();
+        expect($skill)->not->toBeNull()
+            ->and($skill->name)->not->toBe('a')
+            ->and($skill->name)->not->toBeNull()
+            ->and($skill->name)->toBe($skill->name)
+            ->and($skill->is_regular)->toBe(false);
+    });
+
+    test('can update a regular skill', function (): void {
+        $skill = Tag::factory()->regular()->skill()->create()->fresh();
+
+        from(route('skills.index'))
+            ->put(route('skills.update', ['tag' => $skill]), [
+                'name' => ['en' => 'tag name'],
+                'is_regular' => false,
+            ])->assertRedirect(route('skills.index'));
+
+        $updatedSkill = Tag::find($skill->id);
+
+        expect($updatedSkill)->not->toBeNull()
+            ->and($updatedSkill->name)->toBe('tag name')
+            ->and($updatedSkill->is_regular)->toBe(false);
+    });
 });
 
-test('can not update a skill with an empty name', function (): void {
+describe('if user does not have permission', function (): void {
+    beforeEach(function (): void {
+        asUserWithPermission(TenantPermission::MANAGE_SKILLS);
+    });
 
-    $skill = Tag::factory()->create(['type' => TagType::SKILL->value])->fresh();
-    actingAs(User::factory()->create())
-        ->from(route('skills.index'))
-        ->put(route('skills.update', ['skill' => $skill]), [
-            'name' => ['en' => ''],
-            'is_regular' => true,
-        ])->assertSessionHasErrors();
+    it('cannot update a skill', function (): void {
 
-    $updatedSkill = Tag::withType(TagType::SKILL->value)->first();
-    expect($updatedSkill->name)->not->toBe('')
-        ->and($updatedSkill->name)->not->toBeNull()
-        ->and($updatedSkill->name)->toBe($skill->name)
-        ->and($updatedSkill->is_regular)->toBe(false);
+        $skill = Tag::factory()->skill()->create()->fresh();
+
+        from(route('skills.index'))
+            ->put(route('skills.update', ['tag' => $skill]), [
+                'name' => ['en' => 'tag name'],
+                'is_regular' => false,
+            ])
+            ->assertRedirect(route('skills.index'))
+            ->assertSessionHas(FlashMessageKey::ERROR->value);
+
+        $updatedSkill = Tag::find($skill->id);
+        expect($updatedSkill)->not->toBeNull()
+            ->and($updatedSkill->name)->not->toBe('tag name')
+            ->and($updatedSkill->name)->not->toBeNull()
+            ->and($updatedSkill->name)->toBe($skill->name)
+            ->and($updatedSkill->is_regular)->toBe(false);
+
+    });
+
+    it('cannot update a regular skill', function (): void {
+        $skill = Tag::factory()->regular()->skill()->create()->fresh();
+        from(route('skills.index'))
+            ->put(route('skills.update', ['tag' => $skill]), [
+                'name' => ['en' => 'tag name'],
+                'is_regular' => false,
+            ])
+            ->assertRedirect(route('skills.index'))
+            ->assertSessionHas(FlashMessageKey::ERROR->value);
+
+        $updatedSkill = Tag::find($skill->id);
+        expect($updatedSkill)->not->toBeNull()
+            ->and($updatedSkill->name)->not->toBe('tag name')
+            ->and($updatedSkill->name)->not->toBeNull()
+            ->and($updatedSkill->name)->toBe($skill->name)
+            ->and($updatedSkill->is_regular)->toBe(true);
+    });
+
 });
-
-test('cannot update a skill with a name that is too short', function (): void {
-
-    $skill = Tag::factory()->create(['type' => TagType::SKILL->value])->fresh();
-    actingAs(User::factory()->create())
-        ->from(route('skills.index'))
-        ->put(route('skills.update', ['skill' => $skill]), [
-            'name' => ['en' => 'a'],
-            'is_regular' => true,
-        ])->assertSessionHasErrors();
-
-    $skill->refresh();
-    expect($skill)->not->toBeNull()
-        ->and($skill->name)->not->toBe('a')
-        ->and($skill->name)->not->toBeNull()
-        ->and($skill->name)->toBe($skill->name)
-        ->and($skill->is_regular)->toBe(false);
-});
-
-test('non admin users cannot update a regular skill', function (): void {
-    $skill = Tag::factory()->create(['type' => TagType::SKILL->value, 'is_regular' => true])->fresh();
-    actingAs(User::factory()->create())
-        ->from(route('skills.index'))
-        ->put(route('skills.update', ['skill' => $skill]), [
-            'name' => ['en' => 'tag name'],
-            'is_regular' => false,
-        ])->assertSessionHas(FlashMessageKey::ERROR->value);
-
-    $updatedSkill = Tag::find($skill->id);
-    expect($updatedSkill)->not->toBeNull()
-        ->and($updatedSkill->name)->not->toBe('tag name')
-        ->and($updatedSkill->name)->not->toBeNull()
-        ->and($updatedSkill->name)->toBe($skill->name)
-        ->and($updatedSkill->is_regular)->toBe(true);
-});
-
-test('admin users can update a regular skill', function (): void {
-    $skill = Tag::factory()->create(['type' => TagType::SKILL->value, 'is_regular' => true])->fresh();
-    actingAs(User::factory()->admin()->create())
-        ->from(route('skills.index'))
-        ->put(route('skills.update', ['skill' => $skill]), [
-            'name' => 'tag name',
-            'is_regular' => false,
-        ])->assertRedirect(route('skills.index'));
-
-    $updatedSkill = Tag::find($skill->id);
-
-    expect($updatedSkill)->not->toBeNull()
-        ->and($updatedSkill->name)->toBe('tag name')
-        ->and($updatedSkill->is_regular)->toBe(false);
-})->skip();
