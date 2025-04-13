@@ -3,9 +3,10 @@ name: tests
 on:
   workflow_run:
     workflows: ["linter"]
-    types:
-      - completed
-    branches: [main, develop]
+    types: [completed]
+    branches:
+      - 'develop'
+      - 'main'
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
