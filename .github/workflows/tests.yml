@@ -1,10 +1,11 @@
 name: tests
 
 on:
-  push:
-    branches: [develop, main]
-  pull_request:
-    branches: [develop, main]
+  workflow_run:
+    workflows: ["linter"]
+    types:
+      - completed
+    branches: [main, develop]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -13,7 +14,7 @@ concurrency:
 jobs:
   ci:
     runs-on: ubuntu-latest
-
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     services:
       mysql:
         image: mysql:8.0
