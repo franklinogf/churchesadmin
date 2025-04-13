@@ -47,7 +47,10 @@ expect()->extend('toBeOne', fn () => $this->toBe(1));
 
 function asUserWithPermission(TenantPermission ...$permissions): TestCase
 {
-    test()->seed([\Database\Seeders\Tenants\PermissionSeeder::class]);
+    test()->seed([
+        \Database\Seeders\Tenants\PermissionSeeder::class,
+        \Database\Seeders\Tenants\RoleSeeder::class,
+    ]);
     $user = User::factory()->create();
     $user->syncPermissions(...$permissions);
 
