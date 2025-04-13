@@ -19,7 +19,7 @@ jobs:
         image: mysql:8.0
         env:
           MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: testing
+          MYSQL_DATABASE: test_churchroll
           MYSQL_USER: user
           MYSQL_PASSWORD: password
         options: >-
