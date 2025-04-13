@@ -1,9 +1,9 @@
 name: tests
 
 on:
-  push:
-    branches: [develop, main]
-  pull_request:
+  workflow_run:
+    workflows: ["linter"]
+    types: [completed]
     branches: [develop, main]
 
 concurrency:
@@ -13,7 +13,7 @@ concurrency:
 jobs:
   ci:
     runs-on: ubuntu-latest
-
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     services:
       mysql:
         image: mysql:8.0
@@ -32,6 +32,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -46,14 +48,6 @@ jobs:
           node-version: '22'
           cache: 'npm'
 
-      - name: Wait for MySQL to be up
-        run: |
-          for i in {1..10}; do
-            mysqladmin ping -h127.0.0.1 -uroot -proot --silent && break
-            echo "Waiting for MySQL to initialize..."
-            sleep 5
-          done
-
       - name: Install Node Dependencies
         run: npm ci
 
@@ -61,7 +55,7 @@ jobs:
         run: npm run build
 
       - name: Install Dependencies
-        run: composer install --no-interaction --prefer-dist --optimize-autoloader
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader --no-progress
 
       - name: Copy Environment File
         run: cp .env.example .env
