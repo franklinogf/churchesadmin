@@ -47,6 +47,11 @@ jobs:
           node-version: '22'
           cache: 'npm'
 
+      - name: Give mysql permission
+        run: |
+          GRANT ALL PRIVILEGES ON *.* TO 'user'@'%' WITH GRANT OPTION;
+          FLUSH PRIVILEGES;
+
       - name: Install Node Dependencies
         run: npm ci
 
@@ -70,7 +75,7 @@ jobs:
           DB_CONNECTION: mysql
           DB_HOST: 127.0.0.1
           DB_PORT: 3306
-          DB_DATABASE: testing
+          DB_DATABASE: test_churchroll
           DB_USERNAME: user
           DB_PASSWORD: password
         run: composer test:all
