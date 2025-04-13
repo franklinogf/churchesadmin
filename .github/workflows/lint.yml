@@ -10,14 +10,14 @@ concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
-permissions:
-  contents: write
-
 jobs:
-  quality:
+  lint-backend:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -25,21 +25,33 @@ jobs:
           php-version: '8.4'
 
       - name: Install Dependencies
-        run: |
-          composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-          npm ci
+        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+      - name: Run Rector
+        run: composer test:refactor
+
+      - name: Run PHPStan
+        run: composer test:types
 
       - name: Run Pint
-        run: vendor/bin/pint
+        run: composer test:lint
 
-      - name: Format Frontend
-        run: npm run format
+  lint-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
-      - name: Lint Frontend
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Run Eslint
         run: npm run lint
 
-      # - name: Commit Changes
-      #   uses: stefanzweifel/git-auto-commit-action@v5
-      #   with:
-      #     commit_message: fix code style
-      #     commit_options: '--no-verify'
+      - name: Run Prettier
+        run: npm run test:format
+
+      - name: Run Typescript
+        run: npm run test:types
