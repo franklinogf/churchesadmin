@@ -9,7 +9,7 @@ export interface Missionary {
   phone: string;
   gender: Gender;
   church: string;
-  offering: number;
+  offering: string;
   offeringFrequency: OfferingFrequency;
   address?: AddressRelationship | null;
   createdAt: string;

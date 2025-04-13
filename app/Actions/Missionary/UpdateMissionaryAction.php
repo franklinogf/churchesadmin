@@ -20,7 +20,11 @@ final class UpdateMissionaryAction
         $missionary->update($data);
 
         if ($address !== null) {
-            $missionary->address()->update($address);
+            if ($missionary->address !== null) {
+                $missionary->address()->update($address);
+            } else {
+                $missionary->address()->create($address);
+            }
         } else {
             $missionary->address()->delete();
         }

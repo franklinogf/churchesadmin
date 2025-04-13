@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('phone')->unique();
             $table->string('gender');
             $table->string('church');
-            $table->decimal('offering', 10, 2)->nullable();
+            $table->decimal('offering', 10, 2)->unsigned();
             $table->string('offering_frequency');
             $table->timestamps();
             $table->softDeletes();

@@ -59,6 +59,12 @@ Route::middleware([
                 Route::resource('members', MemberController::class)
                     ->middleware(Authorize::using(TenantPermission::MANAGE_MEMBERS->value));
 
+                Route::put('missionaries/{missionary}/restore', [MissionaryController::class, 'restore'])
+                    ->withTrashed()
+                    ->name('missionaries.restore');
+                Route::delete('missionaries/{missionary}/forceDelete', [MissionaryController::class, 'forceDelete'])
+                    ->withTrashed()
+                    ->name('missionaries.forceDelete');
                 Route::resource('missionaries', MissionaryController::class)
                     ->middleware(Authorize::using(TenantPermission::MANAGE_MISSIONARIES->value));
 

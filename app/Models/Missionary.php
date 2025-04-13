@@ -54,6 +54,7 @@ final class Missionary extends Model
         return [
             'gender' => Gender::class,
             'offering_frequency' => OfferingFrequency::class,
+            'offering' => 'decimal:2',
         ];
     }
 }

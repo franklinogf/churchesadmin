@@ -6,6 +6,8 @@ namespace App\Http\Controllers;
 
 use App\Actions\Missionary\CreateMissionaryAction;
 use App\Actions\Missionary\DeleteMissionaryAction;
+use App\Actions\Missionary\ForceDeleteMissionaryAction;
+use App\Actions\Missionary\RestoreMissionaryAction;
 use App\Actions\Missionary\UpdateMissionaryAction;
 use App\Enums\FlashMessageKey;
 use App\Enums\Gender;
@@ -36,8 +38,13 @@ final class MissionaryController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(): Response
+    public function create(): Response|RedirectResponse
     {
+        $response = Gate::inspect('create', Missionary::class);
+
+        if ($response->denied()) {
+            return to_route('missionaries.index')->with(FlashMessageKey::ERROR->value, $response->message());
+        }
         $offeringFrequencies = OfferingFrequency::options();
         $genders = Gender::options();
 
@@ -74,8 +81,13 @@ final class MissionaryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Missionary $missionary): Response
+    public function edit(Missionary $missionary): Response|RedirectResponse
     {
+        $response = Gate::inspect('update', $missionary);
+
+        if ($response->denied()) {
+            return to_route('missionaries.index')->with(FlashMessageKey::ERROR->value, $response->message());
+        }
 
         $missionary->load('address');
         $offeringFrequencies = OfferingFrequency::options();
@@ -122,5 +134,33 @@ final class MissionaryController extends Controller
         $action->handle($missionary);
 
         return to_route('missionaries.index')->with(FlashMessageKey::SUCCESS->value, 'Missionary deleted successfully.');
+    }
+
+    public function restore(Missionary $missionary, RestoreMissionaryAction $action): RedirectResponse
+    {
+        $response = Gate::inspect('restore', $missionary);
+
+        if ($response->denied()) {
+
+            return to_route('missionaries.index')->with(FlashMessageKey::ERROR->value, $response->message());
+        }
+
+        $action->handle($missionary);
+
+        return to_route('missionaries.index')->with(FlashMessageKey::SUCCESS->value, 'Missionary restored successfully.');
+    }
+
+    public function forceDelete(Missionary $missionary, ForceDeleteMissionaryAction $action): RedirectResponse
+    {
+        $response = Gate::inspect('forceDelete', $missionary);
+
+        if ($response->denied()) {
+
+            return to_route('missionaries.index')->with(FlashMessageKey::ERROR->value, $response->message());
+        }
+
+        $action->handle($missionary);
+
+        return to_route('missionaries.index')->with(FlashMessageKey::SUCCESS->value, 'Missionary permanently deleted successfully.');
     }
 }
