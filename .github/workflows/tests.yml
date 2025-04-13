@@ -18,10 +18,9 @@ jobs:
       mysql:
         image: mysql:8.0
         env:
-          MYSQL_ROOT_PASSWORD: root
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
           MYSQL_DATABASE: test_churchroll
-          MYSQL_USER: user
-          MYSQL_PASSWORD: password
+
         options: >-
           --health-cmd="mysqladmin ping --silent"
           --health-interval=10s
@@ -81,9 +80,8 @@ jobs:
       - name: Tests
         env:
           DB_CONNECTION: mysql
-          DB_HOST: 127.0.0.1
           DB_PORT: 3306
           DB_DATABASE: test_churchroll
-          DB_USERNAME: user
-          DB_PASSWORD: password
+          DB_USERNAME: root
+          DB_PASSWORD: ""
         run: composer test:all
