@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Actions\User;
 
 use App\Enums\LanguageCode;
+use App\Enums\TenantRole;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
@@ -21,12 +22,14 @@ final class CreateUserAction
     {
         DB::transaction(function () use ($data, $roles, $permissions): void {
             $user = User::create([
-                'language' => LanguageCode::ES->value,
+                'language' => LanguageCode::EN->value,
                 ...$data,
             ]);
 
             if ($roles !== null) {
                 $user->assignRole($roles);
+            } else {
+                $user->assignRole(TenantRole::NO_ROLE);
             }
 
             if ($permissions !== null) {
