@@ -14,7 +14,8 @@ it('can be deleted if user has permission', function (): void {
     asUserWithPermission(TenantPermission::MANAGE_MEMBERS, TenantPermission::DELETE_MEMBERS)
         ->from(route('members.index'))
         ->delete(route('members.destroy', ['member' => $member]))
-        ->assertRedirect(route('members.index'));
+        ->assertRedirect(route('members.index'))
+        ->assertSessionHas(FlashMessageKey::SUCCESS->value);
 
     assertDatabaseCount('members', 1);
 

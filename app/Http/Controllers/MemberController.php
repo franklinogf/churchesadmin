@@ -175,6 +175,6 @@ final class MemberController extends Controller
 
         $action->handle($member);
 
-        return to_route('members.index')->with(FlashMessageKey::SUCCESS->value, 'Member restored successfully.');
+        return to_route('members.index')->with(FlashMessageKey::SUCCESS->value, 'Member permanently deleted successfully.');
     }
 }

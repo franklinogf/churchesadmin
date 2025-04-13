@@ -13,7 +13,8 @@ it('can be restored if user has permission', function (): void {
 
     asUserWithPermission(TenantPermission::MANAGE_MEMBERS, TenantPermission::RESTORE_MEMBERS)
         ->put(route('members.restore', ['member' => $member]))
-        ->assertRedirect(route('members.index'));
+        ->assertRedirect(route('members.index'))
+        ->assertSessionHas(FlashMessageKey::SUCCESS->value);
 
     assertDatabaseCount('members', 1);
 

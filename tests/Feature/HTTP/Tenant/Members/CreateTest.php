@@ -24,6 +24,7 @@ describe('if user has permission', function (): void {
     });
 
     it('can be rendered if authenticated', function (): void {
+
         get(route('members.create'))
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page): Assert => $page
@@ -33,6 +34,7 @@ describe('if user has permission', function (): void {
                 ->has('skills')
                 ->has('categories')
             );
+
     });
 
     it('can be stored without an address', function (): void {

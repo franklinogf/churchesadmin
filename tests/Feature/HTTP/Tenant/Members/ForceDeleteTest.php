@@ -12,8 +12,10 @@ it('can be deleted permanently if user has permission', function (): void {
     $member = Member::factory()->trashed()->create()->fresh();
 
     asUserWithPermission(TenantPermission::MANAGE_MEMBERS, TenantPermission::FORCE_DELETE_MEMBERS)
+        ->from(route('members.index'))
         ->delete(route('members.forceDelete', ['member' => $member]))
-        ->assertRedirect(route('members.index'));
+        ->assertRedirect(route('members.index'))
+        ->assertSessionHas(FlashMessageKey::SUCCESS->value);
 
     assertDatabaseCount('members', 0);
 
@@ -26,6 +28,7 @@ it('cannot be deleted permanently if user does not have permission', function ()
     $member = Member::factory()->trashed()->create()->fresh();
 
     asUserWithPermission(TenantPermission::MANAGE_MEMBERS)
+        ->from(route('members.index'))
         ->delete(route('members.forceDelete', ['member' => $member]))
         ->assertRedirect(route('members.index'))
         ->assertSessionHas(FlashMessageKey::ERROR->value);

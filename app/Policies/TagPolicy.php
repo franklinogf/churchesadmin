@@ -63,20 +63,4 @@ final class TagPolicy
             default => Response::deny(__('permission.delete', ['label' => __('Tags')]))
         };
     }
-
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(): bool
-    {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(): bool
-    {
-        return false;
-    }
 }
