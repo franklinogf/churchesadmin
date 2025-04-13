@@ -17,7 +17,7 @@ trait HasOptions
     {
 
         return collect(self::cases())->map(fn (self $case): array => [
-            'value' => $case->value,
+            'value' => $case->value ?? $case->name,
             'label' => $case->label(),
         ])->toArray();
     }
@@ -33,7 +33,7 @@ trait HasOptions
          * @return array{value:string|int,label:string}
          */
         return [
-            'value' => $this->value,
+            'value' => $this->value ?? $this->name,
             'label' => $this->label(),
         ];
     }
