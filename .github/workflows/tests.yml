@@ -47,6 +47,14 @@ jobs:
           node-version: '22'
           cache: 'npm'
 
+      - name: Wait for MySQL to be up
+        run: |
+          for i in {1..10}; do
+            mysqladmin ping -h127.0.0.1 -uroot -proot --silent && break
+            echo "Waiting for MySQL to initialize..."
+            sleep 5
+          done
+
       - name: Give mysql permission
         run: |
           mysql -u root -proot -e "GRANT ALL PRIVILEGES ON *.* TO 'user'@'%' WITH GRANT OPTION;"
