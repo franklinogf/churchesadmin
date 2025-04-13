@@ -57,17 +57,48 @@ describe('if user has permission', function (): void {
 
         assertDatabaseCount('addresses', 0);
 
-        $member = Member::latest()->first();
+        $updatedMember = Member::latest()->first();
 
-        expect($member)->not->toBeNull()
-            ->and($member->name)->toBe('John')
-            ->and($member->last_name)->toBe('Doe')
-            ->and($member->email)->toBe('john.doe@example.com')
-            ->and($member->phone)->toBe('+19293394305')
-            ->and($member->gender)->toBe(Gender::MALE)
-            ->and($member->dob->format('Y-m-d'))->toBe('1990-01-01')
-            ->and($member->civil_status)->toBe(CivilStatus::SINGLE)
-            ->and($member->address)->toBeNull();
+        expect($updatedMember)->not->toBeNull()
+            ->and($updatedMember->name)->toBe('John')
+            ->and($updatedMember->last_name)->toBe('Doe')
+            ->and($updatedMember->email)->toBe('john.doe@example.com')
+            ->and($updatedMember->phone)->toBe('+19293394305')
+            ->and($updatedMember->gender)->toBe(Gender::MALE)
+            ->and($updatedMember->dob->format('Y-m-d'))->toBe('1990-01-01')
+            ->and($updatedMember->civil_status)->toBe(CivilStatus::SINGLE)
+            ->and($updatedMember->address)->toBeNull();
+    });
+
+    it('can be updated without an address when it already has an address', function (): void {
+        $member = Member::factory()->hasAddress()->create();
+
+        from(route('members.edit', ['member' => $member]))
+            ->put(route('members.update', ['member' => $member]), [
+                'name' => 'John',
+                'last_name' => 'Doe',
+                'email' => 'john.doe@example.com',
+                'phone' => '+19293394305',
+                'gender' => Gender::MALE->value,
+                'dob' => '1990-01-01',
+                'civil_status' => CivilStatus::SINGLE->value,
+            ])
+            ->assertSessionDoesntHaveErrors()
+            ->assertRedirect(route('members.index'));
+
+        assertDatabaseCount('addresses', 0);
+
+        $updatedMember = Member::latest()->first();
+
+        expect($updatedMember)->not->toBeNull()
+            ->and($updatedMember->name)->toBe('John')
+            ->and($updatedMember->last_name)->toBe('Doe')
+            ->and($updatedMember->email)->toBe('john.doe@example.com')
+            ->and($updatedMember->phone)->toBe('+19293394305')
+            ->and($updatedMember->gender)->toBe(Gender::MALE)
+            ->and($updatedMember->dob->format('Y-m-d'))->toBe('1990-01-01')
+            ->and($updatedMember->civil_status)->toBe(CivilStatus::SINGLE)
+            ->and($updatedMember->address)->toBeNull();
     });
 
     it('can be updated with an address when it already has an address', function (): void {
@@ -95,18 +126,19 @@ describe('if user has permission', function (): void {
 
         assertDatabaseCount('addresses', 1);
 
-        $member = Member::latest()->first();
+        $updatedMember = Member::latest()->first();
 
-        expect($member)->not->toBeNull()
-            ->and($member->name)->toBe('John')
-            ->and($member->last_name)->toBe('Doe')
-            ->and($member->email)->toBe('john.doe@example.com')
-            ->and($member->phone)->toBe('+19293394305')
-            ->and($member->gender)->toBe(Gender::MALE)
-            ->and($member->dob->format('Y-m-d'))->toBe('1990-01-01')
-            ->and($member->civil_status)->toBe(CivilStatus::SINGLE)
-            ->and($member->address)->not->toBeNull();
+        expect($updatedMember)->not->toBeNull()
+            ->and($updatedMember->name)->toBe('John')
+            ->and($updatedMember->last_name)->toBe('Doe')
+            ->and($updatedMember->email)->toBe('john.doe@example.com')
+            ->and($updatedMember->phone)->toBe('+19293394305')
+            ->and($updatedMember->gender)->toBe(Gender::MALE)
+            ->and($updatedMember->dob->format('Y-m-d'))->toBe('1990-01-01')
+            ->and($updatedMember->civil_status)->toBe(CivilStatus::SINGLE)
+            ->and($updatedMember->address)->not->toBeNull();
     });
+
     it('can be updated with an address when it does not have an address', function (): void {
         $member = Member::factory()->create();
         from(route('members.edit', ['member' => $member]))
@@ -132,17 +164,17 @@ describe('if user has permission', function (): void {
 
         assertDatabaseCount('addresses', 1);
 
-        $member = Member::latest()->first();
+        $updatedMember = Member::latest()->first();
 
-        expect($member)->not->toBeNull()
-            ->and($member->name)->toBe('John')
-            ->and($member->last_name)->toBe('Doe')
-            ->and($member->email)->toBe('john.doe@example.com')
-            ->and($member->phone)->toBe('+19293394305')
-            ->and($member->gender)->toBe(Gender::MALE)
-            ->and($member->dob->format('Y-m-d'))->toBe('1990-01-01')
-            ->and($member->civil_status)->toBe(CivilStatus::SINGLE)
-            ->and($member->address)->not->toBeNull();
+        expect($updatedMember)->not->toBeNull()
+            ->and($updatedMember->name)->toBe('John')
+            ->and($updatedMember->last_name)->toBe('Doe')
+            ->and($updatedMember->email)->toBe('john.doe@example.com')
+            ->and($updatedMember->phone)->toBe('+19293394305')
+            ->and($updatedMember->gender)->toBe(Gender::MALE)
+            ->and($updatedMember->dob->format('Y-m-d'))->toBe('1990-01-01')
+            ->and($updatedMember->civil_status)->toBe(CivilStatus::SINGLE)
+            ->and($updatedMember->address)->not->toBeNull();
     });
 });
 

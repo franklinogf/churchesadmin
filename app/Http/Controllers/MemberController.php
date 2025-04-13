@@ -90,7 +90,7 @@ final class MemberController extends Controller
      */
     public function edit(Member $member): Response|RedirectResponse
     {
-        $response = Gate::inspect('update', Member::class);
+        $response = Gate::inspect('update', $member);
 
         if ($response->denied()) {
             return to_route('members.index')->with(FlashMessageKey::ERROR->value, $response->message());

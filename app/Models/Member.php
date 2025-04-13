@@ -66,7 +66,7 @@ final class Member extends Model
 
         return [
             'gender' => Gender::class,
-            'dob' => 'date',
+            'dob' => 'immutable_date',
             'civil_status' => CivilStatus::class,
         ];
     }
