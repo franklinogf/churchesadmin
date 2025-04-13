@@ -28,8 +28,14 @@ final class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(#[CurrentUser] User $user): Response
+    public function index(#[CurrentUser] User $user): Response|RedirectResponse
     {
+        $response = Gate::inspect('viewAny', User::class);
+
+        if ($response->denied()) {
+            return to_route('dashboard')->with(FlashMessageKey::ERROR->value, $response->message());
+        }
+
         $users = User::query()
             ->withoutRole(TenantRole::SUPER_ADMIN)
             ->whereNotIn('id', [$user->id])

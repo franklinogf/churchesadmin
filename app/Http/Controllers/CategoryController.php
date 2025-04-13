@@ -23,8 +23,14 @@ final class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): Response
+    public function index(): Response|RedirectResponse
     {
+        $response = Gate::inspect('viewAny', [Tag::class, TagType::CATEGORY]);
+
+        if ($response->denied()) {
+            return to_route('dashboard')->with(FlashMessageKey::ERROR->value, $response->message());
+        }
+
         $categories = Tag::whereType(TagType::CATEGORY->value)->orderBy('created_at', 'desc')->get();
 
         return Inertia::render('categories/index', [

@@ -23,8 +23,14 @@ final class SkillController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): Response
+    public function index(): Response|RedirectResponse
     {
+        $response = Gate::inspect('viewAny', [Tag::class, TagType::SKILL]);
+
+        if ($response->denied()) {
+            return to_route('dashboard')->with(FlashMessageKey::ERROR->value, $response->message());
+        }
+
         $skills = Tag::whereType(TagType::SKILL->value)->orderByDesc('order_column')->get();
 
         return Inertia::render('skills/index', [

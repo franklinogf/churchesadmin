@@ -26,8 +26,14 @@ final class MissionaryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): Response
+    public function index(): Response|RedirectResponse
     {
+        $response = Gate::inspect('viewAny', Missionary::class);
+
+        if ($response->denied()) {
+            return to_route('dashboard')->with(FlashMessageKey::ERROR->value, $response->message());
+        }
+
         $missionaries = Missionary::latest()->get();
 
         return Inertia::render('missionaries/index', [

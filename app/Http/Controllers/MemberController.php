@@ -29,8 +29,14 @@ final class MemberController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): Response
+    public function index(): Response|RedirectResponse
     {
+        $response = Gate::inspect('viewAny', Member::class);
+
+        if ($response->denied()) {
+            return to_route('dashboard')->with(FlashMessageKey::ERROR->value, $response->message());
+        }
+
         $members = Member::latest()->get();
 
         return Inertia::render('members/index', ['members' => MemberResource::collection($members)]);
