@@ -10,6 +10,18 @@ use Illuminate\Auth\Access\Response;
 
 final class MissionaryPolicy
 {
+    /**
+     * Determine whether the user can view models.
+     */
+    public function viewAny(User $user): Response
+    {
+        if ($user->can(TenantPermission::MANAGE_MISSIONARIES)) {
+            return Response::allow();
+        }
+
+        return Response::deny(__('permission.view_any', ['label' => __('Missionaries')]));
+    }
+
     public function create(User $user): Response
     {
         if ($user->can(TenantPermission::CREATE_MISSIONARIES)) {

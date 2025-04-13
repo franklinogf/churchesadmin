@@ -13,9 +13,21 @@ use Illuminate\Auth\Access\Response;
 final class TagPolicy
 {
     /**
+     * Determine whether the user can view models.
+     */
+    public function viewAny(User $user, ?TagType $tagType = null): Response
+    {
+        return match ($tagType) {
+            TagType::CATEGORY => $user->can(TenantPermission::MANAGE_CATEGORIES) ? Response::allow() : Response::deny(__('permission.view_any', ['label' => $tagType->label()])),
+            TagType::SKILL => $user->can(TenantPermission::MANAGE_SKILLS) ? Response::allow() : Response::deny(__('permission.view_any', ['label' => $tagType->label()])),
+            default => Response::deny(__('permission.view_any', ['label' => __('Tags')]))
+        };
+    }
+
+    /**
      * Determine whether the user can create models.
      */
-    public function create(User $user, bool $is_regular, ?TagType $tagType): Response
+    public function create(User $user, bool $is_regular, ?TagType $tagType = null): Response
     {
         if ($is_regular && $user->cannot(TenantPermission::CREATE_REGULAR_TAG)) {
             return Response::deny(__('permission.create', ['label' => __('Regular tags')]));
