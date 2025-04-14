@@ -21,6 +21,7 @@ return [
     'except' => [
         'telescope*',
         'horizon*',
+        'filament*',
     ],
 
     /*
