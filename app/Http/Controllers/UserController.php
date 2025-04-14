@@ -17,6 +17,7 @@ use App\Http\Resources\User\UserResource;
 use App\Models\User;
 use Illuminate\Container\Attributes\CurrentUser;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 use Spatie\Permission\Models\Permission;
@@ -27,8 +28,14 @@ final class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(#[CurrentUser] User $user): Response
+    public function index(#[CurrentUser] User $user): Response|RedirectResponse
     {
+        $response = Gate::inspect('viewAny', User::class);
+
+        if ($response->denied()) {
+            return to_route('dashboard')->with(FlashMessageKey::ERROR->value, $response->message());
+        }
+
         $users = User::query()
             ->withoutRole(TenantRole::SUPER_ADMIN)
             ->whereNotIn('id', [$user->id])
@@ -40,8 +47,14 @@ final class UserController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(): Response
+    public function create(): Response|RedirectResponse
     {
+        $response = Gate::inspect('create', User::class);
+
+        if ($response->denied()) {
+            return to_route('users.index')->with(FlashMessageKey::ERROR->value, $response->message());
+        }
+
         $roles = Role::query()
             ->whereNotIn('name', [TenantRole::SUPER_ADMIN->value])
             ->with('permissions')
@@ -60,6 +73,12 @@ final class UserController extends Controller
      */
     public function store(StoreUserRequest $request, CreateUserAction $action): RedirectResponse
     {
+        $response = Gate::inspect('create', User::class);
+
+        if ($response->denied()) {
+            return to_route('users.index')->with(FlashMessageKey::ERROR->value, $response->message());
+        }
+
         $action->handle(
             $request->getUserData(),
             $request->getRoleData(),
@@ -70,19 +89,25 @@ final class UserController extends Controller
             ->with(FlashMessageKey::SUCCESS->value, __('User created successfully'));
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(User $user): void
-    {
-        //
-    }
+    // /**
+    //  * Display the specified resource.
+    //  */
+    // public function show(User $user): void
+    // {
+    //     //
+    // }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user): Response
+    public function edit(User $user): Response|RedirectResponse
     {
+        $response = Gate::inspect('update', $user);
+
+        if ($response->denied()) {
+            return to_route('users.index')->with(FlashMessageKey::ERROR->value, $response->message());
+        }
+
         $user->load('roles', 'permissions');
         $roles = Role::query()
             ->whereNotIn('name', [TenantRole::SUPER_ADMIN->value])
@@ -103,6 +128,12 @@ final class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, User $user, UpdateUserAction $action): RedirectResponse
     {
+        $response = Gate::inspect('update', $user);
+
+        if ($response->denied()) {
+            return to_route('users.index')->with(FlashMessageKey::ERROR->value, $response->message());
+        }
+
         $action->handle(
             $user,
             $request->getUserData(),
@@ -120,6 +151,12 @@ final class UserController extends Controller
      */
     public function destroy(User $user, DeleteUserAction $action): RedirectResponse
     {
+        $response = Gate::inspect('delete', $user);
+
+        if ($response->denied()) {
+            return to_route('users.index')->with(FlashMessageKey::ERROR->value, $response->message());
+        }
+
         $action->handle($user);
 
         return to_route('users.index')

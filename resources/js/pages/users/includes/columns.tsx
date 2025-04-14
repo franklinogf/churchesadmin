@@ -46,6 +46,11 @@ export const columns: ColumnDef<User>[] = [
       const { openConfirmation } = useConfirmationStore();
       const { can: userCan } = useUser();
       const user = row.original;
+
+      if (!userCan(UserPermission.UPDATE_USERS) && !userCan(UserPermission.DELETE_USERS)) {
+        return null;
+      }
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

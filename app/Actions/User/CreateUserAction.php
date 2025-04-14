@@ -21,7 +21,7 @@ final class CreateUserAction
     {
         DB::transaction(function () use ($data, $roles, $permissions): void {
             $user = User::create([
-                'language' => LanguageCode::ES->value,
+                'language' => LanguageCode::EN->value,
                 ...$data,
             ]);
 
