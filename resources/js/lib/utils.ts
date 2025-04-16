@@ -18,3 +18,17 @@ export function ucwords(str: string): string {
 export function isImage(mime_type: string) {
   return mime_type.startsWith('image/');
 }
+export const NavBar = [
+    {
+        label: 'Guide',
+        url: '/',
+    },
+    {
+        label: 'Pricing',
+        url: '/',
+    },
+    {
+        label: 'Log in',
+        url: '/',
+    },
+] as const;
