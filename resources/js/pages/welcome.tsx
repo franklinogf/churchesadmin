@@ -127,7 +127,9 @@ export default function Welcome() {
 function CtaButton() {
   return (
     <Button variant="brand">
-      <Link href={route('root.home')}>Schedule a demo</Link>
+      <Link href={route('root.home')} prefetch>
+        Schedule a demo
+      </Link>
     </Button>
   );
 }
