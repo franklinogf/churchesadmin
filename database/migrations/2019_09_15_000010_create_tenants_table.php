@@ -10,8 +10,6 @@ return new class extends Migration
 {
     /**
      * Run the migrations.
-     *
-     * @return void
      */
     public function up(): void
     {
@@ -19,16 +17,14 @@ return new class extends Migration
             $table->string('id')->primary();
 
             // your custom columns may go here
-
-            $table->timestamps();
+            $table->string('name');
             $table->json('data')->nullable();
+            $table->timestamps();
         });
     }
 
     /**
      * Reverse the migrations.
-     *
-     * @return void
      */
     public function down(): void
     {

@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Models\Member;
+use App\Models\Missionary;
+use App\Models\User;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -49,7 +52,13 @@ final class AppServiceProvider extends ServiceProvider
     {
 
         Model::unguard();
-        Relation::enforceMorphMap([]);
+        Model::shouldBeStrict(! app()->isProduction());
+        Model::automaticallyEagerLoadRelationships();
+        Relation::enforceMorphMap([
+            'member' => Member::class,
+            'missionary' => Missionary::class,
+            'user' => User::class,
+        ]);
     }
 
     private function configureValidations(): void

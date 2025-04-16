@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
-use Illuminate\Foundation\Inspiring;
+use App\Enums\FlashMessageKey;
+use App\Enums\LanguageCode;
+use App\Http\Resources\User\AuthUserResource;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tighten\Ziggy\Ziggy;
@@ -39,20 +41,38 @@ final class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-        [$message, $author] = str(Inspiring::quotes()->random())->explode('-');
+        /**
+         * @var array<string, mixed> $parentShare
+         */
+        $parentShare = parent::share($request);
 
         return [
-            ...parent::share($request),
-            'name' => config('app.name'),
-            'quote' => ['message' => mb_trim($message), 'author' => mb_trim($author)],
+            ...$parentShare,
             'auth' => [
-                'user' => $request->user(),
+                'user' => $request->user()
+                    ? AuthUserResource::make($request->user())
+                    : null,
             ],
             'ziggy' => fn (): array => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
             ],
             'sidebarOpen' => $request->cookie('sidebar_state') === 'true',
+            'flash' => $this->getFlashMessages($request),
+            'availableLocales' => LanguageCode::options(),
+        ];
+    }
+
+    /**
+     * Get flash messages from the session.
+     *
+     * @return array<string, mixed>
+     */
+    private function getFlashMessages(Request $request): array
+    {
+        return [
+            FlashMessageKey::SUCCESS->value => $request->session()->get(FlashMessageKey::SUCCESS->value),
+            FlashMessageKey::ERROR->value => $request->session()->get(FlashMessageKey::ERROR->value),
         ];
     }
 }

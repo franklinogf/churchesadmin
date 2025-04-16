@@ -8,6 +8,7 @@ import { Link } from '@radix-ui/react-navigation-menu';
 import { ArrowRight, Star, TvIcon } from 'lucide-react';
 
 export default function Welcome() {
+
     return (
         <main>
             <header className="bg-background sticky top-0 z-40 h-16 w-full items-center justify-between px-4 py-2.5 shadow-xl">

@@ -2,6 +2,11 @@
 
 declare(strict_types=1);
 
+use App\Enums\TenantPermission;
+use App\Models\User;
+use Tests\RefreshDatabaseWithTenant;
+use Tests\TestCase;
+
 /*
 |--------------------------------------------------------------------------
 | Test Case
@@ -13,8 +18,9 @@ declare(strict_types=1);
 |
 */
 
-pest()->extend(Tests\TestCase::class)->in('Feature');
-
+pest()->printer()->compact();
+pest()->extend(Tests\TestCase::class)->in('Feature', 'Unit');
+pest()->use(RefreshDatabaseWithTenant::class)->in('Feature/**/Tenant', 'Unit/**/Tenant');
 /*
 |--------------------------------------------------------------------------
 | Expectations
@@ -39,7 +45,21 @@ expect()->extend('toBeOne', fn () => $this->toBe(1));
 |
 */
 
-function something(): void
+function asUserWithPermission(TenantPermission ...$permissions): TestCase
 {
-    // ..
+    test()->seed([
+        \Database\Seeders\Tenants\PermissionSeeder::class,
+        \Database\Seeders\Tenants\RoleSeeder::class,
+    ]);
+    $user = User::factory()->create();
+    $user->syncPermissions(...$permissions);
+
+    return test()->actingAs($user);
+}
+
+function asUserWithoutPermission(): TestCase
+{
+    $user = User::factory()->create();
+
+    return test()->actingAs($user);
 }

@@ -2,22 +2,24 @@ name: linter
 
 on:
   push:
-    branches:
-      - develop
-      - main
+    branches: [develop, main]
   pull_request:
-    branches:
-      - develop
-      - main
+    branches: [develop, main]
 
-permissions:
-  contents: write
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
+
   quality:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -27,19 +29,22 @@ jobs:
       - name: Install Dependencies
         run: |
           composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-          npm install
+          npm ci
+
+      - name: Run Rector
+        run: composer test:refactor
+
+      - name: Run PHPStan
+        run: composer test:types
 
       - name: Run Pint
-        run: vendor/bin/pint
+        run: composer test:lint
 
-      - name: Format Frontend
-        run: npm run format
-
-      - name: Lint Frontend
+      - name: Run Eslint
         run: npm run lint
 
-      # - name: Commit Changes
-      #   uses: stefanzweifel/git-auto-commit-action@v5
-      #   with:
-      #     commit_message: fix code style
-      #     commit_options: '--no-verify'
+      - name: Run Prettier
+        run: npm run test:format
+
+      - name: Run Typescript
+        run: npm run test:types

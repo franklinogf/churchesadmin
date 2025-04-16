@@ -3,27 +3,33 @@
     "name": "laravel/react-starter-kit",
     "type": "project",
     "description": "The skeleton application for the Laravel framework.",
-    "keywords": [
-        "laravel",
-        "framework"
-    ],
+    "keywords": ["laravel", "framework"],
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "inertiajs/inertia-laravel": "^2.0.1",
-        "laravel/framework": "^12.6",
+        "codezero/laravel-unique-translation": "^4.3.1",
+        "filament/filament": "^3.3.10",
+        "inertiajs/inertia-laravel": "^2.0.2",
+        "laravel/framework": "^12.8.1",
         "laravel/tinker": "^2.10.1",
+        "propaganistas/laravel-phone": "^5.3.6",
+        "spatie/laravel-permission": "^6.17",
+        "spatie/laravel-tags": "^4.10",
+        "spatie/laravel-translatable": "^6.11.4",
         "stancl/tenancy": "dev-master",
         "tightenco/ziggy": "^2.5.2"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.15",
         "fakerphp/faker": "^1.24.1",
+        "larastan/larastan": "^3.3.1",
+        "laravel-lang/lang": "^15.19.9",
         "laravel/pail": "^1.2.2",
-        "laravel/pint": "^1.21.2",
+        "laravel/pint": "^1.22.0",
         "laravel/sail": "^1.41",
         "mockery/mockery": "^1.6.12",
-        "nunomaduro/collision": "^8.7",
-        "pestphp/pest": "^3.8",
+        "nunomaduro/collision": "^8.8",
+        "pestphp/pest": "^3.8.1",
         "pestphp/pest-plugin-laravel": "^3.1",
         "rector/rector": "^2.0.11"
     },
@@ -42,7 +48,8 @@
     "scripts": {
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-            "@php artisan package:discover --ansi"
+            "@php artisan package:discover --ansi",
+            "@php artisan filament:upgrade"
         ],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
@@ -64,15 +71,20 @@
             "Composer\\Config::disableProcessTimeout",
             "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" \"php artisan inertia:start-ssr\" --names=server,queue,logs,ssr"
         ],
-        "lint": "pint",
+        "lint": "pint -v",
         "refactor": "rector",
         "test:refactor": "rector --dry-run",
         "test:lint": "pint --test",
-        "test:unit": "pest --parallel --coverage --compact",
+        "test:types": "phpstan analyse",
+        "test:unit": "pest --testsuite=Unit --stop-on-failure",
+        "test:feature": "pest --testsuite=Feature --stop-on-failure",
+        "test:all": "pest --coverage --compact",
+        "test:migrate": "php artisan migrate --database=testing",
         "test": [
-            "@test:unit",
+            "@test:refactor",
+            "@test:types",
             "@test:lint",
-            "@test:refactor"
+            "@test:all"
         ]
     },
     "extra": {

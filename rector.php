@@ -3,8 +3,10 @@
 declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
+use Rector\DeadCode\Rector\ClassMethod\RemoveUselessReturnTagRector;
+use Rector\DeadCode\Rector\If_\RemoveAlwaysTrueIfConditionRector;
+use Rector\DeadCode\Rector\Stmt\RemoveUnreachableStatementRector;
 use Rector\EarlyReturn\Rector\Return_\ReturnBinaryOrToEarlyReturnRector;
-use Rector\Php83\Rector\ClassMethod\AddOverrideAttributeToOverriddenMethodsRector;
 
 return RectorConfig::configure()
     ->withPaths([
@@ -14,8 +16,15 @@ return RectorConfig::configure()
         __DIR__.'/tests',
     ])
     ->withSkip([
-        AddOverrideAttributeToOverriddenMethodsRector::class,
         ReturnBinaryOrToEarlyReturnRector::class,
+        RemoveUselessReturnTagRector::class,
+        RemoveUnreachableStatementRector::class => [
+            __DIR__.'/app/Policies',
+        ],
+        RemoveAlwaysTrueIfConditionRector::class => [
+            __DIR__.'/app/Policies',
+        ],
+
     ])
     ->withPreparedSets(
         deadCode: true,
