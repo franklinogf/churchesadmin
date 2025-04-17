@@ -16,3 +16,4 @@ parameters:
 
     excludePaths:
         - app/Providers/TenancyServiceProvider.php
+        - app/Filament/
