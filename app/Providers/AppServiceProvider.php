@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Models\Church;
 use App\Models\Member;
 use App\Models\Missionary;
 use App\Models\User;
@@ -58,6 +59,7 @@ final class AppServiceProvider extends ServiceProvider
             'member' => Member::class,
             'missionary' => Missionary::class,
             'user' => User::class,
+            'church' => Church::class,
         ]);
     }
 
