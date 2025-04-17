@@ -1,21 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ChurchResource\Pages;
-use App\Filament\Resources\ChurchResource\RelationManagers;
 use App\Models\Church;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Support\Facades\DB;
 use Stancl\Tenancy\Database\Models\Domain;
 
-class ChurchResource extends Resource
+final class ChurchResource extends Resource
 {
     protected static ?string $model = Church::class;
 
@@ -28,29 +26,30 @@ class ChurchResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required(),
                 Forms\Components\Repeater::make('domains')
-                ->required()
-                ->relationship()
-                ->simple(
-                    Forms\Components\TextInput::make('domain')
-                    ->prefix('https://')
-                    ->suffix('.'.str(config('app.url'))->after('://'))
-                        ->required()
-                        ->unique('domains', 'domain', ignorable: fn (Domain $record): Domain => $record),
-                )
-                ->extraItemActions([
-                    function (string $operation): Forms\Components\Actions\Action|null {
-                        if ($operation !== 'create') {
-                            return null;
-                        }
-                        return Forms\Components\Actions\Action::make('Go to website')
-                        ->url(fn (Church $record): string => tenant_route($record->domains()->first()->domain.'.'. str(config('app.url'))->after('://'),'home'))
-                        ->openUrlInNewTab()
-                        ->icon('heroicon-o-globe-alt');
-                    },
-                ])
-                ->deletable(false)
-                ->maxItems(1)
-                ->minItems(1)
+                    ->required()
+                    ->relationship()
+                    ->simple(
+                        Forms\Components\TextInput::make('domain')
+                            ->prefix('https://')
+                            ->suffix('.'.str(config('app.url'))->after('://'))
+                            ->required()
+                            ->unique('domains', 'domain', ignorable: fn (Domain $record): Domain => $record),
+                    )
+                    ->extraItemActions([
+                        function (string $operation): ?Forms\Components\Actions\Action {
+                            if ($operation !== 'create') {
+                                return null;
+                            }
+
+                            return Forms\Components\Actions\Action::make('Go to website')
+                                ->url(fn (Church $record): string => tenant_route($record->domains()->first()->domain.'.'.str(config('app.url'))->after('://'), 'home'))
+                                ->openUrlInNewTab()
+                                ->icon('heroicon-o-globe-alt');
+                        },
+                    ])
+                    ->deletable(false)
+                    ->maxItems(1)
+                    ->minItems(1),
             ]);
     }
 
@@ -73,7 +72,7 @@ class ChurchResource extends Resource
             ])
             ->actions([
                 Tables\Actions\Action::make('Go to website')
-                    ->url(fn (Church $record): string => tenant_route($record->domains()->first()->domain.'.'. str(config('app.url'))->after('://'),'home'))
+                    ->url(fn (Church $record): string => tenant_route($record->domains()->first()->domain.'.'.str(config('app.url'))->after('://'), 'home'))
                     ->openUrlInNewTab()
                     ->icon('heroicon-o-globe-alt'),
                 Tables\Actions\EditAction::make(),
