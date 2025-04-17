@@ -28,6 +28,8 @@ export interface NavItem {
   permissionNeeded?: UserPermission;
 }
 
+export type NavMenu = NavGroup | NavItem;
+
 export interface SharedData {
   auth: Auth;
   ziggy: Config & { location: string };

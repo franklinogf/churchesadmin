@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Bavix\Wallet\Models\Wallet as BaseWallet;
+use Spatie\Translatable\HasTranslations;
 use Stancl\Tenancy\Database\Concerns\CentralConnection;
 
 final class Wallet extends BaseWallet
 {
-    use CentralConnection;
+    use CentralConnection, HasTranslations;
+
+    public $translatable = ['name', 'description'];
 
     public function canWithdraw(int|string $amount, bool $allowZero = false): bool
     {

@@ -1,14 +1,14 @@
 import { NavFooter } from '@/components/nav-footer';
-import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
+import { SidebarNav } from '@/components/sidebar-nav';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { UserPermission } from '@/enums/user';
-import { type NavItem } from '@/types';
+import type { NavItem, NavMenu } from '@/types';
 import { Link } from '@inertiajs/react';
-import { LayoutGridIcon, Users2Icon } from 'lucide-react';
+import { LayoutGridIcon, Users2Icon, WalletCardsIcon } from 'lucide-react';
 import AppLogo from './app-logo';
 
-const mainNavItems: NavItem[] = [
+const mainNavItems: NavMenu[] = [
   {
     title: 'Dashboard',
     href: route('dashboard'),
@@ -44,7 +44,18 @@ const mainNavItems: NavItem[] = [
     icon: Users2Icon,
     permissionNeeded: UserPermission.MANAGE_USERS,
   },
+  {
+    title: 'Accounting',
+    items: [
+      {
+        title: 'Wallets',
+        href: route('wallets.index'),
+        icon: WalletCardsIcon,
+      },
+    ],
+  },
 ];
+
 const footerNavItems: NavItem[] = [];
 export function AppSidebar() {
   return (
@@ -62,7 +73,7 @@ export function AppSidebar() {
       </SidebarHeader>
 
       <SidebarContent>
-        <NavMain items={mainNavItems} />
+        <SidebarNav label="Main" items={mainNavItems} />
       </SidebarContent>
 
       <SidebarFooter>

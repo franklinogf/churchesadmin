@@ -8,19 +8,19 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class() extends Migration
+return new class extends Migration
 {
     public function up(): void
     {
         Schema::create($this->table(), static function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->morphs('holder');
-            $table->string('name');
+            $table->json('name');
             $table->string('slug')
                 ->index();
             $table->uuid('uuid')
                 ->unique();
-            $table->string('description')
+            $table->json('description')
                 ->nullable();
             $table->json('meta')
                 ->nullable();
@@ -49,11 +49,11 @@ return new class() extends Migration
 
     private function table(): string
     {
-        return (new Wallet())->getTable();
+        return (new Wallet)->getTable();
     }
 
     private function transactionTable(): string
     {
-        return (new Transaction())->getTable();
+        return (new Transaction)->getTable();
     }
 };
