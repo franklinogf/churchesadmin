@@ -14,8 +14,7 @@ export default function Welcome() {
       <main className="bg-white text-black">
         <header className="sticky top-0 z-40 flex h-16 w-full items-center justify-between bg-white px-4 py-2.5 shadow-xl">
           <p className="flex gap-x-1 font-bold">
-            <TvIcon />
-            Churchroll
+            <TvIcon /> Churchroll
           </p>
           <nav className="flex justify-between">
             <NavigationMenu>
