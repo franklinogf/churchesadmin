@@ -7,6 +7,7 @@ use App\Http\Controllers\MemberController;
 use App\Http\Controllers\MissionaryController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WalletController;
 use App\Http\Middleware\SetLocale;
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware;
@@ -69,6 +70,9 @@ Route::middleware([
 
                 Route::resource('categories', CategoryController::class)
                     ->parameter('categories', 'tag')
+                    ->except(['show', 'create', 'edit']);
+
+                Route::resource('wallets', WalletController::class)
                     ->except(['show', 'create', 'edit']);
             });
 
