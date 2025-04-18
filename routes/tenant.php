@@ -72,8 +72,15 @@ Route::middleware([
                     ->parameter('categories', 'tag')
                     ->except(['show', 'create', 'edit']);
 
+                Route::put('wallets/{wallet:uuid}/restore', [WalletController::class, 'restore'])
+                    ->withTrashed()
+                    ->name('wallets.restore');
                 Route::resource('wallets', WalletController::class)
-                    ->except(['show', 'create', 'edit']);
+                    ->withTrashed()
+                    ->scoped([
+                        'wallet' => 'uuid',
+                    ])
+                    ->except(['create', 'edit']);
             });
 
             require __DIR__.'/settings.php';

@@ -23,14 +23,17 @@ final class WalletResource extends JsonResource
             'id' => $this->id,
             'uuid' => $this->uuid,
             'name' => $this->name,
+            'nameTranslations' => $this->getTranslations('name'),
             'slug' => $this->slug,
             'description' => $this->description,
+            'descriptionTranslations' => $this->getTranslations('description'),
             'balance' => $this->balance,
             'balanceNumber' => $this->balanceInt,
             'balanceFloat' => $this->balanceFloat,
             'balanceFloatNumber' => $this->balanceFloatNum,
             'createdAt' => $this->created_at->format('Y-m-d H:i:s'),
             'updatedAt' => $this->updated_at->format('Y-m-d H:i:s'),
+            'deletedAt' => $this->deleted_at?->format('Y-m-d H:i:s'),
         ];
     }
 }

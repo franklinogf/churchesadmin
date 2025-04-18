@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Wallet;
 
+use CodeZero\UniqueTranslation\UniqueTranslationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 final class StoreWalletRequest extends FormRequest
@@ -13,7 +14,7 @@ final class StoreWalletRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,8 +24,11 @@ final class StoreWalletRequest extends FormRequest
      */
     public function rules(): array
     {
+        $connection = config('tenancy.database.central_connection');
+
         return [
-            //
+            'name.*' => ['required', 'string', 'min:3', 'max:255', UniqueTranslationRule::for("{$connection}.wallets")->where('holder_id', tenant('id'))],
+            'description.*' => ['nullable', 'string', 'min:3', 'max:255'],
         ];
     }
 }

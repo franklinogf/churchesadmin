@@ -7,6 +7,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Wallet\StoreWalletRequest;
 use App\Http\Requests\Wallet\UpdateWalletRequest;
 use App\Http\Resources\Wallet\WalletResource;
+use App\Models\Church;
 use App\Models\Wallet;
 use Inertia\Inertia;
 
@@ -18,7 +19,7 @@ final class WalletController extends Controller
     public function index()
     {
 
-        $wallets = Wallet::whereMorphedTo('holder', tenant())->oldest()->get();
+        $wallets = Wallet::withTrashed()->whereMorphedTo('holder', tenant())->oldest()->get();
 
         return Inertia::render('wallets/index', [
             'wallets' => WalletResource::collection($wallets),
@@ -38,7 +39,10 @@ final class WalletController extends Controller
      */
     public function store(StoreWalletRequest $request)
     {
-        //
+        Church::current()->createWallet($request->validated());
+
+        return redirect()->route('wallets.index')->with('success', __('Wallet created successfully.'));
+
     }
 
     /**
@@ -46,7 +50,9 @@ final class WalletController extends Controller
      */
     public function update(UpdateWalletRequest $request, Wallet $wallet)
     {
-        //
+        $wallet->update($request->validated());
+
+        return redirect()->route('wallets.index')->with('success', __('Wallet updated successfully.'));
     }
 
     /**
@@ -54,6 +60,18 @@ final class WalletController extends Controller
      */
     public function destroy(Wallet $wallet)
     {
-        //
+        $wallet->delete();
+
+        return redirect()->route('wallets.index')->with('success', __('Wallet deleted successfully.'));
+    }
+
+    /**
+     * Restore the specified resource from storage.
+     */
+    public function restore(Wallet $wallet)
+    {
+        $wallet->restore();
+
+        return redirect()->route('wallets.index')->with('success', __('Wallet restored successfully.'));
     }
 }

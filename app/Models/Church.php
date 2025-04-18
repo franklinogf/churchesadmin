@@ -6,7 +6,6 @@ namespace App\Models;
 
 use Bavix\Wallet\Interfaces\Wallet;
 use Bavix\Wallet\Interfaces\WalletFloat;
-use Bavix\Wallet\Traits\HasWallet;
 use Bavix\Wallet\Traits\HasWalletFloat;
 use Bavix\Wallet\Traits\HasWallets;
 use Stancl\Tenancy\Database\Concerns\HasDatabase;
@@ -26,7 +25,7 @@ use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
  */
 final class Church extends BaseTenant implements TenantWithDatabase, WalletFloat, Wallet
 {
-    use HasDatabase, HasDomains, HasWallet, HasWalletFloat, HasWallets, MaintenanceMode;
+    use HasDatabase, HasDomains, HasWalletFloat, HasWallets, MaintenanceMode;
 
     /**
      * Set the custom columns for the tenant model.

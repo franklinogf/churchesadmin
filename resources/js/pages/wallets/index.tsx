@@ -6,6 +6,16 @@ import { Wallet } from '@/types/models/wallet';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { columns } from './includes/columns';
 
+import TranslatableInput from '@/components/forms/inputs/TranslatableInputField';
+import { SubmitButton } from '@/components/forms/SubmitButton';
+import { Dialog, DialogContent, DialogDescription, DialogHeader } from '@/components/ui/dialog';
+import { useTranslations } from '@/hooks/use-empty-translations';
+
+import { Button } from '@/components/ui/button';
+import { useForm } from '@inertiajs/react';
+import { DialogTitle, DialogTrigger } from '@radix-ui/react-dialog';
+import { useState } from 'react';
+
 interface IndexPageProps {
   wallets: Wallet[];
 }
@@ -22,7 +32,76 @@ export default function Index({ wallets }: IndexPageProps) {
   return (
     <AppLayout breadcrumbs={breadcrumbs} title={t('Wallets')}>
       <PageTitle>{t('Wallets')}</PageTitle>
-      <DataTable data={wallets} columns={columns} />
+      <DataTable
+        headerButton={
+          <WalletForm>
+            <Button size="sm">{t('Add Wallet')}</Button>
+          </WalletForm>
+        }
+        data={wallets}
+        columns={columns}
+      />
     </AppLayout>
+  );
+}
+
+export function WalletForm({ wallet, children }: { wallet?: Wallet; children: React.ReactNode }) {
+  const [open, setOpen] = useState(false);
+  const { t } = useLaravelReactI18n();
+  const { emptyTranslations } = useTranslations();
+
+  const { data, setData, post, put, errors, reset, processing } = useForm({
+    name: wallet?.nameTranslations ?? emptyTranslations,
+    description: wallet?.descriptionTranslations ?? emptyTranslations,
+  });
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (wallet) {
+      put(route('wallets.update', wallet.uuid), {
+        onSuccess: () => {
+          setOpen(false);
+        },
+      });
+    } else {
+      post(route('wallets.store'), {
+        onSuccess: () => {
+          setOpen(false);
+          reset();
+        },
+      });
+    }
+  }
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{wallet ? t('Edit Wallet') : t('Add Wallet')}</DialogTitle>
+          <DialogDescription hidden></DialogDescription>
+        </DialogHeader>
+
+        <form className="space-y-4" onSubmit={handleSubmit}>
+          <TranslatableInput
+            required
+            label={t('Name')}
+            values={data.name}
+            onChange={(locale, value) => setData(`name`, { ...data.name, [locale]: value })}
+            errors={{ errors, name: 'name' }}
+          />
+
+          <TranslatableInput
+            label={t('Description')}
+            values={data.description}
+            onChange={(locale, value) => setData(`description`, { ...data.description, [locale]: value })}
+            errors={{ errors, name: 'description' }}
+          />
+
+          <div className="flex justify-end">
+            <SubmitButton isSubmitting={processing}>{t('Save')}</SubmitButton>
+          </div>
+        </form>
+      </DialogContent>
+    </Dialog>
   );
 }
