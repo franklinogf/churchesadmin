@@ -1,3 +1,5 @@
+import { Icon } from '@/components/icon';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 import {
   SidebarGroup,
   SidebarGroupLabel,
@@ -9,15 +11,14 @@ import {
   SidebarMenuSubItem,
 } from '@/components/ui/sidebar';
 import { useUser } from '@/hooks/use-permissions';
-
 import type { NavGroup, NavItem, NavMenu, SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { Collapsible } from '@radix-ui/react-collapsible';
 import { ChevronRightIcon } from 'lucide-react';
-import { CollapsibleContent, CollapsibleTrigger } from './ui/collapsible';
+
 function isGroup(el: NavMenu): el is NavGroup {
   return 'items' in el;
 }
+
 export function SidebarNav({ label, items = [] }: { label: string; items: NavMenu[] }) {
   const page = usePage<SharedData>();
   const { can: userCan } = useUser();
@@ -36,7 +37,7 @@ export function SidebarNav({ label, items = [] }: { label: string; items: NavMen
             <SidebarMenuItem key={item.title}>
               <SidebarMenuButton asChild isActive={page.props.ziggy.location.includes(item.href)} tooltip={{ children: item.title }}>
                 <Link href={item.href} prefetch>
-                  {item.icon && <item.icon />}
+                  {item.icon && <Icon iconNode={item.icon} />}
                   <span>{item.title}</span>
                 </Link>
               </SidebarMenuButton>
@@ -68,7 +69,7 @@ function NavCollapsible({ title, items }: { title: string; items: NavItem[] }) {
                 <SidebarMenuSubItem key={item.title}>
                   <SidebarMenuSubButton asChild isActive={page.props.ziggy.location.includes(item.href)}>
                     <Link href={item.href} prefetch>
-                      {item.icon && <item.icon />}
+                      {item.icon && <Icon iconNode={item.icon} />}
                       <span>{item.title}</span>
                     </Link>
                   </SidebarMenuSubButton>

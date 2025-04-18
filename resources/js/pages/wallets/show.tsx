@@ -28,7 +28,7 @@ export default function Show({ wallet }: { wallet: Wallet }) {
     <AppLayout title={t('Wallet :name', { name: wallet.name })} breadcrumbs={breadcrumbs}>
       <div className="flex flex-col items-center gap-4">
         <PageTitle>{wallet.name}</PageTitle>
-        <Badge className="text-xl" variant="secondary">
+        <Badge className="text-xl" variant="brand">
           ${wallet.balanceFloat}
         </Badge>
       </div>
