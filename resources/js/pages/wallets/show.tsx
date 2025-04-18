@@ -1,5 +1,6 @@
 import { DataTable } from '@/components/custom-ui/datatable/data-table';
 import { PageTitle } from '@/components/PageTitle';
+import { Badge } from '@/components/ui/badge';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem } from '@/types';
 import type { Wallet } from '@/types/models/wallet';
@@ -25,7 +26,12 @@ export default function Show({ wallet }: { wallet: Wallet }) {
 
   return (
     <AppLayout title={t('Wallet :name', { name: wallet.name })} breadcrumbs={breadcrumbs}>
-      <PageTitle>{wallet.name}</PageTitle>
+      <div className="flex flex-col items-center gap-4">
+        <PageTitle>{wallet.name}</PageTitle>
+        <Badge className="text-xl" variant="secondary">
+          ${wallet.balanceFloat}
+        </Badge>
+      </div>
       {wallet.transactions ? (
         <DataTable
           data={wallet.transactions}
