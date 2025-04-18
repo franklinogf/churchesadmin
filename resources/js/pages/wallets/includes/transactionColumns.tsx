@@ -10,7 +10,6 @@ import { CheckIcon, XCircleIcon } from 'lucide-react';
 export const transactionColumns: ColumnDef<Transaction>[] = [
   {
     enableHiding: false,
-    enableSorting: false,
     header: ({ column }) => <DataTableColumnHeader column={column} title="Payer" />,
     accessorKey: 'payer',
     cell: ({ row }) => {

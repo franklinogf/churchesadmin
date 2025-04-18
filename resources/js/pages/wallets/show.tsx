@@ -21,7 +21,7 @@ export default function Show({ wallet }: { wallet: Wallet }) {
         title: t('Transactions of :name', { name: wallet.name }),
       },
     ],
-    [wallet, t],
+    [wallet.name, t],
   );
 
   return (

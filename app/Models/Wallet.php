@@ -6,10 +6,16 @@ namespace App\Models;
 
 use Bavix\Wallet\Models\Transfer;
 use Bavix\Wallet\Models\Wallet as BaseWallet;
-use Illuminate\Database\Eloquent\Model;
+use Carbon\CarbonImmutable;
 use Spatie\Translatable\HasTranslations;
 use Stancl\Tenancy\Database\Concerns\CentralConnection;
 
+/**
+ * @mixin \Bavix\Wallet\Models\Wallet
+ *
+ *  @property-read int $id
+ * @property-read CarbonImmutable|null $deleted_at
+ */
 final class Wallet extends BaseWallet
 {
     use CentralConnection, HasTranslations;
@@ -26,19 +32,6 @@ final class Wallet extends BaseWallet
     {
         // Implement your logic here
         return parent::deposit($amount, $meta, $confirmed);
-    }
-
-    public function depositFrom(int|string $amount, Model $payer, ?array $meta = null, bool $confirmed = true): Transaction
-    {
-        // Implement your logic here
-        $transaction = parent::deposit($amount, $meta, $confirmed);
-
-        $transaction->update([
-            'payer_id' => $payer->getKey(),
-            'payer_type' => $payer->getMorphClass(),
-        ]);
-
-        return $transaction;
     }
 
     public function forceTransfer(\Bavix\Wallet\Interfaces\Wallet $wallet, int|string $amount, array|\Bavix\Wallet\External\Contracts\ExtraDtoInterface|null $meta = null): Transfer

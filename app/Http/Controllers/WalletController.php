@@ -29,8 +29,11 @@ final class WalletController extends Controller
 
     public function show(Wallet $wallet)
     {
-        $wallet->load(['walletTransactions.payer']);
-        // $wallet->depositFrom(6000, payer: Member::latest()->first());
+        $wallet->load(['walletTransactions']);
+
+        // $member = Member::latest()->first();
+        // $wallet->withdraw(36_45);
+        // $wallet->refresh();
 
         return Inertia::render('wallets/show', [
             'wallet' => new WalletResource($wallet),

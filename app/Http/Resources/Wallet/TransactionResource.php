@@ -23,22 +23,24 @@ final class TransactionResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $existPayer = $this->meta !== null
+        && ($this->meta['payer_type'] && $this->meta['payer_type'] !== null)
+        && ($this->meta['payer_id'] && $this->meta['payer_id'] !== null);
+
         return [
             'id' => $this->id,
             'uuid' => $this->uuid,
-            'payerType' => $this->when($this->relationLoaded('payer'), fn () => $this->payer_type),
-            'payer' => $this->when($this->relationLoaded('payer'), function () {
-                return match (true) {
-                    $this->payer instanceof Member => new MemberResource($this->payer),
-                    $this->payer instanceof Missionary => new MissionaryResource($this->payer),
-                    default => null,
-                };
-            }),
             'type' => $this->type,
             'amount' => $this->amount,
             'amountFloat' => $this->amountFloat,
             'confirmed' => $this->confirmed,
             'meta' => $this->meta,
+            'payerType' => $this->when($existPayer, fn () => $this->meta['payer_type']),
+            'payer' => $this->when($existPayer, fn (): MemberResource|MissionaryResource|null => match (true) {
+                $this->meta['payer_type'] === (new Member)->getMorphClass() => new MemberResource(Member::find($this->meta['payer_id'])),
+                $this->meta['payer_type'] === (new Missionary)->getMorphClass() => new MissionaryResource(Missionary::find($this->meta['payer_id'])),
+                default => null,
+            }),
             'createdAt' => $this->created_at->format('Y-m-d H:i:s'),
             'updatedAt' => $this->updated_at->format('Y-m-d H:i:s'),
             'deletedAt' => $this->deleted_at?->format('Y-m-d H:i:s'),

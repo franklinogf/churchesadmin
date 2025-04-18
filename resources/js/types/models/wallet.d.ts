@@ -22,6 +22,11 @@ export interface Wallet {
 }
 
 export type TransactionType = 'deposit' | 'withdraw';
+
+export type TransactionMeta = {
+  payer_id: number;
+  payer_type: MemberMorphClass | MissionaryMorphClass;
+};
 export interface Transaction {
   id: number;
   uuid: string;
@@ -31,7 +36,7 @@ export interface Transaction {
   amount: number;
   amountFloat: string;
   confirmed: boolean;
-  meta: Record<string, string | number> | null;
+  meta: TransactionMeta | null;
   createdAt: string;
   updatedAt: string;
   deletedAt: string | null;
