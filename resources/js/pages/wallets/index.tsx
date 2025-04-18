@@ -4,7 +4,7 @@ import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem } from '@/types';
 import { Wallet } from '@/types/models/wallet';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { columns } from './includes/columns';
+import { walletColumns } from './includes/walletColumns';
 
 import TranslatableInput from '@/components/forms/inputs/TranslatableInputField';
 import { SubmitButton } from '@/components/forms/SubmitButton';
@@ -39,7 +39,7 @@ export default function Index({ wallets }: IndexPageProps) {
           </WalletForm>
         }
         data={wallets}
-        columns={columns}
+        columns={walletColumns}
       />
     </AppLayout>
   );

@@ -1,3 +1,4 @@
+import { DatatableCell } from '@/components/custom-ui/datatable/DatatableCell';
 import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTableColumnHeader';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
@@ -11,7 +12,7 @@ import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { ArchiveIcon, ArchiveRestoreIcon, CheckIcon, Edit2Icon, MoreHorizontalIcon, WalletIcon, XCircleIcon } from 'lucide-react';
 import { WalletForm } from '..';
 
-export const columns: ColumnDef<Wallet>[] = [
+export const walletColumns: ColumnDef<Wallet>[] = [
   {
     enableHiding: false,
     enableSorting: false,
@@ -22,9 +23,7 @@ export const columns: ColumnDef<Wallet>[] = [
     enableHiding: false,
     accessorKey: 'balanceFloat',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Balance" />,
-    cell: function CellComponent({ row }) {
-      return <span className="flex items-center gap-0.5">${row.original.balanceFloat}</span>;
-    },
+    cell: ({ row }) => <DatatableCell justify="end">${row.original.balanceFloat}</DatatableCell>,
   },
   {
     accessorKey: 'description',
@@ -50,10 +49,11 @@ export const columns: ColumnDef<Wallet>[] = [
     accessorKey: 'deletedAt',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Active" />,
     meta: 'Active',
-    cell: function CellComponent({ row }) {
-      const wallet = row.original;
-      return wallet.deletedAt ? <XCircleIcon className="text-destructive size-4" /> : <CheckIcon className="size-4 text-green-600" />;
-    },
+    cell: ({ row }) => (
+      <DatatableCell justify="center">
+        {row.original.deletedAt ? <XCircleIcon className="text-destructive size-4" /> : <CheckIcon className="size-4 text-green-600" />}
+      </DatatableCell>
+    ),
   },
   {
     id: 'actions',
@@ -78,7 +78,7 @@ export const columns: ColumnDef<Wallet>[] = [
             <DropdownMenuItem asChild>
               <Link href={route('wallets.show', wallet.uuid)}>
                 <WalletIcon className="size-3" />
-                <span>{t('View')}</span>
+                <span>{t('Transactions')}</span>
               </Link>
             </DropdownMenuItem>
             {/* {userCan(UserPermission.UPDATE_SKILLS) && ( */}
