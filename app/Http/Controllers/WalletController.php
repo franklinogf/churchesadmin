@@ -8,6 +8,7 @@ use App\Http\Requests\Wallet\StoreWalletRequest;
 use App\Http\Requests\Wallet\UpdateWalletRequest;
 use App\Http\Resources\Wallet\WalletResource;
 use App\Models\Church;
+use App\Models\Member;
 use App\Models\Wallet;
 use Inertia\Inertia;
 
@@ -28,10 +29,12 @@ final class WalletController extends Controller
 
     public function show(Wallet $wallet)
     {
-        dd($wallet);
-        // return Inertia::render('wallets/show', [
-        //     'wallet' => new WalletResource($wallet),
-        // ]);
+        $wallet->load(['walletTransactions.payer']);
+        // $wallet->depositFrom(6000, payer: Member::latest()->first());
+
+        return Inertia::render('wallets/show', [
+            'wallet' => new WalletResource($wallet),
+        ]);
     }
 
     /**

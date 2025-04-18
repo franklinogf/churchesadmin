@@ -34,6 +34,9 @@ final class WalletResource extends JsonResource
             'createdAt' => $this->created_at->format('Y-m-d H:i:s'),
             'updatedAt' => $this->updated_at->format('Y-m-d H:i:s'),
             'deletedAt' => $this->deleted_at?->format('Y-m-d H:i:s'),
+            'transactions' => TransactionResource::collection($this->whenLoaded('walletTransactions')),
+            'transactionsCount' => $this->whenCounted('walletTransactions'),
+
         ];
     }
 }
