@@ -5,7 +5,7 @@ import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, Sid
 import { UserPermission } from '@/enums/user';
 import type { NavItem, NavMenu } from '@/types';
 import { Link } from '@inertiajs/react';
-import { LayoutGridIcon, Users2Icon, WalletCardsIcon } from 'lucide-react';
+import { HandCoinsIcon, LayoutGridIcon, Users2Icon, WalletCardsIcon } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavMenu[] = [
@@ -51,6 +51,11 @@ const mainNavItems: NavMenu[] = [
         title: 'Wallets',
         href: route('wallets.index'),
         icon: WalletCardsIcon,
+      },
+      {
+        title: 'Offerings',
+        href: route('offerings.index'),
+        icon: HandCoinsIcon,
       },
     ],
   },

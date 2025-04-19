@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\MissionaryController;
+use App\Http\Controllers\OfferingController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WalletController;
@@ -81,6 +82,11 @@ Route::middleware([
                         'wallet' => 'uuid',
                     ])
                     ->except(['create', 'edit']);
+                Route::resource('offerings', OfferingController::class)
+                    ->parameter('offerings', 'transaction')
+                    ->scoped([
+                        'offering' => 'uuid',
+                    ]);
             });
 
             require __DIR__.'/settings.php';

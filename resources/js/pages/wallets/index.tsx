@@ -11,6 +11,7 @@ import { SubmitButton } from '@/components/forms/SubmitButton';
 import { Dialog, DialogContent, DialogDescription, DialogHeader } from '@/components/ui/dialog';
 import { useTranslations } from '@/hooks/use-empty-translations';
 
+import { CurrencyField } from '@/components/forms/inputs/CurrencyField';
 import { Button } from '@/components/ui/button';
 import { useForm } from '@inertiajs/react';
 import { DialogTitle, DialogTrigger } from '@radix-ui/react-dialog';
@@ -53,6 +54,7 @@ export function WalletForm({ wallet, children }: { wallet?: Wallet; children: Re
   const { data, setData, post, put, errors, reset, processing } = useForm({
     name: wallet?.nameTranslations ?? emptyTranslations,
     description: wallet?.descriptionTranslations ?? emptyTranslations,
+    balance: wallet?.balanceFloat ?? '0.00',
   });
 
   function handleSubmit(e: React.FormEvent) {
@@ -96,6 +98,16 @@ export function WalletForm({ wallet, children }: { wallet?: Wallet; children: Re
             onChange={(locale, value) => setData(`description`, { ...data.description, [locale]: value })}
             errors={{ errors, name: 'description' }}
           />
+
+          {!wallet && (
+            <CurrencyField
+              required
+              label={t('Initial Amount')}
+              value={data.balance}
+              onChange={(value) => setData('balance', value)}
+              error={errors.balance}
+            />
+          )}
 
           <div className="flex justify-end">
             <SubmitButton isSubmitting={processing}>{t('Save')}</SubmitButton>

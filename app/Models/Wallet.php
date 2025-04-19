@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Bavix\Wallet\Models\Transaction;
 use Bavix\Wallet\Models\Transfer;
 use Bavix\Wallet\Models\Wallet as BaseWallet;
 use Carbon\CarbonImmutable;

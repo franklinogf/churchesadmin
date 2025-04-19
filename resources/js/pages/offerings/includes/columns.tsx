@@ -3,11 +3,11 @@ import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTabl
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
-import type { Transaction } from '@/types/models/transaction';
+import type { OfferingTransaction } from '@/types/models/transaction';
 import { ColumnDef } from '@tanstack/react-table';
 import { CheckIcon, XCircleIcon } from 'lucide-react';
 
-export const transactionColumns: ColumnDef<Transaction>[] = [
+export const columns: ColumnDef<OfferingTransaction>[] = [
   {
     enableHiding: false,
     header: ({ column }) => <DataTableColumnHeader column={column} title="Payer" />,
@@ -26,6 +26,16 @@ export const transactionColumns: ColumnDef<Transaction>[] = [
         </HoverCard>
       );
     },
+  },
+  {
+    enableHiding: false,
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Wallet" />,
+    accessorKey: 'wallet',
+    cell: ({ row }) => (
+      <DatatableCell justify="center">
+        <Badge variant="secondary">{row.original.wallet?.name}</Badge>
+      </DatatableCell>
+    ),
   },
   {
     enableHiding: false,
@@ -53,10 +63,10 @@ export const transactionColumns: ColumnDef<Transaction>[] = [
     ),
   },
   {
-    accessorKey: 'createdAt',
+    accessorKey: 'date',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Date" />,
     meta: 'Date',
-    cell: ({ row }) => <DatatableCell justify="center">{row.original.createdAt}</DatatableCell>,
+    cell: ({ row }) => <DatatableCell justify="center">{row.original.date}</DatatableCell>,
   },
   //   {
   //     id: 'actions',

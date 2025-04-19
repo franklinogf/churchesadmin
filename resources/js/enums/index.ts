@@ -27,3 +27,9 @@ export enum OfferingFrequency {
 export enum WalletName {
   PRIMARY = 'primary',
 }
+
+export enum OfferingType {
+  CASH = 'cash',
+  CHECK = 'check',
+  INITIAL = 'initial',
+}

@@ -29,6 +29,7 @@ final class StoreWalletRequest extends FormRequest
         return [
             'name.*' => ['required', 'string', 'min:3', 'max:255', UniqueTranslationRule::for("{$connection}.wallets")->where('holder_id', (string) tenant('id'))],
             'description.*' => ['nullable', 'string', 'min:3', 'max:255'],
+            'balance' => ['required', 'decimal:2', 'min:0'],
         ];
     }
 }

@@ -3,7 +3,8 @@ import { LanguageCode } from '@/enums';
 import { UserPermission } from '@/enums/user';
 import { LucideIcon } from 'lucide-react';
 import type { Config } from 'ziggy-js';
-import { AuthenticatedUser } from './models/user';
+import { OneOf } from './generics';
+import type { AuthenticatedUser } from './models/user';
 
 export interface Auth {
   user: AuthenticatedUser;
@@ -15,20 +16,20 @@ export interface BreadcrumbItem {
   href?: string;
 }
 
-export interface NavGroup {
-  title: string;
-  items: NavItem[];
-}
+type BaseNavMenu = { title: string };
 
-export interface NavItem {
-  title: string;
+export type NavItem = BaseNavMenu & {
   href: string;
   icon?: LucideIcon | null;
   isActive?: boolean;
   permissionNeeded?: UserPermission;
-}
+};
 
-export type NavMenu = NavGroup | NavItem;
+export type NavGroup = BaseNavMenu & {
+  items: NavItem[];
+};
+
+export type NavMenu = OneOf<[NavGroup, NavItem]>;
 
 export interface SharedData {
   auth: Auth;

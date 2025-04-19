@@ -4,23 +4,32 @@ declare(strict_types=1);
 
 namespace App\Dtos;
 
-final class DepositMetaDto
+final readonly class DepositMetaDto
 {
     /**
      * Create a new class instance.
      */
     public function __construct(
-        protected readonly int $payer_id,
-        protected readonly string $payer_type,
+        public ?string $payer_id = null,
+        public ?string $date = null,
+        public ?string $offering_type = null,
+        public ?string $message = null,
     ) {
         //
     }
 
+    /**
+     * Convert the class instance to an array.
+     *
+     * @return array{payer_id:string|null,date:string|null,offering_type:string|null,message:string|null}
+     */
     public function toArray(): array
     {
         return [
             'payer_id' => $this->payer_id,
-            'payer_type' => $this->payer_type,
+            'date' => $this->date,
+            'offering_type' => $this->offering_type,
+            'message' => $this->message,
         ];
     }
 }
