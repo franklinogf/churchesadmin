@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Casts;
 
-use App\Dtos\DepositMetaDto;
+use App\Dtos\TransactionMetaDto;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 
@@ -23,7 +23,7 @@ final class TransactionMeta implements CastsAttributes
 
         $value = json_decode($value, true);
 
-        return new DepositMetaDto(
+        return new TransactionMetaDto(
             $value['offering_type'],
             $value['payer_id'],
             $value['date'],

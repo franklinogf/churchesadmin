@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Dtos\DepositMetaDto;
+use App\Dtos\TransactionMetaDto;
 use App\Enums\OfferingType;
 use App\Http\Requests\Wallet\StoreWalletRequest;
 use App\Http\Requests\Wallet\UpdateWalletRequest;
@@ -45,7 +45,7 @@ final class WalletController extends Controller
         $wallet = Church::current()->createWallet($request->safe()->except('balance'));
         $wallet->depositFloat(
             $request->safe()->only('balance')['balance'],
-            new DepositMetaDto(
+            new TransactionMetaDto(
                 offering_type: OfferingType::INITIAL->value,
                 message: __('Initial deposit')
             )->toArray()

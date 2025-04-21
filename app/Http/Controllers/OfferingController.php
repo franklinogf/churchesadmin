@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Dtos\DepositMetaDto;
+use App\Dtos\TransactionMetaDto;
 use App\Enums\FlashMessageKey;
 use App\Enums\OfferingType;
 use App\Http\Requests\Offering\StoreOfferingRequest;
@@ -67,7 +67,7 @@ final class OfferingController extends Controller
 
             $wallet->depositFloat(
                 $offering['amount'],
-                new DepositMetaDto(
+                new TransactionMetaDto(
                     payer_id: $validated['payer_id'],
                     date: $validated['date'],
                     offering_type: $validated['offering_type'],

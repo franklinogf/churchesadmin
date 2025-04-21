@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace App\Dtos;
 
+use App\Casts\TransactionMeta;
+use Illuminate\Contracts\Database\Eloquent\Castable;
+
 /**
  * @property-read string|null $payer_id
  * @property-read string|null $date
  * @property-read string $offering_type
  * @property-read string|null $message
  */
-final readonly class DepositMetaDto
+final readonly class TransactionMetaDto implements Castable
 {
     /**
      * Create a new class instance.
@@ -22,6 +25,11 @@ final readonly class DepositMetaDto
         public ?string $message = null,
     ) {
         //
+    }
+
+    public static function castUsing(array $arguments): string
+    {
+        return TransactionMeta::class;
     }
 
     /**
