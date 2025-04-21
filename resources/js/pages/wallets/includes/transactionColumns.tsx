@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 import type { Transaction } from '@/types/models/transaction';
 import { ColumnDef } from '@tanstack/react-table';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { CheckIcon, XCircleIcon } from 'lucide-react';
 
 export const transactionColumns: ColumnDef<Transaction>[] = [
@@ -24,6 +25,21 @@ export const transactionColumns: ColumnDef<Transaction>[] = [
           </HoverCardTrigger>
           <HoverCardContent>{payer.email}</HoverCardContent>
         </HoverCard>
+      );
+    },
+  },
+  {
+    enableHiding: false,
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Offering Type" />,
+    accessorKey: 'meta',
+    cell: function CellColumn({ row }) {
+      const { t } = useLaravelReactI18n();
+
+      if (!row.original.meta) return null;
+      return (
+        <DatatableCell justify="center">
+          <Badge>{t(`enum.offering_type.${row.original.meta.offeringType}`)}</Badge>
+        </DatatableCell>
       );
     },
   },

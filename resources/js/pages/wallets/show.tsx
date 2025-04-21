@@ -10,7 +10,6 @@ import { transactionColumns } from './includes/transactionColumns';
 
 export default function Show({ wallet }: { wallet: Wallet }) {
   const { t } = useLaravelReactI18n();
-
   const breadcrumbs: BreadcrumbItem[] = useMemo(
     () => [
       {
@@ -18,7 +17,7 @@ export default function Show({ wallet }: { wallet: Wallet }) {
         href: route('wallets.index'),
       },
       {
-        title: t('Transactions of :name', { name: wallet.name }),
+        title: wallet.name,
       },
     ],
     [wallet.name, t],
