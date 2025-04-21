@@ -6,8 +6,8 @@ import { Missionary, MissionaryMorphClass } from '@/types/models/missionary';
 export type TransactionType = 'deposit' | 'withdraw';
 
 export type TransactionMeta = {
-  payer_id: number;
-  type: `${OfferingType}`;
+  payerId: number;
+  offeringType: `${OfferingType}`;
   date: string;
   message: string;
 };
