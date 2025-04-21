@@ -32,9 +32,9 @@ enum OfferingType: string
     public function label(): string
     {
         return match ($this) {
-            self::CASH => __('Cash'),
-            self::CHECK => __('Check'),
-            self::INITIAL => __('Initial Balance'),
+            self::CASH => __('enum.offering_type.cash'),
+            self::CHECK => __('enum.offering_type.check'),
+            self::INITIAL => __('enum.offering_type.initial'),
         };
     }
 }
