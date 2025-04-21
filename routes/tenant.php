@@ -6,6 +6,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\MissionaryController;
 use App\Http\Controllers\OfferingController;
+use App\Http\Controllers\OfferingTypeController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WalletController;
@@ -82,11 +83,18 @@ Route::middleware([
                         'wallet' => 'uuid',
                     ])
                     ->except(['create', 'edit']);
+
                 Route::resource('offerings', OfferingController::class)
                     ->parameter('offerings', 'transaction')
                     ->scoped([
                         'offering' => 'uuid',
                     ]);
+
+                // codes
+                Route::prefix('codes')->name('codes.')->group(function () {
+                    Route::resource('offeringTypes', OfferingTypeController::class)
+                        ->except(['show', 'create', 'edit']);
+                });
             });
 
             require __DIR__.'/settings.php';

@@ -28,8 +28,7 @@ export enum WalletName {
   PRIMARY = 'primary',
 }
 
-export enum OfferingType {
+export enum PaymentMethod {
   CASH = 'cash',
   CHECK = 'check',
-  INITIAL = 'initial',
 }

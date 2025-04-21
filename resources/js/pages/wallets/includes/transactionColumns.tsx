@@ -1,8 +1,6 @@
 import { DatatableCell } from '@/components/custom-ui/datatable/DatatableCell';
 import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTableColumnHeader';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 import type { Transaction } from '@/types/models/transaction';
 import { ColumnDef } from '@tanstack/react-table';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
@@ -11,47 +9,16 @@ import { CheckIcon, XCircleIcon } from 'lucide-react';
 export const transactionColumns: ColumnDef<Transaction>[] = [
   {
     enableHiding: false,
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Payer" />,
-    accessorKey: 'payer',
-    cell: ({ row }) => {
-      const { payer } = row.original;
-      if (!payer) return null;
-      return (
-        <HoverCard>
-          <HoverCardTrigger asChild>
-            <Button variant="link" size="sm" className="px-0">
-              {`${payer.name} ${payer.lastName}`}
-            </Button>
-          </HoverCardTrigger>
-          <HoverCardContent>{payer.email}</HoverCardContent>
-        </HoverCard>
-      );
-    },
-  },
-  {
-    enableHiding: false,
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Offering Type" />,
-    accessorKey: 'meta',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Type" />,
+    accessorKey: 'type',
     cell: function CellColumn({ row }) {
       const { t } = useLaravelReactI18n();
-
-      if (!row.original.meta) return null;
       return (
         <DatatableCell justify="center">
-          <Badge>{t(`enum.offering_type.${row.original.meta.offeringType}`)}</Badge>
+          <Badge>{t(`enum.transaction_type.${row.original.type}`)}</Badge>
         </DatatableCell>
       );
     },
-  },
-  {
-    enableHiding: false,
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Type" />,
-    accessorKey: 'type',
-    cell: ({ row }) => (
-      <DatatableCell justify="center">
-        <Badge>{row.original.type}</Badge>
-      </DatatableCell>
-    ),
   },
   {
     enableHiding: false,

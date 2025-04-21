@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Resources\Wallet;
 
-use App\Http\Resources\Member\MemberResource;
-use App\Models\Member;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -21,7 +19,6 @@ final class TransactionResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        $existPayer = $this->meta !== null && $this->meta->payer_id !== null;
 
         return [
             'id' => $this->id,
@@ -30,13 +27,8 @@ final class TransactionResource extends JsonResource
             'amount' => $this->amount,
             'amountFloat' => $this->amountFloat,
             'confirmed' => $this->confirmed,
-            'meta' => [
-                'offeringType' => $this->meta->offering_type,
-                'message' => $this->meta?->message,
-                'payerId' => $this->meta?->payer_id,
-                'date' => $this->meta?->date,
-            ],
-            'payer' => $this->when($existPayer, fn (): MemberResource => new MemberResource(Member::find($this->meta->payer_id))),
+            'wallet' => new WalletResource($this->whenLoaded('wallet')),
+            'meta' => $this->meta,
             'createdAt' => $this->created_at->format('Y-m-d H:i:s'),
             'updatedAt' => $this->updated_at->format('Y-m-d H:i:s'),
             'deletedAt' => $this->deleted_at?->format('Y-m-d H:i:s'),

@@ -3,26 +3,54 @@ import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTabl
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
-import type { OfferingTransaction } from '@/types/models/transaction';
+import type { Offering } from '@/types/models/offering';
 import { ColumnDef } from '@tanstack/react-table';
-import { CheckIcon, XCircleIcon } from 'lucide-react';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
-export const columns: ColumnDef<OfferingTransaction>[] = [
+export const columns: ColumnDef<Offering>[] = [
   {
     enableHiding: false,
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Payer" />,
-    accessorKey: 'payer',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Donor" />,
+    accessorKey: 'donor',
     cell: ({ row }) => {
-      const { payer } = row.original;
-      if (!payer) return null;
+      const { donor } = row.original;
+      if (!donor) return null;
       return (
         <HoverCard>
           <HoverCardTrigger asChild>
             <Button variant="link" size="sm" className="px-0">
-              {`${payer.name} ${payer.lastName}`}
+              {`${donor.name} ${donor.lastName}`}
             </Button>
           </HoverCardTrigger>
-          <HoverCardContent>{payer.email}</HoverCardContent>
+          <HoverCardContent>{donor.email}</HoverCardContent>
+        </HoverCard>
+      );
+    },
+  },
+  {
+    enableHiding: false,
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Offering Type" />,
+    accessorKey: 'offeringType',
+    cell: ({ row }) => (
+      <DatatableCell justify="center">
+        <Badge>{row.original.offeringType.name}</Badge>
+      </DatatableCell>
+    ),
+  },
+  {
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Recipient" />,
+    accessorKey: 'recipient',
+    cell: ({ row }) => {
+      const { recipient } = row.original;
+      if (!recipient) return null;
+      return (
+        <HoverCard>
+          <HoverCardTrigger asChild>
+            <Button variant="link" size="sm" className="px-0">
+              {`${recipient.name} ${recipient.lastName}`}
+            </Button>
+          </HoverCardTrigger>
+          <HoverCardContent>{recipient.email}</HoverCardContent>
         </HoverCard>
       );
     },
@@ -30,37 +58,31 @@ export const columns: ColumnDef<OfferingTransaction>[] = [
   {
     enableHiding: false,
     header: ({ column }) => <DataTableColumnHeader column={column} title="Wallet" />,
-    accessorKey: 'wallet',
+    accessorKey: 'transaction',
     cell: ({ row }) => (
       <DatatableCell justify="center">
-        <Badge variant="secondary">{row.original.wallet?.name}</Badge>
+        <Badge variant="secondary">{row.original.transaction.wallet?.name}</Badge>
       </DatatableCell>
     ),
   },
   {
     enableHiding: false,
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Type" />,
-    accessorKey: 'type',
-    cell: ({ row }) => (
-      <DatatableCell justify="center">
-        <Badge>{row.original.type}</Badge>
-      </DatatableCell>
-    ),
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Payment method" />,
+    accessorKey: 'paymentMethod',
+    cell: function CellComponent({ row }) {
+      const { t } = useLaravelReactI18n();
+      return (
+        <DatatableCell justify="center">
+          <Badge>{t(`enum.payment_method.${row.original.paymentMethod}`)}</Badge>
+        </DatatableCell>
+      );
+    },
   },
   {
     enableHiding: false,
     accessorKey: 'amountFloat',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Amount" />,
-    cell: ({ row }) => <DatatableCell justify="end">${row.original.amountFloat}</DatatableCell>,
-  },
-  {
-    accessorKey: 'confirmed',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Confirmed" />,
-    cell: ({ row }) => (
-      <DatatableCell justify="center">
-        {row.original.confirmed ? <CheckIcon className="size-4 text-green-600" /> : <XCircleIcon className="text-destructive size-4" />}
-      </DatatableCell>
-    ),
+    cell: ({ row }) => <DatatableCell justify="end">${row.original.transaction.amountFloat}</DatatableCell>,
   },
   {
     accessorKey: 'date',

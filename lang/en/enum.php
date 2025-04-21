@@ -3,9 +3,12 @@
 declare(strict_types=1);
 
 return [
-    'offering_type' => [
-        'initial' => 'Initial deposit',
+    'payment_method' => [
         'cash' => 'Cash',
         'check' => 'Check',
+    ],
+    'transaction_type' => [
+        'deposit' => 'Deposit',
+        'withdraw' => 'Withdrawal',
     ],
 ];

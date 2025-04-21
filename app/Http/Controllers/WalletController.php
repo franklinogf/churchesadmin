@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Dtos\TransactionMetaDto;
-use App\Enums\OfferingType;
+use App\Enums\PaymentMethod;
 use App\Http\Requests\Wallet\StoreWalletRequest;
 use App\Http\Requests\Wallet\UpdateWalletRequest;
 use App\Http\Resources\Wallet\WalletResource;
@@ -46,7 +46,7 @@ final class WalletController extends Controller
         $wallet->depositFloat(
             $request->safe()->only('balance')['balance'],
             new TransactionMetaDto(
-                offering_type: OfferingType::INITIAL->value,
+                offering_type: PaymentMethod::INITIAL->value,
                 message: __('Initial deposit')
             )->toArray()
         );

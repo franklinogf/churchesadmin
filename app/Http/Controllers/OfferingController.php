@@ -4,16 +4,20 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Dtos\TransactionMetaDto;
 use App\Enums\FlashMessageKey;
-use App\Enums\OfferingType;
+use App\Enums\PaymentMethod;
 use App\Http\Requests\Offering\StoreOfferingRequest;
 use App\Http\Requests\Offering\UpdateOfferingRequest;
 use App\Http\Resources\Offering\OfferingResource;
 use App\Models\Church;
 use App\Models\Member;
+use App\Models\Missionary;
+use App\Models\Offering;
+use App\Models\OfferingType;
 use App\Models\Transaction;
 use App\Models\Wallet;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -24,7 +28,7 @@ final class OfferingController extends Controller
      */
     public function index(): Response
     {
-        $offerings = Church::current()->transactions()->with('wallet')->get(); // ->whereNotNull('meta->payer_id')->get();
+        $offerings = Offering::latest('date')->get();
 
         return Inertia::render('offerings/index', [
             'offerings' => OfferingResource::collection($offerings),
@@ -37,7 +41,7 @@ final class OfferingController extends Controller
     public function create(): Response
     {
 
-        $offeringTypes = OfferingType::options();
+        $paymentMethods = PaymentMethod::options();
         $wallets = Church::current()->wallets()->get()->map(fn ($wallet) => [
             'value' => $wallet->id,
             'label' => $wallet->name,
@@ -47,10 +51,22 @@ final class OfferingController extends Controller
             'label' => "{$member->name} {$member->last_name}",
         ])->toArray();
 
+        $missionaries = Missionary::all()->map(fn ($missionary) => [
+            'value' => $missionary->id,
+            'label' => "{$missionary->name} {$missionary->last_name}",
+        ])->toArray();
+
+        $offeringTypes = OfferingType::all()->map(fn ($type) => [
+            'value' => $type->id,
+            'label' => $type->name,
+        ])->toArray();
+
         return Inertia::render('offerings/create', [
-            'offeringTypes' => $offeringTypes,
+            'paymentMethods' => $paymentMethods,
             'wallets' => $wallets,
             'members' => $members,
+            'offeringTypes' => $offeringTypes,
+            'missionaries' => $missionaries,
         ]);
     }
 
@@ -61,19 +77,24 @@ final class OfferingController extends Controller
     {
 
         $validated = $request->validated();
+        DB::transaction(function () use ($validated) {
+            collect($validated['offerings'])->each(function ($offering) use ($validated) {
+                $wallet = Wallet::find($offering['wallet_id']);
 
-        collect($validated['offerings'])->each(function ($offering) use ($validated) {
-            $wallet = Wallet::find($offering['wallet_id']);
+                $transaction = $wallet->depositFloat(
+                    $offering['amount']
+                );
 
-            $wallet->depositFloat(
-                $offering['amount'],
-                new TransactionMetaDto(
-                    payer_id: $validated['payer_id'],
-                    date: $validated['date'],
-                    offering_type: $validated['offering_type'],
-                    message: $validated['message'],
-                )->toArray(),
-            );
+                Offering::create([
+                    'transaction_id' => $transaction->id,
+                    'donor_id' => $validated['payer_id'] === 'non_member' ? null : $validated['payer_id'],
+                    'recipient_id' => $offering['recipient_id'],
+                    'date' => Carbon::parse($validated['date'])->setTimeFrom(now()),
+                    'payment_method' => $offering['payment_method'],
+                    'offering_type_id' => $offering['offering_type_id'],
+                    'note' => $offering['note'],
+                ]);
+            });
         });
 
         return to_route('offerings.index')->with(FlashMessageKey::SUCCESS->value, __('Offering created successfully'));

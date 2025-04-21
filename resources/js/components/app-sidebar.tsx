@@ -59,6 +59,16 @@ const mainNavItems: NavMenu[] = [
       },
     ],
   },
+  {
+    title: 'Codes',
+    items: [
+      {
+        title: 'Offering types',
+        href: route('codes.offeringTypes.index'),
+        icon: LayoutGridIcon,
+      },
+    ],
+  },
 ];
 
 const footerNavItems: NavItem[] = [];

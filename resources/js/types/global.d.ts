@@ -9,5 +9,5 @@ declare global {
 declare module 'laravel-react-i18n' {
   type TranslationKey = keyof typeof import('../../../lang/en.json');
   type PhpTranslationKey = keyof typeof import('../../../lang/php_en.json');
-  declare function useLaravelReactI18n(): ContextInterface<AutoComplete<TranslationKey | PhpTranslationKey>>;
+  export function useLaravelReactI18n(): ContextInterface<AutoComplete<TranslationKey | PhpTranslationKey>>;
 }

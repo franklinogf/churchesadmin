@@ -3,13 +3,13 @@ import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 
 import { PageTitle } from '@/components/PageTitle';
-import { OfferingTransaction } from '@/types/models/transaction';
+import { Offering } from '@/types/models/offering';
 import { Link } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { columns } from './includes/columns';
 
 interface IndexPageProps {
-  offerings: OfferingTransaction[];
+  offerings: Offering[];
 }
 export default function Index({ offerings }: IndexPageProps) {
   const { t } = useLaravelReactI18n();

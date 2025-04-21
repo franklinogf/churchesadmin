@@ -6,7 +6,7 @@ import { Wallet } from '@/types/models/wallet';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { walletColumns } from './includes/walletColumns';
 
-import TranslatableInput from '@/components/forms/inputs/TranslatableInputField';
+import { TranslatableInput } from '@/components/forms/inputs/TranslatableInputField';
 import { SubmitButton } from '@/components/forms/SubmitButton';
 import { Dialog, DialogContent, DialogDescription, DialogHeader } from '@/components/ui/dialog';
 import { useTranslations } from '@/hooks/use-empty-translations';

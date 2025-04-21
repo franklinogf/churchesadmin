@@ -3,8 +3,8 @@ import { ComboboxField } from '@/components/forms/inputs/ComboboxField';
 import { CurrencyField } from '@/components/forms/inputs/CurrencyField';
 import { DateField } from '@/components/forms/inputs/DateField';
 import { FieldsGrid } from '@/components/forms/inputs/FieldsGrid';
+import { InputField } from '@/components/forms/inputs/InputField';
 import { SelectField } from '@/components/forms/inputs/SelectField';
-import { TextareaField } from '@/components/forms/inputs/TextareaField';
 import { PageTitle } from '@/components/PageTitle';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
@@ -16,18 +16,22 @@ import { TrashIcon } from 'lucide-react';
 
 interface CreatePageProps {
   wallets: SelectOption[];
-  offeringTypes: SelectOption[];
+  paymentMethods: SelectOption[];
   members: SelectOption[];
+  missionaries: SelectOption[];
+  offeringTypes: SelectOption[];
 }
 
 interface CreateForm {
-  date: string;
-  offering_type: string;
   payer_id: string;
-  message: string;
+  date: string;
   offerings: {
+    payment_method: string;
+    offering_type_id: string;
+    recipient_id: string;
     wallet_id: string;
     amount: string;
+    note: string;
   }[];
 }
 const breadcrumbs: BreadcrumbItem[] = [
@@ -39,17 +43,26 @@ const breadcrumbs: BreadcrumbItem[] = [
     title: 'New Offering',
   },
 ];
-export default function Create({ wallets, offeringTypes, members }: CreatePageProps) {
+
+const nonMemberOption: SelectOption[] = [
+  {
+    label: 'Non member',
+    value: 'non_member',
+  },
+];
+export default function Create({ wallets, paymentMethods, members, missionaries, offeringTypes }: CreatePageProps) {
   const { t } = useLaravelReactI18n();
   const { data, setData, post, errors, processing } = useForm<Required<CreateForm>>({
     date: formatDate(new Date(), 'yyyy-MM-dd'),
-    offering_type: offeringTypes[0].value.toString(),
-    payer_id: '',
-    message: '',
+    payer_id: 'non_member',
     offerings: [
       {
         wallet_id: wallets[0].value.toString(),
-        amount: '0.00',
+        payment_method: paymentMethods[0]?.value.toString() ?? '',
+        offering_type_id: offeringTypes[0]?.value.toString() ?? '',
+        recipient_id: '',
+        amount: '5.00',
+        note: '',
       },
     ],
   });
@@ -63,7 +76,11 @@ export default function Create({ wallets, offeringTypes, members }: CreatePagePr
       ...data.offerings,
       {
         wallet_id: wallets[0].value.toString(),
+        payment_method: paymentMethods[0]?.value.toString() ?? '',
+        offering_type_id: offeringTypes[0]?.value.toString() ?? '',
+        recipient_id: '',
         amount: '0.00',
+        note: '',
       },
     ]);
   }
@@ -74,78 +91,112 @@ export default function Create({ wallets, offeringTypes, members }: CreatePagePr
     setData('offerings', updatedOfferings);
   }
 
+  function handleUpdateOffering(index: number, field: string, value: string) {
+    const updatedOfferings = [...data.offerings];
+    updatedOfferings[index] = {
+      ...updatedOfferings[index],
+      [field]: value,
+    };
+    setData('offerings', updatedOfferings);
+  }
+
   return (
     <AppLayout title={t('Offerings')} breadcrumbs={breadcrumbs}>
       <PageTitle>{t('New Offering')}</PageTitle>
       <div className="mt-2 flex items-center justify-center">
         <Form isSubmitting={processing} className="w-full max-w-2xl" onSubmit={handleSubmit}>
-          <FieldsGrid>
-            <DateField required label={t('Date of Offering')} value={data.date} onChange={(value) => setData('date', value)} error={errors.date} />
-            <SelectField
-              required
-              label={t('Type')}
-              value={data.offering_type}
-              onChange={(value) => setData('offering_type', value)}
-              error={errors.offering_type}
-              options={offeringTypes}
-            />
-          </FieldsGrid>
           <ComboboxField
             required
             label={t('Who is this offering from?')}
             value={data.payer_id}
             onChange={(value) => setData('payer_id', value)}
             error={errors.payer_id}
-            options={members}
+            options={nonMemberOption.concat(members)}
           />
+          <FieldsGrid>
+            <DateField required label={t('Date of Offering')} value={data.date} onChange={(value) => setData('date', value)} error={errors.date} />
+          </FieldsGrid>
 
           <Button size="sm" variant="secondary" type="button" onClick={handleAddOffering}>
             {t('Add offering')}
           </Button>
 
-          {data.offerings.map((offering, index) => (
-            <div className="flex items-center gap-2" key={index}>
-              <FieldsGrid className="grow">
-                <SelectField
-                  required
-                  label={t('Wallet')}
-                  value={offering.wallet_id}
-                  onChange={(value) => {
-                    const updatedOfferings = [...data.offerings];
-                    updatedOfferings[index] = {
-                      ...updatedOfferings[index],
-                      wallet_id: value,
-                    };
-                    setData('offerings', updatedOfferings);
-                  }}
-                  error={errors[`offerings.${index}.wallet_id` as keyof typeof data]}
-                  options={wallets}
-                />
+          <div className="space-y-4 py-2">
+            {data.offerings.map((offering, index) => (
+              <fieldset className="space-y-2" key={index}>
+                {data.offerings.length > 1 && (
+                  <legend className="px-2 text-sm font-semibold">
+                    <Button size="icon" className="size-6" variant="destructive" type="button" onClick={() => handleRemoveOffering(index)}>
+                      <TrashIcon className="size-4" />
+                    </Button>
+                  </legend>
+                )}
+                <FieldsGrid cols={2} className="grow">
+                  <SelectField
+                    required
+                    label={t('Wallet')}
+                    value={offering.wallet_id}
+                    onChange={(value) => {
+                      handleUpdateOffering(index, 'wallet_id', value);
+                    }}
+                    error={errors[`offerings.${index}.wallet_id` as keyof typeof data]}
+                    options={wallets}
+                  />
+                  <ComboboxField
+                    label={t('Recipient')}
+                    placeholder={t('Select one or leave empty')}
+                    value={offering.recipient_id}
+                    onChange={(value) => {
+                      handleUpdateOffering(index, 'recipient_id', value);
+                    }}
+                    error={errors[`offerings.${index}.recipient_id` as keyof typeof data]}
+                    options={missionaries}
+                  />
+                </FieldsGrid>
 
-                <CurrencyField
-                  required
-                  label={t('Amount')}
-                  value={offering.amount}
-                  onChange={(value) => {
-                    const updatedOfferings = [...data.offerings];
-                    updatedOfferings[index] = {
-                      ...updatedOfferings[index],
-                      amount: value,
-                    };
-                    setData('offerings', updatedOfferings);
-                  }}
-                  error={errors[`offerings.${index}.amount` as keyof typeof data]}
-                />
-              </FieldsGrid>
-              {data.offerings.length > 1 && (
-                <Button className="mt-3" size="icon" variant="destructive" type="button" onClick={() => handleRemoveOffering(index)}>
-                  <TrashIcon className="h-4 w-4" />
-                </Button>
-              )}
-            </div>
-          ))}
+                <FieldsGrid cols={3} className="grow">
+                  <SelectField
+                    required
+                    label={t('Payment method')}
+                    value={offering.payment_method}
+                    onChange={(value) => {
+                      handleUpdateOffering(index, 'payment_method', value);
+                    }}
+                    error={errors[`offerings.${index}.payment_method` as keyof typeof data]}
+                    options={paymentMethods}
+                  />
+                  <SelectField
+                    required
+                    label={t('Offering type')}
+                    value={offering.offering_type_id}
+                    onChange={(value) => {
+                      handleUpdateOffering(index, 'offering_type_id', value);
+                    }}
+                    error={errors[`offerings.${index}.offering_type_id` as keyof typeof data]}
+                    options={offeringTypes}
+                  />
 
-          <TextareaField label={t('Message')} value={data.message} onChange={(value) => setData('message', value)} error={errors.message} />
+                  <CurrencyField
+                    required
+                    label={t('Amount')}
+                    value={offering.amount}
+                    onChange={(value) => {
+                      handleUpdateOffering(index, 'amount', value);
+                    }}
+                    error={errors[`offerings.${index}.amount` as keyof typeof data]}
+                  />
+                </FieldsGrid>
+                <InputField
+                  label={t('Note')}
+                  value={offering.note}
+                  onChange={(value) => {
+                    handleUpdateOffering(index, 'note', value);
+                  }}
+                  error={errors[`offerings.${index}.note` as keyof typeof data]}
+                />
+              </fieldset>
+            ))}
+          </div>
         </Form>
       </div>
     </AppLayout>
