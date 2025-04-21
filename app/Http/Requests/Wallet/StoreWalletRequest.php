@@ -27,9 +27,14 @@ final class StoreWalletRequest extends FormRequest
         $connection = (string) config('tenancy.database.central_connection');
 
         return [
+            'name' => ['required', 'array'],
             'name.*' => ['required', 'string', 'min:3', 'max:255', UniqueTranslationRule::for("{$connection}.wallets")->where('holder_id', (string) tenant('id'))],
+            'description' => ['nullable', 'array'],
             'description.*' => ['nullable', 'string', 'min:3', 'max:255'],
             'balance' => ['required', 'decimal:2', 'min:0'],
+            'bank_name' => ['required', 'string', 'min:3', 'max:255'],
+            'bank_routing_number' => ['required', 'string', 'min:3', 'max:255'],
+            'bank_account_number' => ['required', 'string', 'min:3', 'max:255'],
         ];
     }
 }

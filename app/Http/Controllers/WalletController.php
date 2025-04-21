@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Dtos\TransactionMetaDto;
-use App\Enums\PaymentMethod;
+use App\Dtos\WalletMetaDto;
+use App\Enums\FlashMessageKey;
 use App\Http\Requests\Wallet\StoreWalletRequest;
 use App\Http\Requests\Wallet\UpdateWalletRequest;
 use App\Http\Resources\Wallet\WalletResource;
@@ -21,7 +21,7 @@ final class WalletController extends Controller
     public function index()
     {
 
-        $wallets = Wallet::withTrashed()->whereMorphedTo('holder', tenant())->oldest()->get();
+        $wallets = Church::current()?->wallets()->oldest()->get();
 
         return Inertia::render('wallets/index', [
             'wallets' => WalletResource::collection($wallets),
@@ -42,16 +42,25 @@ final class WalletController extends Controller
      */
     public function store(StoreWalletRequest $request)
     {
-        $wallet = Church::current()->createWallet($request->safe()->except('balance'));
-        $wallet->depositFloat(
-            $request->safe()->only('balance')['balance'],
-            new TransactionMetaDto(
-                offering_type: PaymentMethod::INITIAL->value,
-                message: __('Initial deposit')
-            )->toArray()
-        );
+        $validated = $request->validated();
 
-        return redirect()->route('wallets.index')->with('success', __('Wallet created successfully.'));
+        $wallet = Church::current()->createWallet(
+            [
+                'name' => $validated['name'],
+                'description' => $validated['description'],
+                'meta' => new WalletMetaDto(
+                    bank_name: $validated['bank_name'],
+                    bank_routing_number: $validated['bank_routing_number'],
+                    bank_account_number: $validated['bank_account_number'],
+                )->toArray(),
+            ]
+        );
+        $wallet->depositFloat($validated['balance']);
+
+        return redirect()->route('wallets.index')->with(
+            FlashMessageKey::SUCCESS->value,
+            __('flash.message.created', ['model' => __('Wallet')])
+        );
 
     }
 
@@ -60,9 +69,23 @@ final class WalletController extends Controller
      */
     public function update(UpdateWalletRequest $request, Wallet $wallet)
     {
-        $wallet->update($request->validated());
+        $validated = $request->validated();
+        $wallet->update(
+            [
+                'name' => $validated['name'],
+                'description' => $validated['description'],
+                'meta' => new WalletMetaDto(
+                    bank_name: $validated['bank_name'],
+                    bank_routing_number: $validated['bank_routing_number'],
+                    bank_account_number: $validated['bank_account_number'],
+                )->toArray(),
+            ]
+        );
 
-        return redirect()->route('wallets.index')->with('success', __('Wallet updated successfully.'));
+        return redirect()->route('wallets.index')->with(
+            FlashMessageKey::SUCCESS->value,
+            __('flash.message.updated', ['model' => __('Wallet')])
+        );
     }
 
     /**
@@ -72,7 +95,10 @@ final class WalletController extends Controller
     {
         $wallet->delete();
 
-        return redirect()->route('wallets.index')->with('success', __('Wallet deleted successfully.'));
+        return redirect()->route('wallets.index')->with(
+            FlashMessageKey::SUCCESS->value,
+            __('flash.message.deleted', ['model' => __('Wallet')])
+        );
     }
 
     /**
@@ -82,6 +108,9 @@ final class WalletController extends Controller
     {
         $wallet->restore();
 
-        return redirect()->route('wallets.index')->with('success', __('Wallet restored successfully.'));
+        return redirect()->route('wallets.index')->with(
+            FlashMessageKey::SUCCESS->value,
+            __('flash.message.restored', ['model' => __('Wallet')])
+        );
     }
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Dtos;
 
-use App\Casts\TransactionMeta;
+use App\Casts\WalletMeta;
 use Illuminate\Contracts\Database\Eloquent\Castable;
 
 /**
@@ -13,37 +13,35 @@ use Illuminate\Contracts\Database\Eloquent\Castable;
  * @property-read string $offering_type
  * @property-read string|null $message
  */
-final readonly class TransactionMetaDto implements Castable
+final readonly class WalletMetaDto implements Castable
 {
     /**
      * Create a new class instance.
      */
     public function __construct(
-        public string $offering_type,
-        public ?string $payer_id = null,
-        public ?string $date = null,
-        public ?string $message = null,
+        public string $bank_name,
+        public string $bank_routing_number,
+        public string $bank_account_number,
     ) {
         //
     }
 
     public static function castUsing(array $arguments): string
     {
-        return TransactionMeta::class;
+        return WalletMeta::class;
     }
 
     /**
      * Convert the class instance to an array.
      *
-     * @return array{payer_id:string|null,date:string|null,offering_type:string,message:string|null}
+     * @return array{bank_name:string,bank_routing_number:string,bank_account_number:string}
      */
     public function toArray(): array
     {
         return [
-            'payer_id' => $this->payer_id,
-            'date' => $this->date,
-            'offering_type' => $this->offering_type,
-            'message' => $this->message,
+            'bank_name' => $this->bank_name,
+            'bank_routing_number' => $this->bank_routing_number,
+            'bank_account_number' => $this->bank_account_number,
         ];
     }
 }

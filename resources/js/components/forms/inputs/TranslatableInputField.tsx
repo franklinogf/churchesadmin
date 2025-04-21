@@ -1,12 +1,12 @@
 import { FieldContainer } from '@/components/forms/inputs/FieldContainer';
 import { FieldError } from '@/components/forms/inputs/FieldError';
+import { FieldLabel } from '@/components/forms/inputs/FieldLabel';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { LanguageTranslations, SharedData } from '@/types';
 import { usePage } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
-import React, { useEffect, useId } from 'react';
-import { FieldLabel } from './FieldLabel';
+import React, { useId } from 'react';
 
 interface TranslatableInputProps {
   label: string;
@@ -25,20 +25,6 @@ export function TranslatableInput({ label, errors, values, disabled, required, o
   const errorMessage = errors?.errors[`${errors.name}.${activeLocale}`];
   const localeError = (locale: string) => Object.keys(errors?.errors ?? {}).some((key) => key.endsWith(locale));
 
-  useEffect(() => {
-    const tabEvent = (e: KeyboardEvent) => {
-      if (e.key === 'Tab') {
-        const currentIndex = locales.findIndex((locale) => locale.value === activeLocale);
-        const nextIndex = (currentIndex + 1) % locales.length;
-        setActiveLocale(locales[nextIndex].value);
-      }
-    };
-    document.addEventListener('keydown', tabEvent);
-
-    return () => {
-      document.removeEventListener('keydown', tabEvent);
-    };
-  }, [locales, activeLocale]);
   const id = useId();
   return (
     <FieldContainer className="space-y-2">
@@ -54,6 +40,7 @@ export function TranslatableInput({ label, errors, values, disabled, required, o
         {locales.map(({ value: code, label: langLabel }) => (
           <TabsContent key={code} value={code}>
             <Input
+              id={id}
               required={required}
               name={`${id}[${code}]`}
               value={values[code as keyof LanguageTranslations]}

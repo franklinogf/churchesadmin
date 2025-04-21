@@ -77,6 +77,7 @@ export function DataTable<TData, TValue>({
           {filter && (
             <div className="relative mr-auto">
               <Input
+                name="datatable-filter"
                 placeholder="Filter"
                 value={globalFilter}
                 onChange={(e) => {

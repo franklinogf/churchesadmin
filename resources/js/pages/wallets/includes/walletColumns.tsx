@@ -18,31 +18,35 @@ export const walletColumns: ColumnDef<Wallet>[] = [
     enableSorting: false,
     header: ({ column }) => <DataTableColumnHeader column={column} title="Name" />,
     accessorKey: 'name',
+    cell: function CellComponent({ row }) {
+      const wallet = row.original;
+      return (
+        <HoverCard>
+          <HoverCardTrigger asChild>
+            <Button variant="link" size="sm" className="px-0">
+              {wallet.name}
+            </Button>
+          </HoverCardTrigger>
+          <HoverCardContent>
+            <div className="flex flex-col gap-2">
+              <span className="text-sm font-semibold">{wallet.name}</span>
+              {wallet.meta?.bankName && (
+                <span className="text-muted-foreground text-sm">
+                  {wallet.meta.bankName} - {wallet.meta.bankAccountNumber}
+                </span>
+              )}
+              {wallet.description && <p className="text-muted-foreground text-sm">{wallet.description}</p>}
+            </div>
+          </HoverCardContent>
+        </HoverCard>
+      );
+    },
   },
   {
     enableHiding: false,
     accessorKey: 'balanceFloat',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Balance" />,
     cell: ({ row }) => <DatatableCell justify="end">${row.original.balanceFloat}</DatatableCell>,
-  },
-  {
-    accessorKey: 'description',
-    enableSorting: false,
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Description" />,
-    cell: function CellComponent({ row }) {
-      const wallet = row.original;
-      if (!wallet.description) return null;
-      return (
-        <HoverCard>
-          <HoverCardTrigger asChild>
-            <Button variant="link" size="sm" className="px-0">
-              {wallet.description.substring(0, 15)}...
-            </Button>
-          </HoverCardTrigger>
-          <HoverCardContent>{wallet.description}</HoverCardContent>
-        </HoverCard>
-      );
-    },
   },
   {
     sortingFn: (rowA, rowB) => (rowA.original.deletedAt ? 1 : 0) - (rowB.original.deletedAt ? 1 : 0),

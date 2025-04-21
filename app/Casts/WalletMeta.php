@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Casts;
 
-use App\Dtos\TransactionMetaDto;
+use App\Dtos\WalletMetaDto;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 
-final class TransactionMeta implements CastsAttributes
+final class WalletMeta implements CastsAttributes
 {
     /**
      * Cast the given value.
@@ -23,11 +23,11 @@ final class TransactionMeta implements CastsAttributes
 
         $value = json_decode($value, true);
 
-        return new TransactionMetaDto(
-            $value['offering_type'],
-            $value['payer_id'],
-            $value['date'],
-            $value['message'],
+        return new WalletMetaDto(
+            bank_name: $value['bank_name'],
+            bank_routing_number: $value['bank_routing_number'],
+            bank_account_number: $value['bank_account_number'],
+
         );
     }
 

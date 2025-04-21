@@ -33,6 +33,10 @@ final class DatabaseSeeder extends Seeder
                 'en' => 'Primary Wallet',
                 'es' => 'Billetera Principal',
             ],
+            'description' => [
+                'en' => 'This is the primary wallet',
+                'es' => 'Esta es la billetera principal',
+            ],
             'slug' => WalletName::PRIMARY->value,
         ]);
 

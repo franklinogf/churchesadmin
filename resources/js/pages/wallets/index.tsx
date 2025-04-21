@@ -1,7 +1,7 @@
 import { DataTable } from '@/components/custom-ui/datatable/data-table';
 import { PageTitle } from '@/components/PageTitle';
 import AppLayout from '@/layouts/app-layout';
-import { BreadcrumbItem } from '@/types';
+import { BreadcrumbItem, LanguageTranslations } from '@/types';
 import { Wallet } from '@/types/models/wallet';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { walletColumns } from './includes/walletColumns';
@@ -12,10 +12,21 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader } from '@/compon
 import { useTranslations } from '@/hooks/use-empty-translations';
 
 import { CurrencyField } from '@/components/forms/inputs/CurrencyField';
+import { FieldsGrid } from '@/components/forms/inputs/FieldsGrid';
+import { InputField } from '@/components/forms/inputs/InputField';
 import { Button } from '@/components/ui/button';
 import { useForm } from '@inertiajs/react';
 import { DialogTitle, DialogTrigger } from '@radix-ui/react-dialog';
 import { useState } from 'react';
+
+type WalletForm = {
+  name: LanguageTranslations;
+  description: LanguageTranslations;
+  balance: string;
+  bank_name: string;
+  bank_account_number: string;
+  bank_routing_number: string;
+};
 
 interface IndexPageProps {
   wallets: Wallet[];
@@ -51,10 +62,13 @@ export function WalletForm({ wallet, children }: { wallet?: Wallet; children: Re
   const { t } = useLaravelReactI18n();
   const { emptyTranslations } = useTranslations();
 
-  const { data, setData, post, put, errors, reset, processing } = useForm({
+  const { data, setData, post, put, errors, reset, processing } = useForm<WalletForm>({
     name: wallet?.nameTranslations ?? emptyTranslations,
     description: wallet?.descriptionTranslations ?? emptyTranslations,
     balance: wallet?.balanceFloat ?? '0.00',
+    bank_name: wallet?.meta?.bankName ?? '',
+    bank_account_number: wallet?.meta?.bankAccountNumber ?? '',
+    bank_routing_number: wallet?.meta?.bankRoutingNumber ?? '',
   });
 
   function handleSubmit(e: React.FormEvent) {
@@ -74,6 +88,7 @@ export function WalletForm({ wallet, children }: { wallet?: Wallet; children: Re
       });
     }
   }
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
@@ -108,6 +123,31 @@ export function WalletForm({ wallet, children }: { wallet?: Wallet; children: Re
               error={errors.balance}
             />
           )}
+
+          <InputField
+            required
+            label={t('Bank Name')}
+            value={data.bank_name}
+            onChange={(value) => setData('bank_name', value)}
+            error={errors.bank_name}
+          />
+          <FieldsGrid>
+            <InputField
+              required
+              label={t('Routing Number')}
+              value={data.bank_routing_number}
+              onChange={(value) => setData('bank_routing_number', value)}
+              error={errors.bank_routing_number}
+            />
+
+            <InputField
+              required
+              label={t('Account Number')}
+              value={data.bank_account_number}
+              onChange={(value) => setData('bank_account_number', value)}
+              error={errors.bank_account_number}
+            />
+          </FieldsGrid>
 
           <div className="flex justify-end">
             <SubmitButton isSubmitting={processing}>{t('Save')}</SubmitButton>

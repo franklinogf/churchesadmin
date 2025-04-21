@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Dtos\WalletMetaDto;
 use Bavix\Wallet\Models\Transaction;
 use Bavix\Wallet\Models\Transfer;
 use Bavix\Wallet\Models\Wallet as BaseWallet;
@@ -16,6 +17,7 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  *
  *  @property-read int $id
  * @property-read CarbonImmutable|null $deleted_at
+ * @property-read WalletMetaDto|null $meta
  */
 final class Wallet extends BaseWallet
 {
@@ -81,5 +83,12 @@ final class Wallet extends BaseWallet
     {
         // Implement your logic here
         return parent::withdraw($amount, $meta, $confirmed);
+    }
+
+    public function casts(): array
+    {
+        return [
+            'meta' => WalletMetaDto::class,
+        ];
     }
 }

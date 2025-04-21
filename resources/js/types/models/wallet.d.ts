@@ -1,9 +1,14 @@
 import { LanguageTranslations } from '@/types';
 import { Transaction } from '@/types/models/transaction';
-
+type WalletMeta = {
+  bankName: string;
+  bankAccountNumber: string;
+  bankRoutingNumber: string;
+};
 export interface Wallet {
   id: number;
   uuid: string;
+  meta: WalletMeta | null;
   name: string;
   nameTranslations: LanguageTranslations;
   slug: string;
