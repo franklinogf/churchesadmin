@@ -30,7 +30,12 @@ final class TransactionResource extends JsonResource
             'amount' => $this->amount,
             'amountFloat' => $this->amountFloat,
             'confirmed' => $this->confirmed,
-            'meta' => $this->meta->toArray(),
+            'meta' => [
+                'offeringType' => $this->meta->offering_type,
+                'message' => $this->meta?->message,
+                'payerId' => $this->meta?->payer_id,
+                'date' => $this->meta?->date,
+            ],
             'payer' => $this->when($existPayer, fn (): MemberResource => new MemberResource(Member::find($this->meta->payer_id))),
             'createdAt' => $this->created_at->format('Y-m-d H:i:s'),
             'updatedAt' => $this->updated_at->format('Y-m-d H:i:s'),
