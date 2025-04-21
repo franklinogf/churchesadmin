@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Casts\TransactionMeta;
 use App\Dtos\DepositMetaDto;
 use Bavix\Wallet\Models\Transaction as BaseTransaction;
 use Carbon\CarbonImmutable;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Stancl\Tenancy\Database\Concerns\CentralConnection;
 
 /**
@@ -22,13 +22,10 @@ final class Transaction extends BaseTransaction
 {
     use CentralConnection;
 
-    protected function meta(): Attribute
+    public function casts(): array
     {
-        return Attribute::make(
-            get: fn ($value) => $value !== null ? new DepositMetaDto(
-                ...json_decode($value, true),
-            ) : null,
-
-        );
+        return [
+            'meta' => TransactionMeta::class,
+        ];
     }
 }
