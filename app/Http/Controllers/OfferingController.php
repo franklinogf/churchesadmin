@@ -42,21 +42,21 @@ final class OfferingController extends Controller
     {
 
         $paymentMethods = PaymentMethod::options();
-        $wallets = Church::current()->wallets()->get()->map(fn ($wallet) => [
+        $wallets = Church::current()->wallets()->get()->map(fn ($wallet): array => [
             'value' => $wallet->id,
             'label' => $wallet->name,
         ])->toArray();
-        $members = Member::all()->map(fn ($member) => [
+        $members = Member::all()->map(fn ($member): array => [
             'value' => $member->id,
             'label' => "{$member->name} {$member->last_name}",
         ])->toArray();
 
-        $missionaries = Missionary::all()->map(fn ($missionary) => [
+        $missionaries = Missionary::all()->map(fn ($missionary): array => [
             'value' => $missionary->id,
             'label' => "{$missionary->name} {$missionary->last_name}",
         ])->toArray();
 
-        $offeringTypes = OfferingType::all()->map(fn ($type) => [
+        $offeringTypes = OfferingType::all()->map(fn ($type): array => [
             'value' => $type->id,
             'label' => $type->name,
         ])->toArray();
@@ -77,8 +77,8 @@ final class OfferingController extends Controller
     {
 
         $validated = $request->validated();
-        DB::transaction(function () use ($validated) {
-            collect($validated['offerings'])->each(function ($offering) use ($validated) {
+        DB::transaction(function () use ($validated): void {
+            collect($validated['offerings'])->each(function (array $offering) use ($validated): void {
                 $wallet = Wallet::find($offering['wallet_id']);
 
                 $transaction = $wallet->depositFloat(
@@ -104,7 +104,7 @@ final class OfferingController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Transaction $transaction)
+    public function show(Transaction $transaction): void
     {
         //
     }
@@ -112,7 +112,7 @@ final class OfferingController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Transaction $transaction)
+    public function edit(Transaction $transaction): void
     {
         //
     }
@@ -120,7 +120,7 @@ final class OfferingController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateOfferingRequest $request, Transaction $transaction)
+    public function update(UpdateOfferingRequest $request, Transaction $transaction): void
     {
         //
     }
@@ -128,7 +128,7 @@ final class OfferingController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Transaction $transaction)
+    public function destroy(Transaction $transaction): void
     {
         //
     }

@@ -91,7 +91,7 @@ Route::middleware([
                     ]);
 
                 // codes
-                Route::prefix('codes')->name('codes.')->group(function () {
+                Route::prefix('codes')->name('codes.')->group(function (): void {
                     Route::resource('offeringTypes', OfferingTypeController::class)
                         ->except(['show', 'create', 'edit']);
                 });

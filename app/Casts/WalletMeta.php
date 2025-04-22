@@ -21,7 +21,7 @@ final class WalletMeta implements CastsAttributes
             return null;
         }
 
-        $value = json_decode($value, true);
+        $value = json_decode((string) $value, true);
 
         return new WalletMetaDto(
             bank_name: $value['bank_name'],
