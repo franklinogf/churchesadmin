@@ -23,6 +23,7 @@ final class TenantDatabaseSeeder extends Seeder
             Tenants\PermissionSeeder::class,
             Tenants\RoleSeeder::class,
             Tenants\CategorySeeder::class,
+            Tenants\OfferingTypeSeeder::class,
         ]);
 
         User::factory()->superAdmin()->create();

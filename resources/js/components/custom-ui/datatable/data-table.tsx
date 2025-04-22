@@ -29,6 +29,8 @@ interface DataTableProps<TData, TValue> {
   selectOne?: boolean;
   rowId?: keyof TData;
   headerButton?: React.ReactNode;
+  visibilityState?: Record<keyof TData, boolean> | VisibilityState;
+  sortingState?: { id: keyof TData; desc: boolean }[];
 }
 
 export function DataTable<TData, TValue>({
@@ -40,11 +42,13 @@ export function DataTable<TData, TValue>({
   selectOne = false,
   rowId,
   headerButton,
+  visibilityState = {},
+  sortingState = [],
 }: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = useState<SortingState>([]);
+  const [sorting, setSorting] = useState<SortingState>(sortingState as SortingState);
   const [globalFilter, setGlobalFilter] = useState<string>('');
   const [rowSelection, setRowSelection] = useState({});
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(visibilityState);
   const table = useReactTable({
     columns,
     data,
@@ -73,6 +77,7 @@ export function DataTable<TData, TValue>({
           {filter && (
             <div className="relative mr-auto">
               <Input
+                name="datatable-filter"
                 placeholder="Filter"
                 value={globalFilter}
                 onChange={(e) => {
@@ -106,7 +111,13 @@ export function DataTable<TData, TValue>({
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id} className="hover:bg-background">
                 {headerGroup.headers.map((header) => (
-                  <TableHead key={header.id} className="py-1" style={{ width: `${header.getSize()}px` }}>
+                  <TableHead
+                    className="py-1"
+                    colSpan={header.colSpan}
+                    rowSpan={header.rowSpan}
+                    key={header.id}
+                    style={{ width: `${header.getSize()}px` }}
+                  >
                     {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                   </TableHead>
                 ))}
@@ -124,7 +135,7 @@ export function DataTable<TData, TValue>({
                   data-state={row.getIsSelected() && 'selected'}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell className="p-3" key={cell.id}>
+                    <TableCell className="p-2" key={cell.id}>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
                   ))}

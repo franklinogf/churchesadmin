@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
+use App\Enums\WalletName;
 use App\Models\Church;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -27,6 +28,17 @@ final class DatabaseSeeder extends Seeder
             'name' => 'Test Church',
         ]);
         $church->createDomain('tenant1');
+        $church->createWallet([
+            'name' => [
+                'en' => 'Primary Wallet',
+                'es' => 'Billetera Principal',
+            ],
+            'description' => [
+                'en' => 'This is the primary wallet',
+                'es' => 'Esta es la billetera principal',
+            ],
+            'slug' => WalletName::PRIMARY->value,
+        ]);
 
         Artisan::call('tenants:seed', [
             '--tenants' => [$church->id],

@@ -1,15 +1,14 @@
 import { FieldContainer } from '@/components/forms/inputs/FieldContainer';
 import { FieldError } from '@/components/forms/inputs/FieldError';
+import { FieldLabel } from '@/components/forms/inputs/FieldLabel';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { LanguageTranslations, SharedData } from '@/types';
 import { usePage } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
-import React from 'react';
-import { FieldLabel } from './FieldLabel';
+import React, { useId } from 'react';
 
 interface TranslatableInputProps {
-  id?: string;
   label: string;
   errors?: { errors: Record<string, string>; name: string };
   values: LanguageTranslations;
@@ -18,7 +17,7 @@ interface TranslatableInputProps {
   required?: boolean;
 }
 
-export default function TranslatableInput({ id, label, errors, values, disabled, required, onChange }: TranslatableInputProps) {
+export function TranslatableInput({ label, errors, values, disabled, required, onChange }: TranslatableInputProps) {
   const locales = usePage<SharedData>().props.availableLocales;
   const [activeLocale, setActiveLocale] = React.useState(locales[0].value);
   const { t } = useLaravelReactI18n();
@@ -26,6 +25,7 @@ export default function TranslatableInput({ id, label, errors, values, disabled,
   const errorMessage = errors?.errors[`${errors.name}.${activeLocale}`];
   const localeError = (locale: string) => Object.keys(errors?.errors ?? {}).some((key) => key.endsWith(locale));
 
+  const id = useId();
   return (
     <FieldContainer className="space-y-2">
       <FieldLabel disabled={disabled} id={id} label={label} required={required} />
@@ -40,6 +40,7 @@ export default function TranslatableInput({ id, label, errors, values, disabled,
         {locales.map(({ value: code, label: langLabel }) => (
           <TabsContent key={code} value={code}>
             <Input
+              id={id}
               required={required}
               name={`${id}[${code}]`}
               value={values[code as keyof LanguageTranslations]}

@@ -5,8 +5,11 @@ declare(strict_types=1);
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\MissionaryController;
+use App\Http\Controllers\OfferingController;
+use App\Http\Controllers\OfferingTypeController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WalletController;
 use App\Http\Middleware\SetLocale;
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware;
@@ -70,6 +73,28 @@ Route::middleware([
                 Route::resource('categories', CategoryController::class)
                     ->parameter('categories', 'tag')
                     ->except(['show', 'create', 'edit']);
+
+                Route::put('wallets/{wallet:uuid}/restore', [WalletController::class, 'restore'])
+                    ->withTrashed()
+                    ->name('wallets.restore');
+                Route::resource('wallets', WalletController::class)
+                    ->withTrashed()
+                    ->scoped([
+                        'wallet' => 'uuid',
+                    ])
+                    ->except(['create', 'edit']);
+
+                Route::resource('offerings', OfferingController::class)
+                    ->parameter('offerings', 'transaction')
+                    ->scoped([
+                        'offering' => 'uuid',
+                    ]);
+
+                // codes
+                Route::prefix('codes')->name('codes.')->group(function (): void {
+                    Route::resource('offeringTypes', OfferingTypeController::class)
+                        ->except(['show', 'create', 'edit']);
+                });
             });
 
             require __DIR__.'/settings.php';
