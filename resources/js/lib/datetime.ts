@@ -1,4 +1,4 @@
-import { format, Locale, parse } from 'date-fns';
+import { format, type Locale, parse } from 'date-fns';
 
 /* ---------------------------- Dates formattters --------------------------- */
 

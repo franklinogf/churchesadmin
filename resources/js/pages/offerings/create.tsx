@@ -8,7 +8,7 @@ import { SelectField } from '@/components/forms/inputs/SelectField';
 import { PageTitle } from '@/components/PageTitle';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
-import { BreadcrumbItem, SelectOption } from '@/types';
+import { type BreadcrumbItem, type SelectOption } from '@/types';
 import { useForm } from '@inertiajs/react';
 import { formatDate } from 'date-fns';
 import { useLaravelReactI18n } from 'laravel-react-i18n';

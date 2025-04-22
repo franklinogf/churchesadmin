@@ -1,4 +1,4 @@
-import { AddressFormData } from '@/types/models/address';
+import { type AddressFormData } from '@/types/models/address';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { CountryField } from './inputs/CountryField';
 import { FieldsGrid } from './inputs/FieldsGrid';

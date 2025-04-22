@@ -5,7 +5,7 @@ import { UserPermission } from '@/enums/user';
 import { useUser } from '@/hooks/use-permissions';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem } from '@/types';
-import { Member } from '@/types/models/member';
+import { type Member } from '@/types/models/member';
 import { Link } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { columns } from './includes/columns';

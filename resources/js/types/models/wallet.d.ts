@@ -1,5 +1,5 @@
-import { LanguageTranslations } from '@/types';
-import { Transaction } from '@/types/models/transaction';
+import { type LanguageTranslations } from '@/types';
+import { type Transaction } from '@/types/models/transaction';
 type WalletMeta = {
   bankName: string;
   bankAccountNumber: string;

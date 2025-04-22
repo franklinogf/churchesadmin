@@ -1,4 +1,4 @@
-import { Wallet } from './wallet';
+import { type Wallet } from './wallet';
 
 export type TransactionType = 'deposit' | 'withdraw';
 

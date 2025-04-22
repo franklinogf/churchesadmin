@@ -1,9 +1,9 @@
-import { LanguageCode } from '@/enums';
+import { type LanguageCode } from '@/enums';
 
-import { UserPermission } from '@/enums/user';
-import { LucideIcon } from 'lucide-react';
+import { type UserPermission } from '@/enums/user';
+import { type LucideIcon } from 'lucide-react';
 import type { Config } from 'ziggy-js';
-import { OneOf } from './generics';
+import { type OneOf } from './generics';
 import type { AuthenticatedUser } from './models/user';
 
 export interface Auth {

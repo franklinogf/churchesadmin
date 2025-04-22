@@ -1,5 +1,5 @@
 import { Loader2Icon } from 'lucide-react';
-import { AnimatePresence, motion, Variants } from 'motion/react';
+import { AnimatePresence, motion, type Variants } from 'motion/react';
 
 const variants: Variants = {
   visible: { opacity: 1, y: 0 },

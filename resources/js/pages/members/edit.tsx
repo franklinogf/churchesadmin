@@ -11,9 +11,9 @@ import { Separator } from '@/components/ui/separator';
 import AppLayout from '@/layouts/app-layout';
 import { convertTagsToMultiselectOptions, getMultiselecOptionsLabels } from '@/lib/mutliselect';
 import type { BreadcrumbItem, SelectOption } from '@/types';
-import { AddressFormData } from '@/types/models/address';
-import { Member, MemberFormData } from '@/types/models/member';
-import { Tag } from '@/types/models/tag';
+import { type AddressFormData } from '@/types/models/address';
+import { type Member, type MemberFormData } from '@/types/models/member';
+import { type Tag } from '@/types/models/tag';
 import { useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 

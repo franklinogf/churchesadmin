@@ -1,7 +1,7 @@
-import { Option } from '@/components/custom-ui/MultiSelect';
-import { SelectOption } from '@/types';
-import { Tag, TagRelationship } from '@/types/models/tag';
-import { Role } from '@/types/models/user';
+import { type Option } from '@/components/custom-ui/MultiSelect';
+import { type SelectOption } from '@/types';
+import { type Tag, type TagRelationship } from '@/types/models/tag';
+import { type Role } from '@/types/models/user';
 
 export function convertTagsToMultiselectOptions(tags: Tag[] | TagRelationship[] | Option[] | SelectOption[]): Option[] {
   if (!tags.length) {

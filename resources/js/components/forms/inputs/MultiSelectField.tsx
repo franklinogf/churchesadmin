@@ -1,10 +1,10 @@
-import MultipleSelector, { Option } from '@/components/custom-ui/MultiSelect';
+import MultipleSelector, { type Option } from '@/components/custom-ui/MultiSelect';
 import { FieldContainer } from '@/components/forms/inputs/FieldContainer';
 import { FieldError } from '@/components/forms/inputs/FieldError';
 import { FieldLabel } from '@/components/forms/inputs/FieldLabel';
 import { convertTagsToMultiselectOptions } from '@/lib/mutliselect';
-import { SelectOption } from '@/types';
-import { Tag } from '@/types/models/tag';
+import { type SelectOption } from '@/types';
+import { type Tag } from '@/types/models/tag';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export interface MultiSelectFieldProps {

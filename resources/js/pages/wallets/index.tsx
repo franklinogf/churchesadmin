@@ -1,8 +1,8 @@
 import { DataTable } from '@/components/custom-ui/datatable/data-table';
 import { PageTitle } from '@/components/PageTitle';
 import AppLayout from '@/layouts/app-layout';
-import { BreadcrumbItem, LanguageTranslations } from '@/types';
-import { Wallet } from '@/types/models/wallet';
+import { type BreadcrumbItem, type LanguageTranslations } from '@/types';
+import { type Wallet } from '@/types/models/wallet';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { walletColumns } from './includes/walletColumns';
 
