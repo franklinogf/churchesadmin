@@ -34,6 +34,14 @@ it('has needed enums', function (): void {
         'DELETE_MISSIONARIES',
         'FORCE_DELETE_MISSIONARIES',
         'RESTORE_MISSIONARIES',
+        'MANAGE_OFFERINGS',
+        'CREATE_OFFERINGS',
+        'UPDATE_OFFERINGS',
+        'DELETE_OFFERINGS',
+        'MANAGE_OFFERING_TYPES',
+        'CREATE_OFFERING_TYPES',
+        'UPDATE_OFFERING_TYPES',
+        'DELETE_OFFERING_TYPES',
     ]);
 
 });
@@ -67,5 +75,13 @@ test('label return correct label', function (): void {
     expect(TenantPermission::DELETE_MISSIONARIES->label())->toBe(__('Delete Missionary'));
     expect(TenantPermission::FORCE_DELETE_MISSIONARIES->label())->toBe(__('Force Delete Missionary'));
     expect(TenantPermission::RESTORE_MISSIONARIES->label())->toBe(__('Restore Missionary'));
+    expect(TenantPermission::MANAGE_OFFERINGS->label())->toBe(__('Manage Offerings'));
+    expect(TenantPermission::CREATE_OFFERINGS->label())->toBe(__('Create Offering'));
+    expect(TenantPermission::UPDATE_OFFERINGS->label())->toBe(__('Update Offering'));
+    expect(TenantPermission::DELETE_OFFERINGS->label())->toBe(__('Delete Offering'));
+    expect(TenantPermission::MANAGE_OFFERING_TYPES->label())->toBe(__('Manage Offering Types'));
+    expect(TenantPermission::CREATE_OFFERING_TYPES->label())->toBe(__('Create Offering Type'));
+    expect(TenantPermission::UPDATE_OFFERING_TYPES->label())->toBe(__('Update Offering Type'));
+    expect(TenantPermission::DELETE_OFFERING_TYPES->label())->toBe(__('Delete Offering Type'));
 
 });

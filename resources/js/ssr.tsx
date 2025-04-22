@@ -26,7 +26,7 @@ createServer((page) =>
       /* eslint-enable */
 
       return (
-        <LaravelReactI18nProvider fallbackLocale="en" files={import.meta.glob('./lang/**/*.json', { eager: true })}>
+        <LaravelReactI18nProvider fallbackLocale="en" files={import.meta.glob('/lang/*.json', { eager: true })}>
           <App {...props} />
         </LaravelReactI18nProvider>
       );

@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Bavix\Wallet\Interfaces\Wallet;
+use Bavix\Wallet\Interfaces\WalletFloat;
+use Bavix\Wallet\Traits\HasWalletFloat;
+use Bavix\Wallet\Traits\HasWallets;
 use Stancl\Tenancy\Database\Concerns\HasDatabase;
 use Stancl\Tenancy\Database\Concerns\HasDomains;
 use Stancl\Tenancy\Database\Concerns\MaintenanceMode;
@@ -19,9 +23,9 @@ use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
  * @property-read \Carbon\CarbonImmutable|null $created_at
  * @property-read \Carbon\CarbonImmutable|null $updated_at
  */
-final class Church extends BaseTenant implements TenantWithDatabase
+final class Church extends BaseTenant implements TenantWithDatabase, WalletFloat, Wallet
 {
-    use HasDatabase, HasDomains, MaintenanceMode;
+    use HasDatabase, HasDomains, HasWalletFloat, HasWallets, MaintenanceMode;
 
     /**
      * Set the custom columns for the tenant model.

@@ -23,3 +23,12 @@ export enum OfferingFrequency {
   SEMIANNUALLY = 'semiannually',
   ANNUALLY = 'annually',
 }
+
+export enum WalletName {
+  PRIMARY = 'primary',
+}
+
+export enum PaymentMethod {
+  CASH = 'cash',
+  CHECK = 'check',
+}

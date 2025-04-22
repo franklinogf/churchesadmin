@@ -268,7 +268,7 @@ function SidebarTrigger({
       }}
       {...props}
     >
-      <PanelLeftIcon />
+      <PanelLeftIcon className="stroke-brand" />
       <span className="sr-only">Toggle Sidebar</span>
     </Button>
   )

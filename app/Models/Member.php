@@ -36,6 +36,8 @@ final class Member extends Model
     /** @use HasFactory<\Database\Factories\MemberFactory> */
     use HasFactory, HasTags, SoftDeletes;
 
+    protected $connection = 'tenant';
+
     /**
      * The name of the table associated with the Tag model.
      *

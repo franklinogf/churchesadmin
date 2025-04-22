@@ -37,6 +37,14 @@ enum TenantPermission: string
     case DELETE_MISSIONARIES = 'missionaries_delete';
     case FORCE_DELETE_MISSIONARIES = 'missionaries_force_delete';
     case RESTORE_MISSIONARIES = 'missionaries_restore';
+    case MANAGE_OFFERINGS = 'offerings_manage';
+    case CREATE_OFFERINGS = 'offerings_create';
+    case UPDATE_OFFERINGS = 'offerings_update';
+    case DELETE_OFFERINGS = 'offerings_delete';
+    case MANAGE_OFFERING_TYPES = 'offering_types_manage';
+    case CREATE_OFFERING_TYPES = 'offering_types_create';
+    case UPDATE_OFFERING_TYPES = 'offering_types_update';
+    case DELETE_OFFERING_TYPES = 'offering_types_delete';
 
     public function label(): string
     {
@@ -68,6 +76,14 @@ enum TenantPermission: string
             self::DELETE_MISSIONARIES => __('Delete Missionary'),
             self::FORCE_DELETE_MISSIONARIES => __('Force Delete Missionary'),
             self::RESTORE_MISSIONARIES => __('Restore Missionary'),
+            self::MANAGE_OFFERINGS => __('Manage Offerings'),
+            self::CREATE_OFFERINGS => __('Create Offering'),
+            self::UPDATE_OFFERINGS => __('Update Offering'),
+            self::DELETE_OFFERINGS => __('Delete Offering'),
+            self::MANAGE_OFFERING_TYPES => __('Manage Offering Types'),
+            self::CREATE_OFFERING_TYPES => __('Create Offering Type'),
+            self::UPDATE_OFFERING_TYPES => __('Update Offering Type'),
+            self::DELETE_OFFERING_TYPES => __('Delete Offering Type'),
 
         };
     }

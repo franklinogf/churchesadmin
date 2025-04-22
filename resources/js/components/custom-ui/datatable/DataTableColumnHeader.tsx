@@ -10,16 +10,17 @@ import { useLaravelReactI18n } from 'laravel-react-i18n';
 interface DataTableColumnHeaderProps<TData, TValue> extends React.HTMLAttributes<HTMLDivElement> {
   column: Column<TData, TValue>;
   title: string;
+  center?: boolean;
 }
 
-export function DataTableColumnHeader<TData, TValue>({ column, title, className }: DataTableColumnHeaderProps<TData, TValue>) {
+export function DataTableColumnHeader<TData, TValue>({ column, title, className, center = true }: DataTableColumnHeaderProps<TData, TValue>) {
   const { t } = useLaravelReactI18n();
   if (!column.getCanSort()) {
-    return <div className={cn('text-foreground', className)}>{t(title)}</div>;
+    return <div className={cn('text-foreground', { 'text-center': center }, className)}>{t(title)}</div>;
   }
 
   return (
-    <div className={cn('flex items-center space-x-2', className)}>
+    <div className={cn('flex items-center space-x-2', { 'justify-center': center }, className)}>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" size="sm" className="text-foreground data-[state=open]:bg-accent data-[state=open]:text-accent-foreground h-8">
