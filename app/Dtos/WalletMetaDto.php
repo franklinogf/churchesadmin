@@ -26,6 +26,12 @@ final readonly class WalletMetaDto implements Castable
         //
     }
 
+    /**
+     * Get the class name that should be used for casting.
+     *
+     * @param  array<string, mixed>  $arguments
+     * @return string
+     */
     public static function castUsing(array $arguments): string
     {
         return WalletMeta::class;

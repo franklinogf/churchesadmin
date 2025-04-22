@@ -24,11 +24,18 @@ final class StoreWalletRequest extends FormRequest
      */
     public function rules(): array
     {
-        $connection = (string) config('tenancy.database.central_connection');
+        /**
+         * @var string $connection
+         */
+        $connection = config('tenancy.database.central_connection');
+        /**
+         * @var string $tenantId
+         */
+        $tenantId = tenant('id');
 
         return [
             'name' => ['required', 'array'],
-            'name.*' => ['required', 'string', 'min:3', 'max:255', UniqueTranslationRule::for("{$connection}.wallets")->where('holder_id', (string) tenant('id'))],
+            'name.*' => ['required', 'string', 'min:3', 'max:255', UniqueTranslationRule::for("{$connection}.wallets")->where('holder_id', $tenantId)],
             'description' => ['nullable', 'array'],
             'description.*' => ['nullable', 'string', 'min:3', 'max:255'],
             'balance' => ['required', 'decimal:2', 'min:0'],

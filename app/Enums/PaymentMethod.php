@@ -16,7 +16,7 @@ enum PaymentMethod: string
     /**
      * Get the options for the enum cases.
      *
-     * @return array<mixed>
+     * @return string
      */
     public function label(): string
     {

@@ -9,14 +9,16 @@ use App\Http\Requests\StoreOfferingTypeRequest;
 use App\Http\Requests\UpdateOfferingTypeRequest;
 use App\Http\Resources\Codes\OfferingTypeResource;
 use App\Models\OfferingType;
+use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
+use Inertia\Response;
 
 final class OfferingTypeController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): Response
     {
         $offeringTypes = OfferingType::latest()->get();
 
@@ -28,7 +30,7 @@ final class OfferingTypeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreOfferingTypeRequest $request)
+    public function store(StoreOfferingTypeRequest $request): RedirectResponse
     {
         OfferingType::create($request->validated());
 
@@ -38,7 +40,7 @@ final class OfferingTypeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateOfferingTypeRequest $request, OfferingType $offeringType)
+    public function update(UpdateOfferingTypeRequest $request, OfferingType $offeringType): RedirectResponse
     {
         $offeringType->update($request->validated());
 
@@ -48,7 +50,7 @@ final class OfferingTypeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(OfferingType $offeringType)
+    public function destroy(OfferingType $offeringType): RedirectResponse
     {
         $offeringType->delete();
 

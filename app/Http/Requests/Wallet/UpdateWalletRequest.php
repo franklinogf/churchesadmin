@@ -27,13 +27,20 @@ final class UpdateWalletRequest extends FormRequest
      */
     public function rules(): array
     {
-        $connection = (string) config('tenancy.database.central_connection');
+        /**
+         * @var string $connection
+         */
+        $connection = config('tenancy.database.central_connection');
+        /**
+         * @var string $tenantId
+         */
+        $tenantId = tenant('id');
 
         return [
             'name' => ['required', 'array', 'min:2'],
             'name.*' => ['required', 'string', 'min:3', 'max:255', UniqueTranslationRule::for("{$connection}.wallets")
                 ->ignore($this->wallet->id)
-                ->where('holder_id', (string) tenant('id'))],
+                ->where('holder_id', $tenantId)],
             'description' => ['nullable', 'array'],
             'description.*' => ['nullable', 'string', 'min:3', 'max:255'],
             'bank_name' => ['required', 'string', 'min:3', 'max:255'],

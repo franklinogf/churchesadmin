@@ -23,6 +23,11 @@ final class Wallet extends BaseWallet
 {
     use CentralConnection, HasTranslations;
 
+    /**
+     * The attributes that should be translatable.
+     *
+     * @var array<string>
+     */
     public $translatable = ['name', 'description'];
 
     public function canWithdraw(int|string $amount, bool $allowZero = false): bool

@@ -25,7 +25,14 @@ final class StoreOfferingRequest extends FormRequest
      */
     public function rules(): array
     {
-        $connection = (string) config('tenancy.database.central_connection');
+        /**
+         * @var string $connection
+         */
+        $connection = config('tenancy.database.central_connection');
+        /**
+         * @var string $tenantId
+         */
+        $tenantId = tenant('id');
 
         return [
             'payer_id' => ['required', Rule::anyOf([
@@ -36,7 +43,7 @@ final class StoreOfferingRequest extends FormRequest
             'offerings' => ['required', 'array', 'min:1'],
             'offerings.*.wallet_id' => ['required', 'string',
                 Rule::exists("$connection.wallets", 'id')
-                    ->where('holder_id', (string) tenant('id')),
+                    ->where('holder_id', (string) $tenantId),
             ],
             'offerings.*.payment_method' => ['required', 'string', Rule::enum(PaymentMethod::class)],
             'offerings.*.recipient_id' => ['nullable', Rule::exists('missionaries', 'id')],
@@ -67,15 +74,5 @@ final class StoreOfferingRequest extends FormRequest
             'offerings.*.amount' => mb_strtolower(__('Amount')),
             'offerings.*.note' => mb_strtolower(__('Note')),
         ];
-    }
-
-    /**
-     * Handle a passed validation attempt.
-     */
-    protected function passedValidation(): void
-    {
-
-        $this->replace(['payer_id' => null]);
-
     }
 }
