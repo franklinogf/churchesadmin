@@ -17,6 +17,9 @@ final class TenantDatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        if (app()->environment('testing')) {
+            return;
+        }
         $this->call([
             Tenants\PermissionSeeder::class,
             Tenants\RoleSeeder::class,

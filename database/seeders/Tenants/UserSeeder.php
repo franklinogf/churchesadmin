@@ -23,6 +23,7 @@ final class UserSeeder extends Seeder
             'password' => 'Password123',
             'language' => LanguageCode::EN->value,
         ]);
-        $user->assingRole(TenantRole::SUPER_ADMIN->value);
+
+        $user->assignRole(TenantRole::SUPER_ADMIN->value);
     }
 }
