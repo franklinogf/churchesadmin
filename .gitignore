@@ -25,3 +25,4 @@ yarn-error.log
 
 public/public*
 lang/php_*.json
+herd.yml
