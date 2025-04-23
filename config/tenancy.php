@@ -448,6 +448,6 @@ return [
      */
     'seeder_parameters' => [
         '--class' => Database\Seeders\TenantDatabaseSeeder::class, // root seeder class
-        // '--force' => true,
+        '--force' => true,
     ],
 ];
