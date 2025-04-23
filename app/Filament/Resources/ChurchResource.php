@@ -11,7 +11,6 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Stancl\Tenancy\Database\Models\Domain;
 
 final class ChurchResource extends Resource
 {
@@ -33,7 +32,7 @@ final class ChurchResource extends Resource
                             ->prefix('https://')
                             ->suffix('.'.str(config('app.url'))->after('://'))
                             ->required()
-                            ->unique('domains', 'domain', ignorable: fn (Domain $record): Domain => $record),
+                            ->unique('domains', 'domain', ignoreRecord: true),
                     )
                     ->extraItemActions([
                         function (string $operation): ?Forms\Components\Actions\Action {
