@@ -42,11 +42,11 @@ export default function Welcome() {
         >
           <div className="my-2 flex flex-col items-center">
             <h1 className="my-2 w-2xl text-center text-5xl font-semibold">
-              Effortless Church <span className="text-brand">Payroll</span> & Staff Management
+              Effortless Church <span className="text-brand">Administration</span>
             </h1>
             <p className="max-w-2xl py-10 text-center text-lg">
-              Churchroll helps you manage your church's payroll with ease, while also keeping track of members and missionaries - all in one beautiful
-              dashboard.
+              Churchroll helps you manage your church with ease, while also keeping track of offerings, members and missionaries - all in one
+              beautiful dashboard.
             </p>
 
             <CtaButton />
