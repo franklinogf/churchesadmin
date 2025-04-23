@@ -9,7 +9,6 @@ use App\Models\Church;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Artisan;
 
 final class DatabaseSeeder extends Seeder
 {
@@ -18,7 +17,6 @@ final class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
@@ -27,7 +25,7 @@ final class DatabaseSeeder extends Seeder
         $church = Church::create([
             'name' => 'Test Church',
         ]);
-        $church->createDomain('tenant1');
+        $church->createDomain('test');
         $church->createWallet([
             'name' => [
                 'en' => 'Primary Wallet',
@@ -38,10 +36,6 @@ final class DatabaseSeeder extends Seeder
                 'es' => 'Esta es la billetera principal',
             ],
             'slug' => WalletName::PRIMARY->value,
-        ]);
-
-        Artisan::call('tenants:seed', [
-            '--tenants' => [$church->id],
         ]);
     }
 }
