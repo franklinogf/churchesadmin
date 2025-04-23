@@ -1,5 +1,5 @@
-import { UserPermission, UserRole } from '@/enums/user';
-import { SharedData } from '@/types';
+import { type UserPermission, type UserRole } from '@/enums/user';
+import { type SharedData } from '@/types';
 import { usePage } from '@inertiajs/react';
 
 export function useUser() {

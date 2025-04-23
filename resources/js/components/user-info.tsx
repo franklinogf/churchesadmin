@@ -1,6 +1,6 @@
 import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { useInitials } from '@/hooks/use-initials';
-import { AuthenticatedUser } from '@/types/models/user';
+import { type AuthenticatedUser } from '@/types/models/user';
 
 export function UserInfo({ user, showEmail = false }: { user: AuthenticatedUser; showEmail?: boolean }) {
   const getInitials = useInitials();

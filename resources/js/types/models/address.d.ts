@@ -1,5 +1,5 @@
-import { Member, MemberMorphClass } from '@/types/models/member';
-import { Missionary, MissionaryMorphClass } from './missionary';
+import { type Member, type MemberMorphClass } from '@/types/models/member';
+import { type Missionary, type MissionaryMorphClass } from './missionary';
 
 type MorphClasses = MemberMorphClass | MissionaryMorphClass;
 type AddressOwner = Member | Missionary;

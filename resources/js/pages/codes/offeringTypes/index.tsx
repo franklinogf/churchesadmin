@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useTranslations } from '@/hooks/use-empty-translations';
 import AppLayout from '@/layouts/app-layout';
-import { OfferingType } from '@/types/models/offering-types';
+import { type OfferingType } from '@/types/models/offering-types';
 import { useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { useState } from 'react';

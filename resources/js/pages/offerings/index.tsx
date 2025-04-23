@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 
 import { PageTitle } from '@/components/PageTitle';
-import { Offering } from '@/types/models/offering';
+import { type Offering } from '@/types/models/offering';
 import { Link } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { columns } from './includes/columns';

@@ -1,4 +1,4 @@
-import { LanguageTranslations } from '@/types';
+import { type LanguageTranslations } from '@/types';
 
 export interface OfferingType {
   id: number;

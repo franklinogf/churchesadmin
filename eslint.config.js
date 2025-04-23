@@ -7,39 +7,40 @@ import typescript from 'typescript-eslint';
 
 /** @type {import('eslint').Linter.Config[]} */
 export default [
-    js.configs.recommended,
-    ...typescript.configs.recommended,
-    {
-        ...react.configs.flat.recommended,
-        ...react.configs.flat['jsx-runtime'], // Required for React 17+
-        languageOptions: {
-            globals: {
-                ...globals.browser,
-            },
-        },
-        rules: {
-            'react/react-in-jsx-scope': 'off',
-            'react/prop-types': 'off',
-            'react/no-unescaped-entities': 'off',
-            'no-console': ['error', { allow: ['warn', 'error'] }],
-        },
-        settings: {
-            react: {
-                version: 'detect',
-            },
-        },
+  js.configs.recommended,
+  ...typescript.configs.recommended,
+  {
+    ...react.configs.flat.recommended,
+    ...react.configs.flat['jsx-runtime'], // Required for React 17+
+    languageOptions: {
+      globals: {
+        ...globals.browser,
+      },
     },
-    {
-        plugins: {
-            'react-hooks': reactHooks,
-        },
-        rules: {
-            'react-hooks/rules-of-hooks': 'error',
-            'react-hooks/exhaustive-deps': 'warn',
-        },
+    rules: {
+      'react/react-in-jsx-scope': 'off',
+      'react/prop-types': 'off',
+      'react/no-unescaped-entities': 'off',
+      'no-console': ['error', { allow: ['warn', 'error'] }],
+      '@typescript-eslint/consistent-type-imports': ['error', { fixStyle: 'inline-type-imports' }],
     },
-    {
-        ignores: ['vendor', 'node_modules', 'public', 'bootstrap/ssr', 'tailwind.config.js'],
+    settings: {
+      react: {
+        version: 'detect',
+      },
     },
-    prettier, // Turn off all rules that might conflict with Prettier
+  },
+  {
+    plugins: {
+      'react-hooks': reactHooks,
+    },
+    rules: {
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'warn',
+    },
+  },
+  {
+    ignores: ['vendor', 'node_modules', 'public', 'bootstrap/ssr', 'tailwind.config.js'],
+  },
+  prettier, // Turn off all rules that might conflict with Prettier
 ];

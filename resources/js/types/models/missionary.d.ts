@@ -1,5 +1,5 @@
-import { Gender, OfferingFrequency } from '@/enums';
-import { AddressRelationship } from './address';
+import { type Gender, type OfferingFrequency } from '@/enums';
+import { type AddressRelationship } from './address';
 
 export interface Missionary {
   id: number;

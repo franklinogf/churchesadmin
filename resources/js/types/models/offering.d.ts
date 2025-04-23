@@ -1,8 +1,8 @@
-import { PaymentMethod } from '@/enums';
-import { Member } from '@/types/models/member';
-import { Missionary } from '@/types/models/missionary';
-import { OfferingType } from '@/types/models/offering-types';
-import { Transaction } from '@/types/models/transaction';
+import { type PaymentMethod } from '@/enums';
+import { type Member } from '@/types/models/member';
+import { type Missionary } from '@/types/models/missionary';
+import { type OfferingType } from '@/types/models/offering-types';
+import { type Transaction } from '@/types/models/transaction';
 
 export interface Offering {
   id: number;

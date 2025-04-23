@@ -1,4 +1,4 @@
-import { Option } from '@/components/custom-ui/MultiSelect';
+import { type Option } from '@/components/custom-ui/MultiSelect';
 import { Form } from '@/components/forms/Form';
 import { InputField } from '@/components/forms/inputs/InputField';
 import { MultiSelectField } from '@/components/forms/inputs/MultiSelectField';

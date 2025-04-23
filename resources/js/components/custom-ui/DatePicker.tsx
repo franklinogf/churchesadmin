@@ -1,7 +1,7 @@
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { genDays, genMonths, genYears } from '@/lib/datetime';
-import { Locale } from 'date-fns/locale';
+import { type Locale } from 'date-fns/locale';
 import { useId, useState } from 'react';
 
 export interface DatePickerProps {

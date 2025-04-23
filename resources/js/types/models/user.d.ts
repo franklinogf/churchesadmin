@@ -1,5 +1,5 @@
-import { LanguageCode } from '@/enums';
-import { UserPermission, UserRole } from '@/enums/user';
+import { type LanguageCode } from '@/enums';
+import { type UserPermission, type UserRole } from '@/enums/user';
 
 export interface User {
   id: string;

@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { DollarSignIcon } from 'lucide-react';
 import { useId } from 'react';
-import CurrencyInput, { CurrencyInputProps } from 'react-currency-input-field';
+import CurrencyInput, { type CurrencyInputProps } from 'react-currency-input-field';
 
 interface CurrencyFieldProps extends Omit<CurrencyInputProps, 'onChange' | 'id'> {
   onChange?: (value: string) => void;

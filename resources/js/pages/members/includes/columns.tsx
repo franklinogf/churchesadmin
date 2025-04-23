@@ -5,9 +5,9 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { UserPermission } from '@/enums/user';
 import { useUser } from '@/hooks/use-permissions';
 import useConfirmationStore from '@/stores/confirmationStore';
-import { Member } from '@/types/models/member';
+import { type Member } from '@/types/models/member';
 import { Link, router } from '@inertiajs/react';
-import { ColumnDef } from '@tanstack/react-table';
+import { type ColumnDef } from '@tanstack/react-table';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { Edit2Icon, MoreHorizontalIcon, Trash2Icon, User2Icon } from 'lucide-react';
 

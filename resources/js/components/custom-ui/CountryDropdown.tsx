@@ -1,4 +1,4 @@
-import { Ref, useCallback, useEffect, useState } from 'react';
+import { type Ref, useCallback, useEffect, useState } from 'react';
 
 // shadcn
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';

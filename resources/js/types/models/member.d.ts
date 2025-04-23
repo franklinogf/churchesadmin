@@ -1,7 +1,7 @@
-import { Option } from '@/components/custom-ui/MultiSelect';
-import { CivilStatus, Gender } from '@/enums';
-import { AddressRelationship } from '@/types/models/address';
-import { TagRelationship } from '@/types/models/tag';
+import { type Option } from '@/components/custom-ui/MultiSelect';
+import { type CivilStatus, type Gender } from '@/enums';
+import { type AddressRelationship } from '@/types/models/address';
+import { type TagRelationship } from '@/types/models/tag';
 
 export type MemberMorphClass = 'member';
 export interface Member {

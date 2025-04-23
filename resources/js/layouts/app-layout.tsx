@@ -1,6 +1,6 @@
 import ConfirmationDialog from '@/components/ConfirmationDialog';
 import AppLayoutTemplate from '@/layouts/app/app-sidebar-layout';
-import { SharedData, type BreadcrumbItem } from '@/types';
+import { type BreadcrumbItem, type SharedData } from '@/types';
 import { Head, usePage } from '@inertiajs/react';
 import { useEffect, type ReactNode } from 'react';
 import { toast, Toaster } from 'sonner';

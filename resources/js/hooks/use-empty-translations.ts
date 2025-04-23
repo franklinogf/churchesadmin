@@ -1,4 +1,4 @@
-import { LanguageTranslations, SharedData } from '@/types';
+import { type LanguageTranslations, type SharedData } from '@/types';
 import { usePage } from '@inertiajs/react';
 
 export function useTranslations() {
