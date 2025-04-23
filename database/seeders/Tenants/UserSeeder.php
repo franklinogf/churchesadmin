@@ -17,9 +17,9 @@ final class UserSeeder extends Seeder
     {
         User::create([
             'name' => 'Super Admin',
-            'email' => 'superadmin@'.str(config('app.url'))->after('://')->before('/')->toString(),
+            'email' => 'superadmin@example.com',
             'email_verified_at' => now(),
-            'password' => 'password',
+            'password' => 'Password123',
             'language' => LanguageCode::EN->value,
         ]);
     }

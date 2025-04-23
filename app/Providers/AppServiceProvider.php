@@ -69,7 +69,6 @@ final class AppServiceProvider extends ServiceProvider
         ? Password::min(8)->letters()
             ->mixedCase()
             ->numbers()
-            ->uncompromised()
         : Password::min(6));
 
     }
