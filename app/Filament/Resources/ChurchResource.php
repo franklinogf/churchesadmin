@@ -37,7 +37,7 @@ final class ChurchResource extends Resource
                     )
                     ->extraItemActions([
                         function (string $operation): ?Forms\Components\Actions\Action {
-                            if ($operation !== 'create') {
+                            if ($operation === 'create') {
                                 return null;
                             }
 
