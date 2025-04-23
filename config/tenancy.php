@@ -187,7 +187,7 @@ return [
          * Tenant database names are created like this:
          * prefix + tenant_id + suffix.
          */
-        'prefix' => 'tenant_',
+        'prefix' => env('TENANCY_PREFIX', 'tenant_'),
         'suffix' => '',
 
         /**
@@ -296,7 +296,7 @@ return [
         /**
          * Each disk listed in the 'disks' array will be suffixed by the suffix_base, followed by the tenant_id.
          */
-        'suffix_base' => 'tenant_',
+        'suffix_base' => env('TENANCY_PREFIX', 'tenant_'),
         'disks' => [
             'local',
             'public',
