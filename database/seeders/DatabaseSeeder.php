@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
+use App\Enums\LanguageCode;
 use App\Enums\WalletName;
 use App\Models\Church;
 use App\Models\User;
@@ -17,9 +18,12 @@ final class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->create([
-            'name' => 'Test User',
+        User::create([
+            'name' => 'Test user',
             'email' => 'test@example.com',
+            'email_verified_at' => now(),
+            'password' => 'password',
+            'language' => LanguageCode::EN->value,
         ]);
 
         $church = Church::create([
