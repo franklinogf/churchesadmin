@@ -44,7 +44,7 @@ Route::middleware([
     Route::middleware(SetLocale::class)
         ->group(function (): void {
 
-            Route::get('/', fn (): string => app()->getLocale())->name('home');
+            Route::redirect('/', 'dashboard')->name('home');
 
             Route::middleware('auth')->group(function (): void {
                 Route::get('dashboard', fn () => inertia('dashboard'))->name('dashboard');
