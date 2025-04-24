@@ -43,6 +43,8 @@ export interface SharedData {
     label: Locale;
     value: string;
   }[];
+  appName: string;
+  environment: 'production' | 'local' | 'staging';
   [key: string]: unknown;
 }
 

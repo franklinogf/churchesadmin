@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuList } from '@/components/ui/navigation-menu';
-import { Head, Link } from '@inertiajs/react';
+import type { SharedData } from '@/types';
+import { Head, Link, usePage } from '@inertiajs/react';
 
 import { DollarSignIcon, GlobeIcon, TvIcon, UsersIcon } from 'lucide-react';
 import { motion } from 'motion/react';
@@ -8,14 +9,15 @@ import { motion } from 'motion/react';
 export const menuItems = [] as const;
 
 export default function Welcome() {
+  const { appName } = usePage<SharedData>().props;
   return (
     <>
-      <Head title="Effortless Church Payroll & Staff Management" />
+      <Head title="Effortless Church Administration" />
       <main className="bg-white text-black">
         <header className="sticky top-0 z-40 flex h-16 w-full items-center justify-between bg-white px-4 py-2.5 shadow-xl">
           <p className="flex gap-x-1 font-bold">
             <TvIcon />
-            Churchroll
+            {appName}
           </p>
           <nav className="flex justify-between">
             <NavigationMenu>

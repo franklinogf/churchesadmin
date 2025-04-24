@@ -60,6 +60,8 @@ final class HandleInertiaRequests extends Middleware
             'sidebarOpen' => $request->cookie('sidebar_state') === 'true',
             'flash' => $this->getFlashMessages($request),
             'availableLocales' => LanguageCode::options(),
+            'appName' => config('app.name'),
+            'environment' => app()->environment(),
         ];
     }
 

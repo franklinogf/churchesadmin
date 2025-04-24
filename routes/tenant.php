@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\LoginLinkController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\MissionaryController;
 use App\Http\Controllers\OfferingController;
@@ -38,6 +39,7 @@ Route::middleware([
 
         return redirect()->back();
     })->name('locale');
+    Route::post('loginLink', LoginLinkController::class)->name('loginLink');
 
     Route::middleware(SetLocale::class)
         ->group(function (): void {
