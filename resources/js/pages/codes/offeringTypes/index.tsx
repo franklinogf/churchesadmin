@@ -50,7 +50,7 @@ export function OfferingTypeForm({ offeringType, children }: { offeringType?: Of
       post(route('codes.offeringTypes.store'), {
         onSuccess: () => {
           setOpen(false);
-          reset();
+          setData({ name: emptyTranslations });
         },
       });
     }
