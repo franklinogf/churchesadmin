@@ -1,4 +1,4 @@
-import { Head, useForm } from '@inertiajs/react';
+import { Head, Link, useForm, usePage } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
 import { type FormEventHandler } from 'react';
 
@@ -10,6 +10,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthLayout from '@/layouts/auth-layout';
 
+import { UserRole } from '@/enums/user';
+import type { SharedData } from '@/types';
+
 type LoginForm = {
   email: string;
   password: string;
@@ -17,6 +20,7 @@ type LoginForm = {
 };
 
 export default function Login() {
+  const { environment } = usePage<SharedData>().props;
   const { data, setData, post, processing, errors, reset } = useForm<LoginForm>({
     email: '',
     password: '',
@@ -33,7 +37,19 @@ export default function Login() {
   return (
     <AuthLayout title="Log in to your account" description="Enter your email and password below to log in">
       <Head title="Log in" />
-
+      {environment !== 'production' && (
+        <div className="mb-6 flex flex-col gap-2">
+          <Link method="post" href={route('loginLink')} data={{ role: UserRole.SUPER_ADMIN }}>
+            Log in as super admin
+          </Link>
+          <Link method="post" href={route('loginLink')} data={{ role: UserRole.ADMIN }}>
+            Log in as admin
+          </Link>
+          <Link method="post" href={route('loginLink')} data={{ role: UserRole.SECRETARY }}>
+            Log in as secretary
+          </Link>
+        </div>
+      )}
       <form className="flex flex-col gap-6" onSubmit={submit}>
         <div className="grid gap-6">
           <div className="grid gap-2">
