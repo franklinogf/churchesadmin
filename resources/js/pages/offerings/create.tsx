@@ -73,7 +73,6 @@ export default function Create({ wallets, paymentMethods, members, missionaries,
   });
 
   function handleSubmit() {
-    console.log(data);
     post(route('offerings.store'));
   }
 
@@ -99,7 +98,7 @@ export default function Create({ wallets, paymentMethods, members, missionaries,
     setData('offerings', updatedOfferings);
   }
 
-  function handleUpdateOffering(index: number, field: string, value: any) {
+  function handleUpdateOffering(index: number, field: string, value: unknown) {
     const updatedOfferings = [...data.offerings];
     updatedOfferings[index] = {
       ...updatedOfferings[index],
