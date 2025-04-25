@@ -7,6 +7,7 @@ namespace App\Models;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Spatie\Translatable\HasTranslations;
 
 /**
@@ -26,4 +27,9 @@ final class OfferingType extends Model
      * @var array<string>
      */
     protected $translatable = ['name'];
+
+    public function offerings(): MorphMany
+    {
+        return $this->morphMany(Offering::class, 'offering_type');
+    }
 }

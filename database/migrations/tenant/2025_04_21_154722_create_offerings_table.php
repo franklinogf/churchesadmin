@@ -17,10 +17,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('transaction_id');
             $table->foreignId('donor_id')->nullable();
-            $table->foreignId('recipient_id')->nullable();
             $table->timestamp('date');
             $table->string('payment_method');
-            $table->string('offering_type_id');
+            $table->morphs('offering_type');
             $table->string('note')->nullable();
         });
     }

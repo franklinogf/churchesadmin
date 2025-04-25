@@ -48,10 +48,16 @@ export interface SharedData {
   [key: string]: unknown;
 }
 
-export interface SelectOption {
+export type SelectOption = {
   label: string;
   value: string | number;
-}
+};
+
+export type SelectOptionWithModel = {
+  heading: string;
+  model: string;
+  options: SelectOption[];
+};
 
 export type Locale = `${LanguageCode}`;
 

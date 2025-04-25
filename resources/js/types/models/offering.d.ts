@@ -8,9 +8,8 @@ export interface Offering {
   id: number;
   transaction: Transaction;
   donor: Member | null;
-  recipient: Missionary | null;
   date: string;
   paymentMethod: `${PaymentMethod}`;
-  offeringType: OfferingType;
+  offeringType: OfferingType | Missionary;
   note: string | null;
 }

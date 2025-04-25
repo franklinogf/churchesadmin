@@ -9,6 +9,7 @@ use App\Enums\OfferingFrequency;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -42,6 +43,11 @@ final class Missionary extends Model
     public function address(): MorphOne
     {
         return $this->morphOne(Address::class, 'owner');
+    }
+
+    public function offerings(): MorphMany
+    {
+        return $this->morphMany(Offering::class, 'offering_type');
     }
 
     /**
