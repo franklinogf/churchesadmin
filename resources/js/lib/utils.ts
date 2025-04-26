@@ -1,3 +1,5 @@
+import type { Missionary } from '@/types/models/missionary';
+import type { Offering } from '@/types/models/offering';
 import { clsx, type ClassValue } from 'clsx';
 
 import { twMerge } from 'tailwind-merge';
@@ -17,4 +19,7 @@ export function ucwords(str: string): string {
 
 export function isImage(mime_type: string) {
   return mime_type.startsWith('image/');
+}
+export function offeringTypeIsMissionary(offeringType: Offering['offeringType']): offeringType is Missionary {
+  return 'lastName' in offeringType;
 }

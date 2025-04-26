@@ -7,6 +7,7 @@ namespace App\Providers;
 use App\Models\Church;
 use App\Models\Member;
 use App\Models\Missionary;
+use App\Models\OfferingType;
 use App\Models\User;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Model;
@@ -60,6 +61,7 @@ final class AppServiceProvider extends ServiceProvider
             'missionary' => Missionary::class,
             'user' => User::class,
             'church' => Church::class,
+            'offering_type' => OfferingType::class,
         ]);
     }
 

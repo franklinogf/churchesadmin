@@ -6,15 +6,17 @@ namespace App\Models;
 
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
  * @property-read int $id
  * @property-read int $transaction_id
  * @property-read int $offering_type_id
+ * @property-read string $offering_type_type
  * @property-read int|null $donor_id
- * @property-read int|null $recipient_id
  * @property-read string $payment_method
  * @property-read string|null $note
  * @property-read CarbonImmutable $date
@@ -41,11 +43,11 @@ final class Offering extends Pivot
     /**
      * The type of offering.
      *
-     * @return BelongsTo<OfferingType,$this>
+     * @return MorphTo<Model,$this>
      */
-    public function offering_type(): BelongsTo
+    public function offering_type(): MorphTo
     {
-        return $this->belongsTo(OfferingType::class, 'offering_type_id');
+        return $this->morphTo();
     }
 
     /**
@@ -56,16 +58,6 @@ final class Offering extends Pivot
     public function donor(): BelongsTo
     {
         return $this->belongsTo(Member::class, 'donor_id');
-    }
-
-    /**
-     * The person who the offering is for.
-     *
-     * @return BelongsTo<Missionary,$this>
-     */
-    public function recipient(): BelongsTo
-    {
-        return $this->belongsTo(Missionary::class, 'recipient_id');
     }
 
     /**

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Database\Seeders;
 
 use App\Enums\LanguageCode;
+use App\Models\Church;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -23,6 +24,13 @@ final class DatabaseSeeder extends Seeder
             'password' => 'password',
             'language' => LanguageCode::EN->value,
         ]);
+
+        if (app()->isLocal()) {
+            Church::create([
+                'id' => 'test-church',
+                'name' => 'Test Church',
+            ])->createDomain('test');
+        }
 
     }
 }

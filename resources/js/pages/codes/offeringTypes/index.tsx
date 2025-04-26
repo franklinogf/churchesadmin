@@ -34,7 +34,7 @@ export function OfferingTypeForm({ offeringType, children }: { offeringType?: Of
   const [open, setOpen] = useState(false);
   const { t } = useLaravelReactI18n();
   const { emptyTranslations } = useTranslations();
-  const { data, setData, post, put, errors, reset, processing } = useForm({
+  const { data, setData, post, put, errors, processing } = useForm({
     name: offeringType?.nameTranslations ?? emptyTranslations,
   });
 
