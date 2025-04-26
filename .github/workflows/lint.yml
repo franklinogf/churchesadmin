@@ -41,7 +41,7 @@ jobs:
         run: composer test:lint
 
       - name: Run Eslint
-        run: npm run lint
+        run: npm run test:lint
 
       - name: Run Prettier
         run: npm run test:format
