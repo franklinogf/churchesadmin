@@ -34,10 +34,8 @@ final class StoreWalletRequest extends FormRequest
         $tenantId = tenant('id');
 
         return [
-            'name' => ['required', 'array'],
-            'name.*' => ['required', 'string', 'min:3', 'max:255', UniqueTranslationRule::for("{$connection}.wallets")->where('holder_id', $tenantId)],
-            'description' => ['nullable', 'array'],
-            'description.*' => ['nullable', 'string', 'min:3', 'max:255'],
+            'name' => ['required', 'string', 'min:3', 'max:255', UniqueTranslationRule::for("{$connection}.wallets")->where('holder_id', $tenantId)],
+            'description' => ['nullable', 'string', 'min:3', 'max:255'],
             'balance' => ['required', 'decimal:2', 'min:0'],
             'bank_name' => ['required', 'string', 'min:3', 'max:255'],
             'bank_routing_number' => ['required', 'string', 'min:3', 'max:255'],

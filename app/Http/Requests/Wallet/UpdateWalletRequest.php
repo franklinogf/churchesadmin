@@ -37,12 +37,10 @@ final class UpdateWalletRequest extends FormRequest
         $tenantId = tenant('id');
 
         return [
-            'name' => ['required', 'array', 'min:2'],
-            'name.*' => ['required', 'string', 'min:3', 'max:255', UniqueTranslationRule::for("{$connection}.wallets")
+            'name' => ['required', 'string', 'min:3', 'max:255', UniqueTranslationRule::for("{$connection}.wallets")
                 ->ignore($this->wallet->id)
                 ->where('holder_id', $tenantId)],
-            'description' => ['nullable', 'array'],
-            'description.*' => ['nullable', 'string', 'min:3', 'max:255'],
+            'description' => ['nullable', 'string', 'min:3', 'max:255'],
             'bank_name' => ['required', 'string', 'min:3', 'max:255'],
             'bank_routing_number' => ['required', 'string', 'min:3', 'max:255'],
             'bank_account_number' => ['required', 'string', 'min:3', 'max:255'],

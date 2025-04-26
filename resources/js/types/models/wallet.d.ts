@@ -1,4 +1,3 @@
-import { type LanguageTranslations } from '@/types';
 import { type Transaction } from '@/types/models/transaction';
 type WalletMeta = {
   bankName: string;
@@ -10,10 +9,8 @@ export interface Wallet {
   uuid: string;
   meta: WalletMeta | null;
   name: string;
-  nameTranslations: LanguageTranslations;
   slug: string;
   description: string | null;
-  descriptionTranslations: LanguageTranslations;
   balance: string;
   balanceInt: number;
   balanceFloat: string;

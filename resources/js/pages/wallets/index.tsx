@@ -1,15 +1,13 @@
 import { DataTable } from '@/components/custom-ui/datatable/data-table';
 import { PageTitle } from '@/components/PageTitle';
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem, type LanguageTranslations } from '@/types';
+import { type BreadcrumbItem } from '@/types';
 import { type Wallet } from '@/types/models/wallet';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { walletColumns } from './includes/walletColumns';
 
-import { TranslatableInput } from '@/components/forms/inputs/TranslatableInputField';
 import { SubmitButton } from '@/components/forms/SubmitButton';
 import { Dialog, DialogContent, DialogDescription, DialogHeader } from '@/components/ui/dialog';
-import { useTranslations } from '@/hooks/use-empty-translations';
 
 import { CurrencyField } from '@/components/forms/inputs/CurrencyField';
 import { FieldsGrid } from '@/components/forms/inputs/FieldsGrid';
@@ -20,8 +18,8 @@ import { DialogTitle, DialogTrigger } from '@radix-ui/react-dialog';
 import { useState } from 'react';
 
 type WalletForm = {
-  name: LanguageTranslations;
-  description: LanguageTranslations;
+  name: string;
+  description: string;
   balance: string;
   bank_name: string;
   bank_account_number: string;
@@ -60,11 +58,10 @@ export default function Index({ wallets }: IndexPageProps) {
 export function WalletForm({ wallet, children }: { wallet?: Wallet; children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
   const { t } = useLaravelReactI18n();
-  const { emptyTranslations } = useTranslations();
 
   const { data, setData, post, put, errors, reset, processing } = useForm<WalletForm>({
-    name: wallet?.nameTranslations ?? emptyTranslations,
-    description: wallet?.descriptionTranslations ?? emptyTranslations,
+    name: wallet?.name ?? '',
+    description: wallet?.description ?? '',
     balance: wallet?.balanceFloat ?? '0.00',
     bank_name: wallet?.meta?.bankName ?? '',
     bank_account_number: wallet?.meta?.bankAccountNumber ?? '',
@@ -99,19 +96,13 @@ export function WalletForm({ wallet, children }: { wallet?: Wallet; children: Re
         </DialogHeader>
 
         <form className="space-y-4" onSubmit={handleSubmit}>
-          <TranslatableInput
-            required
-            label={t('Name')}
-            values={data.name}
-            onChange={(locale, value) => setData(`name`, { ...data.name, [locale]: value })}
-            errors={{ errors, name: 'name' }}
-          />
+          <InputField required label={t('Name')} value={data.name} onChange={(value) => setData(`name`, value)} error={errors.name} />
 
-          <TranslatableInput
+          <InputField
             label={t('Description')}
-            values={data.description}
-            onChange={(locale, value) => setData(`description`, { ...data.description, [locale]: value })}
-            errors={{ errors, name: 'description' }}
+            value={data.description}
+            onChange={(value) => setData(`description`, value)}
+            error={errors.description}
           />
 
           {!wallet && (

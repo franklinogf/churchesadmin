@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
+use Spatie\Translatable\Facades\Translatable;
 
 final class AppServiceProvider extends ServiceProvider
 {
@@ -38,6 +39,9 @@ final class AppServiceProvider extends ServiceProvider
         $this->configureModels();
         $this->configureValidations();
         $this->configureJsonResources();
+        Translatable::fallback(
+            fallbackAny: true
+        );
     }
 
     private function configureCommands(): void

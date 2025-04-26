@@ -20,14 +20,12 @@ final class TagResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'nameTranslations' => $this->getTranslations('name'),
             'slug' => $this->slug,
-            'slugTranslations' => $this->getTranslations('slug'),
             'type' => $this->type,
             'orderColumn' => $this->order_column,
             'isRegular' => $this->is_regular,
-            'createdAt' => $this->created_at,
-            'updatedAt' => $this->updated_at,
+            'createdAt' => $this->created_at->format('Y-m-d H:i:s'),
+            'updatedAt' => $this->updated_at->format('Y-m-d H:i:s'),
         ];
     }
 }
