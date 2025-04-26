@@ -15,6 +15,7 @@ use Spatie\Translatable\HasTranslations;
  * @property-read string $name
  * @property-read CarbonImmutable $created_at
  * @property-read CarbonImmutable $updated_at
+ * @property-read Offering[] $offerings
  */
 final class OfferingType extends Model
 {
@@ -28,6 +29,11 @@ final class OfferingType extends Model
      */
     protected $translatable = ['name'];
 
+    /**
+     * Get the offerings of this model.
+     *
+     * @return MorphMany<Offering, $this>
+     */
     public function offerings(): MorphMany
     {
         return $this->morphMany(Offering::class, 'offering_type');

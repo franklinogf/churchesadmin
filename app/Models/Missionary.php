@@ -29,6 +29,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read CarbonImmutable $created_at
  * @property-read CarbonImmutable $updated_at
  * @property-read Address|null $address
+ * @property-read Offering[] $offerings
  */
 final class Missionary extends Model
 {
@@ -45,6 +46,11 @@ final class Missionary extends Model
         return $this->morphOne(Address::class, 'owner');
     }
 
+    /**
+     * Get the offerings of this model.
+     *
+     * @return MorphMany<Offering, $this>
+     */
     public function offerings(): MorphMany
     {
         return $this->morphMany(Offering::class, 'offering_type');
