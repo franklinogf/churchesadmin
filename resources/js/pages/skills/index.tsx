@@ -1,13 +1,12 @@
 import { DataTable } from '@/components/custom-ui/datatable/data-table';
+import { InputField } from '@/components/forms/inputs/InputField';
 import { SwitchField } from '@/components/forms/inputs/SwitchField';
-import { TranslatableInput } from '@/components/forms/inputs/TranslatableInputField';
 import { SubmitButton } from '@/components/forms/SubmitButton';
 import { PageTitle } from '@/components/PageTitle';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { UserPermission } from '@/enums/user';
-import { useTranslations } from '@/hooks/use-empty-translations';
 import { useUser } from '@/hooks/use-permissions';
 import AppLayout from '@/layouts/app-layout';
 import useConfirmationStore from '@/stores/confirmationStore';
@@ -125,10 +124,9 @@ export default function Index({ skills }: IndexPageProps) {
 function SkillForm({ skill, children }: { skill?: Tag; children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
   const { t } = useLaravelReactI18n();
-  const { emptyTranslations } = useTranslations();
   const { can: userCan } = useUser();
   const { data, setData, post, put, errors, reset, processing } = useForm({
-    name: skill?.nameTranslations ?? emptyTranslations,
+    name: skill?.name ?? '',
     is_regular: skill?.isRegular ?? false,
   });
 
@@ -159,13 +157,7 @@ function SkillForm({ skill, children }: { skill?: Tag; children: React.ReactNode
         </DialogHeader>
 
         <form className="space-y-4" onSubmit={handleSubmit}>
-          <TranslatableInput
-            required
-            label={t('Name')}
-            values={data.name}
-            onChange={(locale, value) => setData(`name`, { ...data.name, [locale]: value })}
-            errors={{ errors, name: 'name' }}
-          />
+          <InputField required label={t('Name')} value={data.name} onChange={(value) => setData(`name`, value)} error={errors.name} />
 
           {userCan(skill ? UserPermission.UPDATE_REGULAR_TAG : UserPermission.CREATE_REGULAR_TAG) && (
             <SwitchField

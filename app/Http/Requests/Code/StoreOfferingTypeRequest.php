@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Code;
 
 use CodeZero\UniqueTranslation\UniqueTranslationRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -25,7 +25,7 @@ final class StoreOfferingTypeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name.*' => ['required', 'string', 'max:255', UniqueTranslationRule::for('offering_types')],
+            'name' => ['required', 'string', 'max:255', UniqueTranslationRule::for('offering_types')],
         ];
     }
 }

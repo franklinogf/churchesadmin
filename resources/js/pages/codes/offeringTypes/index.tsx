@@ -1,10 +1,9 @@
 import { DataTable } from '@/components/custom-ui/datatable/data-table';
-import { TranslatableInput } from '@/components/forms/inputs/TranslatableInputField';
+import { InputField } from '@/components/forms/inputs/InputField';
 import { SubmitButton } from '@/components/forms/SubmitButton';
 import { PageTitle } from '@/components/PageTitle';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { useTranslations } from '@/hooks/use-empty-translations';
 import AppLayout from '@/layouts/app-layout';
 import { type OfferingType } from '@/types/models/offering-types';
 import { useForm } from '@inertiajs/react';
@@ -33,9 +32,8 @@ export default function OfferingTypesIndex({ offeringTypes }: { offeringTypes: O
 export function OfferingTypeForm({ offeringType, children }: { offeringType?: OfferingType; children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
   const { t } = useLaravelReactI18n();
-  const { emptyTranslations } = useTranslations();
   const { data, setData, post, put, errors, processing } = useForm({
-    name: offeringType?.nameTranslations ?? emptyTranslations,
+    name: offeringType?.name ?? '',
   });
 
   function handleSubmit(e: React.FormEvent) {
@@ -50,7 +48,7 @@ export function OfferingTypeForm({ offeringType, children }: { offeringType?: Of
       post(route('codes.offeringTypes.store'), {
         onSuccess: () => {
           setOpen(false);
-          setData({ name: emptyTranslations });
+          setData({ name: '' });
         },
       });
     }
@@ -65,13 +63,7 @@ export function OfferingTypeForm({ offeringType, children }: { offeringType?: Of
         </DialogHeader>
 
         <form className="space-y-4" onSubmit={handleSubmit}>
-          <TranslatableInput
-            required
-            label={t('Name')}
-            values={data.name}
-            onChange={(locale, value) => setData(`name`, { ...data.name, [locale]: value })}
-            errors={{ errors, name: 'name' }}
-          />
+          <InputField required label={t('Name')} value={data.name} onChange={(value) => setData('name', value)} error={errors.name} />
 
           <div className="flex justify-end">
             <SubmitButton isSubmitting={processing}>{t('Save')}</SubmitButton>

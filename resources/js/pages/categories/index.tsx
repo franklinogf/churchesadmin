@@ -1,13 +1,12 @@
 import { DataTable } from '@/components/custom-ui/datatable/data-table';
+import { InputField } from '@/components/forms/inputs/InputField';
 import { SwitchField } from '@/components/forms/inputs/SwitchField';
-import { TranslatableInput } from '@/components/forms/inputs/TranslatableInputField';
 import { SubmitButton } from '@/components/forms/SubmitButton';
 import { PageTitle } from '@/components/PageTitle';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { UserPermission } from '@/enums/user';
-import { useTranslations } from '@/hooks/use-empty-translations';
 import { useUser } from '@/hooks/use-permissions';
 import AppLayout from '@/layouts/app-layout';
 import useConfirmationStore from '@/stores/confirmationStore';
@@ -126,10 +125,9 @@ export default function Index({ categories }: IndexPageProps) {
 function CategoryForm({ category, children }: { category?: Tag; children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
   const { t } = useLaravelReactI18n();
-  const { emptyTranslations } = useTranslations();
   const { can: userCan } = useUser();
   const { data, setData, post, put, errors, reset, processing } = useForm({
-    name: category?.nameTranslations ?? emptyTranslations,
+    name: category?.name ?? '',
     is_regular: category?.isRegular ?? false,
   });
 
@@ -161,12 +159,7 @@ function CategoryForm({ category, children }: { category?: Tag; children: React.
         </DialogHeader>
 
         <form className="space-y-4" onSubmit={handleSubmit}>
-          <TranslatableInput
-            label={t('Name')}
-            values={data.name}
-            onChange={(locale, value) => setData(`name`, { ...data.name, [locale]: value })}
-            errors={{ errors, name: 'name' }}
-          />
+          <InputField label={t('Name')} value={data.name} onChange={(value) => setData(`name`, value)} error={errors.name} />
           {userCan(category ? UserPermission.UPDATE_REGULAR_TAG : UserPermission.CREATE_REGULAR_TAG) && (
             <SwitchField
               description={t('Only admins would be allowed to edit and delete this category')}
