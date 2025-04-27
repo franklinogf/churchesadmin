@@ -3,12 +3,12 @@ import { NavUser } from '@/components/nav-user';
 import { SidebarNav } from '@/components/sidebar-nav';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { UserPermission } from '@/enums/user';
-import type { NavItem, NavMenu } from '@/types';
+import type { NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { HandCoinsIcon, LayoutGridIcon, Users2Icon, WalletCardsIcon } from 'lucide-react';
+import { CogIcon, HandCoinsIcon, LayoutGridIcon, Users2Icon, WalletCardsIcon } from 'lucide-react';
 import AppLogo from './app-logo';
 
-const mainNavItems: NavMenu[] = [
+const mainNavItems: NavItem[] = [
   {
     title: 'Dashboard',
     href: route('dashboard'),
@@ -44,34 +44,36 @@ const mainNavItems: NavMenu[] = [
     icon: Users2Icon,
     permissionNeeded: UserPermission.MANAGE_USERS,
   },
+];
+
+const accountingNavItems: NavItem[] = [
   {
-    title: 'Accounting',
-    items: [
-      {
-        title: 'Wallets',
-        href: route('wallets.index'),
-        icon: WalletCardsIcon,
-      },
-      {
-        title: 'Offerings',
-        href: route('offerings.index'),
-        icon: HandCoinsIcon,
-      },
-    ],
+    title: 'Wallets',
+    href: route('wallets.index'),
+    icon: WalletCardsIcon,
   },
   {
-    title: 'Codes',
-    items: [
-      {
-        title: 'Offering types',
-        href: route('codes.offeringTypes.index'),
-        icon: LayoutGridIcon,
-      },
-    ],
+    title: 'Offerings',
+    href: route('offerings.index'),
+    icon: HandCoinsIcon,
   },
 ];
 
-const footerNavItems: NavItem[] = [];
+const codesNavItems: NavItem[] = [
+  {
+    title: 'Offering types',
+    href: route('codes.offeringTypes.index'),
+    icon: LayoutGridIcon,
+  },
+];
+
+const footerNavItems: NavItem[] = [
+  {
+    title: 'Church Settings',
+    href: route('church.language.edit'),
+    icon: CogIcon,
+  },
+];
 export function AppSidebar() {
   return (
     <Sidebar collapsible="icon" variant="inset">
@@ -89,10 +91,12 @@ export function AppSidebar() {
 
       <SidebarContent>
         <SidebarNav label="Main" items={mainNavItems} />
+        <SidebarNav label="Accounting" items={accountingNavItems} />
+        <SidebarNav label="Codes" items={codesNavItems} />
       </SidebarContent>
 
       <SidebarFooter>
-        <NavFooter items={footerNavItems} className="mt-auto" />
+        <NavFooter items={footerNavItems} />
         <NavUser />
       </SidebarFooter>
     </Sidebar>

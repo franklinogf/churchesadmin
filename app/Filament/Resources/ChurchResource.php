@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources;
 
+use App\Enums\LanguageCode;
 use App\Filament\Resources\ChurchResource\Pages;
 use App\Models\Church;
 use Filament\Forms;
@@ -23,8 +24,11 @@ final class ChurchResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                    ->translateLabel()
                     ->required(),
+
                 Forms\Components\Repeater::make('domains')
+                    ->translateLabel()
                     ->required()
                     ->relationship()
                     ->simple(
@@ -41,6 +45,7 @@ final class ChurchResource extends Resource
                             }
 
                             return Forms\Components\Actions\Action::make('Go to website')
+                                ->translateLabel()
                                 ->url(fn (Church $record): string => tenant_route($record->domains()->first()->domain.'.'.str(config('app.url'))->after('://'), 'home'))
                                 ->openUrlInNewTab()
                                 ->icon('heroicon-o-globe-alt');
@@ -49,6 +54,18 @@ final class ChurchResource extends Resource
                     ->deletable(false)
                     ->maxItems(1)
                     ->minItems(1),
+                Forms\Components\Section::make('Settings')
+                    ->translateLabel()
+                    ->schema([
+                        Forms\Components\Select::make('locale')
+                            ->label(__('Language'))
+                            ->required()
+                            ->options(collect(LanguageCode::cases())
+                                ->mapWithKeys(fn (LanguageCode $code) => [$code->value => $code->label()])
+                            ),
+                    ])
+                    ->columns(2)
+                    ->compact(),
             ]);
     }
 
@@ -60,8 +77,10 @@ final class ChurchResource extends Resource
                     ->label('ID')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('name')
+                    ->translateLabel()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->translateLabel()
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -71,6 +90,7 @@ final class ChurchResource extends Resource
             ])
             ->actions([
                 Tables\Actions\Action::make('Go to website')
+                    ->translateLabel()
                     ->url(fn (Church $record): string => tenant_route($record->domains()->first()->domain.'.'.str(config('app.url'))->after('://'), 'home'))
                     ->openUrlInNewTab()
                     ->icon('heroicon-o-globe-alt'),

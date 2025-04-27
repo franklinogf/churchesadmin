@@ -14,18 +14,7 @@ test('to array', function (): void {
         'name',
         'email',
         'email_verified_at',
-        'language',
         'created_at',
         'updated_at',
     ]);
-});
-
-test('casts are applied correctly', function (): void {
-    $user = User::factory()->create([
-        'email_verified_at' => now(),
-        'language' => 'en',
-    ])->fresh();
-
-    expect($user->email_verified_at)->toBeInstanceOf(Carbon\CarbonImmutable::class);
-    expect($user->language)->toBeInstanceOf(App\Enums\LanguageCode::class);
 });

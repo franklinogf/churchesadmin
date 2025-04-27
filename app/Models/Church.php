@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\LanguageCode;
 use Bavix\Wallet\Interfaces\Wallet;
 use Bavix\Wallet\Interfaces\WalletFloat;
 use Bavix\Wallet\Traits\HasWalletFloat;
@@ -19,6 +20,7 @@ use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
  *
  * @property-read string $id
  * @property-read string $name
+ * @property-read LanguageCode $locale
  * @property-read array<string,mixed>|null $data
  * @property-read \Carbon\CarbonImmutable|null $created_at
  * @property-read \Carbon\CarbonImmutable|null $updated_at
@@ -39,6 +41,15 @@ final class Church extends BaseTenant implements TenantWithDatabase, WalletFloat
 
         return array_merge($parentColumns, [
             'name',
+            'locale',
         ]);
+    }
+
+    protected function casts(): array
+    {
+        return [
+            ...parent::casts(),
+            'locale' => LanguageCode::class,
+        ];
     }
 }

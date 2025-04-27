@@ -22,13 +22,13 @@ final class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
             'email_verified_at' => now(),
             'password' => 'password',
-            'language' => LanguageCode::EN->value,
         ]);
 
         if (app()->isLocal()) {
             Church::create([
                 'id' => 'test-church',
                 'name' => 'Test Church',
+                'locale' => LanguageCode::EN,
             ])->createDomain('test');
         }
 
