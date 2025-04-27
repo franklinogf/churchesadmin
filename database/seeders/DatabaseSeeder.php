@@ -6,7 +6,7 @@ namespace Database\Seeders;
 
 use App\Enums\LanguageCode;
 use App\Models\Church;
-use App\Models\User;
+use App\Models\TenantUser;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -17,7 +17,7 @@ final class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::create([
+        TenantUser::create([
             'name' => 'Test user',
             'email' => 'test@example.com',
             'email_verified_at' => now(),

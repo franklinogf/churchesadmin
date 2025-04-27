@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace App\Policies;
 
 use App\Enums\TenantPermission;
-use App\Models\User;
+use App\Models\TenantUser;
 use Illuminate\Auth\Access\Response;
 
-final class UserPolicy
+final class TenantUserPolicy
 {
     /**
      * Determine whether the user can view models.
      */
-    public function viewAny(User $user): Response
+    public function viewAny(TenantUser $user): Response
     {
         if ($user->can(TenantPermission::MANAGE_USERS)) {
             return Response::allow();
@@ -25,7 +25,7 @@ final class UserPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): Response
+    public function create(TenantUser $user): Response
     {
         if ($user->can(TenantPermission::CREATE_USERS)) {
             return Response::allow();
@@ -37,7 +37,7 @@ final class UserPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user): Response
+    public function update(TenantUser $user): Response
     {
         if ($user->can(TenantPermission::UPDATE_USERS)) {
             return Response::allow();
@@ -49,7 +49,7 @@ final class UserPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user): Response
+    public function delete(TenantUser $user): Response
     {
         if ($user->can(TenantPermission::DELETE_USERS)) {
             return Response::allow();

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-use App\Models\User;
+use App\Models\TenantUser;
 
 test('to array', function (): void {
-    $user = User::factory()->create()->fresh();
+    $user = TenantUser::factory()->create()->fresh();
 
     expect(array_keys($user->toArray()))->toBe([
         'id',

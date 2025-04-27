@@ -19,23 +19,23 @@ final class RoleSeeder extends Seeder
     {
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
-        Role::create(['name' => TenantRole::SUPER_ADMIN])
+        Role::create(['name' => TenantRole::SUPER_ADMIN, 'guard_name' => 'tenant'])
             ->givePermissionTo(TenantPermission::values());
 
-        Role::create(['name' => TenantRole::ADMIN])
+        Role::create(['name' => TenantRole::ADMIN, 'guard_name' => 'tenant'])
             ->givePermissionTo(
                 collect(TenantPermission::values())
                     ->filter(fn (string $permission) => ! str($permission)->startsWith('users'))
                     ->toArray()
             );
 
-        Role::create(['name' => TenantRole::SECRETARY])
+        Role::create(['name' => TenantRole::SECRETARY, 'guard_name' => 'tenant'])
             ->givePermissionTo(collect(TenantPermission::values())
                 ->filter(fn (string $permission) => ! str($permission)->endsWith('delete') && ! str($permission)->startsWith('users'))
                 ->toArray()
             );
 
-        Role::create(['name' => TenantRole::NO_ROLE]);
+        Role::create(['name' => TenantRole::NO_ROLE, 'guard_name' => 'tenant']);
 
     }
 }

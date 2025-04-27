@@ -8,7 +8,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 /**
- * @property-read \App\Models\User $user
+ * @property-read \App\Models\TenantUser $user
  */
 final class UpdateUserRequest extends FormRequest
 {

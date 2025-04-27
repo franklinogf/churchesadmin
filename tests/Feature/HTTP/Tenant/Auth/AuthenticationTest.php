@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Models\User;
+use App\Models\TenantUser;
 use Inertia\Testing\AssertableInertia as Assert;
 
 use function Pest\Laravel\actingAs;
@@ -20,7 +20,7 @@ test('login screen can be rendered', function (): void {
 });
 
 test('users can authenticate using the login screen', function (): void {
-    $user = User::factory()->create();
+    $user = TenantUser::factory()->create();
 
     post(route('login.store'), [
         'email' => $user->email,
@@ -33,7 +33,7 @@ test('users can authenticate using the login screen', function (): void {
 });
 
 test('users can not authenticate with invalid password', function (): void {
-    $user = User::factory()->create();
+    $user = TenantUser::factory()->create();
 
     post(route('login.store'), [
         'email' => $user->email,
@@ -45,9 +45,9 @@ test('users can not authenticate with invalid password', function (): void {
 });
 
 test('users can logout', function (): void {
-    $user = User::factory()->create();
+    $user = TenantUser::factory()->create();
 
-    actingAs($user)->post(route('logout'))->assertRedirect(route('login'));
+    actingAs($user, 'tenant')->post(route('logout'))->assertRedirect(route('login'));
 
     assertGuest();
 

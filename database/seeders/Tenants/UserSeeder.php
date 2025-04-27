@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Database\Seeders\Tenants;
 
 use App\Enums\TenantRole;
-use App\Models\User;
+use App\Models\TenantUser;
 use Illuminate\Database\Seeder;
 
 final class UserSeeder extends Seeder
@@ -15,7 +15,7 @@ final class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        $user = User::create([
+        $user = TenantUser::create([
             'name' => 'Super Admin',
             'email' => 'superadmin@example.com',
             'email_verified_at' => now(),
