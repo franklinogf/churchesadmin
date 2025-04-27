@@ -20,7 +20,7 @@ final class ProfileController extends Controller
     public function edit(Request $request): Response
     {
         return Inertia::render('settings/profile', [
-            'mustVerifyEmail' => false,
+            'mustVerifyEmail' => true,
             'status' => $request->session()->get('status'),
         ]);
     }
@@ -30,13 +30,15 @@ final class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        /** @var \App\Models\TenantUser $user */
+        $user = $request->user();
+        $user->fill($request->validated());
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        if ($user->isDirty('email')) {
+            $user->fill(['email_verified_at' => null]);
         }
 
-        $request->user()->save();
+        $user->save();
 
         return to_route('profile.edit');
     }
@@ -49,7 +51,7 @@ final class ProfileController extends Controller
         $request->validate([
             'password' => ['required', 'current_password'],
         ]);
-
+        /** @var \App\Models\TenantUser $user */
         $user = $request->user();
 
         Auth::logout();

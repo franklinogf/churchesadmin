@@ -6,7 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\LanguageCode;
 use App\Enums\TenantRole;
-use App\Models\User;
+use App\Models\TenantUser;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -28,7 +28,7 @@ final class LoginLinkController extends Controller
          */
         $role = TenantRole::tryFrom($request->string('role')->toString());
 
-        $user = User::role($role)->firstOr(function () use ($role): User {
+        $user = TenantUser::role($role)->firstOr(function () use ($role): TenantUser {
             $name = match ($role) {
                 TenantRole::SUPER_ADMIN => 'Super Admin',
                 TenantRole::ADMIN => 'Admin',
@@ -41,7 +41,7 @@ final class LoginLinkController extends Controller
                 TenantRole::SECRETARY => 'secretary@example.com',
                 TenantRole::NO_ROLE => 'norole@example.com',
             };
-            $user = User::create([
+            $user = TenantUser::create([
                 'name' => $name,
                 'email' => $email,
                 'password' => 'Password123',
@@ -52,7 +52,7 @@ final class LoginLinkController extends Controller
             return $user;
         });
 
-        Auth::login($user);
+        Auth::guard('tenant')->login($user);
 
         return to_route('dashboard');
     }

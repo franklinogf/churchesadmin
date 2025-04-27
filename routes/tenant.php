@@ -46,7 +46,7 @@ Route::middleware([
 
             Route::redirect('/', 'dashboard')->name('home');
 
-            Route::middleware('auth')->group(function (): void {
+            Route::middleware('auth:tenant')->group(function (): void {
                 Route::get('dashboard', fn () => inertia('dashboard'))->name('dashboard');
 
                 Route::resource('users', UserController::class)

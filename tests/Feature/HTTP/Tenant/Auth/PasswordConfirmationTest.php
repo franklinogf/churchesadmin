@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-use App\Models\User;
+use App\Models\TenantUser;
 
 test('confirm password screen can be rendered', function (): void {
-    $user = User::factory()->create();
+    $user = TenantUser::factory()->create();
 
     $response = $this->actingAs($user)->get(route('password.confirm'));
 
@@ -13,7 +13,7 @@ test('confirm password screen can be rendered', function (): void {
 });
 
 test('password can be confirmed', function (): void {
-    $user = User::factory()->create();
+    $user = TenantUser::factory()->create();
 
     $response = $this->actingAs($user)->post(route('password.confirm.update'), [
         'password' => 'password',
@@ -24,7 +24,7 @@ test('password can be confirmed', function (): void {
 });
 
 test('password is not confirmed with invalid password', function (): void {
-    $user = User::factory()->create();
+    $user = TenantUser::factory()->create();
 
     $response = $this->actingAs($user)->post(route('password.confirm.update'), [
         'password' => 'wrong-password',

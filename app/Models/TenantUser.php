@@ -4,13 +4,12 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Filament\Models\Contracts\FilamentUser;
-use Filament\Panel;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Stancl\Tenancy\Database\Concerns\CentralConnection;
+use Spatie\Permission\Traits\HasRoles;
 
 /**
  * Model used for authentication in the Tenant environment and admin panel.
@@ -24,10 +23,17 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @property-read \Carbon\CarbonImmutable|null $created_at
  * @property-read \Carbon\CarbonImmutable|null $updated_at
  */
-final class User extends Authenticatable implements FilamentUser
+final class TenantUser extends Authenticatable implements MustVerifyEmail
 {
-    /** @use HasFactory<\Database\Factories\UserFactory> */
-    use CentralConnection, HasFactory, HasUuids, Notifiable;
+    /** @use HasFactory<\Database\Factories\TenantUserFactory> */
+    use HasFactory, HasRoles, HasUuids, Notifiable;
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'users';
 
     /**
      * The attributes that should be hidden for serialization.
@@ -38,11 +44,6 @@ final class User extends Authenticatable implements FilamentUser
         'password',
         'remember_token',
     ];
-
-    public function canAccessPanel(Panel $panel): bool
-    {
-        return true;
-    }
 
     /**
      * Get the attributes that should be cast.

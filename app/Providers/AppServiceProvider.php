@@ -8,7 +8,7 @@ use App\Models\Church;
 use App\Models\Member;
 use App\Models\Missionary;
 use App\Models\OfferingType;
-use App\Models\User;
+use App\Models\TenantUser;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -63,7 +63,7 @@ final class AppServiceProvider extends ServiceProvider
         Relation::enforceMorphMap([
             'member' => Member::class,
             'missionary' => Missionary::class,
-            'user' => User::class,
+            'user' => TenantUser::class,
             'church' => Church::class,
             'offering_type' => OfferingType::class,
         ]);
