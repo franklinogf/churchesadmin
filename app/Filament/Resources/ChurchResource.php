@@ -17,7 +17,7 @@ final class ChurchResource extends Resource
 {
     protected static ?string $model = Church::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'lucide-church';
 
     public static function form(Form $form): Form
     {
@@ -115,5 +115,15 @@ final class ChurchResource extends Resource
             'create' => Pages\CreateChurch::route('/create'),
             'edit' => Pages\EditChurch::route('/{record}/edit'),
         ];
+    }
+
+    public static function getNavigationBadge(): ?string
+    {
+        return (string) self::getModel()::count();
+    }
+
+    public static function getNavigationBadgeTooltip(): ?string
+    {
+        return 'The number of churches';
     }
 }
