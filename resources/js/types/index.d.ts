@@ -3,7 +3,6 @@ import { type LanguageCode } from '@/enums';
 import { type UserPermission } from '@/enums/user';
 import { type LucideIcon } from 'lucide-react';
 import type { Config } from 'ziggy-js';
-import { type OneOf } from './generics';
 import type { AuthenticatedUser } from './models/user';
 
 export interface Auth {
@@ -28,8 +27,6 @@ export type NavItem = BaseNavMenu & {
 export type NavGroup = BaseNavMenu & {
   items: NavItem[];
 };
-
-export type NavMenu = OneOf<[NavGroup, NavItem]>;
 
 export interface SharedData {
   auth: Auth;
