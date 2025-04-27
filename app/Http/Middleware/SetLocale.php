@@ -21,8 +21,7 @@ final class SetLocale
         /**
          * @var string $locale
          */
-        $locale = $request->user()?->language->value
-        ?? $request->cookie('locale')
+        $locale = $request->cookie('locale')
         ?? session('locale')
         ?? config('app.locale');
 
