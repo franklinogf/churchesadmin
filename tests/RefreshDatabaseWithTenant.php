@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests;
 
+use App\Enums\LanguageCode;
 use App\Models\Church;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
@@ -76,7 +77,7 @@ trait RefreshDatabaseWithTenant
             File::deleteDirectory(public_path("public-{$tenantId}".($token ? "-{$token}" : '')));
 
             // Create the tenant and associated domain if they don't exist.
-            $t = Church::create(['id' => $tenantId, 'name' => $this->tenantName]);
+            $t = Church::create(['id' => $tenantId, 'name' => $this->tenantName, 'locale' => LanguageCode::EN]);
             if ($t->domains()->doesntExist()) {
                 $t->createDomain($tenantId);
             }

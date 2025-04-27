@@ -22,7 +22,6 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read string $email
  * @property-read string $password
  * @property-read string $remember_token
- * @property-read \App\Enums\LanguageCode $language
  * @property-read \Carbon\CarbonImmutable|null $email_verified_at
  * @property-read \Carbon\CarbonImmutable|null $created_at
  * @property-read \Carbon\CarbonImmutable|null $updated_at
@@ -57,7 +56,6 @@ final class User extends Authenticatable implements FilamentUser
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
-            'language' => \App\Enums\LanguageCode::class,
         ];
     }
 }
