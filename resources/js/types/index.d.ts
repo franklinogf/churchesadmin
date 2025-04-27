@@ -36,6 +36,7 @@ export interface SharedData {
     success: string | null;
     error: string | null;
   };
+  locale: Locale;
   availableLocales: {
     label: Locale;
     value: string;

@@ -70,7 +70,7 @@ const codesNavItems: NavItem[] = [
 const footerNavItems: NavItem[] = [
   {
     title: 'Church Settings',
-    href: '',
+    href: route('church.language.edit'),
     icon: CogIcon,
   },
 ];

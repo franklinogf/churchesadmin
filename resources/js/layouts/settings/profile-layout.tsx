@@ -4,32 +4,36 @@ import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 import { type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { type PropsWithChildren } from 'react';
-
-const sidebarNavItems: NavItem[] = [
-  {
-    title: 'Profile',
-    href: route('profile.edit'),
-    icon: null,
-  },
-  {
-    title: 'Password',
-    href: route('password.edit'),
-    icon: null,
-  },
-  {
-    title: 'Appearance',
-    href: route('appearance'),
-    icon: null,
-  },
-];
+import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { useMemo, type PropsWithChildren } from 'react';
 
 export default function SettingsLayout({ children }: PropsWithChildren) {
+  const { t } = useLaravelReactI18n();
   const {
     props: {
       ziggy: { location },
     },
   } = usePage<SharedData>();
+  const sidebarNavItems: NavItem[] = useMemo(
+    () => [
+      {
+        title: t('Profile'),
+        href: route('profile.edit'),
+        icon: null,
+      },
+      {
+        title: t('Password'),
+        href: route('password.edit'),
+        icon: null,
+      },
+      {
+        title: t('Appearance'),
+        href: route('appearance'),
+        icon: null,
+      },
+    ],
+    [t],
+  );
   // When server-side rendering, we only render the layout on the client...
   if (typeof window === 'undefined') {
     return null;
@@ -37,7 +41,7 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
 
   return (
     <div className="px-4 py-6">
-      <Heading title="Settings" description="Manage your profile and account settings" />
+      <Heading title={t('Settings')} description={t('Manage your profile and account settings')} />
 
       <div className="flex flex-col space-y-8 lg:flex-row lg:space-y-0 lg:space-x-12">
         <aside className="w-full max-w-xl lg:w-48">
