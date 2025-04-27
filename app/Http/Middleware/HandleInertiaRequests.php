@@ -63,7 +63,7 @@ final class HandleInertiaRequests extends Middleware
             'availableLocales' => LanguageCode::options(),
             'appName' => config('app.name'),
             'environment' => app()->environment(),
-            'locale' => Church::current()?->locale ?? config('app.locale'),
+            'locale' => Church::current()->locale ?? config('app.locale'),
         ];
     }
 
