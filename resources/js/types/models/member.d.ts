@@ -11,7 +11,7 @@ export interface Member {
   email: string;
   phone: string;
   gender: Gender;
-  dob: string;
+  dob: string | null;
   civilStatus: CivilStatus;
   skills: TagRelationship[];
   skillsCount?: number;

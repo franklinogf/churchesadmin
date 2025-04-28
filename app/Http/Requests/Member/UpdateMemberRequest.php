@@ -35,7 +35,7 @@ final class UpdateMemberRequest extends FormRequest
             'email' => ['required', 'email', Rule::unique('members')->ignore($this->member->id)],
             'phone' => ['required', 'phone', Rule::unique('members')->ignore($this->member->id)],
             'gender' => ['required', 'string', Rule::enum(Gender::class)],
-            'dob' => ['required', 'date:Y-m-d'],
+            'dob' => ['nullable', 'date:Y-m-d'],
             'civil_status' => ['required', 'string', Rule::enum(CivilStatus::class)],
             'skills' => ['array'],
             'skills.*' => ['string'],
