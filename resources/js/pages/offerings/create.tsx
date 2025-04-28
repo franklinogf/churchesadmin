@@ -60,10 +60,10 @@ export default function Create({ wallets, paymentMethods, members, missionaries,
     payer_id: 'non_member',
     offerings: [
       {
-        wallet_id: wallets[0].value.toString(),
+        wallet_id: wallets[0]?.value.toString() ?? '',
         payment_method: paymentMethods[0]?.value.toString() ?? '',
         offering_type: {
-          id: offeringTypes?.options[0].value.toString() ?? '',
+          id: offeringTypes?.options[0]?.value.toString() ?? '',
           model: offeringTypes?.model ?? '',
         },
         amount: '0.00',
