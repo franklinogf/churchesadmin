@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->string('phone')->unique();
             $table->string('gender');
-            $table->date('dob');
+            $table->date('dob')->nullable();
             $table->string('civil_status');
             $table->timestamps();
             $table->softDeletes();

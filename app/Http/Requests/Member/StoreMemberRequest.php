@@ -32,7 +32,7 @@ final class StoreMemberRequest extends FormRequest
             'email' => ['required', 'email', Rule::unique('members')],
             'phone' => ['required', 'phone', Rule::unique('members')],
             'gender' => ['required', 'string', Rule::enum(Gender::class)],
-            'dob' => ['required', 'date:Y-m-d'],
+            'dob' => ['nullable', 'date:Y-m-d'],
             'civil_status' => ['required', 'string', Rule::enum(CivilStatus::class)],
             'skills' => ['array'],
             'skills.*' => ['string'],

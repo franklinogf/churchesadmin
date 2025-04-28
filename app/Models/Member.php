@@ -23,7 +23,7 @@ use Spatie\Tags\HasTags;
  * @property-read string $email
  * @property-read string $phone
  * @property-read Gender $gender
- * @property-read CarbonImmutable $dob
+ * @property-read CarbonImmutable|null $dob
  * @property-read CivilStatus $civil_status
  * @property-read CarbonImmutable|null $deleted_at
  * @property-read CarbonImmutable $created_at

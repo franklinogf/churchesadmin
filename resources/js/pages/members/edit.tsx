@@ -46,7 +46,7 @@ export default function Edit({ member, genders, civilStatuses, skills, categorie
     last_name: member.lastName,
     email: member.email,
     phone: member.phone,
-    dob: member.dob,
+    dob: member.dob ?? '',
     gender: member.gender,
     civil_status: member.civilStatus,
     skills: convertTagsToMultiselectOptions(member.skills),
@@ -83,7 +83,7 @@ export default function Edit({ member, genders, civilStatuses, skills, categorie
             <PhoneField required label="Phone" value={data.phone} onChange={(value) => setData('phone', value)} error={errors.phone} />
           </FieldsGrid>
 
-          <DateField required label="Date of Birth" value={data.dob} onChange={(value) => setData('dob', value)} error={errors.dob} />
+          <DateField label="Date of Birth" value={data.dob} onChange={(value) => setData('dob', value)} error={errors.dob} />
 
           <FieldsGrid>
             <SelectField

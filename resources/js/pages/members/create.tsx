@@ -82,7 +82,7 @@ export default function Create({ genders, civilStatuses, skills, categories }: C
             <PhoneField required label="Phone" value={data.phone} onChange={(value) => setData('phone', value)} error={errors.phone} />
           </FieldsGrid>
 
-          <DateField required label="Date of Birth" value={data.dob} onChange={(value) => setData('dob', value)} error={errors.dob} />
+          <DateField label="Date of Birth" value={data.dob} onChange={(value) => setData('dob', value)} error={errors.dob} />
 
           <FieldsGrid>
             <SelectField
