@@ -19,7 +19,7 @@ interface TranslatableInputProps {
 
 export function TranslatableInput({ label, errors, values, disabled, required, onChange }: TranslatableInputProps) {
   const locales = usePage<SharedData>().props.availableLocales;
-  const [activeLocale, setActiveLocale] = React.useState(locales[0].value);
+  const [activeLocale, setActiveLocale] = React.useState(locales[0]?.value);
   const { t } = useLaravelReactI18n();
 
   const errorMessage = errors?.errors[`${errors.name}.${activeLocale}`];

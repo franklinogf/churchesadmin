@@ -63,8 +63,8 @@ export default function Create({ wallets, paymentMethods, members, missionaries,
         wallet_id: wallets[0]?.value.toString() ?? '',
         payment_method: paymentMethods[0]?.value.toString() ?? '',
         offering_type: {
-          id: offeringTypes?.options[0]?.value.toString() ?? '',
-          model: offeringTypes?.model ?? '',
+          id: offeringTypes.options[0]?.value.toString() ?? '',
+          model: offeringTypes.model ?? '',
         },
         amount: '0.00',
         note: '',
@@ -80,10 +80,10 @@ export default function Create({ wallets, paymentMethods, members, missionaries,
     setData('offerings', [
       ...data.offerings,
       {
-        wallet_id: wallets[0].value.toString(),
+        wallet_id: wallets[0]?.value.toString() ?? '',
         payment_method: paymentMethods[0]?.value.toString() ?? '',
         offering_type: {
-          id: offeringTypes?.options[0].value.toString() ?? '',
+          id: offeringTypes?.options[0]?.value.toString() ?? '',
           model: offeringTypes?.model ?? '',
         },
         amount: '0.00',
@@ -100,6 +100,9 @@ export default function Create({ wallets, paymentMethods, members, missionaries,
 
   function handleUpdateOffering(index: number, field: string, value: unknown) {
     const updatedOfferings = [...data.offerings];
+    if (updatedOfferings[index] === undefined) {
+      return;
+    }
     updatedOfferings[index] = {
       ...updatedOfferings[index],
       [field]: value,
