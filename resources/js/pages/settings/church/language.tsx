@@ -1,6 +1,6 @@
 import { type BreadcrumbItem, type SelectOption, type SharedData } from '@/types';
 import { Transition } from '@headlessui/react';
-import { useForm, usePage } from '@inertiajs/react';
+import { router, useForm, usePage } from '@inertiajs/react';
 import { useMemo, type FormEventHandler } from 'react';
 
 import { SelectField } from '@/components/forms/inputs/SelectField';
@@ -19,7 +19,6 @@ export default function Language({ languages }: { languages: SelectOption[] }) {
   const {
     props: { locale },
   } = usePage<SharedData>();
-
   const { data, setData, patch, errors, processing, recentlySuccessful } = useForm<Required<LanguageForm>>({
     locale,
   });
@@ -31,6 +30,7 @@ export default function Language({ languages }: { languages: SelectOption[] }) {
       preserveScroll: true,
       onSuccess: () => {
         setLocale(data.locale);
+        router.flushAll();
       },
     });
   };
