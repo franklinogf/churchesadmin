@@ -1,3 +1,4 @@
+import { DatatableCell } from '@/components/custom-ui/datatable/DatatableCell';
 import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTableColumnHeader';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -27,12 +28,20 @@ export const columns: ColumnDef<Missionary>[] = [
     header: ({ column }) => <DataTableColumnHeader column={column} title="Phone" />,
     accessorKey: 'phone',
     enableSorting: false,
+    cell: ({ row }) => {
+      return <DatatableCell justify="center">{row.getValue('phone')}</DatatableCell>;
+    },
   },
   {
     header: ({ column }) => <DataTableColumnHeader column={column} title="Gender" />,
     accessorKey: 'gender',
-    cell: ({ row }) => {
-      return <Badge className="w-24">{row.getValue('gender')}</Badge>;
+    cell: function CellComponent({ row }) {
+      const { t } = useLaravelReactI18n();
+      return (
+        <DatatableCell justify="center">
+          <Badge className="w-24">{t(`enum.gender.${row.getValue('gender')}`)}</Badge>
+        </DatatableCell>
+      );
     },
   },
   {
