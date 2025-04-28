@@ -1,3 +1,4 @@
+import { DatatableCell } from '@/components/custom-ui/datatable/DatatableCell';
 import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTableColumnHeader';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -18,9 +19,10 @@ export const columns: ColumnDef<User>[] = [
     accessorKey: 'name',
   },
   {
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Last name" />,
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Email" />,
     enableHiding: false,
     accessorKey: 'email',
+    cell: ({ row }) => <DatatableCell justify="center">{row.getValue('email')}</DatatableCell>,
   },
   {
     header: ({ column }) => <DataTableColumnHeader column={column} title="Role" />,
@@ -29,10 +31,12 @@ export const columns: ColumnDef<User>[] = [
     cell: ({ row }) => {
       const roles = row.getValue('roles') as Role[];
       return (
-        <Badge className="flex items-center gap-2">
-          {roles[0]?.label}
-          {roles.length > 1 && <span className="text-xs font-medium">+{roles.length - 1}</span>}
-        </Badge>
+        <DatatableCell justify="center">
+          <Badge className="flex items-center gap-2">
+            {roles[0]?.label}
+            {roles.length > 1 && <span className="text-xs font-medium">+{roles.length - 1}</span>}
+          </Badge>
+        </DatatableCell>
       );
     },
   },

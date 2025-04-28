@@ -24,11 +24,11 @@ enum CivilStatus: string
     public function label(): string
     {
         return match ($this) {
-            self::SINGLE => __('Single'),
-            self::MARRIED => __('Married'),
-            self::DIVORCED => __('Divorced'),
-            self::WIDOWED => __('Widowed'),
-            self::SEPARATED => __('Separated'),
+            self::SINGLE => __('enum.civil_status.single'),
+            self::MARRIED => __('enum.civil_status.married'),
+            self::DIVORCED => __('enum.civil_status.divorced'),
+            self::WIDOWED => __('enum.civil_status.widowed'),
+            self::SEPARATED => __('enum.civil_status.separated'),
         };
     }
 }

@@ -11,7 +11,7 @@ import { OfferingTypeForm } from '..';
 export const columns: ColumnDef<OfferingType>[] = [
   {
     enableHiding: false,
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Name" />,
+    header: ({ column }) => <DataTableColumnHeader column={column} center={false} title="Name" />,
     accessorKey: 'name',
   },
   {
