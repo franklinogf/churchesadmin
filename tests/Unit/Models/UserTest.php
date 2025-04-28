@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-use App\Models\TenantUser;
+use App\Models\User;
 
 uses(Illuminate\Foundation\Testing\RefreshDatabase::class);
 
 test('to array', function (): void {
-    $user = TenantUser::factory()->create()->fresh();
+    $user = User::factory()->create()->fresh();
 
     expect(array_keys($user->toArray()))->toBe([
         'id',
