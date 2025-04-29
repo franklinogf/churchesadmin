@@ -7,7 +7,8 @@ import { router } from '@inertiajs/react';
 import { type ColumnDef } from '@tanstack/react-table';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { Edit2Icon, MoreHorizontalIcon, Trash2Icon } from 'lucide-react';
-import { OfferingTypeForm } from '..';
+import { OfferingTypeForm } from '../components/OfferingTypeForm';
+
 export const columns: ColumnDef<OfferingType>[] = [
   {
     enableHiding: false,
