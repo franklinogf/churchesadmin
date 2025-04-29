@@ -24,7 +24,7 @@ final class DatabaseSeeder extends Seeder
             'password' => 'password',
         ]);
 
-        if (app()->isLocal()) {
+        if (! app()->isProduction()) {
             Church::create([
                 'id' => 'test-church',
                 'name' => 'Test Church',
