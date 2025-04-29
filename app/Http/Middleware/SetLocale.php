@@ -33,8 +33,6 @@ final class SetLocale
 
         app()->setLocale($locale);
 
-        session(['locale' => $locale]);
-
         cookie()->queue(cookie('locale', $locale, 60 * 24 * 30)); // 30 days
 
         return $next($request);
