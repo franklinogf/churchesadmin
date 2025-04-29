@@ -29,6 +29,7 @@ final class DatabaseSeeder extends Seeder
                 'id' => 'test-church',
                 'name' => 'Test Church',
                 'locale' => LanguageCode::ENGLISH,
+                'active' => true,
             ])->createDomain('test');
         }
 

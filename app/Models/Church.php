@@ -21,6 +21,7 @@ use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
  * @property-read string $id
  * @property-read string $name
  * @property-read LanguageCode $locale
+ * @property-read bool $active
  * @property-read array<string,mixed>|null $data
  * @property-read \Carbon\CarbonImmutable|null $created_at
  * @property-read \Carbon\CarbonImmutable|null $updated_at
@@ -42,6 +43,7 @@ final class Church extends BaseTenant implements TenantWithDatabase, WalletFloat
         return array_merge($parentColumns, [
             'name',
             'locale',
+            'active',
         ]);
     }
 
@@ -50,6 +52,7 @@ final class Church extends BaseTenant implements TenantWithDatabase, WalletFloat
         return [
             ...parent::casts(),
             'locale' => LanguageCode::class,
+            'active' => 'boolean',
         ];
     }
 }

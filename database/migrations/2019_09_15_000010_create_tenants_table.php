@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('id')->primary();
             $table->string('name');
             $table->string('locale');
+            $table->boolean('active');
             $table->json('data')->nullable();
             $table->timestamps();
         });

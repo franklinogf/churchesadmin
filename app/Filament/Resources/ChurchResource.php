@@ -26,7 +26,6 @@ final class ChurchResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->translateLabel()
                     ->required(),
-
                 Forms\Components\Repeater::make('domains')
                     ->translateLabel()
                     ->required()
@@ -64,6 +63,9 @@ final class ChurchResource extends Resource
                     ])
                     ->columns(2)
                     ->compact(),
+                Forms\Components\Toggle::make('active')
+                    ->translateLabel()
+                    ->required(),
             ]);
     }
 
@@ -78,7 +80,13 @@ final class ChurchResource extends Resource
                     ->translateLabel()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('locale')
+                    ->label(__('Language'))
+                    ->sortable()
                     ->badge(),
+                Tables\Columns\ToggleColumn::make('active')
+                    ->translateLabel()
+                    ->sortable(),
+
                 Tables\Columns\TextColumn::make('created_at')
                     ->translateLabel()
                     ->dateTime()
