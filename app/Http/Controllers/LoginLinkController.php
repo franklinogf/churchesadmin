@@ -45,7 +45,7 @@ final class LoginLinkController extends Controller
                 'name' => $name,
                 'email' => $email,
                 'password' => 'Password123',
-                'language' => LanguageCode::EN->value,
+                'language' => LanguageCode::ENGLISH->value,
             ]);
             $user->assignRole($role);
 

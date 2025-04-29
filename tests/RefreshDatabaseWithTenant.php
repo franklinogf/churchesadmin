@@ -77,7 +77,7 @@ trait RefreshDatabaseWithTenant
             File::deleteDirectory(public_path("public-{$tenantId}".($token ? "-{$token}" : '')));
 
             // Create the tenant and associated domain if they don't exist.
-            $t = Church::create(['id' => $tenantId, 'name' => $this->tenantName, 'locale' => LanguageCode::EN]);
+            $t = Church::create(['id' => $tenantId, 'name' => $this->tenantName, 'locale' => LanguageCode::ENGLISH]);
             if ($t->domains()->doesntExist()) {
                 $t->createDomain($tenantId);
             }

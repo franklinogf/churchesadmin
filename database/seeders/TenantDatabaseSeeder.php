@@ -30,8 +30,8 @@ final class TenantDatabaseSeeder extends Seeder
         $currentChurch = Church::current();
 
         $currentChurch?->createWallet([
-            'name' => $currentChurch?->locale === LanguageCode::EN ? 'Primary Wallet' : 'Billetera Principal',
-            'description' => $currentChurch?->locale === LanguageCode::EN ? 'This is the primary wallet' : 'Esta es la billetera principal',
+            'name' => $currentChurch?->locale === LanguageCode::ENGLISH ? 'Primary Wallet' : 'Billetera Principal',
+            'description' => $currentChurch?->locale === LanguageCode::ENGLISH ? 'This is the primary wallet' : 'Esta es la billetera principal',
             'slug' => WalletName::PRIMARY->value,
         ]);
 

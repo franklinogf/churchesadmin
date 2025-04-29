@@ -10,8 +10,8 @@ use App\Enums\Traits\HasOptions;
 enum LanguageCode: string
 {
     use EnumToArray, HasOptions;
-    case EN = 'en';
-    case ES = 'es';
+    case ENGLISH = 'en';
+    case SPANISH = 'es';
 
     /**
      * Get the label for the language code.
@@ -21,8 +21,8 @@ enum LanguageCode: string
     public function label(): string
     {
         return match ($this) {
-            self::EN => 'English',
-            self::ES => 'Spanish',
+            self::ENGLISH => 'English',
+            self::SPANISH => 'Spanish',
         };
     }
 }

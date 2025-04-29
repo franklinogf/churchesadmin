@@ -11,7 +11,7 @@ test('to array', function (): void {
     $church = Church::createQuietly([
         'id' => 1,
         'name' => 'Test Church',
-        'locale' => LanguageCode::EN,
+        'locale' => LanguageCode::ENGLISH,
     ])->fresh();
 
     expect(array_keys($church->toArray()))->toBe([
@@ -28,7 +28,7 @@ test('casts are correct', function (): void {
     $church = Church::createQuietly([
         'id' => 1,
         'name' => 'Test Church',
-        'locale' => LanguageCode::EN,
+        'locale' => LanguageCode::ENGLISH,
     ])->fresh();
 
     expect($church->locale)->toBeInstanceOf(LanguageCode::class);

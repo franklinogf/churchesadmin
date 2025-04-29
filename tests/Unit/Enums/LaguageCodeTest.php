@@ -15,8 +15,8 @@ it('has needed enums', function (): void {
 
 test('label return correct label', function (): void {
 
-    expect(LanguageCode::EN->label())->toBe(__('English'))->toBeString();
-    expect(LanguageCode::ES->label())->toBe(__('Spanish'))->toBeString();
+    expect(LanguageCode::ENGLISH->label())->toBe(__('English'))->toBeString();
+    expect(LanguageCode::SPANISH->label())->toBe(__('Spanish'))->toBeString();
 
 });
 
