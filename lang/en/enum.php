@@ -22,4 +22,8 @@ return [
         'male' => 'Male',
         'female' => 'Female',
     ],
+    'language_code' => [
+        'en' => 'English',
+        'es' => 'Spanish',
+    ],
 ];

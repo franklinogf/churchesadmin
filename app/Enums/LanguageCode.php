@@ -21,8 +21,8 @@ enum LanguageCode: string
     public function label(): string
     {
         return match ($this) {
-            self::ENGLISH => 'English',
-            self::SPANISH => 'Spanish',
+            self::ENGLISH => __('enum.language_code.en'),
+            self::SPANISH => __('enum.language_code.es'),
         };
     }
 }
