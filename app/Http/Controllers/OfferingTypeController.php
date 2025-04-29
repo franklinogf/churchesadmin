@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Enums\FlashMessageKey;
-use App\Enums\LanguageCode;
 use App\Http\Requests\Code\StoreOfferingTypeRequest;
 use App\Http\Requests\Code\UpdateOfferingTypeRequest;
 use App\Http\Resources\Codes\OfferingTypeResource;
@@ -33,14 +32,7 @@ final class OfferingTypeController extends Controller
      */
     public function store(StoreOfferingTypeRequest $request): RedirectResponse
     {
-        /**
-         * @var array{name:string} $validated
-         */
-        $validated = $request->validated();
-
-        OfferingType::create(['name' => collect(LanguageCode::values())
-            ->mapWithKeys(fn (string $code) => [$code => $validated['name']])
-            ->toArray()]);
+        OfferingType::create($request->validated());
 
         return to_route('codes.offeringTypes.index')->with(FlashMessageKey::SUCCESS->value, 'Offering type created successfully.');
     }
@@ -50,13 +42,8 @@ final class OfferingTypeController extends Controller
      */
     public function update(UpdateOfferingTypeRequest $request, OfferingType $offeringType): RedirectResponse
     {
-        /**
-         * @var array{name:string} $validated
-         */
-        $validated = $request->validated();
-        $offeringType->update(['name' => collect(LanguageCode::values())
-            ->mapWithKeys(fn (string $code) => [$code => $validated['name']])
-            ->toArray()]);
+
+        $offeringType->update($request->validated());
 
         return to_route('codes.offeringTypes.index')->with(FlashMessageKey::SUCCESS->value, 'Offering type updated successfully.');
     }

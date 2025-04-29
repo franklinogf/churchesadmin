@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ExpenseTypeController;
 use App\Http\Controllers\LoginLinkController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\MissionaryController;
@@ -95,6 +96,8 @@ Route::middleware([
                 // codes
                 Route::prefix('codes')->name('codes.')->group(function (): void {
                     Route::resource('offeringTypes', OfferingTypeController::class)
+                        ->except(['show', 'create', 'edit']);
+                    Route::resource('expenseTypes', ExpenseTypeController::class)
                         ->except(['show', 'create', 'edit']);
                 });
             });

@@ -8,7 +8,6 @@ use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Spatie\Translatable\HasTranslations;
 
 /**
  * @property-read int $id
@@ -20,14 +19,7 @@ use Spatie\Translatable\HasTranslations;
 final class OfferingType extends Model
 {
     /** @use HasFactory<\Database\Factories\OfferingTypeFactory> */
-    use HasFactory, HasTranslations;
-
-    /**
-     * The attributes that should be translatable.
-     *
-     * @var array<string>
-     */
-    protected $translatable = ['name'];
+    use HasFactory;
 
     /**
      * Get the offerings of this model.
