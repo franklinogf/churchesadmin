@@ -12,6 +12,7 @@
         "filament/filament": "^3.3.12",
         "inertiajs/inertia-laravel": "^2.0.2",
         "laravel/framework": "^12.9.2",
+        "laravel/telescope": "^5.7",
         "laravel/tinker": "^2.10.1",
         "mallardduck/blade-lucide-icons": "^1.23",
         "propaganistas/laravel-phone": "^5.3.6",
@@ -19,6 +20,7 @@
         "spatie/laravel-tags": "^4.10",
         "spatie/laravel-translatable": "^6.11.4",
         "stancl/tenancy": "dev-master",
+        "stephenjude/filament-debugger": "^4.0",
         "tightenco/ziggy": "^2.5.2"
     },
     "require-dev": {
