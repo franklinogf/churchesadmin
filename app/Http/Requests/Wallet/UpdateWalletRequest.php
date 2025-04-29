@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Wallet;
 
-use CodeZero\UniqueTranslation\UniqueTranslationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 /**
  * @property-read \App\Models\Wallet $wallet
@@ -37,7 +37,7 @@ final class UpdateWalletRequest extends FormRequest
         $tenantId = tenant('id');
 
         return [
-            'name' => ['required', 'string', 'min:3', 'max:255', UniqueTranslationRule::for("{$connection}.wallets")
+            'name' => ['required', 'string', 'min:3', 'max:255', Rule::unique("{$connection}.wallets")
                 ->ignore($this->wallet->id)
                 ->where('holder_id', $tenantId)],
             'description' => ['nullable', 'string', 'min:3', 'max:255'],

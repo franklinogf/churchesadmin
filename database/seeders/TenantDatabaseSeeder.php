@@ -6,6 +6,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Enums\LanguageCode;
 use App\Enums\WalletName;
 use App\Models\Church;
 use Illuminate\Database\Seeder;
@@ -26,16 +27,11 @@ final class TenantDatabaseSeeder extends Seeder
             Tenants\CategorySeeder::class,
             Tenants\UserSeeder::class,
         ]);
+        $currentChurch = Church::current();
 
-        Church::current()?->createWallet([
-            'name' => [
-                'en' => 'Primary Wallet',
-                'es' => 'Billetera Principal',
-            ],
-            'description' => [
-                'en' => 'This is the primary wallet',
-                'es' => 'Esta es la billetera principal',
-            ],
+        $currentChurch?->createWallet([
+            'name' => $currentChurch?->locale === LanguageCode::EN ? 'Primary Wallet' : 'Billetera Principal',
+            'description' => $currentChurch?->locale === LanguageCode::EN ? 'This is the primary wallet' : 'Esta es la billetera principal',
             'slug' => WalletName::PRIMARY->value,
         ]);
 

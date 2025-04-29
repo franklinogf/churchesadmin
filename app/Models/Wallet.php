@@ -9,7 +9,6 @@ use Bavix\Wallet\Models\Transaction;
 use Bavix\Wallet\Models\Transfer;
 use Bavix\Wallet\Models\Wallet as BaseWallet;
 use Carbon\CarbonImmutable;
-use Spatie\Translatable\HasTranslations;
 use Stancl\Tenancy\Database\Concerns\CentralConnection;
 
 /**
@@ -21,14 +20,7 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  */
 final class Wallet extends BaseWallet
 {
-    use CentralConnection, HasTranslations;
-
-    /**
-     * The attributes that should be translatable.
-     *
-     * @var array<string>
-     */
-    public $translatable = ['name', 'description'];
+    use CentralConnection;
 
     public function canWithdraw(int|string $amount, bool $allowZero = false): bool
     {
