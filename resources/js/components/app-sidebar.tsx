@@ -65,6 +65,11 @@ const codesNavItems: NavItem[] = [
     href: route('codes.offeringTypes.index'),
     icon: LayoutGridIcon,
   },
+  {
+    title: 'Expense types',
+    href: route('codes.expenseTypes.index'),
+    icon: LayoutGridIcon,
+  },
 ];
 
 const footerNavItems: NavItem[] = [
