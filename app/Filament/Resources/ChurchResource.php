@@ -60,9 +60,7 @@ final class ChurchResource extends Resource
                         Forms\Components\Select::make('locale')
                             ->label(__('Language'))
                             ->required()
-                            ->options(collect(LanguageCode::cases())
-                                ->mapWithKeys(fn (LanguageCode $code) => [$code->value => $code->label()])
-                            ),
+                            ->options(LanguageCode::class),
                     ])
                     ->columns(2)
                     ->compact(),
@@ -79,6 +77,8 @@ final class ChurchResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->translateLabel()
                     ->searchable(),
+                Tables\Columns\TextColumn::make('locale')
+                    ->badge(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->translateLabel()
                     ->dateTime()
