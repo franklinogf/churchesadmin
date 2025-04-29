@@ -2,7 +2,7 @@ import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTabl
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import useConfirmationStore from '@/stores/confirmationStore';
-import { type OfferingType } from '@/types/models/offering-types';
+import { type OfferingType } from '@/types/models/offering-type';
 import { router } from '@inertiajs/react';
 import { type ColumnDef } from '@tanstack/react-table';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
