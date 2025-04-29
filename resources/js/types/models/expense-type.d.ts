@@ -1,4 +1,4 @@
-export interface OfferingType {
+export interface ExpenseType {
   id: number;
   name: string;
   createdAt: string;
