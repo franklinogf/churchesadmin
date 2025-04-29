@@ -7,32 +7,33 @@ use App\Enums\LanguageCode;
 it('has needed enums', function (): void {
 
     expect(LanguageCode::names())->toBe([
-        'EN',
-        'ES',
+        'ENGLISH',
+        'SPANISH',
     ]);
 
 });
 
 test('label return correct label', function (): void {
 
-    expect(LanguageCode::ENGLISH->label())->toBe(__('English'))->toBeString();
-    expect(LanguageCode::SPANISH->label())->toBe(__('Spanish'))->toBeString();
+    expect(LanguageCode::ENGLISH->label())->toBe(__('enum.language_code.en'))->toBeString()
+        ->and(LanguageCode::SPANISH->label())->toBe(__('enum.language_code.es'))->toBeString();
 
 });
 
 test('options return an array', function (): void {
 
-    expect(LanguageCode::options())->toBeArray();
-    expect(LanguageCode::options())->toHaveCount(2);
-    expect(LanguageCode::options())->toBe([
-        [
-            'value' => 'en',
-            'label' => __('English'),
-        ],
-        [
-            'value' => 'es',
-            'label' => __('Spanish'),
-        ],
-    ]);
+    expect(LanguageCode::options())
+        ->toBeArray()
+        ->toHaveCount(2)
+        ->toBe([
+            [
+                'value' => 'en',
+                'label' => __('enum.language_code.en'),
+            ],
+            [
+                'value' => 'es',
+                'label' => __('enum.language_code.es'),
+            ],
+        ]);
 
 });

@@ -54,10 +54,10 @@ final class WalletController extends Controller
                 'name' => $validated['name'],
                 'description' => $validated['description'],
                 'meta' => new WalletMetaDto(
-                    bank_name: $validated['bank_name'],
-                    bank_routing_number: $validated['bank_routing_number'],
-                    bank_account_number: $validated['bank_account_number'],
-                )->toArray(),
+                    $validated['bank_name'],
+                    $validated['bank_routing_number'],
+                    $validated['bank_account_number'],
+                ),
             ]
         );
         $wallet?->depositFloat($validated['balance']);
@@ -83,10 +83,10 @@ final class WalletController extends Controller
                 'name' => $validated['name'],
                 'description' => $validated['description'],
                 'meta' => new WalletMetaDto(
-                    bank_name: $validated['bank_name'],
-                    bank_routing_number: $validated['bank_routing_number'],
-                    bank_account_number: $validated['bank_account_number'],
-                )->toArray(),
+                    $validated['bank_name'],
+                    $validated['bank_routing_number'],
+                    $validated['bank_account_number'],
+                ),
             ]
         );
 

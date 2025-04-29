@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Dtos;
 
-use App\Casts\WalletMeta;
+use App\Casts\AsWalletMeta;
+use DragonCode\Contracts\Support\Arrayable;
 use Illuminate\Contracts\Database\Eloquent\Castable;
+use JsonSerializable;
 
 /**
  * @property-read string|null $payer_id
@@ -13,15 +15,15 @@ use Illuminate\Contracts\Database\Eloquent\Castable;
  * @property-read string $offering_type
  * @property-read string|null $message
  */
-final readonly class WalletMetaDto implements Castable
+final readonly class WalletMetaDto implements JsonSerializable, Arrayable, Castable
 {
     /**
      * Create a new class instance.
      */
     public function __construct(
-        public string $bank_name,
-        public string $bank_routing_number,
-        public string $bank_account_number,
+        public string $bankName,
+        public string $bankRoutingNumber,
+        public string $bankAccountNumber,
     ) {
         //
     }
@@ -34,20 +36,30 @@ final readonly class WalletMetaDto implements Castable
      */
     public static function castUsing(array $arguments): string
     {
-        return WalletMeta::class;
+        return AsWalletMeta::class;
     }
 
     /**
-     * Convert the class instance to an array.
+     * Get the instance as an array.
      *
      * @return array{bank_name:string,bank_routing_number:string,bank_account_number:string}
      */
     public function toArray(): array
     {
         return [
-            'bank_name' => $this->bank_name,
-            'bank_routing_number' => $this->bank_routing_number,
-            'bank_account_number' => $this->bank_account_number,
+            'bank_name' => $this->bankName,
+            'bank_routing_number' => $this->bankRoutingNumber,
+            'bank_account_number' => $this->bankAccountNumber,
         ];
+    }
+
+    /**
+     * Specify the data which should be serialized to JSON.
+     *
+     * @return array{bank_name:string,bank_routing_number:string,bank_account_number:string}
+     */
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
     }
 }

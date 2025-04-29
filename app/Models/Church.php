@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Dtos\WalletMetaDto;
 use App\Enums\LanguageCode;
 use Bavix\Wallet\Interfaces\Wallet;
 use Bavix\Wallet\Interfaces\WalletFloat;
+use Bavix\Wallet\Models\Wallet as ModelsWallet;
 use Bavix\Wallet\Traits\HasWalletFloat;
 use Bavix\Wallet\Traits\HasWallets;
 use Stancl\Tenancy\Database\Concerns\HasDatabase;
@@ -25,6 +27,14 @@ use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
  * @property-read array<string,mixed>|null $data
  * @property-read \Carbon\CarbonImmutable|null $created_at
  * @property-read \Carbon\CarbonImmutable|null $updated_at
+ *
+ * @method ModelsWallet createWallet(array{
+ *     name: string,
+ *     slug?: string,
+ *     description?: string,
+ *     meta?: WalletMetaDto|null,
+ *     decimal_places?: positive-int,
+ * } $data)
  */
 final class Church extends BaseTenant implements TenantWithDatabase, WalletFloat, Wallet
 {

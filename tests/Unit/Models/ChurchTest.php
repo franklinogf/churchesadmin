@@ -12,12 +12,14 @@ test('to array', function (): void {
         'id' => 1,
         'name' => 'Test Church',
         'locale' => LanguageCode::ENGLISH,
+        'active' => true,
     ])->fresh();
 
     expect(array_keys($church->toArray()))->toBe([
         'id',
         'name',
         'locale',
+        'active',
         'data',
         'created_at',
         'updated_at',
@@ -29,7 +31,10 @@ test('casts are correct', function (): void {
         'id' => 1,
         'name' => 'Test Church',
         'locale' => LanguageCode::ENGLISH,
+        'active' => true,
     ])->fresh();
 
-    expect($church->locale)->toBeInstanceOf(LanguageCode::class);
+    expect($church->locale)->toBeInstanceOf(LanguageCode::class)
+        ->and($church->active)->toBeBool();
+
 });

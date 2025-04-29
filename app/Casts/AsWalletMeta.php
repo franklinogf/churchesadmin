@@ -7,11 +7,12 @@ namespace App\Casts;
 use App\Dtos\WalletMetaDto;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
+use InvalidArgumentException;
 
 /**
  * @implements CastsAttributes<WalletMetaDto|null,string>
  */
-final class WalletMeta implements CastsAttributes
+final class AsWalletMeta implements CastsAttributes
 {
     /**
      * Cast the given value.
@@ -30,9 +31,9 @@ final class WalletMeta implements CastsAttributes
         $valueData = json_decode($value, true);
 
         return new WalletMetaDto(
-            bank_name: $valueData['bank_name'],
-            bank_routing_number: $valueData['bank_routing_number'],
-            bank_account_number: $valueData['bank_account_number'],
+            $valueData['bank_name'],
+            $valueData['bank_routing_number'],
+            $valueData['bank_account_number'],
 
         );
     }
@@ -41,10 +42,15 @@ final class WalletMeta implements CastsAttributes
      * Prepare the given value for storage.
      *
      * @param  array<string, mixed>  $attributes
+     * @param  WalletMetaDto|mixed  $value
      */
     public function set(Model $model, string $key, mixed $value, array $attributes): mixed
     {
-        return [$key => json_encode($value)];
+        if (! $value instanceof WalletMetaDto) {
+            throw new InvalidArgumentException('The given value is not a WalletMetaDto instance.');
+        }
+
+        return [$key => json_encode($value->toArray())];
     }
 
     /**

@@ -23,9 +23,9 @@ final class WalletResource extends JsonResource
             'id' => $this->id,
             'uuid' => $this->uuid,
             'meta' => $this->meta !== null ? [
-                'bankName' => $this->meta->bank_name,
-                'bankRoutingNumber' => $this->meta->bank_routing_number,
-                'bankAccountNumber' => $this->meta->bank_account_number,
+                'bankName' => $this->meta->bankName,
+                'bankRoutingNumber' => $this->meta->bankRoutingNumber,
+                'bankAccountNumber' => $this->meta->bankAccountNumber,
             ] : null,
             'name' => $this->name,
             'slug' => $this->slug,
