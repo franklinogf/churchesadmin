@@ -10,7 +10,7 @@ import { Link, router } from '@inertiajs/react';
 import { type ColumnDef } from '@tanstack/react-table';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { ArchiveIcon, ArchiveRestoreIcon, CheckIcon, Edit2Icon, MoreHorizontalIcon, WalletIcon, XCircleIcon } from 'lucide-react';
-import { WalletForm } from '..';
+import { WalletForm } from '../components/WalletForm';
 
 export const walletColumns: ColumnDef<Wallet>[] = [
   {
