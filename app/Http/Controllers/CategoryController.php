@@ -28,7 +28,10 @@ final class CategoryController extends Controller
         $response = Gate::inspect('viewAny', [Tag::class, TagType::CATEGORY]);
 
         if ($response->denied()) {
-            return to_route('dashboard')->with(FlashMessageKey::ERROR->value, $response->message());
+            return to_route('dashboard')->with(
+                FlashMessageKey::SUCCESS->value,
+                __('flash.message.restored', ['model' => __('dashboard')])
+            );
         }
 
         $categories = Tag::whereType(TagType::CATEGORY->value)->orderBy('created_at', 'desc')->get();
@@ -52,12 +55,18 @@ final class CategoryController extends Controller
         $response = Gate::inspect('create', [Tag::class, $data['is_regular'], TagType::CATEGORY]);
 
         if ($response->denied()) {
-            return to_route('categories.index')->with(FlashMessageKey::ERROR->value, $response->message());
+            return to_route('categories.index')->with(
+                FlashMessageKey::SUCCESS->value,
+                __('flash.message.restored', ['model' => __('categories')])
+            );
         }
 
         $action->handle($data, TagType::CATEGORY);
 
-        return to_route('categories.index')->with(FlashMessageKey::SUCCESS->value, __('Category created successfully.'));
+        return to_route('categories.index')->with(
+            FlashMessageKey::SUCCESS->value,
+                __('flash.message.restored', ['model' => __('categories')])
+        );
     }
 
     /**
@@ -68,12 +77,18 @@ final class CategoryController extends Controller
         $response = Gate::inspect('update', $tag);
 
         if ($response->denied()) {
-            return to_route('categories.index')->with(FlashMessageKey::ERROR->value, $response->message());
+            return to_route('categories.index')->with(
+                FlashMessageKey::SUCCESS->value,
+                __('flash.message.restored', ['model' => __('categories')])
+            );
         }
 
         $action->handle($tag, $request->validated());
 
-        return to_route('categories.index')->with(FlashMessageKey::SUCCESS->value, __('Category updated successfully.'));
+        return to_route('categories.index')->with(
+            FlashMessageKey::SUCCESS->value,
+                __('flash.message.restored', ['model' => __('categories')])
+        );
     }
 
     /**
@@ -84,11 +99,17 @@ final class CategoryController extends Controller
         $response = Gate::inspect('delete', $tag);
 
         if ($response->denied()) {
-            return to_route('categories.index')->with(FlashMessageKey::ERROR->value, $response->message());
+            return to_route('categories.index')->with(
+                FlashMessageKey::SUCCESS->value,
+                __('flash.message.restored', ['model' => __('categories')])
+            );
         }
 
         $action->handle($tag);
 
-        return to_route('categories.index')->with(FlashMessageKey::SUCCESS->value, __('Category deleted successfully.'));
+        return to_route('categories.index')->with(
+            FlashMessageKey::SUCCESS->value,
+                __('flash.message.restored', ['model' => __('categories')])
+        );
     }
 }

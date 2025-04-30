@@ -28,7 +28,10 @@ final class SkillController extends Controller
         $response = Gate::inspect('viewAny', [Tag::class, TagType::SKILL]);
 
         if ($response->denied()) {
-            return to_route('dashboard')->with(FlashMessageKey::ERROR->value, $response->message());
+            return to_route('dashboard')->with(
+                FlashMessageKey::SUCCESS->value,
+                __('flash.message.restored', ['model' => __('dashboard')])
+            );
         }
 
         $skills = Tag::whereType(TagType::SKILL->value)->orderByDesc('order_column')->get();
@@ -51,12 +54,18 @@ final class SkillController extends Controller
         $response = Gate::inspect('create', [Tag::class, $data['is_regular'], TagType::SKILL]);
 
         if ($response->denied()) {
-            return to_route('skills.index')->with(FlashMessageKey::ERROR->value, $response->message());
+            return to_route('skills.index')->with(
+                FlashMessageKey::SUCCESS->value,
+                __('flash.message.restored', ['model' => __('skills')])
+            );
         }
 
         $action->handle($data, TagType::SKILL);
 
-        return to_route('skills.index')->with(FlashMessageKey::SUCCESS->value, __('Skill created successfully.'));
+        return to_route('skills.index')->with(
+            FlashMessageKey::SUCCESS->value,
+                __('flash.message.restored', ['model' => __('skills')])
+        );
     }
 
     /**
@@ -67,12 +76,18 @@ final class SkillController extends Controller
         $response = Gate::inspect('update', $tag);
 
         if ($response->denied()) {
-            return to_route('skills.index')->with(FlashMessageKey::ERROR->value, $response->message());
+            return to_route('skills.index')->with(
+                FlashMessageKey::SUCCESS->value,
+                __('flash.message.restored', ['model' => __('skills')])
+            );
         }
 
         $action->handle($tag, $request->validated());
 
-        return to_route('skills.index')->with(FlashMessageKey::SUCCESS->value, __('Skill updated successfully.'));
+        return to_route('skills.index')->with(
+            FlashMessageKey::SUCCESS->value,
+                __('flash.message.restored', ['model' => __('skills')])
+        );
     }
 
     /**
@@ -83,11 +98,17 @@ final class SkillController extends Controller
         $response = Gate::inspect('delete', $tag);
 
         if ($response->denied()) {
-            return to_route('skills.index')->with(FlashMessageKey::ERROR->value, $response->message());
+            return to_route('skills.index')->with(
+                FlashMessageKey::SUCCESS->value,
+                __('flash.message.restored', ['model' => __('skills')])
+            );
         }
 
         $action->handle($tag);
 
-        return to_route('skills.index')->with(FlashMessageKey::SUCCESS->value, __('Skill deleted successfully.'));
+        return to_route('skills.index')->with(
+            FlashMessageKey::SUCCESS->value,
+                __('flash.message.restored', ['model' => __('skills')])
+        );
     }
 }

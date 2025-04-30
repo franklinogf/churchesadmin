@@ -34,7 +34,10 @@ final class MemberController extends Controller
         $response = Gate::inspect('viewAny', Member::class);
 
         if ($response->denied()) {
-            return to_route('dashboard')->with(FlashMessageKey::ERROR->value, $response->message());
+            return to_route('dashboard')->with(
+                FlashMessageKey::SUCCESS->value,
+                __('flash.message.restored', ['model' => __('dashboard')])
+            );
         }
 
         $members = Member::latest()->get();
@@ -50,7 +53,10 @@ final class MemberController extends Controller
         $response = Gate::inspect('create', Member::class);
 
         if ($response->denied()) {
-            return to_route('members.index')->with(FlashMessageKey::ERROR->value, $response->message());
+            return to_route('members.index')->with(
+                FlashMessageKey::SUCCESS->value,
+                __('flash.message.restored', ['model' => __('members')])
+            );
         }
 
         $genders = Gender::options();
@@ -75,12 +81,18 @@ final class MemberController extends Controller
         $response = Gate::inspect('create', Member::class);
 
         if ($response->denied()) {
-            return to_route('members.index')->with(FlashMessageKey::ERROR->value, $response->message());
+            return to_route('members.index')->with(
+                FlashMessageKey::SUCCESS->value,
+                __('flash.message.restored', ['model' => __('members')])
+            );
         }
 
         $action->handle($request->getMemberData(), $request->getSkillData(), $request->getCategoryData(), $request->getAddressData());
 
-        return to_route('members.index')->with(FlashMessageKey::SUCCESS->value, 'Member created successfully.');
+        return to_route('members.index')->with(
+            FlashMessageKey::SUCCESS->value,
+                __('flash.message.restored', ['model' => __('members')])
+        );
     }
 
     // /**
@@ -99,7 +111,10 @@ final class MemberController extends Controller
         $response = Gate::inspect('update', $member);
 
         if ($response->denied()) {
-            return to_route('members.index')->with(FlashMessageKey::ERROR->value, $response->message());
+            return to_route('members.index')->with(
+                FlashMessageKey::SUCCESS->value,
+                __('flash.message.restored', ['model' => __('members')])
+            );
         }
 
         $member->load('address');
@@ -125,7 +140,10 @@ final class MemberController extends Controller
         $response = Gate::inspect('update', $member);
 
         if ($response->denied()) {
-            return to_route('members.index')->with(FlashMessageKey::ERROR->value, $response->message());
+            return to_route('members.index')->with(
+                FlashMessageKey::SUCCESS->value,
+                __('flash.message.restored', ['model' => __('members')])
+            );
         }
 
         $data = $request->getMemberData();
@@ -135,7 +153,10 @@ final class MemberController extends Controller
 
         $action->handle($member, $data, $skills, $categories, $address);
 
-        return to_route('members.index')->with(FlashMessageKey::SUCCESS->value, 'Member updated successfully.');
+        return to_route('members.index')->with(
+            FlashMessageKey::SUCCESS->value,
+                __('flash.message.restored', ['model' => __('members')])
+        );
 
     }
 
@@ -148,12 +169,18 @@ final class MemberController extends Controller
 
         if ($response->denied()) {
 
-            return to_route('members.index')->with(FlashMessageKey::ERROR->value, $response->message());
+            return to_route('members.index')->with(
+                FlashMessageKey::SUCCESS->value,
+                __('flash.message.restored', ['model' => __('members')])
+            );
         }
 
         $action->handle($member);
 
-        return to_route('members.index')->with(FlashMessageKey::SUCCESS->value, 'Member deleted successfully.');
+        return to_route('members.index')->with(
+            FlashMessageKey::SUCCESS->value,
+                __('flash.message.restored', ['model' => __('members')])
+        );
     }
 
     public function restore(Member $member, RestoreMemberAction $action): RedirectResponse
@@ -162,12 +189,18 @@ final class MemberController extends Controller
 
         if ($response->denied()) {
 
-            return to_route('members.index')->with(FlashMessageKey::ERROR->value, $response->message());
+            return to_route('members.index')->with(
+                FlashMessageKey::SUCCESS->value,
+                __('flash.message.restored', ['model' => __('members')])
+            );
         }
 
         $action->handle($member);
 
-        return to_route('members.index')->with(FlashMessageKey::SUCCESS->value, 'Member restored successfully.');
+        return to_route('members.index')->with(
+            FlashMessageKey::SUCCESS->value,
+                __('flash.message.restored', ['model' => __('members')])
+        );
     }
 
     public function forceDelete(Member $member, ForceDeleteMemberAction $action): RedirectResponse
@@ -176,11 +209,17 @@ final class MemberController extends Controller
 
         if ($response->denied()) {
 
-            return to_route('members.index')->with(FlashMessageKey::ERROR->value, $response->message());
+            return to_route('members.index')->with(
+                FlashMessageKey::SUCCESS->value,
+                __('flash.message.restored', ['model' => __('members')])
+            );
         }
 
         $action->handle($member);
 
-        return to_route('members.index')->with(FlashMessageKey::SUCCESS->value, 'Member permanently deleted successfully.');
+        return to_route('members.index')->with(
+            FlashMessageKey::SUCCESS->value,
+                __('flash.message.restored', ['model' => __('members')])
+        );
     }
 }

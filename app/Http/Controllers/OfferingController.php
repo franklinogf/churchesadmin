@@ -103,7 +103,10 @@ final class OfferingController extends Controller
             });
         });
 
-        return to_route('offerings.index')->with(FlashMessageKey::SUCCESS->value, __('Offering created successfully'));
+        return to_route('offerings.index')->with(
+            FlashMessageKey::SUCCESS->value,
+                __('flash.message.restored', ['model' => __('offerings')])
+        );
 
     }
 
