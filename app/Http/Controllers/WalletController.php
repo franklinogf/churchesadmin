@@ -61,7 +61,7 @@ final class WalletController extends Controller
                     $validated['bank_name'],
                     $validated['bank_routing_number'],
                     $validated['bank_account_number'],
-                ),
+                )->toArray(),
             ]
         );
         if ($validated['balance'] !== null) {
@@ -92,7 +92,7 @@ final class WalletController extends Controller
                     $validated['bank_name'],
                     $validated['bank_routing_number'],
                     $validated['bank_account_number'],
-                ),
+                )->toArray(),
             ]
         );
 
