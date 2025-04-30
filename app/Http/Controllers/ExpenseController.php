@@ -44,7 +44,6 @@ final class ExpenseController extends Controller
     public function create(): Response
     {
         $wallets = Church::current()?->wallets()->get();
-        dd($wallets[0]->meta['bank_name'] ?? null);
 
         $members = SelectOption::create(Member::all(), labels: ['name', 'last_name']);
 
