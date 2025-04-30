@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ExpenseTypeController;
 use App\Http\Controllers\LoginLinkController;
 use App\Http\Controllers\MemberController;
@@ -87,11 +88,8 @@ Route::middleware([
                     ])
                     ->except(['create', 'edit']);
 
-                Route::resource('offerings', OfferingController::class)
-                    ->parameter('offerings', 'transaction')
-                    ->scoped([
-                        'offering' => 'uuid',
-                    ]);
+                Route::resource('offerings', OfferingController::class);
+                Route::resource('expenses', ExpenseController::class);
 
                 // codes
                 Route::prefix('codes')->name('codes.')->group(function (): void {
