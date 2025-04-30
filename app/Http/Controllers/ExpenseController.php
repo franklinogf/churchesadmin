@@ -15,6 +15,7 @@ use App\Models\Expense;
 use App\Models\ExpenseType;
 use App\Models\Member;
 use App\Models\Wallet;
+use Bavix\Wallet\Exceptions\BalanceIsEmpty;
 use Bavix\Wallet\Exceptions\InsufficientFunds;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -91,6 +92,12 @@ final class ExpenseController extends Controller
 
             return back()->with(FlashMessageKey::ERROR->value,
                 __('flash.message.insufficient_funds', ['wallet' => $wallet->name ?? '']));
+
+        } catch (BalanceIsEmpty) {
+            DB::rollBack();
+
+            return back()->with(FlashMessageKey::ERROR->value,
+                __('flash.message.empty_balance', ['wallet' => $wallet->name ?? '']));
         }
 
         return to_route('expenses.index')->with(FlashMessageKey::SUCCESS->value,
