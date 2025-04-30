@@ -15,11 +15,13 @@ import { useForm } from '@inertiajs/react';
 import { formatDate } from 'date-fns';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { TrashIcon } from 'lucide-react';
+import { useMemo } from 'react';
 
 interface CreatePageProps {
   wallets: Wallet[];
   members: SelectOption[];
   expenseTypes: SelectOption[];
+  walletOptions: SelectOption[];
 }
 
 interface CreateForm {
@@ -42,26 +44,12 @@ const breadcrumbs: BreadcrumbItem[] = [
   },
 ];
 
-export function createSelectOptions<TData>(
-  items: TData[],
-  { value, labels, separator = ' ' }: { value?: keyof TData; labels?: (keyof TData)[] | keyof TData; separator?: string } = {},
-): SelectOption[] {
-  value = value ?? ('id' as keyof TData);
-  labels = labels ?? ('name' as keyof TData);
-  return items.map((item) => ({
-    value: item[value]?.toString() ?? '',
-    label: labels instanceof Array ? labels.map((label) => item[label]).join(separator) : (item[labels]?.toString() ?? ''),
-  }));
-}
-
-export default function Create({ wallets, members, expenseTypes }: CreatePageProps) {
+export default function Create({ wallets, members, expenseTypes, walletOptions }: CreatePageProps) {
   const { t } = useLaravelReactI18n();
   const { formatCurrency } = useCurrency();
 
-  const walletsOptions = createSelectOptions(wallets);
-
   const initialExpense: CreateForm['expenses'][number] = {
-    wallet_id: '',
+    wallet_id: walletOptions[0]?.value.toString() ?? '',
     expense_type_id: expenseTypes[0]?.value.toString() ?? '',
     amount: '',
     note: '',
@@ -100,19 +88,23 @@ export default function Create({ wallets, members, expenseTypes }: CreatePagePro
     setData('expenses', updatedExpenses);
   }
 
-  const walletExpenses = data.expenses.reduce((acc: Record<string, { amount: number; total: string }>, expense) => {
-    const wallet = wallets.find((wallet) => wallet.id.toString() === expense.wallet_id);
-    if (!wallet) {
-      return acc;
-    }
-    return {
-      ...acc,
-      [wallet.name]: {
-        amount: (acc[wallet.name]?.amount || 0) + parseFloat(expense.amount || '0'),
-        total: wallet.balanceFloat,
-      },
-    };
-  }, {});
+  const walletExpenses = useMemo(
+    () =>
+      data.expenses.reduce((acc: Record<string, { amount: number; total: string }>, expense) => {
+        const wallet = wallets.find((wallet) => wallet.id.toString() === expense.wallet_id);
+        if (!wallet) {
+          return acc;
+        }
+        return {
+          ...acc,
+          [wallet.name]: {
+            amount: (acc[wallet.name]?.amount || 0) + parseFloat(expense.amount || '0'),
+            total: wallet.balanceFloat,
+          },
+        };
+      }, {}),
+    [data.expenses, wallets],
+  );
 
   return (
     <AppLayout title={t('Expenses')} breadcrumbs={breadcrumbs}>
@@ -149,7 +141,7 @@ export default function Create({ wallets, members, expenseTypes }: CreatePagePro
                           handleUpdateExpense(index, 'wallet_id', value);
                         }}
                         error={errors[`expenses.${index}.wallet_id` as keyof typeof data]}
-                        options={walletsOptions}
+                        options={walletOptions}
                       />
                       {wallet && (
                         <p className="text-muted-foreground flex justify-end text-xs">

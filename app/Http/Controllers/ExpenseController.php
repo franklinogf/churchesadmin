@@ -48,6 +48,8 @@ final class ExpenseController extends Controller
     {
         $wallets = Church::current()?->wallets()->get();
 
+        $walletOptions = SelectOption::create($wallets);
+
         $members = SelectOption::create(Member::all(), labels: ['name', 'last_name']);
 
         $expenseTypes = SelectOption::create(ExpenseType::all());
@@ -56,6 +58,7 @@ final class ExpenseController extends Controller
             'members' => $members,
             'wallets' => WalletResource::collection($wallets),
             'expenseTypes' => $expenseTypes,
+            'walletOptions' => $walletOptions,
         ]);
     }
 
