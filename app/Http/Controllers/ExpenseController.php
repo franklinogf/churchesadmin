@@ -17,6 +17,7 @@ use App\Models\Member;
 use App\Models\Wallet;
 use Bavix\Wallet\Exceptions\InsufficientFunds;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -29,7 +30,8 @@ final class ExpenseController extends Controller
      */
     public function index(): Response
     {
-        $expenses = Expense::latest('date')->with(['transaction.wallet' => function ($query): void {
+        $expenses = Expense::latest('date')->with(['transaction.wallet' => function (Relation $query): void {
+            /** @phpstan-ignore-next-line */
             $query->withTrashed();
         }])->get();
 
@@ -88,7 +90,7 @@ final class ExpenseController extends Controller
             DB::rollBack();
 
             return back()->with(FlashMessageKey::ERROR->value,
-                __('flash.message.insufficient_funds', ['wallet' => $wallet?->name]));
+                __('flash.message.insufficient_funds', ['wallet' => $wallet->name ?? '']));
         }
 
         return to_route('expenses.index')->with(FlashMessageKey::SUCCESS->value,

@@ -5,13 +5,16 @@ declare(strict_types=1);
 namespace App\Helpers;
 
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 
 final class SelectOption
 {
     /**
      * Create an array of select options from a collection of items.
      *
-     * @return array{value: string|int, label: string}[]
+     * @param  Collection<int,covariant Model>  $items
+     * @param  string|array<int,string>  $labels
+     * @return array<mixed>
      */
     public static function create(Collection $items, string $value = 'id', string|array $labels = 'name', string $separator = ' '): array
     {
