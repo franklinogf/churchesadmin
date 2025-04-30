@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('offerings', function (Blueprint $table) {
             $table->id();
             $table->foreignId('transaction_id');
-            $table->foreignId('donor_id')->nullable();
+            $table->foreignId('donor_id')->constrained('members', 'id')->nullable();
             $table->timestamp('date');
             $table->string('payment_method');
             $table->morphs('offering_type');
