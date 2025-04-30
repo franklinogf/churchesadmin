@@ -1,8 +1,15 @@
 import { DatatableCell } from '@/components/custom-ui/datatable/DatatableCell';
 import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTableColumnHeader';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { useCurrency } from '@/hooks/use-currency';
+import useConfirmationStore from '@/stores/confirmationStore';
 import type { Expense } from '@/types/models/expense';
+import { Link, router } from '@inertiajs/react';
 import { type ColumnDef } from '@tanstack/react-table';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { Edit2Icon, FileIcon, MoreHorizontalIcon, Trash2Icon } from 'lucide-react';
 
 export const columns: ColumnDef<Expense>[] = [
   {
@@ -39,7 +46,10 @@ export const columns: ColumnDef<Expense>[] = [
     enableHiding: false,
     accessorKey: 'amount',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Amount" />,
-    cell: ({ row }) => <DatatableCell justify="end">${row.original.transaction.amountFloat}</DatatableCell>,
+    cell: function CellComponent({ row }) {
+      const { formatCurrency } = useCurrency();
+      return <DatatableCell justify="end">{formatCurrency(row.original.transaction.amountFloat)}</DatatableCell>;
+    },
   },
   {
     accessorKey: 'date',
@@ -47,84 +57,64 @@ export const columns: ColumnDef<Expense>[] = [
     meta: 'Date',
     cell: ({ row }) => <DatatableCell justify="center">{row.original.date}</DatatableCell>,
   },
-  //   {
-  //     id: 'actions',
-  //     enableHiding: false,
-  //     enableSorting: false,
-  //     size: 0,
-  //     cell: function CellComponent({ row }) {
-  //       const { t } = useLaravelReactI18n();
-  //       const { openConfirmation } = useConfirmationStore();
-  //       //   const { can: userCan } = useUser();
-  //       const wallet = row.original;
+  {
+    id: 'actions',
+    enableHiding: false,
+    enableSorting: false,
+    size: 0,
+    cell: function CellComponent({ row }) {
+      const { t } = useLaravelReactI18n();
+      const { openConfirmation } = useConfirmationStore();
+      //   const { can: userCan } = useUser();
+      const expense = row.original;
 
-  //       return (
-  //         <DropdownMenu>
-  //           <DropdownMenuTrigger asChild>
-  //             <Button variant="ghost" size="sm">
-  //               <MoreHorizontalIcon />
-  //               <span className="sr-only">{t('Actions')}</span>
-  //             </Button>
-  //           </DropdownMenuTrigger>
-  //           <DropdownMenuContent>
-  //             <DropdownMenuItem asChild>
-  //               <Link href={route('wallets.show', wallet.uuid)}>
-  //                 <WalletIcon className="size-3" />
-  //                 <span>{t('View')}</span>
-  //               </Link>
-  //             </DropdownMenuItem>
-  //             {/* {userCan(UserPermission.UPDATE_SKILLS) && ( */}
-  //             <WalletForm wallet={wallet}>
-  //               <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-  //                 <Edit2Icon className="size-3" />
-  //                 <span>{t('Edit')}</span>
-  //               </DropdownMenuItem>
-  //             </WalletForm>
-  //             {/* )} */}
-  //             {wallet.slug !== WalletName.PRIMARY && wallet.deletedAt ? (
-  //               <DropdownMenuItem
-  //                 onClick={() => {
-  //                   openConfirmation({
-  //                     title: t('Are you sure you want to activate this wallet?'),
-  //                     description: t('This wallet will be usable again'),
-  //                     actionLabel: t('Activate'),
-  //                     cancelLabel: t('Cancel'),
-  //                     onAction: () => {
-  //                       router.put(route('wallets.restore', wallet.uuid), {
-  //                         preserveScroll: true,
-  //                       });
-  //                     },
-  //                   });
-  //                 }}
-  //               >
-  //                 <ArchiveRestoreIcon className="size-3" />
-  //                 <span>{t('Activate')}</span>
-  //               </DropdownMenuItem>
-  //             ) : (
-  //               <DropdownMenuItem
-  //                 variant="destructive"
-  //                 onClick={() => {
-  //                   openConfirmation({
-  //                     title: t('Are you sure you want to deactivate this wallet?'),
-  //                     description: t("This wallet won't be usable until it is activated"),
-  //                     actionLabel: t('Deactivate'),
-  //                     actionVariant: 'destructive',
-  //                     cancelLabel: t('Cancel'),
-  //                     onAction: () => {
-  //                       router.delete(route('wallets.destroy', wallet.uuid), {
-  //                         preserveScroll: true,
-  //                       });
-  //                     },
-  //                   });
-  //                 }}
-  //               >
-  //                 <ArchiveIcon className="size-3" />
-  //                 <span>{t('Deactivate')}</span>
-  //               </DropdownMenuItem>
-  //             )}
-  //           </DropdownMenuContent>
-  //         </DropdownMenu>
-  //       );
-  //     },
-  //   },
+      return (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="sm">
+              <MoreHorizontalIcon />
+              <span className="sr-only">{t('Actions')}</span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem asChild>
+              <Link href={route('expenses.show', expense.id)}>
+                <FileIcon className="size-3" />
+                <span>{t('View')}</span>
+              </Link>
+            </DropdownMenuItem>
+            {/* {userCan(UserPermission.UPDATE_SKILLS) && ( */}
+
+            <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+              <Edit2Icon className="size-3" />
+              <span>{t('Edit')}</span>
+            </DropdownMenuItem>
+
+            {/* )} */}
+
+            <DropdownMenuItem
+              variant="destructive"
+              onClick={() => {
+                openConfirmation({
+                  title: t('Are you sure you want to delete this expense?'),
+                  description: t('This action cannot be undone'),
+                  actionLabel: t('Delete'),
+                  actionVariant: 'destructive',
+                  cancelLabel: t('Cancel'),
+                  onAction: () => {
+                    router.delete(route('expenses.destroy', expense.id), {
+                      preserveScroll: true,
+                    });
+                  },
+                });
+              }}
+            >
+              <Trash2Icon className="size-3" />
+              <span>{t('Delete')}</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      );
+    },
+  },
 ];
