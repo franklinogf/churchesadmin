@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Enums\FlashMessageKey;
+use App\Helpers\SelectOption;
 use App\Http\Requests\Expense\StoreExpenseRequest;
 use App\Http\Requests\Expense\UpdateExpenseRequest;
 use App\Http\Resources\Expense\ExpenseResource;
@@ -14,6 +15,7 @@ use App\Models\Expense;
 use App\Models\ExpenseType;
 use App\Models\Member;
 use App\Models\Wallet;
+use Bavix\Wallet\Exceptions\InsufficientFunds;
 use Carbon\Carbon;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
@@ -27,7 +29,7 @@ final class ExpenseController extends Controller
      */
     public function index(): Response
     {
-        $expenses = Expense::latest('date')->with(['transaction.wallet' => function ($query) {
+        $expenses = Expense::latest('date')->with(['transaction.wallet' => function ($query): void {
             $query->withTrashed();
         }])->get();
 
@@ -42,16 +44,11 @@ final class ExpenseController extends Controller
     public function create(): Response
     {
         $wallets = Church::current()?->wallets()->get();
+        dd($wallets[0]->meta['bank_name'] ?? null);
 
-        $members = Member::all()->map(fn ($member): array => [
-            'value' => $member->id,
-            'label' => "{$member->name} {$member->last_name}",
-        ])->toArray();
+        $members = SelectOption::create(Member::all(), labels: ['name', 'last_name']);
 
-        $expenseTypes = ExpenseType::all()->map(fn ($expenseType): array => [
-            'value' => $expenseType->id,
-            'label' => $expenseType->name,
-        ])->toArray();
+        $expenseTypes = SelectOption::create(ExpenseType::all());
 
         return Inertia::render('expenses/create', [
             'members' => $members,
@@ -70,11 +67,12 @@ final class ExpenseController extends Controller
          */
         $validated = $request->validated();
 
-        DB::transaction(function () use ($validated): void {
+        DB::beginTransaction();
+        try {
             foreach ($validated['expenses'] as $expense) {
                 $wallet = Wallet::find($expense['wallet_id']);
 
-                $transaction = $wallet?->forceWithdrawFloat(
+                $transaction = $wallet?->withdrawFloat(
                     $expense['amount']
                 );
 
@@ -86,10 +84,16 @@ final class ExpenseController extends Controller
                     'note' => $expense['note'],
                 ]);
             }
-        });
+            DB::commit();
+        } catch (InsufficientFunds) {
+            DB::rollBack();
+
+            return back()->with(FlashMessageKey::ERROR->value,
+                __('flash.message.insufficient_funds', ['wallet' => $wallet?->name]));
+        }
 
         return to_route('expenses.index')->with(FlashMessageKey::SUCCESS->value,
-            __('flash.message.created', ['resource' => __('Expense')]));
+            __('flash.message.created', ['model' => __('Expense')]));
     }
 
     /**
