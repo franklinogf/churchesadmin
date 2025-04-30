@@ -6,16 +6,18 @@ import { InputField } from '@/components/forms/inputs/InputField';
 import { SelectField } from '@/components/forms/inputs/SelectField';
 import { PageTitle } from '@/components/PageTitle';
 import { Button } from '@/components/ui/button';
+import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { useCurrency } from '@/hooks/use-currency';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem, type SelectOption } from '@/types';
+import type { Wallet } from '@/types/models/wallet';
 import { useForm } from '@inertiajs/react';
 import { formatDate } from 'date-fns';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { TrashIcon } from 'lucide-react';
 
 interface CreatePageProps {
-  wallets: SelectOption[];
+  wallets: Wallet[];
   members: SelectOption[];
   expenseTypes: SelectOption[];
 }
@@ -40,11 +42,26 @@ const breadcrumbs: BreadcrumbItem[] = [
   },
 ];
 
+export function createSelectOptions<TData>(
+  items: TData[],
+  { value, labels, separator = ' ' }: { value?: keyof TData; labels?: (keyof TData)[] | keyof TData; separator?: string } = {},
+): SelectOption[] {
+  value = value ?? ('id' as keyof TData);
+  labels = labels ?? ('name' as keyof TData);
+  return items.map((item) => ({
+    value: item[value]?.toString() ?? '',
+    label: labels instanceof Array ? labels.map((label) => item[label]).join(separator) : (item[labels]?.toString() ?? ''),
+  }));
+}
+
 export default function Create({ wallets, members, expenseTypes }: CreatePageProps) {
   const { t } = useLaravelReactI18n();
   const { formatCurrency } = useCurrency();
+
+  const walletsOptions = createSelectOptions(wallets);
+
   const initialExpense: CreateForm['expenses'][number] = {
-    wallet_id: wallets[0]?.value.toString() ?? '',
+    wallet_id: '',
     expense_type_id: expenseTypes[0]?.value.toString() ?? '',
     amount: '',
     note: '',
@@ -83,14 +100,17 @@ export default function Create({ wallets, members, expenseTypes }: CreatePagePro
     setData('expenses', updatedExpenses);
   }
 
-  const walletExpenses = data.expenses.reduce((acc: Record<string, number>, expense) => {
-    const walletName = wallets.find((wallet) => wallet.value.toString() === expense.wallet_id)?.label;
-    if (!walletName) {
+  const walletExpenses = data.expenses.reduce((acc: Record<string, { amount: number; total: string }>, expense) => {
+    const wallet = wallets.find((wallet) => wallet.id.toString() === expense.wallet_id);
+    if (!wallet) {
       return acc;
     }
     return {
       ...acc,
-      [walletName]: (acc[walletName] || 0) + parseFloat(expense.amount || '0'),
+      [wallet.name]: {
+        amount: (acc[wallet.name]?.amount || 0) + parseFloat(expense.amount || '0'),
+        total: wallet.balanceFloat,
+      },
     };
   }, {});
 
@@ -100,95 +120,122 @@ export default function Create({ wallets, members, expenseTypes }: CreatePagePro
       <div className="mt-2 flex items-center justify-center">
         <Form isSubmitting={processing} className="w-full max-w-2xl" onSubmit={handleSubmit}>
           <div className="space-y-4 py-2">
-            {data.expenses.map((expense, index) => (
-              <fieldset className="space-y-2" key={index}>
-                {data.expenses.length > 1 && (
-                  <legend className="px-2 text-sm font-semibold">
-                    <Button size="icon" className="size-6" variant="destructive" type="button" onClick={() => handleRemoveExpense(index)}>
-                      <TrashIcon className="size-4" />
-                    </Button>
-                  </legend>
-                )}
-                <FieldsGrid className="grow">
-                  <DateField
-                    required
-                    label={t('Date of Expense')}
-                    value={expense.date}
-                    onChange={(value) => handleUpdateExpense(index, 'date', value)}
-                    error={errors[`expenses.${index}.date` as keyof typeof data]}
-                  />
-                  <SelectField
-                    required
-                    label={t('Wallet')}
-                    value={expense.wallet_id}
-                    onChange={(value) => {
-                      handleUpdateExpense(index, 'wallet_id', value);
-                    }}
-                    error={errors[`expenses.${index}.wallet_id` as keyof typeof data]}
-                    options={wallets}
-                  />
-                </FieldsGrid>
-                <FieldsGrid cols={3} className="grow">
-                  <SelectField
-                    label={t('Member')}
-                    value={expense.member_id}
-                    onChange={(value) => {
-                      handleUpdateExpense(index, 'member_id', value);
-                    }}
-                    error={errors[`expenses.${index}.member_id` as keyof typeof data]}
-                    options={members}
-                  />
-                  <SelectField
-                    required
-                    label={t('Expense type')}
-                    value={expense.expense_type_id}
-                    onChange={(value) => {
-                      handleUpdateExpense(index, 'expense_type_id', value);
-                    }}
-                    error={errors[`expenses.${index}.expense_type_id` as keyof typeof data]}
-                    options={expenseTypes}
-                  />
+            {data.expenses.map((expense, index) => {
+              const wallet = wallets.find((wallet) => wallet.id.toString() === expense.wallet_id);
 
-                  <CurrencyField
-                    required
-                    label={t('Amount')}
-                    value={expense.amount}
+              return (
+                <fieldset className="space-y-2" key={index}>
+                  {data.expenses.length > 1 && (
+                    <legend className="px-2 text-sm font-semibold">
+                      <Button size="icon" className="size-6" variant="destructive" type="button" onClick={() => handleRemoveExpense(index)}>
+                        <TrashIcon className="size-4" />
+                      </Button>
+                    </legend>
+                  )}
+                  <FieldsGrid className="grow">
+                    <DateField
+                      required
+                      label={t('Date of Expense')}
+                      value={expense.date}
+                      onChange={(value) => handleUpdateExpense(index, 'date', value)}
+                      error={errors[`expenses.${index}.date` as keyof typeof data]}
+                    />
+                    <div className="flex flex-col">
+                      <SelectField
+                        required
+                        label={t('Wallet')}
+                        value={expense.wallet_id}
+                        onChange={(value) => {
+                          handleUpdateExpense(index, 'wallet_id', value);
+                        }}
+                        error={errors[`expenses.${index}.wallet_id` as keyof typeof data]}
+                        options={walletsOptions}
+                      />
+                      {wallet && (
+                        <p className="text-muted-foreground flex justify-end text-xs">
+                          {t('Current balance')}: <span className="font-semibold">{formatCurrency(wallet.balanceFloat)}</span>
+                        </p>
+                      )}
+                    </div>
+                  </FieldsGrid>
+                  <FieldsGrid cols={3} className="grow">
+                    <SelectField
+                      label={t('Member')}
+                      value={expense.member_id}
+                      onChange={(value) => {
+                        handleUpdateExpense(index, 'member_id', value);
+                      }}
+                      error={errors[`expenses.${index}.member_id` as keyof typeof data]}
+                      options={members}
+                    />
+                    <SelectField
+                      required
+                      label={t('Expense type')}
+                      value={expense.expense_type_id}
+                      onChange={(value) => {
+                        handleUpdateExpense(index, 'expense_type_id', value);
+                      }}
+                      error={errors[`expenses.${index}.expense_type_id` as keyof typeof data]}
+                      options={expenseTypes}
+                    />
+
+                    <CurrencyField
+                      required
+                      label={t('Amount')}
+                      value={expense.amount}
+                      onChange={(value) => {
+                        handleUpdateExpense(index, 'amount', value);
+                      }}
+                      error={errors[`expenses.${index}.amount` as keyof typeof data]}
+                    />
+                  </FieldsGrid>
+                  <InputField
+                    label={t('Note')}
+                    value={expense.note}
                     onChange={(value) => {
-                      handleUpdateExpense(index, 'amount', value);
+                      handleUpdateExpense(index, 'note', value);
                     }}
-                    error={errors[`expenses.${index}.amount` as keyof typeof data]}
+                    error={errors[`expenses.${index}.note` as keyof typeof data]}
                   />
-                </FieldsGrid>
-                <InputField
-                  label={t('Note')}
-                  value={expense.note}
-                  onChange={(value) => {
-                    handleUpdateExpense(index, 'note', value);
-                  }}
-                  error={errors[`expenses.${index}.note` as keyof typeof data]}
-                />
-              </fieldset>
-            ))}
+                </fieldset>
+              );
+            })}
           </div>
 
           <Button size="sm" variant="secondary" type="button" onClick={handleAddExpense}>
             {t('Add expense')}
           </Button>
-          {Object.keys(walletExpenses).length > 0 && (
-            <>
-              <p className="text-muted-foreground mt-2">
-                {t('Expenses total')}: <span className="font-semibold">{formatCurrency(totalExpenses)}</span>
-              </p>
+          <section className="mt-4">
+            {Object.keys(walletExpenses).length > 0 && (
+              <Table className="mx-auto max-w-lg">
+                <TableCaption>{t('Summary')}</TableCaption>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>{t('Wallet')}</TableHead>
+                    <TableHead className="w-[100px] text-right">{t('Available funds')}</TableHead>
+                    <TableHead className="text-right">{t('Expenses')}</TableHead>
+                  </TableRow>
+                </TableHeader>
 
-              <div className="mt-2 space-y-1">
-                {Object.entries(walletExpenses).map(([walletName, total]) => (
-                  <p key={walletName} className="text-muted-foreground text-sm">
-                    {walletName}: <span className="font-semibold">{formatCurrency(total)}</span>
-                  </p>
-                ))}
-              </div>
-            </>
-          )}
+                <TableBody>
+                  {Object.entries(walletExpenses).map(([walletName, { amount, total }]) => (
+                    <TableRow key={walletName}>
+                      <TableCell>{walletName}</TableCell>
+                      <TableCell className="text-right">{formatCurrency(total)}</TableCell>
+                      <TableCell className="text-right">{formatCurrency(amount)}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+
+                <TableFooter>
+                  <TableRow>
+                    <TableCell colSpan={2}>{t('Expenses total')}</TableCell>
+                    <TableCell className="text-right">{formatCurrency(totalExpenses)}</TableCell>
+                  </TableRow>
+                </TableFooter>
+              </Table>
+            )}
+          </section>
         </Form>
       </div>
     </AppLayout>

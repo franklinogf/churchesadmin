@@ -8,6 +8,7 @@ use App\Enums\FlashMessageKey;
 use App\Http\Requests\Expense\StoreExpenseRequest;
 use App\Http\Requests\Expense\UpdateExpenseRequest;
 use App\Http\Resources\Expense\ExpenseResource;
+use App\Http\Resources\Wallet\WalletResource;
 use App\Models\Church;
 use App\Models\Expense;
 use App\Models\ExpenseType;
@@ -26,7 +27,9 @@ final class ExpenseController extends Controller
      */
     public function index(): Response
     {
-        $expenses = Expense::latest('date')->get();
+        $expenses = Expense::latest('date')->with(['transaction.wallet' => function ($query) {
+            $query->withTrashed();
+        }])->get();
 
         return Inertia::render('expenses/index', [
             'expenses' => ExpenseResource::collection($expenses),
@@ -38,10 +41,7 @@ final class ExpenseController extends Controller
      */
     public function create(): Response
     {
-        $wallets = Church::current()?->wallets()->get()->map(fn ($wallet): array => [
-            'value' => $wallet->id,
-            'label' => $wallet->name,
-        ])->toArray();
+        $wallets = Church::current()?->wallets()->get();
 
         $members = Member::all()->map(fn ($member): array => [
             'value' => $member->id,
@@ -55,7 +55,7 @@ final class ExpenseController extends Controller
 
         return Inertia::render('expenses/create', [
             'members' => $members,
-            'wallets' => $wallets,
+            'wallets' => WalletResource::collection($wallets),
             'expenseTypes' => $expenseTypes,
         ]);
     }
