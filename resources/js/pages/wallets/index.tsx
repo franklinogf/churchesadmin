@@ -9,15 +9,6 @@ import { walletColumns } from './includes/walletColumns';
 import { Button } from '@/components/ui/button';
 import { WalletForm } from './components/WalletForm';
 
-type WalletForm = {
-  name: string;
-  description: string;
-  balance: string;
-  bank_name: string;
-  bank_account_number: string;
-  bank_routing_number: string;
-};
-
 interface IndexPageProps {
   wallets: Wallet[];
 }

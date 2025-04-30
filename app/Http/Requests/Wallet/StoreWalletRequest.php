@@ -36,7 +36,7 @@ final class StoreWalletRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'min:3', 'max:255', Rule::unique("{$connection}.wallets")->where('holder_id', $tenantId)],
             'description' => ['nullable', 'string', 'min:3', 'max:255'],
-            'balance' => ['required', 'decimal:2', 'min:0'],
+            'balance' => ['nullable', 'decimal:2', 'min:0'],
             'bank_name' => ['required', 'string', 'min:3', 'max:255'],
             'bank_routing_number' => ['required', 'string', 'min:3', 'max:255'],
             'bank_account_number' => ['required', 'string', 'min:3', 'max:255'],

@@ -24,7 +24,7 @@ export function WalletForm({ wallet, children }: { wallet?: Wallet; children: Re
   const { data, setData, post, put, errors, reset, processing } = useForm<WalletForm>({
     name: wallet?.name ?? '',
     description: wallet?.description ?? '',
-    balance: wallet?.balanceFloat ?? '0.00',
+    balance: wallet?.balanceFloat ?? '',
     bank_name: wallet?.meta?.bankName ?? '',
     bank_account_number: wallet?.meta?.bankAccountNumber ?? '',
     bank_routing_number: wallet?.meta?.bankRoutingNumber ?? '',
@@ -68,13 +68,7 @@ export function WalletForm({ wallet, children }: { wallet?: Wallet; children: Re
           />
 
           {!wallet && (
-            <CurrencyField
-              required
-              label={t('Initial Amount')}
-              value={data.balance}
-              onChange={(value) => setData('balance', value)}
-              error={errors.balance}
-            />
+            <CurrencyField label={t('Initial Amount')} value={data.balance} onChange={(value) => setData('balance', value)} error={errors.balance} />
           )}
 
           <InputField

@@ -23,7 +23,7 @@ final class WalletController extends Controller
     public function index(): Response
     {
 
-        $wallets = Church::current()?->wallets()->oldest()->get();
+        $wallets = Church::current()?->wallets()->withTrashed()->oldest()->get();
 
         return Inertia::render('wallets/index', [
             'wallets' => WalletResource::collection($wallets),
@@ -32,6 +32,7 @@ final class WalletController extends Controller
 
     public function show(Wallet $wallet): Response
     {
+
         $wallet->load(['walletTransactions']);
 
         return Inertia::render('wallets/show', [
@@ -45,7 +46,7 @@ final class WalletController extends Controller
     public function store(StoreWalletRequest $request): RedirectResponse
     {
         /**
-         * @var array{balance:string,name:string,description:string,bank_name:string,bank_routing_number:string,bank_account_number:string} $validated
+         * @var array{balance:string|null,name:string,description:string,bank_name:string,bank_routing_number:string,bank_account_number:string} $validated
          */
         $validated = $request->validated();
 
@@ -60,7 +61,9 @@ final class WalletController extends Controller
                 ),
             ]
         );
-        $wallet?->depositFloat($validated['balance']);
+        if ($validated['balance'] !== null) {
+            $wallet?->depositFloat($validated['balance']);
+        }
 
         return redirect()->route('wallets.index')->with(
             FlashMessageKey::SUCCESS->value,

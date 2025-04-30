@@ -93,47 +93,48 @@ export const walletColumns: ColumnDef<Wallet>[] = [
               </DropdownMenuItem>
             </WalletForm>
             {/* )} */}
-            {wallet.slug !== WalletName.PRIMARY && wallet.deletedAt ? (
-              <DropdownMenuItem
-                onClick={() => {
-                  openConfirmation({
-                    title: t('Are you sure you want to activate this wallet?'),
-                    description: t('This wallet will be usable again'),
-                    actionLabel: t('Activate'),
-                    cancelLabel: t('Cancel'),
-                    onAction: () => {
-                      router.put(route('wallets.restore', wallet.uuid), {
-                        preserveScroll: true,
-                      });
-                    },
-                  });
-                }}
-              >
-                <ArchiveRestoreIcon className="size-3" />
-                <span>{t('Activate')}</span>
-              </DropdownMenuItem>
-            ) : (
-              <DropdownMenuItem
-                variant="destructive"
-                onClick={() => {
-                  openConfirmation({
-                    title: t('Are you sure you want to deactivate this wallet?'),
-                    description: t("This wallet won't be usable until it is activated"),
-                    actionLabel: t('Deactivate'),
-                    actionVariant: 'destructive',
-                    cancelLabel: t('Cancel'),
-                    onAction: () => {
-                      router.delete(route('wallets.destroy', wallet.uuid), {
-                        preserveScroll: true,
-                      });
-                    },
-                  });
-                }}
-              >
-                <ArchiveIcon className="size-3" />
-                <span>{t('Deactivate')}</span>
-              </DropdownMenuItem>
-            )}
+            {wallet.slug !== WalletName.PRIMARY &&
+              (wallet.deletedAt !== null ? (
+                <DropdownMenuItem
+                  onClick={() => {
+                    openConfirmation({
+                      title: t('Are you sure you want to activate this wallet?'),
+                      description: t('This wallet will be usable again'),
+                      actionLabel: t('Activate'),
+                      cancelLabel: t('Cancel'),
+                      onAction: () => {
+                        router.put(route('wallets.restore', wallet.uuid), {
+                          preserveScroll: true,
+                        });
+                      },
+                    });
+                  }}
+                >
+                  <ArchiveRestoreIcon className="size-3" />
+                  <span>{t('Activate')}</span>
+                </DropdownMenuItem>
+              ) : (
+                <DropdownMenuItem
+                  variant="destructive"
+                  onClick={() => {
+                    openConfirmation({
+                      title: t('Are you sure you want to deactivate this wallet?'),
+                      description: t("This wallet won't be usable until it is activated"),
+                      actionLabel: t('Deactivate'),
+                      actionVariant: 'destructive',
+                      cancelLabel: t('Cancel'),
+                      onAction: () => {
+                        router.delete(route('wallets.destroy', wallet.uuid), {
+                          preserveScroll: true,
+                        });
+                      },
+                    });
+                  }}
+                >
+                  <ArchiveIcon className="size-3" />
+                  <span>{t('Deactivate')}</span>
+                </DropdownMenuItem>
+              ))}
           </DropdownMenuContent>
         </DropdownMenu>
       );

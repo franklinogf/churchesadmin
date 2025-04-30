@@ -9,10 +9,11 @@ use Bavix\Wallet\Models\Transaction;
 use Bavix\Wallet\Models\Transfer;
 use Bavix\Wallet\Models\Wallet as BaseWallet;
 use Carbon\CarbonImmutable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Stancl\Tenancy\Database\Concerns\CentralConnection;
 
 /**
- * @mixin \Bavix\Wallet\Models\Wallet
+ * @mixin BaseWallet
  *
  *  @property-read int $id
  * @property-read CarbonImmutable|null $deleted_at
@@ -20,7 +21,8 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  */
 final class Wallet extends BaseWallet
 {
-    use CentralConnection;
+    /** @use HasFactory<\Database\Factories\WalletFactory> */
+    use CentralConnection, HasFactory;
 
     public function canWithdraw(int|string $amount, bool $allowZero = false): bool
     {
