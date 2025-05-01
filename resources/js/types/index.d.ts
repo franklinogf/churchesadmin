@@ -3,6 +3,7 @@ import { type LanguageCode } from '@/enums';
 import { type UserPermission } from '@/enums/user';
 import { type LucideIcon } from 'lucide-react';
 import type { Config } from 'ziggy-js';
+import type { Church } from './models/church';
 import type { AuthenticatedUser } from './models/user';
 
 export interface Auth {
@@ -42,6 +43,7 @@ export interface SharedData {
   }[];
   appName: string;
   environment: 'production' | 'local' | 'staging';
+  church: Church | null;
   [key: string]: unknown;
 }
 

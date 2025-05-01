@@ -18,9 +18,21 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
   const sidebarNavItems: NavItem[] = useMemo(
     () => [
       {
+        title: t('General'),
+        href: route('church.general.edit'),
+      },
+      {
         title: t('Language'),
         href: route('church.language.edit'),
       },
+      //   {
+      //     title: t('Contact Information'),
+      //     href: route('church.contact.edit'),
+      //   },
+      //   {
+      //     title: t('Social Media'),
+      //     href: route('church.social.edit'),
+      //   },
     ],
     [t],
   );

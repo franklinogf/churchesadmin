@@ -6,7 +6,9 @@ namespace App\Http\Middleware;
 
 use App\Enums\FlashMessageKey;
 use App\Enums\LanguageCode;
+use App\Http\Resources\ChurchResource;
 use App\Http\Resources\User\AuthUserResource;
+use App\Models\Church;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tighten\Ziggy\Ziggy;
@@ -62,6 +64,7 @@ final class HandleInertiaRequests extends Middleware
             'availableLocales' => LanguageCode::options(),
             'appName' => config('app.name'),
             'environment' => app()->environment(),
+            'church' => ($church = Church::current()) instanceof Church ? new ChurchResource($church) : null,
         ];
     }
 
