@@ -3,7 +3,7 @@ import { NavUser } from '@/components/nav-user';
 import { SidebarNav } from '@/components/sidebar-nav';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { UserPermission } from '@/enums/user';
-import type { NavItem } from '@/types';
+import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
 import { CogIcon, CoinsIcon, HandCoinsIcon, LayoutGridIcon, ListIcon, Users2Icon, WalletCardsIcon } from 'lucide-react';
 import AppLogo from './app-logo';
