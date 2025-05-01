@@ -1,6 +1,6 @@
-import { type BreadcrumbItem, type SelectOption, type SharedData } from '@/types';
+import { type BreadcrumbItem, type SelectOption } from '@/types';
 import { Transition } from '@headlessui/react';
-import { router, useForm, usePage } from '@inertiajs/react';
+import { router, useForm } from '@inertiajs/react';
 import { useMemo, type FormEventHandler } from 'react';
 
 import { SelectField } from '@/components/forms/inputs/SelectField';
@@ -15,12 +15,10 @@ type LanguageForm = {
 };
 
 export default function Language({ languages }: { languages: SelectOption[] }) {
-  const { t, setLocale } = useLaravelReactI18n();
-  const {
-    props: { locale },
-  } = usePage<SharedData>();
+  const { t, setLocale, currentLocale } = useLaravelReactI18n();
+
   const { data, setData, patch, errors, processing, recentlySuccessful } = useForm<Required<LanguageForm>>({
-    locale,
+    locale: currentLocale(),
   });
 
   const submit: FormEventHandler = (e) => {
