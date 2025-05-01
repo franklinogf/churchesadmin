@@ -13,8 +13,6 @@ final class TenantAwareUrlGenerator extends DefaultUrlGenerator
         $pathRelative = $this->getPathRelativeToRoot();
         $url = tenancy()->initialized ? tenant_asset($pathRelative) : asset($pathRelative);
 
-        $url = $this->versionUrl($url);
-
-        return $url;
+        return $this->versionUrl($url);
     }
 }
