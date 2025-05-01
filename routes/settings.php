@@ -11,9 +11,9 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::middleware('auth:tenant')->group(function (): void {
-    Route::redirect('settings', 'settings/profile');
 
     Route::prefix('settings')->group(function (): void {
+        Route::redirect('/', 'settings/profile')->name('settings');
         Route::get('profile', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -22,6 +22,8 @@ Route::middleware('auth:tenant')->group(function (): void {
         Route::put('password', [PasswordController::class, 'update'])->name('password.update');
 
         Route::get('appearance', fn () => Inertia::render('settings/appearance'))->name('appearance');
+
+        Route::redirect('/church', 'church/general')->name('church.settings');
 
         Route::get('church/language', [TenantLanguageController::class, 'edit'])->name('church.language.edit');
         Route::patch('church/language', [TenantLanguageController::class, 'update'])->name('church.language.update');
