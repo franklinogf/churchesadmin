@@ -43,7 +43,7 @@ export interface SharedData {
   }[];
   appName: string;
   environment: 'production' | 'local' | 'staging';
-  church: Church;
+  church: Church | null;
   [key: string]: unknown;
 }
 
