@@ -59,7 +59,7 @@ final class HandleInertiaRequests extends Middleware
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
             ],
-            'sidebarOpen' => $request->cookie('sidebar_state') === 'true',
+            'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
             'flash' => $this->getFlashMessages($request),
             'availableLocales' => LanguageCode::options(),
             'appName' => config('app.name'),
