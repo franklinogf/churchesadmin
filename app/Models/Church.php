@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\LanguageCode;
+use App\Enums\MediaCollectionName;
 use Bavix\Wallet\Interfaces\Wallet;
 use Bavix\Wallet\Interfaces\WalletFloat;
 use Bavix\Wallet\Traits\HasWalletFloat;
 use Bavix\Wallet\Traits\HasWallets;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 use Stancl\Tenancy\Database\Concerns\HasDatabase;
 use Stancl\Tenancy\Database\Concerns\HasDomains;
 use Stancl\Tenancy\Database\Concerns\MaintenanceMode;
@@ -26,9 +29,9 @@ use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
  * @property-read \Carbon\CarbonImmutable|null $created_at
  * @property-read \Carbon\CarbonImmutable|null $updated_at
  */
-final class Church extends BaseTenant implements TenantWithDatabase, WalletFloat, Wallet
+final class Church extends BaseTenant implements TenantWithDatabase, WalletFloat, HasMedia, Wallet
 {
-    use HasDatabase, HasDomains, HasWalletFloat, HasWallets, MaintenanceMode;
+    use HasDatabase, HasDomains, HasWalletFloat, HasWallets, InteractsWithMedia, MaintenanceMode;
 
     /**
      * Set the custom columns for the tenant model.
@@ -45,6 +48,13 @@ final class Church extends BaseTenant implements TenantWithDatabase, WalletFloat
             'locale',
             'active',
         ]);
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection(MediaCollectionName::LOGO->value)
+            ->singleFile()
+            ->acceptsMimeTypes(['image/jpeg', 'image/png', 'image/svg+xml']);
     }
 
     protected function casts(): array

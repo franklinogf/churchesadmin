@@ -6,6 +6,7 @@ use App\Http\Controllers\Settings\PasswordController;
 use App\Http\Controllers\Settings\ProfileController;
 use App\Http\Controllers\Settings\TenantGeneralController;
 use App\Http\Controllers\Settings\TenantLanguageController;
+use App\Http\Controllers\Settings\TenantLogoController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -27,5 +28,7 @@ Route::middleware('auth:tenant')->group(function (): void {
 
         Route::get('church/general', [TenantGeneralController::class, 'edit'])->name('church.general.edit');
         Route::put('church/general', [TenantGeneralController::class, 'update'])->name('church.general.update');
+
+        Route::post('church/logo', TenantLogoController::class)->name('church.logo');
     });
 });

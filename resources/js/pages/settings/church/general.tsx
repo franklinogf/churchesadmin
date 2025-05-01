@@ -6,6 +6,7 @@ import { useMemo, type FormEventHandler } from 'react';
 import { InputField } from '@/components/forms/inputs/InputField';
 import { SubmitButton } from '@/components/forms/SubmitButton';
 import HeadingSmall from '@/components/heading-small';
+import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/church-layout';
 import type { Church } from '@/types/models/church';
@@ -17,15 +18,29 @@ type GeneralForm = {
 
 export default function Language({ church }: { church: Church }) {
   const { t } = useLaravelReactI18n();
-  const { data, setData, put, errors, processing, recentlySuccessful } = useForm<Required<GeneralForm>>({
+  const generalForm = useForm<Required<GeneralForm>>('general', {
     name: church.name,
   });
+  const logoForm = useForm('logo', {
+    logo: null as File | null,
+  });
 
-  const submit: FormEventHandler = (e) => {
+  const submitGeneral: FormEventHandler = (e) => {
     e.preventDefault();
 
-    put(route('church.general.update'), {
+    generalForm.put(route('church.general.update'), {
       preserveScroll: true,
+    });
+  };
+
+  const submitLogo: FormEventHandler = (e) => {
+    e.preventDefault();
+
+    logoForm.post(route('church.logo'), {
+      preserveScroll: true,
+      onSuccess: () => {
+        logoForm.setData('logo', null);
+      },
     });
   };
 
@@ -37,19 +52,36 @@ export default function Language({ church }: { church: Church }) {
         <div className="space-y-6">
           <HeadingSmall title={t('General information')} description={t('Update the church information')} />
 
-          <form onSubmit={submit} className="space-y-6">
+          <form onSubmit={submitGeneral} className="space-y-6">
             <InputField
               className="max-w-xs"
               label={t('Church Name')}
-              value={data.name}
-              onChange={(value) => setData('name', value)}
-              error={errors.name}
+              value={generalForm.data.name}
+              onChange={(value) => generalForm.setData('name', value)}
+              error={generalForm.errors.name}
             />
             <div className="flex items-center gap-4">
-              <SubmitButton isSubmitting={processing}>{t('Save')}</SubmitButton>
+              <SubmitButton isSubmitting={generalForm.processing}>{t('Save')}</SubmitButton>
 
               <Transition
-                show={recentlySuccessful}
+                show={generalForm.recentlySuccessful}
+                enter="transition ease-in-out"
+                enterFrom="opacity-0"
+                leave="transition ease-in-out"
+                leaveTo="opacity-0"
+              >
+                <p className="text-sm text-neutral-600">{t('Saved')}</p>
+              </Transition>
+            </div>
+          </form>
+          <HeadingSmall title={t('Logo')} description={t('Upload the church logo')} />
+          <form onSubmit={submitLogo} className="space-y-6">
+            <Input type="file" accept="image/*" onChange={(e) => logoForm.setData('logo', e.target.files?.[0] || null)} />
+            <div className="flex items-center gap-4">
+              <SubmitButton isSubmitting={logoForm.processing}>{t('Save')}</SubmitButton>
+
+              <Transition
+                show={logoForm.recentlySuccessful}
                 enter="transition ease-in-out"
                 enterFrom="opacity-0"
                 leave="transition ease-in-out"
