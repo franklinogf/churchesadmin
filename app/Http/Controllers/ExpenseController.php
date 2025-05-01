@@ -196,8 +196,14 @@ final class ExpenseController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Expense $expense): void
+    public function destroy(Expense $expense): RedirectResponse
     {
-        //
+        $wallet = $expense->transaction->wallet;
+        $expense->transaction->forceDelete();
+        $expense->delete();
+        $wallet->refreshBalance();
+
+        return to_route('expenses.index')->with(FlashMessageKey::SUCCESS->value,
+            __('flash.message.deleted', ['model' => __('Expense')]));
     }
 }

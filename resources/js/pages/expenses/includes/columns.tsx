@@ -10,6 +10,7 @@ import { Link, router } from '@inertiajs/react';
 import { type ColumnDef } from '@tanstack/react-table';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { Edit2Icon, FileIcon, MoreHorizontalIcon, Trash2Icon } from 'lucide-react';
+import { ViewExpenseModal } from '../components/ViewExpenseModal';
 
 export const columns: ColumnDef<Expense>[] = [
   {
@@ -77,12 +78,12 @@ export const columns: ColumnDef<Expense>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
-            <DropdownMenuItem asChild>
-              <Link href={route('expenses.show', expense.id)}>
+            <ViewExpenseModal expense={expense}>
+              <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
                 <FileIcon className="size-3" />
                 <span>{t('View')}</span>
-              </Link>
-            </DropdownMenuItem>
+              </DropdownMenuItem>
+            </ViewExpenseModal>
             {/* {userCan(UserPermission.UPDATE_SKILLS) && ( */}
 
             <DropdownMenuItem asChild>
