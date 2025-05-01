@@ -85,9 +85,11 @@ export const columns: ColumnDef<Expense>[] = [
             </DropdownMenuItem>
             {/* {userCan(UserPermission.UPDATE_SKILLS) && ( */}
 
-            <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-              <Edit2Icon className="size-3" />
-              <span>{t('Edit')}</span>
+            <DropdownMenuItem asChild>
+              <Link href={route('expenses.edit', expense.id)}>
+                <Edit2Icon className="size-3" />
+                <span>{t('Edit')}</span>
+              </Link>
             </DropdownMenuItem>
 
             {/* )} */}

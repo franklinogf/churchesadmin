@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property-read int $transaction_id
  * @property-read int $expense_type_id
  * @property-read int|null $member_id
- * @property-read Wallet $wallet
+ * @property-read Transaction $transaction
  * @property-read ExpenseType $expenseType
  * @property-read Member|null $member
  * @property-read CarbonImmutable $date

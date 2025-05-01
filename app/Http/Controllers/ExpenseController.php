@@ -118,17 +118,79 @@ final class ExpenseController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Expense $expense): void
+    public function edit(Expense $expense): Response
     {
-        //
+        $wallets = Church::current()?->wallets()->get();
+
+        $walletOptions = SelectOption::create($wallets);
+
+        $members = SelectOption::create(Member::all(), labels: ['name', 'last_name']);
+
+        $expenseTypes = SelectOption::create(ExpenseType::all());
+
+        return Inertia::render('expenses/edit', [
+            'expense' => new ExpenseResource($expense),
+            'members' => $members,
+            'wallets' => WalletResource::collection($wallets),
+            'expenseTypes' => $expenseTypes,
+            'walletOptions' => $walletOptions,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateExpenseRequest $request, Expense $expense): void
+    public function update(UpdateExpenseRequest $request, Expense $expense): RedirectResponse
     {
-        //
+
+        /**
+         * @var array{date:string,wallet_id:string,member_id:string|null,expense_type_id:string,amount:float,note:string|null} $validated
+         */
+        $validated = $request->validated();
+
+        DB::beginTransaction();
+
+        try {
+
+            $expense->update([
+                'date' => Carbon::parse($validated['date'])->setTimeFrom(now()),
+                'member_id' => $validated['member_id'],
+                'expense_type_id' => $validated['expense_type_id'],
+                'note' => $validated['note'],
+            ]);
+            if ("-{$validated['amount']}" !== $expense->transaction->amountFloat) {
+                $wallet = Wallet::find($validated['wallet_id']);
+                $oldWallet = $expense->transaction->wallet;
+                $expense->transaction->forceDelete();
+
+                $transaction = $wallet?->withdrawFloat(
+                    $validated['amount']
+                );
+
+                $oldWallet->refreshBalance();
+                $wallet->refreshBalance();
+                $expense->update([
+                    'transaction_id' => $transaction?->id,
+                ]);
+            }
+
+            DB::commit();
+        } catch (InsufficientFunds) {
+            DB::rollBack();
+
+            return back()->with(FlashMessageKey::ERROR->value,
+                __('flash.message.insufficient_funds', ['wallet' => $wallet->name ?? '']));
+
+        } catch (BalanceIsEmpty) {
+            DB::rollBack();
+
+            return back()->with(FlashMessageKey::ERROR->value,
+                __('flash.message.empty_balance', ['wallet' => $wallet->name ?? '']));
+        }
+
+        return to_route('expenses.index')->with(FlashMessageKey::SUCCESS->value,
+            __('flash.message.created', ['model' => __('Expense')]));
+
     }
 
     /**

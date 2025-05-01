@@ -63,7 +63,9 @@ export default function Create({ wallets, members, expenseTypes, walletOptions }
   const totalExpenses = data.expenses.reduce((acc, expense) => acc + parseFloat(expense.amount || '0'), 0);
 
   function handleSubmit() {
-    post(route('expenses.store'));
+    post(route('expenses.store'), {
+      preserveScroll: true,
+    });
   }
 
   function handleAddExpense() {

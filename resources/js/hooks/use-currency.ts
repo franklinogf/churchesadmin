@@ -10,5 +10,13 @@ export function useCurrency() {
     return new Intl.NumberFormat(currentLocale(), { style: 'currency', currency: 'USD' }).format(parsedAmount);
   }
 
-  return { formatCurrency };
+  function toPositive(amount: number | string): string {
+    const parsedAmount = typeof amount === 'string' ? parseFloat(amount) : amount;
+    if (isNaN(parsedAmount)) {
+      return '';
+    }
+    return Math.abs(parsedAmount).toFixed(2);
+  }
+
+  return { formatCurrency, toPositive };
 }
