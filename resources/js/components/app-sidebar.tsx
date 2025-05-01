@@ -5,7 +5,7 @@ import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, Sid
 import { UserPermission } from '@/enums/user';
 import type { NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { CogIcon, HandCoinsIcon, LayoutGridIcon, ListIcon, Users2Icon, WalletCardsIcon } from 'lucide-react';
+import { CogIcon, CoinsIcon, HandCoinsIcon, LayoutGridIcon, ListIcon, Users2Icon, WalletCardsIcon } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -56,6 +56,11 @@ const accountingNavItems: NavItem[] = [
     title: 'Offerings',
     href: route('offerings.index'),
     icon: HandCoinsIcon,
+  },
+  {
+    title: 'Expenses',
+    href: route('expenses.index'),
+    icon: CoinsIcon,
   },
 ];
 

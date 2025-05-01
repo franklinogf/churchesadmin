@@ -14,7 +14,18 @@ interface CurrencyFieldProps extends Omit<CurrencyInputProps, 'onChange' | 'id'>
   fieldClassName?: string;
 }
 
-export function CurrencyField({ required, error, label, disabled, className, value, onChange, fieldClassName, ...props }: CurrencyFieldProps) {
+export function CurrencyField({
+  required,
+  error,
+  label,
+  disabled,
+  className,
+  value,
+  onChange,
+  fieldClassName,
+  placeholder = '0.00',
+  ...props
+}: CurrencyFieldProps) {
   const id = useId();
   return (
     <FieldContainer className={className}>
@@ -43,6 +54,7 @@ export function CurrencyField({ required, error, label, disabled, className, val
           onValueChange={(value) => {
             onChange?.(value ?? '');
           }}
+          placeholder={placeholder}
           {...props}
         />
       </div>

@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace App\Dtos;
 
-use App\Casts\AsWalletMeta;
 use DragonCode\Contracts\Support\Arrayable;
-use Illuminate\Contracts\Database\Eloquent\Castable;
 use JsonSerializable;
 
 /**
@@ -15,7 +13,7 @@ use JsonSerializable;
  * @property-read string $offering_type
  * @property-read string|null $message
  */
-final readonly class WalletMetaDto implements JsonSerializable, Arrayable, Castable
+final readonly class WalletMetaDto implements JsonSerializable, Arrayable
 {
     /**
      * Create a new class instance.
@@ -26,17 +24,6 @@ final readonly class WalletMetaDto implements JsonSerializable, Arrayable, Casta
         public string $bankAccountNumber,
     ) {
         //
-    }
-
-    /**
-     * Get the class name that should be used for casting.
-     *
-     * @param  array<string, mixed>  $arguments
-     * @return string
-     */
-    public static function castUsing(array $arguments): string
-    {
-        return AsWalletMeta::class;
     }
 
     /**
