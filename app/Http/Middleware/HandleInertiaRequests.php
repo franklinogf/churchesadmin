@@ -64,7 +64,7 @@ final class HandleInertiaRequests extends Middleware
             'availableLocales' => LanguageCode::options(),
             'appName' => config('app.name'),
             'environment' => app()->environment(),
-            'church' => ($church = Church::current()) ? new ChurchResource($church) : null,
+            'church' => ($church = Church::current()) instanceof Church ? new ChurchResource($church) : null,
         ];
     }
 
