@@ -12,12 +12,16 @@ final class SelectOption
     /**
      * Create an array of select options from a collection of items.
      *
-     * @param  Collection<int,covariant Model>  $items
+     * @param  Collection<int,covariant Model>|null  $items
      * @param  string|array<int,string>  $labels
      * @return array<mixed>
      */
-    public static function create(Collection $items, string $value = 'id', string|array $labels = 'name', string $separator = ' '): array
+    public static function create(?Collection $items, string $value = 'id', string|array $labels = 'name', string $separator = ' '): array
     {
+        if (! $items instanceof Collection) {
+            return [];
+        }
+
         return $items->map(fn ($item): array => [
             'value' => $item->{$value},
             'label' => is_array($labels)

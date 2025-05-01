@@ -168,7 +168,7 @@ final class ExpenseController extends Controller
                 );
 
                 $oldWallet->refreshBalance();
-                $wallet->refreshBalance();
+                $wallet?->refreshBalance();
                 $expense->update([
                     'transaction_id' => $transaction?->id,
                 ]);
