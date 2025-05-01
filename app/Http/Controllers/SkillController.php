@@ -28,10 +28,7 @@ final class SkillController extends Controller
         $response = Gate::inspect('viewAny', [Tag::class, TagType::SKILL]);
 
         if ($response->denied()) {
-            return to_route('dashboard')->with(
-                FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('dashboard')])
-            );
+            return to_route('dashboard')->with(FlashMessageKey::ERROR->value, $response->message());
         }
 
         $skills = Tag::whereType(TagType::SKILL->value)->orderByDesc('order_column')->get();
@@ -56,7 +53,7 @@ final class SkillController extends Controller
         if ($response->denied()) {
             return to_route('skills.index')->with(
                 FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('skills')])
+                __('flash.message.restored', ['model' => __('Skill')])
             );
         }
 
@@ -64,7 +61,7 @@ final class SkillController extends Controller
 
         return to_route('skills.index')->with(
             FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('skills')])
+            __('flash.message.restored', ['model' => __('Skill')])
         );
     }
 
@@ -78,7 +75,7 @@ final class SkillController extends Controller
         if ($response->denied()) {
             return to_route('skills.index')->with(
                 FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('skills')])
+                __('flash.message.restored', ['model' => __('Skill')])
             );
         }
 
@@ -86,7 +83,7 @@ final class SkillController extends Controller
 
         return to_route('skills.index')->with(
             FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('skills')])
+            __('flash.message.restored', ['model' => __('Skill')])
         );
     }
 
@@ -100,7 +97,7 @@ final class SkillController extends Controller
         if ($response->denied()) {
             return to_route('skills.index')->with(
                 FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('skills')])
+                __('flash.message.restored', ['model' => __('Skill')])
             );
         }
 
@@ -108,7 +105,7 @@ final class SkillController extends Controller
 
         return to_route('skills.index')->with(
             FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('skills')])
+            __('flash.message.restored', ['model' => __('Skill')])
         );
     }
 }

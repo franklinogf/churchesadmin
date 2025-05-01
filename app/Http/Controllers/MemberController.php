@@ -34,10 +34,7 @@ final class MemberController extends Controller
         $response = Gate::inspect('viewAny', Member::class);
 
         if ($response->denied()) {
-            return to_route('dashboard')->with(
-                FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('dashboard')])
-            );
+            return to_route('dashboard')->with(FlashMessageKey::ERROR->value, $response->message());
         }
 
         $members = Member::latest()->get();
@@ -55,7 +52,7 @@ final class MemberController extends Controller
         if ($response->denied()) {
             return to_route('members.index')->with(
                 FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('members')])
+                __('flash.message.restored', ['model' => __('Member')])
             );
         }
 
@@ -83,7 +80,7 @@ final class MemberController extends Controller
         if ($response->denied()) {
             return to_route('members.index')->with(
                 FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('members')])
+                __('flash.message.restored', ['model' => __('Member')])
             );
         }
 
@@ -91,7 +88,7 @@ final class MemberController extends Controller
 
         return to_route('members.index')->with(
             FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('members')])
+            __('flash.message.restored', ['model' => __('Member')])
         );
     }
 
@@ -113,7 +110,7 @@ final class MemberController extends Controller
         if ($response->denied()) {
             return to_route('members.index')->with(
                 FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('members')])
+                __('flash.message.restored', ['model' => __('Member')])
             );
         }
 
@@ -142,7 +139,7 @@ final class MemberController extends Controller
         if ($response->denied()) {
             return to_route('members.index')->with(
                 FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('members')])
+                __('flash.message.restored', ['model' => __('Member')])
             );
         }
 
@@ -155,7 +152,7 @@ final class MemberController extends Controller
 
         return to_route('members.index')->with(
             FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('members')])
+            __('flash.message.restored', ['model' => __('Member')])
         );
 
     }
@@ -171,7 +168,7 @@ final class MemberController extends Controller
 
             return to_route('members.index')->with(
                 FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('members')])
+                __('flash.message.restored', ['model' => __('Member')])
             );
         }
 
@@ -179,7 +176,7 @@ final class MemberController extends Controller
 
         return to_route('members.index')->with(
             FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('members')])
+            __('flash.message.restored', ['model' => __('Member')])
         );
     }
 
@@ -191,7 +188,7 @@ final class MemberController extends Controller
 
             return to_route('members.index')->with(
                 FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('members')])
+                __('flash.message.restored', ['model' => __('Member')])
             );
         }
 
@@ -199,7 +196,7 @@ final class MemberController extends Controller
 
         return to_route('members.index')->with(
             FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('members')])
+            __('flash.message.restored', ['model' => __('Member')])
         );
     }
 
@@ -211,7 +208,7 @@ final class MemberController extends Controller
 
             return to_route('members.index')->with(
                 FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('members')])
+                __('flash.message.restored', ['model' => __('Member')])
             );
         }
 
@@ -219,7 +216,7 @@ final class MemberController extends Controller
 
         return to_route('members.index')->with(
             FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('members')])
+            __('flash.message.restored', ['model' => __('Member')])
         );
     }
 }

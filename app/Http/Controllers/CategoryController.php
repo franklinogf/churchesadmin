@@ -28,10 +28,7 @@ final class CategoryController extends Controller
         $response = Gate::inspect('viewAny', [Tag::class, TagType::CATEGORY]);
 
         if ($response->denied()) {
-            return to_route('dashboard')->with(
-                FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('dashboard')])
-            );
+            return to_route('dashboard')->with(FlashMessageKey::ERROR->value, $response->message());
         }
 
         $categories = Tag::whereType(TagType::CATEGORY->value)->orderBy('created_at', 'desc')->get();
@@ -57,7 +54,7 @@ final class CategoryController extends Controller
         if ($response->denied()) {
             return to_route('categories.index')->with(
                 FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('categories')])
+                __('flash.message.restored', ['model' => __('Category')])
             );
         }
 
@@ -65,7 +62,7 @@ final class CategoryController extends Controller
 
         return to_route('categories.index')->with(
             FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('categories')])
+            __('flash.message.restored', ['model' => __('Category')])
         );
     }
 
@@ -79,7 +76,7 @@ final class CategoryController extends Controller
         if ($response->denied()) {
             return to_route('categories.index')->with(
                 FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('categories')])
+                __('flash.message.restored', ['model' => __('Category')])
             );
         }
 
@@ -87,7 +84,7 @@ final class CategoryController extends Controller
 
         return to_route('categories.index')->with(
             FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('categories')])
+            __('flash.message.restored', ['model' => __('Category')])
         );
     }
 
@@ -101,7 +98,7 @@ final class CategoryController extends Controller
         if ($response->denied()) {
             return to_route('categories.index')->with(
                 FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('categories')])
+                __('flash.message.restored', ['model' => __('Category')])
             );
         }
 
@@ -109,7 +106,7 @@ final class CategoryController extends Controller
 
         return to_route('categories.index')->with(
             FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('categories')])
+            __('flash.message.restored', ['model' => __('Category')])
         );
     }
 }

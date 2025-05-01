@@ -33,10 +33,7 @@ final class UserController extends Controller
         $response = Gate::inspect('viewAny', User::class);
 
         if ($response->denied()) {
-            return to_route('dashboard')->with(
-                FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('dashboard')])
-            );
+            return to_route('dashboard')->with(FlashMessageKey::ERROR->value, $response->message());
         }
 
         $users = User::query()
@@ -57,7 +54,7 @@ final class UserController extends Controller
         if ($response->denied()) {
             return to_route('users.index')->with(
                 FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('users')])
+                __('flash.message.restored', ['model' => __('User')])
             );
         }
 
@@ -84,7 +81,7 @@ final class UserController extends Controller
         if ($response->denied()) {
             return to_route('users.index')->with(
                 FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('users')])
+                __('flash.message.restored', ['model' => __('User')])
             );
         }
 
@@ -97,7 +94,7 @@ final class UserController extends Controller
         return to_route('users.index')
             ->with(
                 FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('users')])
+                __('flash.message.restored', ['model' => __('User')])
             );
     }
 
@@ -118,8 +115,8 @@ final class UserController extends Controller
 
         if ($response->denied()) {
             return to_route('users.index')->with(
-               FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('users')])
+                FlashMessageKey::SUCCESS->value,
+                __('flash.message.restored', ['model' => __('User')])
             );
         }
 
@@ -148,7 +145,7 @@ final class UserController extends Controller
         if ($response->denied()) {
             return to_route('users.index')->with(
                 FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('users')])
+                __('flash.message.restored', ['model' => __('User')])
             );
         }
 
@@ -162,7 +159,7 @@ final class UserController extends Controller
         return to_route('users.index')
             ->with(
                 FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('users')])
+                __('flash.message.restored', ['model' => __('User')])
             );
 
     }
@@ -177,7 +174,7 @@ final class UserController extends Controller
         if ($response->denied()) {
             return to_route('users.index')->with(
                 FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('users')])
+                __('flash.message.restored', ['model' => __('User')])
             );
         }
 
@@ -186,7 +183,7 @@ final class UserController extends Controller
         return to_route('users.index')
             ->with(
                 FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('users')])
+                __('flash.message.restored', ['model' => __('User')])
             );
     }
 }

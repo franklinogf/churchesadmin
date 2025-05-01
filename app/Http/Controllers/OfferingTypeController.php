@@ -1,4 +1,3 @@
-
 <?php
 
 declare(strict_types=1);
@@ -37,7 +36,7 @@ final class OfferingTypeController extends Controller
 
         return to_route('codes.offeringTypes.index')->with(
             FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('codes')])
+            __('flash.message.restored', ['model' => __('Code')])
         );
     }
 
@@ -50,7 +49,7 @@ final class OfferingTypeController extends Controller
 
         return to_route('codes.offeringTypes.index')->with(
             FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('codes')])
+            __('flash.message.restored', ['model' => __('Code')])
         );
     }
 
@@ -63,7 +62,7 @@ final class OfferingTypeController extends Controller
 
         return to_route('codes.offeringTypes.index')->with(
             FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('codes')])
+            __('flash.message.restored', ['model' => __('Code')])
         );
     }
 }
