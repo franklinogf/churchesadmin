@@ -43,7 +43,6 @@ const breadcrumbs: BreadcrumbItem[] = [
 export default function Create({ wallets, members, expenseTypes, walletOptions, expense }: CreatePageProps) {
   const { t } = useLaravelReactI18n();
   const { formatCurrency, toPositive } = useCurrency();
-  //   console.log(expense);
 
   const { data, setData, put, errors, processing } = useForm<Required<CreateForm>>({
     wallet_id: expense.transaction.wallet?.id.toString() || '',
@@ -55,7 +54,6 @@ export default function Create({ wallets, members, expenseTypes, walletOptions, 
   });
 
   function handleSubmit() {
-    console.log(data);
     put(route('expenses.update', expense.id), {
       preserveScroll: true,
     });
