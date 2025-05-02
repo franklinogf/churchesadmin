@@ -14,17 +14,6 @@ import { type MissionaryFormData } from '@/types/models/missionary';
 import { useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
-const breadcrumbs: BreadcrumbItem[] = [
-  {
-    title: 'Missionaries',
-    href: route('missionaries.index'),
-  },
-  {
-    title: 'Create Missionary',
-    href: route('missionaries.store'),
-  },
-];
-
 type CreateForm = MissionaryFormData & {
   address: AddressFormData;
 };
@@ -57,6 +46,17 @@ export default function Create({ genders, offeringFrequencies }: CreatePageProps
   const handleSubmit = () => {
     post(route('missionaries.store'));
   };
+
+  const breadcrumbs: BreadcrumbItem[] = [
+    {
+      title: t('Missionaries'),
+      href: route('missionaries.index'),
+    },
+    {
+      title: t('Create Missionary'),
+    },
+  ];
+
   return (
     <AppLayout breadcrumbs={breadcrumbs} title={t('Missionaries')}>
       <PageTitle>{t('Add Missionary')}</PageTitle>

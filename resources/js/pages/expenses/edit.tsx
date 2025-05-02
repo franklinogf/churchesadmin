@@ -30,15 +30,6 @@ interface CreateForm {
   note: string;
   date: string;
 }
-const breadcrumbs: BreadcrumbItem[] = [
-  {
-    title: 'Expenses',
-    href: route('expenses.index'),
-  },
-  {
-    title: 'Edit Expense',
-  },
-];
 
 export default function Create({ wallets, members, expenseTypes, walletOptions, expense }: CreatePageProps) {
   const { t } = useLaravelReactI18n();
@@ -59,6 +50,17 @@ export default function Create({ wallets, members, expenseTypes, walletOptions, 
     });
   }
   const wallet = wallets.find((wallet) => wallet.id.toString() === data.wallet_id);
+
+  const breadcrumbs: BreadcrumbItem[] = [
+    {
+      title: t('Expenses'),
+      href: route('expenses.index'),
+    },
+    {
+      title: t('Edit Expense'),
+    },
+  ];
+
   return (
     <AppLayout title={t('Expenses')} breadcrumbs={breadcrumbs}>
       <PageTitle>{t('Edit Expense')}</PageTitle>

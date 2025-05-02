@@ -17,17 +17,6 @@ import { type Tag } from '@/types/models/tag';
 import { useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
-const breadcrumbs: BreadcrumbItem[] = [
-  {
-    title: 'Members',
-    href: route('members.index'),
-  },
-  {
-    title: 'Edit Member',
-    href: '',
-  },
-];
-
 type EditForm = MemberFormData & {
   address: AddressFormData;
 };
@@ -70,7 +59,15 @@ export default function Edit({ member, genders, civilStatuses, skills, categorie
   const handleSubmit = () => {
     put(route('members.update', member.id));
   };
-
+  const breadcrumbs: BreadcrumbItem[] = [
+    {
+      title: t('Members'),
+      href: route('members.index'),
+    },
+    {
+      title: t('Edit Member'),
+    },
+  ];
   return (
     <AppLayout breadcrumbs={breadcrumbs} title={t('Members')}>
       <PageTitle>{t('Edit Member')}</PageTitle>

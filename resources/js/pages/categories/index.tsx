@@ -10,7 +10,6 @@ import { UserPermission } from '@/enums/user';
 import { useUser } from '@/hooks/use-permissions';
 import AppLayout from '@/layouts/app-layout';
 import useConfirmationStore from '@/stores/confirmationStore';
-import type { BreadcrumbItem } from '@/types';
 import { type Tag } from '@/types/models/tag';
 import { router, useForm } from '@inertiajs/react';
 import { type ColumnDef } from '@tanstack/react-table';
@@ -89,12 +88,7 @@ export const columns: ColumnDef<Tag>[] = [
     },
   },
 ];
-const breadcrumbs: BreadcrumbItem[] = [
-  {
-    title: 'Categories',
-    href: route('categories.index'),
-  },
-];
+
 interface IndexPageProps {
   categories: Tag[];
 }
@@ -102,7 +96,7 @@ export default function Index({ categories }: IndexPageProps) {
   const { t } = useLaravelReactI18n();
   const { can: userCan } = useUser();
   return (
-    <AppLayout breadcrumbs={breadcrumbs} title={t('Categories')}>
+    <AppLayout breadcrumbs={[{ title: t('Categories') }]} title={t('Categories')}>
       <PageTitle>{t('Categories')}</PageTitle>
       <div className="mx-auto w-full max-w-3xl">
         <DataTable

@@ -37,15 +37,6 @@ interface CreateForm {
     note: string;
   }[];
 }
-const breadcrumbs: BreadcrumbItem[] = [
-  {
-    title: 'Offerings',
-    href: route('offerings.index'),
-  },
-  {
-    title: 'New Offering',
-  },
-];
 
 const nonMemberOption: SelectOption[] = [
   {
@@ -110,6 +101,15 @@ export default function Create({ wallets, paymentMethods, members, missionaries,
     setData('offerings', updatedOfferings);
   }
 
+  const breadcrumbs: BreadcrumbItem[] = [
+    {
+      title: t('Offerings'),
+      href: route('offerings.index'),
+    },
+    {
+      title: t('New Offering'),
+    },
+  ];
   return (
     <AppLayout title={t('Offerings')} breadcrumbs={breadcrumbs}>
       <PageTitle>{t('New Offering')}</PageTitle>

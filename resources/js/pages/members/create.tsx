@@ -22,16 +22,6 @@ type CreateForm = MemberFormData & {
   address: AddressFormData;
 };
 
-const breadcrumbs: BreadcrumbItem[] = [
-  {
-    title: 'Members',
-    href: route('members.index'),
-  },
-  {
-    title: 'Add Member',
-    href: route('members.create'),
-  },
-];
 interface CreatePageProps {
   genders: SelectOption[];
   civilStatuses: SelectOption[];
@@ -70,6 +60,15 @@ export default function Create({ genders, civilStatuses, skills, categories }: C
     post(route('members.store'));
   };
 
+  const breadcrumbs: BreadcrumbItem[] = [
+    {
+      title: t('Members'),
+      href: route('members.index'),
+    },
+    {
+      title: t('Add Member'),
+    },
+  ];
   return (
     <AppLayout breadcrumbs={breadcrumbs} title={t('Members')}>
       <PageTitle>{t('Add Member')}</PageTitle>

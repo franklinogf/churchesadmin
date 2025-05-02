@@ -10,18 +10,17 @@ import { Link } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { columns } from './includes/columns';
 
-const breadcrumbs: BreadcrumbItem[] = [
-  {
-    title: 'Members',
-    href: route('members.index'),
-  },
-];
 interface IndexProps {
   members: Member[];
 }
 export default function Index({ members }: IndexProps) {
   const { t } = useLaravelReactI18n();
   const { can: userCan } = useUser();
+  const breadcrumbs: BreadcrumbItem[] = [
+    {
+      title: t('Members'),
+    },
+  ];
   return (
     <AppLayout breadcrumbs={breadcrumbs} title={t('Members')}>
       <PageTitle>{t('Members')}</PageTitle>
