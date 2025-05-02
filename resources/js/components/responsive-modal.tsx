@@ -23,7 +23,7 @@ export function ResponsiveModal({ title, description, open, setOpen, children }:
             <DrawerTitle>{title}</DrawerTitle>
             <DrawerDescription>{description}</DrawerDescription>
           </DrawerHeader>
-          <div className="mx-auto w-full px-4 pb-4">{children}</div>
+          <div className="max-w-xs:px-0 mx-auto w-full px-4 pb-4">{children}</div>
         </DrawerContent>
       </Drawer>
     );

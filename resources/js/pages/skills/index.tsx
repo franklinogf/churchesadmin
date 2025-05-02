@@ -24,7 +24,13 @@ export default function Index({ skills }: IndexPageProps) {
       <div className="mx-auto w-full max-w-3xl">
         <SkillForm open={open} setOpen={setOpen} />
         <DataTable
-          headerButton={userCan(UserPermission.CREATE_SKILLS) && <Button onClick={() => setOpen(true)}>{t('Add skill')}</Button>}
+          headerButton={
+            userCan(UserPermission.CREATE_SKILLS) && (
+              <Button size="sm" onClick={() => setOpen(true)}>
+                {t('Add skill')}
+              </Button>
+            )
+          }
           columns={columns}
           data={skills}
           rowId="id"

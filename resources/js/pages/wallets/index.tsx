@@ -5,8 +5,9 @@ import { type Wallet } from '@/types/models/wallet';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { walletColumns } from './includes/walletColumns';
 
+import { WalletForm } from '@/components/forms/wallet-form';
 import { Button } from '@/components/ui/button';
-import { WalletForm } from './components/WalletForm';
+import { useState } from 'react';
 
 interface IndexPageProps {
   wallets: Wallet[];
@@ -14,15 +15,22 @@ interface IndexPageProps {
 
 export default function Index({ wallets }: IndexPageProps) {
   const { t } = useLaravelReactI18n();
+  const [open, setOpen] = useState(false);
 
   return (
     <AppLayout breadcrumbs={[{ title: t('Wallets') }]} title={t('Wallets')}>
       <PageTitle>{t('Wallets')}</PageTitle>
+      <WalletForm open={open} setOpen={setOpen} />
       <DataTable
         headerButton={
-          <WalletForm>
-            <Button size="sm">{t('Add Wallet')}</Button>
-          </WalletForm>
+          <Button
+            size="sm"
+            onClick={() => {
+              setOpen(true);
+            }}
+          >
+            {t('Add Wallet')}
+          </Button>
         }
         data={wallets}
         columns={walletColumns}
