@@ -23,13 +23,7 @@ export default function Index({ categories }: IndexPageProps) {
       <div className="mx-auto w-full max-w-3xl">
         <CategoryForm open={open} setOpen={setOpen} />
         <DataTable
-          headerButton={
-            userCan(UserPermission.CREATE_CATEGORIES) && (
-              <Button onClick={() => setOpen(true)} size="sm">
-                {t('Add Category')}
-              </Button>
-            )
-          }
+          headerButton={userCan(UserPermission.CREATE_CATEGORIES) && <Button onClick={() => setOpen(true)}>{t('Add Category')}</Button>}
           columns={columns}
           data={categories}
           rowId="id"
