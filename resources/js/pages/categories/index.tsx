@@ -1,10 +1,9 @@
 import { DataTable } from '@/components/custom-ui/datatable/data-table';
 import { InputField } from '@/components/forms/inputs/InputField';
 import { SwitchField } from '@/components/forms/inputs/SwitchField';
-import { SubmitButton } from '@/components/forms/SubmitButton';
 import { PageTitle } from '@/components/PageTitle';
+import { ResponsiveModal, ResponsiveModalFooterSubmit } from '@/components/responsive-modal';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { UserPermission } from '@/enums/user';
 import { useUser } from '@/hooks/use-permissions';
@@ -32,6 +31,7 @@ export const columns: ColumnDef<Tag>[] = [
       const { t } = useLaravelReactI18n();
       const { openConfirmation } = useConfirmationStore();
       const { can: userCan } = useUser();
+      const [isEditing, setIsEditing] = useState(false);
       const category = row.original;
       if (category.isRegular && !userCan(UserPermission.UPDATE_REGULAR_TAG) && !userCan(UserPermission.DELETE_REGULAR_TAG)) {
         return null;
@@ -42,48 +42,49 @@ export const columns: ColumnDef<Tag>[] = [
       }
 
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="sm">
-              <MoreHorizontalIcon />
-              <span className="sr-only">{t('Actions')}</span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            {userCan(UserPermission.UPDATE_CATEGORIES) && (
-              <CategoryForm category={category}>
-                <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+        <>
+          <CategoryForm category={category} open={isEditing} setOpen={setIsEditing} />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="sm">
+                <MoreHorizontalIcon />
+                <span className="sr-only">{t('Actions')}</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              {userCan(UserPermission.UPDATE_CATEGORIES) && (
+                <DropdownMenuItem onSelect={() => setIsEditing(true)}>
                   <Edit2Icon className="size-3" />
                   <span>{t('Edit')}</span>
                 </DropdownMenuItem>
-              </CategoryForm>
-            )}
+              )}
 
-            {userCan(UserPermission.DELETE_CATEGORIES) && (
-              <DropdownMenuItem
-                variant="destructive"
-                onClick={() => {
-                  openConfirmation({
-                    title: t('Are you sure you want to delete this category?'),
-                    description: (category.isRegular ? t('This is marked as regular.') + '\n' : '') + t('This action cannot be undone.'),
-                    actionLabel: t('Delete'),
-                    actionVariant: 'destructive',
-                    cancelLabel: t('Cancel'),
-                    onAction: () => {
-                      router.delete(route('categories.destroy', category.id), {
-                        preserveState: true,
-                        preserveScroll: true,
-                      });
-                    },
-                  });
-                }}
-              >
-                <Trash2Icon className="size-3" />
-                <span>{t('Delete')}</span>
-              </DropdownMenuItem>
-            )}
-          </DropdownMenuContent>
-        </DropdownMenu>
+              {userCan(UserPermission.DELETE_CATEGORIES) && (
+                <DropdownMenuItem
+                  variant="destructive"
+                  onClick={() => {
+                    openConfirmation({
+                      title: t('Are you sure you want to delete this category?'),
+                      description: (category.isRegular ? t('This is marked as regular.') + '\n' : '') + t('This action cannot be undone.'),
+                      actionLabel: t('Delete'),
+                      actionVariant: 'destructive',
+                      cancelLabel: t('Cancel'),
+                      onAction: () => {
+                        router.delete(route('categories.destroy', category.id), {
+                          preserveState: true,
+                          preserveScroll: true,
+                        });
+                      },
+                    });
+                  }}
+                >
+                  <Trash2Icon className="size-3" />
+                  <span>{t('Delete')}</span>
+                </DropdownMenuItem>
+              )}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </>
       );
     },
   },
@@ -95,16 +96,18 @@ interface IndexPageProps {
 export default function Index({ categories }: IndexPageProps) {
   const { t } = useLaravelReactI18n();
   const { can: userCan } = useUser();
+  const [open, setOpen] = useState(false);
   return (
     <AppLayout breadcrumbs={[{ title: t('Categories') }]} title={t('Categories')}>
       <PageTitle>{t('Categories')}</PageTitle>
       <div className="mx-auto w-full max-w-3xl">
+        <CategoryForm open={open} setOpen={setOpen} />
         <DataTable
           headerButton={
             userCan(UserPermission.CREATE_CATEGORIES) && (
-              <CategoryForm>
-                <Button>{t('Add category')}</Button>
-              </CategoryForm>
+              <Button onClick={() => setOpen(true)} size="sm">
+                {t('Add Category')}
+              </Button>
             )
           }
           columns={columns}
@@ -116,8 +119,7 @@ export default function Index({ categories }: IndexPageProps) {
   );
 }
 
-function CategoryForm({ category, children }: { category?: Tag; children: React.ReactNode }) {
-  const [open, setOpen] = useState(false);
+function CategoryForm({ category, open, setOpen }: { category?: Tag; open: boolean; setOpen: (open: boolean) => void }) {
   const { t } = useLaravelReactI18n();
   const { can: userCan } = useUser();
   const { data, setData, post, put, errors, reset, processing } = useForm({
@@ -144,30 +146,20 @@ function CategoryForm({ category, children }: { category?: Tag; children: React.
   }
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>{category ? t('Edit Category') : t('Add Category')}</DialogTitle>
-          <DialogDescription hidden></DialogDescription>
-        </DialogHeader>
-
-        <form className="space-y-4" onSubmit={handleSubmit}>
-          <InputField label={t('Name')} value={data.name} onChange={(value) => setData(`name`, value)} error={errors.name} />
-          {userCan(category ? UserPermission.UPDATE_REGULAR_TAG : UserPermission.CREATE_REGULAR_TAG) && (
-            <SwitchField
-              description={t('Only admins would be allowed to edit and delete this category')}
-              label={t('Mark this category as regular')}
-              value={data.is_regular}
-              onChange={(value) => setData('is_regular', value)}
-              error={errors.is_regular}
-            />
-          )}
-          <div className="flex justify-end">
-            <SubmitButton isSubmitting={processing}>{t('Save')}</SubmitButton>
-          </div>
-        </form>
-      </DialogContent>
-    </Dialog>
+    <ResponsiveModal open={open} setOpen={setOpen} title="Add Category">
+      <form className="space-y-4" onSubmit={handleSubmit}>
+        <InputField label={t('Name')} value={data.name} onChange={(value) => setData(`name`, value)} error={errors.name} />
+        {userCan(category ? UserPermission.UPDATE_REGULAR_TAG : UserPermission.CREATE_REGULAR_TAG) && (
+          <SwitchField
+            description={t('Only admins would be allowed to edit and delete this category')}
+            label={t('Mark this category as regular')}
+            value={data.is_regular}
+            onChange={(value) => setData('is_regular', value)}
+            error={errors.is_regular}
+          />
+        )}
+        <ResponsiveModalFooterSubmit isSubmitting={processing} label={t('Save')} />
+      </form>
+    </ResponsiveModal>
   );
 }
