@@ -1,11 +1,11 @@
+import { InputField } from '@/components/forms/inputs/InputField';
+import { SwitchField } from '@/components/forms/inputs/SwitchField';
+import { ResponsiveModal, ResponsiveModalFooterSubmit } from '@/components/responsive-modal';
 import { UserPermission } from '@/enums/user';
 import { useUser } from '@/hooks/use-permissions';
 import type { Tag } from '@/types/models/tag';
 import { useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { ResponsiveModal, ResponsiveModalFooterSubmit } from '../responsive-modal';
-import { InputField } from './inputs/InputField';
-import { SwitchField } from './inputs/SwitchField';
 
 export function CategoryForm({ category, open, setOpen }: { category?: Tag; open: boolean; setOpen: (open: boolean) => void }) {
   const { t } = useLaravelReactI18n();
