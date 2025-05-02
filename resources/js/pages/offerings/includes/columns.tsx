@@ -32,6 +32,14 @@ export const columns: ColumnDef<Offering>[] = [
     enableHiding: false,
     header: ({ column }) => <DataTableColumnHeader column={column} title="Offering Type" />,
     accessorKey: 'offeringType',
+    sortingFn: (rowA, rowB) => {
+      const offeringTypeA = rowA.original.offeringType;
+      const offeringTypeB = rowB.original.offeringType;
+      if (!offeringTypeA && !offeringTypeB) return 0;
+      if (!offeringTypeA) return 1;
+      if (!offeringTypeB) return -1;
+      return offeringTypeA.name.localeCompare(offeringTypeB.name);
+    },
     cell: ({ row }) => (
       <DatatableCell justify="center">
         <Badge>
