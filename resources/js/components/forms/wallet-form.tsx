@@ -1,10 +1,10 @@
 import { CurrencyField } from '@/components/forms/inputs/CurrencyField';
 import { FieldsGrid } from '@/components/forms/inputs/FieldsGrid';
 import { InputField } from '@/components/forms/inputs/InputField';
+import { ResponsiveModal, ResponsiveModalFooterSubmit } from '@/components/responsive-modal';
 import type { Wallet } from '@/types/models/wallet';
 import { useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { ResponsiveModal, ResponsiveModalFooterSubmit } from '../responsive-modal';
 
 type WalletForm = {
   name: string;
