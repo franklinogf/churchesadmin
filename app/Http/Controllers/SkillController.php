@@ -51,17 +51,14 @@ final class SkillController extends Controller
         $response = Gate::inspect('create', [Tag::class, $data['is_regular'], TagType::SKILL]);
 
         if ($response->denied()) {
-            return to_route('skills.index')->with(
-                FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('Skill')])
-            );
+            return to_route('skills.index')->with(FlashMessageKey::ERROR->value, $response->message());
         }
 
         $action->handle($data, TagType::SKILL);
 
         return to_route('skills.index')->with(
             FlashMessageKey::SUCCESS->value,
-            __('flash.message.restored', ['model' => __('Skill')])
+            __('flash.message.store', ['model' => __('Skill')])
         );
     }
 
@@ -73,17 +70,14 @@ final class SkillController extends Controller
         $response = Gate::inspect('update', $tag);
 
         if ($response->denied()) {
-            return to_route('skills.index')->with(
-                FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('Skill')])
-            );
+            return to_route('skills.index')->with(FlashMessageKey::ERROR->value, $response->message());
         }
 
         $action->handle($tag, $request->validated());
 
         return to_route('skills.index')->with(
             FlashMessageKey::SUCCESS->value,
-            __('flash.message.restored', ['model' => __('Skill')])
+            __('flash.message.update', ['model' => __('Skill')])
         );
     }
 
@@ -95,17 +89,14 @@ final class SkillController extends Controller
         $response = Gate::inspect('delete', $tag);
 
         if ($response->denied()) {
-            return to_route('skills.index')->with(
-                FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('Skill')])
-            );
+            return to_route('skills.index')->with(FlashMessageKey::ERROR->value, $response->message());
         }
 
         $action->handle($tag);
 
         return to_route('skills.index')->with(
             FlashMessageKey::SUCCESS->value,
-            __('flash.message.restored', ['model' => __('Skill')])
+            __('flash.message.delete', ['model' => __('Skill')])
         );
     }
 }

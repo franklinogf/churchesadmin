@@ -50,10 +50,7 @@ final class MissionaryController extends Controller
         $response = Gate::inspect('create', Missionary::class);
 
         if ($response->denied()) {
-            return to_route('missionaries.index')->with(
-                FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('Missionary')])
-            );
+            return to_route('missionaries.index')->with(FlashMessageKey::ERROR->value, $response->message());
         }
         $offeringFrequencies = OfferingFrequency::options();
         $genders = Gender::options();
@@ -72,17 +69,14 @@ final class MissionaryController extends Controller
         $response = Gate::inspect('create', Missionary::class);
 
         if ($response->denied()) {
-            return to_route('missionaries.index')->with(
-                FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('Missionary')])
-            );
+            return to_route('missionaries.index')->with(FlashMessageKey::ERROR->value, $response->message());
         }
 
         $action->handle($request->getMissionaryData(), $request->getAddressData());
 
         return to_route('missionaries.index')->with(
             FlashMessageKey::SUCCESS->value,
-            __('flash.message.restored', ['model' => __('Missionary')])
+            __('flash.message.store', ['model' => __('Missionary')])
         );
     }
 
@@ -102,10 +96,7 @@ final class MissionaryController extends Controller
         $response = Gate::inspect('update', $missionary);
 
         if ($response->denied()) {
-            return to_route('missionaries.index')->with(
-                FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('Missionary')])
-            );
+            return to_route('missionaries.index')->with(FlashMessageKey::ERROR->value, $response->message());
         }
 
         $missionary->load('address');
@@ -127,10 +118,7 @@ final class MissionaryController extends Controller
         $response = Gate::inspect('update', $missionary);
 
         if ($response->denied()) {
-            return to_route('missionaries.index')->with(
-                FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('Missionary')])
-            );
+            return to_route('missionaries.index')->with(FlashMessageKey::ERROR->value, $response->message());
         }
 
         $action->handle(
@@ -141,7 +129,7 @@ final class MissionaryController extends Controller
 
         return to_route('missionaries.index')->with(
             FlashMessageKey::SUCCESS->value,
-            __('flash.message.restored', ['model' => __('Missionary')])
+            __('flash.message.update', ['model' => __('Missionary')])
         );
     }
 
@@ -153,17 +141,13 @@ final class MissionaryController extends Controller
         $response = Gate::inspect('delete', $missionary);
 
         if ($response->denied()) {
-
-            return to_route('missionaries.index')->with(
-                FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('Missionary')])
-            );
+            return to_route('missionaries.index')->with(FlashMessageKey::ERROR->value, $response->message());
         }
         $action->handle($missionary);
 
         return to_route('missionaries.index')->with(
             FlashMessageKey::SUCCESS->value,
-            __('flash.message.restored', ['model' => __('Missionary')])
+            __('flash.message.delete', ['model' => __('Missionary')])
         );
     }
 
@@ -172,18 +156,14 @@ final class MissionaryController extends Controller
         $response = Gate::inspect('restore', $missionary);
 
         if ($response->denied()) {
-
-            return to_route('missionaries.index')->with(
-                FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('Missionary')])
-            );
+            return to_route('missionaries.index')->with(FlashMessageKey::ERROR->value, $response->message());
         }
 
         $action->handle($missionary);
 
         return to_route('missionaries.index')->with(
             FlashMessageKey::SUCCESS->value,
-            __('flash.message.restored', ['model' => __('Missionary')])
+            __('flash.message.restore', ['model' => __('Missionary')])
         );
     }
 
@@ -192,18 +172,14 @@ final class MissionaryController extends Controller
         $response = Gate::inspect('forceDelete', $missionary);
 
         if ($response->denied()) {
-
-            return to_route('missionaries.index')->with(
-                FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('Missionary')])
-            );
+            return to_route('missionaries.index')->with(FlashMessageKey::ERROR->value, $response->message());
         }
 
         $action->handle($missionary);
 
         return to_route('missionaries.index')->with(
             FlashMessageKey::SUCCESS->value,
-            __('flash.message.restored', ['model' => __('Missionary')])
+            __('flash.message.forceDelete', ['model' => __('Missionary')])
         );
     }
 }

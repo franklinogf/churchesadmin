@@ -52,17 +52,14 @@ final class CategoryController extends Controller
         $response = Gate::inspect('create', [Tag::class, $data['is_regular'], TagType::CATEGORY]);
 
         if ($response->denied()) {
-            return to_route('categories.index')->with(
-                FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('Category')])
-            );
+            return to_route('categories.index')->with(FlashMessageKey::ERROR->value, $response->message());
         }
 
         $action->handle($data, TagType::CATEGORY);
 
         return to_route('categories.index')->with(
             FlashMessageKey::SUCCESS->value,
-            __('flash.message.restored', ['model' => __('Category')])
+            __('flash.message.store', ['model' => __('Category')])
         );
     }
 
@@ -74,17 +71,14 @@ final class CategoryController extends Controller
         $response = Gate::inspect('update', $tag);
 
         if ($response->denied()) {
-            return to_route('categories.index')->with(
-                FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('Category')])
-            );
+            return to_route('categories.index')->with(FlashMessageKey::ERROR->value, $response->message());
         }
 
         $action->handle($tag, $request->validated());
 
         return to_route('categories.index')->with(
             FlashMessageKey::SUCCESS->value,
-            __('flash.message.restored', ['model' => __('Category')])
+            __('flash.message.update', ['model' => __('Category')])
         );
     }
 
@@ -96,17 +90,14 @@ final class CategoryController extends Controller
         $response = Gate::inspect('delete', $tag);
 
         if ($response->denied()) {
-            return to_route('categories.index')->with(
-                FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('Category')])
-            );
+            return to_route('categories.index')->with(FlashMessageKey::ERROR->value, $response->message());
         }
 
         $action->handle($tag);
 
         return to_route('categories.index')->with(
             FlashMessageKey::SUCCESS->value,
-            __('flash.message.restored', ['model' => __('Category')])
+            __('flash.message.delete', ['model' => __('Category')])
         );
     }
 }

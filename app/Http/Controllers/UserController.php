@@ -52,10 +52,7 @@ final class UserController extends Controller
         $response = Gate::inspect('create', User::class);
 
         if ($response->denied()) {
-            return to_route('users.index')->with(
-                FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('User')])
-            );
+            return to_route('users.index')->with(FlashMessageKey::ERROR->value, $response->message());
         }
 
         $roles = Role::query()
@@ -79,10 +76,7 @@ final class UserController extends Controller
         $response = Gate::inspect('create', User::class);
 
         if ($response->denied()) {
-            return to_route('users.index')->with(
-                FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('User')])
-            );
+            return to_route('users.index')->with(FlashMessageKey::ERROR->value, $response->message());
         }
 
         $action->handle(
@@ -94,7 +88,7 @@ final class UserController extends Controller
         return to_route('users.index')
             ->with(
                 FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('User')])
+                __('flash.message.store', ['model' => __('User')])
             );
     }
 
@@ -114,10 +108,7 @@ final class UserController extends Controller
         $response = Gate::inspect('update', $user);
 
         if ($response->denied()) {
-            return to_route('users.index')->with(
-                FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('User')])
-            );
+            return to_route('users.index')->with(FlashMessageKey::ERROR->value, $response->message());
         }
 
         $user->load('roles', 'permissions');
@@ -143,10 +134,7 @@ final class UserController extends Controller
         $response = Gate::inspect('update', $user);
 
         if ($response->denied()) {
-            return to_route('users.index')->with(
-                FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('User')])
-            );
+            return to_route('users.index')->with(FlashMessageKey::ERROR->value, $response->message());
         }
 
         $action->handle(
@@ -159,7 +147,7 @@ final class UserController extends Controller
         return to_route('users.index')
             ->with(
                 FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('User')])
+                __('flash.message.update', ['model' => __('User')])
             );
 
     }
@@ -172,10 +160,7 @@ final class UserController extends Controller
         $response = Gate::inspect('delete', $user);
 
         if ($response->denied()) {
-            return to_route('users.index')->with(
-                FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('User')])
-            );
+            return to_route('users.index')->with(FlashMessageKey::ERROR->value, $response->message());
         }
 
         $action->handle($user);
@@ -183,7 +168,7 @@ final class UserController extends Controller
         return to_route('users.index')
             ->with(
                 FlashMessageKey::SUCCESS->value,
-                __('flash.message.restored', ['model' => __('User')])
+                __('flash.message.delete', ['model' => __('User')])
             );
     }
 }
