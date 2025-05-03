@@ -36,7 +36,7 @@ final class OfferingTypeController extends Controller
 
         return to_route('codes.offeringTypes.index')->with(
             FlashMessageKey::SUCCESS->value,
-            __('flash.message.store', ['model' => __('Code')])
+            __('flash.message.created', ['model' => __('Code')])
         );
     }
 
@@ -62,7 +62,7 @@ final class OfferingTypeController extends Controller
 
         return to_route('codes.offeringTypes.index')->with(
             FlashMessageKey::SUCCESS->value,
-            __('flash.message.delete', ['model' => __('Code')])
+            __('flash.message.deleted', ['model' => __('Code')])
         );
     }
 }

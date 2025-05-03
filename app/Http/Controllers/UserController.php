@@ -88,7 +88,7 @@ final class UserController extends Controller
         return to_route('users.index')
             ->with(
                 FlashMessageKey::SUCCESS->value,
-                __('flash.message.store', ['model' => __('User')])
+                __('flash.message.created', ['model' => __('User')])
             );
     }
 
@@ -168,7 +168,7 @@ final class UserController extends Controller
         return to_route('users.index')
             ->with(
                 FlashMessageKey::SUCCESS->value,
-                __('flash.message.delete', ['model' => __('User')])
+                __('flash.message.deleted', ['model' => __('User')])
             );
     }
 }

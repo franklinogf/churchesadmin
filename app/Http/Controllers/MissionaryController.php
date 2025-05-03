@@ -147,7 +147,7 @@ final class MissionaryController extends Controller
 
         return to_route('missionaries.index')->with(
             FlashMessageKey::SUCCESS->value,
-            __('flash.message.delete', ['model' => __('Missionary')])
+            __('flash.message.deleted', ['model' => __('Missionary')])
         );
     }
 
@@ -163,7 +163,7 @@ final class MissionaryController extends Controller
 
         return to_route('missionaries.index')->with(
             FlashMessageKey::SUCCESS->value,
-            __('flash.message.restore', ['model' => __('Missionary')])
+            __('flash.message.restored', ['model' => __('Missionary')])
         );
     }
 
@@ -179,7 +179,7 @@ final class MissionaryController extends Controller
 
         return to_route('missionaries.index')->with(
             FlashMessageKey::SUCCESS->value,
-            __('flash.message.forceDelete', ['model' => __('Missionary')])
+            __('flash.message.deleted', ['model' => __('Missionary')])
         );
     }
 }

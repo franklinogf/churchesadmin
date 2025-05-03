@@ -59,7 +59,7 @@ final class CategoryController extends Controller
 
         return to_route('categories.index')->with(
             FlashMessageKey::SUCCESS->value,
-            __('flash.message.store', ['model' => __('Category')])
+            __('flash.message.created', ['model' => __('Category')])
         );
     }
 
@@ -97,7 +97,7 @@ final class CategoryController extends Controller
 
         return to_route('categories.index')->with(
             FlashMessageKey::SUCCESS->value,
-            __('flash.message.delete', ['model' => __('Category')])
+            __('flash.message.deleted', ['model' => __('Category')])
         );
     }
 }

@@ -58,7 +58,7 @@ final class SkillController extends Controller
 
         return to_route('skills.index')->with(
             FlashMessageKey::SUCCESS->value,
-            __('flash.message.store', ['model' => __('Skill')])
+            __('flash.message.created', ['model' => __('Skill')])
         );
     }
 
@@ -96,7 +96,7 @@ final class SkillController extends Controller
 
         return to_route('skills.index')->with(
             FlashMessageKey::SUCCESS->value,
-            __('flash.message.delete', ['model' => __('Skill')])
+            __('flash.message.deleted', ['model' => __('Skill')])
         );
     }
 }

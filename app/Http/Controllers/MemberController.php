@@ -82,7 +82,7 @@ final class MemberController extends Controller
 
         return to_route('members.index')->with(
             FlashMessageKey::SUCCESS->value,
-            __('flash.message.store', ['model' => __('Member')])
+            __('flash.message.created', ['model' => __('Member')])
         );
     }
 
@@ -161,7 +161,7 @@ final class MemberController extends Controller
 
         return to_route('members.index')->with(
             FlashMessageKey::SUCCESS->value,
-            __('flash.message.delete', ['model' => __('Member')])
+            __('flash.message.deleted', ['model' => __('Member')])
         );
     }
 
@@ -195,7 +195,7 @@ final class MemberController extends Controller
 
         return to_route('members.index')->with(
             FlashMessageKey::SUCCESS->value,
-            __('flash.message.forceDelete', ['model' => __('Member')])
+            __('flash.message.deleted', ['model' => __('Member')])
         );
     }
 }
