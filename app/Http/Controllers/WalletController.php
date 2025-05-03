@@ -11,7 +11,7 @@ use App\Http\Requests\Wallet\UpdateWalletRequest;
 use App\Http\Resources\Wallet\WalletResource;
 use App\Models\Church;
 use App\Models\Wallet;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -33,7 +33,7 @@ final class WalletController extends Controller
 
     public function show(Wallet $wallet): Response
     {
-        $wallet->load(['walletTransactions.wallet' => function (Builder $belongsTo): void {
+        $wallet->load(['walletTransactions.wallet' => function (BelongsTo $belongsTo): void {
             /** @phpstan-ignore-next-line */
             $belongsTo->withTrashed();
         }]);
