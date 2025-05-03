@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Carbon\CarbonImmutable;
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -14,14 +14,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property-read int $transaction_id
  * @property-read int $expense_type_id
  * @property-read int|null $member_id
+ * @property-read DateTimeInterface $date
+ * @property-read float $amount
+ * @property-read string|null $note
+ * @property-read DateTimeInterface $created_at
+ * @property-read DateTimeInterface $updated_at
  * @property-read Transaction $transaction
  * @property-read ExpenseType $expenseType
  * @property-read Member|null $member
- * @property-read CarbonImmutable $date
- * @property-read float $amount
- * @property-read string|null $note
- * @property-read CarbonImmutable $created_at
- * @property-read CarbonImmutable $updated_at
  */
 final class Expense extends Model
 {

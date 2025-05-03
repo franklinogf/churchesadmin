@@ -7,7 +7,7 @@ namespace App\Models;
 use Bavix\Wallet\Models\Transaction;
 use Bavix\Wallet\Models\Transfer;
 use Bavix\Wallet\Models\Wallet as BaseWallet;
-use Carbon\CarbonImmutable;
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Stancl\Tenancy\Database\Concerns\CentralConnection;
 
@@ -15,7 +15,7 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @mixin BaseWallet
  *
  *  @property-read int $id
- * @property-read CarbonImmutable|null $deleted_at
+ * @property-read DateTimeInterface|null $deleted_at
  */
 final class Wallet extends BaseWallet
 {

@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Carbon\CarbonImmutable;
+use App\Casts\AsUcWords;
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -12,8 +13,8 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 /**
  * @property-read int $id
  * @property-read string $name
- * @property-read CarbonImmutable $created_at
- * @property-read CarbonImmutable $updated_at
+ * @property-read DateTimeInterface $created_at
+ * @property-read DateTimeInterface $updated_at
  * @property-read Offering[] $offerings
  */
 final class OfferingType extends Model
@@ -29,5 +30,18 @@ final class OfferingType extends Model
     public function offerings(): MorphMany
     {
         return $this->morphMany(Offering::class, 'offering_type');
+    }
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+
+        return [
+            'name' => AsUcWords::class,
+        ];
     }
 }
