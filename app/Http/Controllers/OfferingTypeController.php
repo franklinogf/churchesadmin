@@ -49,7 +49,7 @@ final class OfferingTypeController extends Controller
 
         return to_route('codes.offeringTypes.index')->with(
             FlashMessageKey::SUCCESS->value,
-            __('flash.message.update', ['model' => __('Code')])
+            __('flash.message.updated', ['model' => __('Code')])
         );
     }
 

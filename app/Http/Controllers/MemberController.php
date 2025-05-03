@@ -140,7 +140,7 @@ final class MemberController extends Controller
 
         return to_route('members.index')->with(
             FlashMessageKey::SUCCESS->value,
-            __('flash.message.update', ['model' => __('Member')])
+            __('flash.message.updated', ['model' => __('Member')])
         );
 
     }

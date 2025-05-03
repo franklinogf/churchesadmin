@@ -78,7 +78,7 @@ final class CategoryController extends Controller
 
         return to_route('categories.index')->with(
             FlashMessageKey::SUCCESS->value,
-            __('flash.message.update', ['model' => __('Category')])
+            __('flash.message.updated', ['model' => __('Category')])
         );
     }
 

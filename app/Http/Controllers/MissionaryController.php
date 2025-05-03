@@ -129,7 +129,7 @@ final class MissionaryController extends Controller
 
         return to_route('missionaries.index')->with(
             FlashMessageKey::SUCCESS->value,
-            __('flash.message.update', ['model' => __('Missionary')])
+            __('flash.message.updated', ['model' => __('Missionary')])
         );
     }
 

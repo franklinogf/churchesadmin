@@ -77,7 +77,7 @@ final class SkillController extends Controller
 
         return to_route('skills.index')->with(
             FlashMessageKey::SUCCESS->value,
-            __('flash.message.update', ['model' => __('Skill')])
+            __('flash.message.updated', ['model' => __('Skill')])
         );
     }
 

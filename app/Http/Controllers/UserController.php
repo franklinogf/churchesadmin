@@ -147,7 +147,7 @@ final class UserController extends Controller
         return to_route('users.index')
             ->with(
                 FlashMessageKey::SUCCESS->value,
-                __('flash.message.update', ['model' => __('User')])
+                __('flash.message.updated', ['model' => __('User')])
             );
 
     }
