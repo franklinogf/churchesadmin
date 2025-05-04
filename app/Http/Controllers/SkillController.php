@@ -56,7 +56,10 @@ final class SkillController extends Controller
 
         $action->handle($data, TagType::SKILL);
 
-        return to_route('skills.index')->with(FlashMessageKey::SUCCESS->value, __('Skill created successfully.'));
+        return to_route('skills.index')->with(
+            FlashMessageKey::SUCCESS->value,
+            __('flash.message.created', ['model' => __('Skill')])
+        );
     }
 
     /**
@@ -72,7 +75,10 @@ final class SkillController extends Controller
 
         $action->handle($tag, $request->validated());
 
-        return to_route('skills.index')->with(FlashMessageKey::SUCCESS->value, __('Skill updated successfully.'));
+        return to_route('skills.index')->with(
+            FlashMessageKey::SUCCESS->value,
+            __('flash.message.updated', ['model' => __('Skill')])
+        );
     }
 
     /**
@@ -88,6 +94,9 @@ final class SkillController extends Controller
 
         $action->handle($tag);
 
-        return to_route('skills.index')->with(FlashMessageKey::SUCCESS->value, __('Skill deleted successfully.'));
+        return to_route('skills.index')->with(
+            FlashMessageKey::SUCCESS->value,
+            __('flash.message.deleted', ['model' => __('Skill')])
+        );
     }
 }

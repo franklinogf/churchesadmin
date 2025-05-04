@@ -86,7 +86,10 @@ final class UserController extends Controller
         );
 
         return to_route('users.index')
-            ->with(FlashMessageKey::SUCCESS->value, __('User created successfully'));
+            ->with(
+                FlashMessageKey::SUCCESS->value,
+                __('flash.message.created', ['model' => __('User')])
+            );
     }
 
     // /**
@@ -142,7 +145,10 @@ final class UserController extends Controller
         );
 
         return to_route('users.index')
-            ->with(FlashMessageKey::SUCCESS->value, __('User updated successfully'));
+            ->with(
+                FlashMessageKey::SUCCESS->value,
+                __('flash.message.updated', ['model' => __('User')])
+            );
 
     }
 
@@ -160,6 +166,9 @@ final class UserController extends Controller
         $action->handle($user);
 
         return to_route('users.index')
-            ->with(FlashMessageKey::SUCCESS->value, __('User deleted successfully'));
+            ->with(
+                FlashMessageKey::SUCCESS->value,
+                __('flash.message.deleted', ['model' => __('User')])
+            );
     }
 }

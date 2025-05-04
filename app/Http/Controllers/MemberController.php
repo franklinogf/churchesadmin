@@ -80,7 +80,10 @@ final class MemberController extends Controller
 
         $action->handle($request->getMemberData(), $request->getSkillData(), $request->getCategoryData(), $request->getAddressData());
 
-        return to_route('members.index')->with(FlashMessageKey::SUCCESS->value, 'Member created successfully.');
+        return to_route('members.index')->with(
+            FlashMessageKey::SUCCESS->value,
+            __('flash.message.created', ['model' => __('Member')])
+        );
     }
 
     // /**
@@ -135,7 +138,10 @@ final class MemberController extends Controller
 
         $action->handle($member, $data, $skills, $categories, $address);
 
-        return to_route('members.index')->with(FlashMessageKey::SUCCESS->value, 'Member updated successfully.');
+        return to_route('members.index')->with(
+            FlashMessageKey::SUCCESS->value,
+            __('flash.message.updated', ['model' => __('Member')])
+        );
 
     }
 
@@ -153,7 +159,10 @@ final class MemberController extends Controller
 
         $action->handle($member);
 
-        return to_route('members.index')->with(FlashMessageKey::SUCCESS->value, 'Member deleted successfully.');
+        return to_route('members.index')->with(
+            FlashMessageKey::SUCCESS->value,
+            __('flash.message.deleted', ['model' => __('Member')])
+        );
     }
 
     public function restore(Member $member, RestoreMemberAction $action): RedirectResponse
@@ -167,7 +176,10 @@ final class MemberController extends Controller
 
         $action->handle($member);
 
-        return to_route('members.index')->with(FlashMessageKey::SUCCESS->value, 'Member restored successfully.');
+        return to_route('members.index')->with(
+            FlashMessageKey::SUCCESS->value,
+            __('flash.message.restored', ['model' => __('Member')])
+        );
     }
 
     public function forceDelete(Member $member, ForceDeleteMemberAction $action): RedirectResponse
@@ -181,6 +193,9 @@ final class MemberController extends Controller
 
         $action->handle($member);
 
-        return to_route('members.index')->with(FlashMessageKey::SUCCESS->value, 'Member permanently deleted successfully.');
+        return to_route('members.index')->with(
+            FlashMessageKey::SUCCESS->value,
+            __('flash.message.deleted', ['model' => __('Member')])
+        );
     }
 }

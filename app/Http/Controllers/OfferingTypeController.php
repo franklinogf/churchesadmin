@@ -34,7 +34,10 @@ final class OfferingTypeController extends Controller
     {
         OfferingType::create($request->validated());
 
-        return to_route('codes.offeringTypes.index')->with(FlashMessageKey::SUCCESS->value, 'Offering type created successfully.');
+        return to_route('codes.offeringTypes.index')->with(
+            FlashMessageKey::SUCCESS->value,
+            __('flash.message.created', ['model' => __('Code')])
+        );
     }
 
     /**
@@ -45,7 +48,10 @@ final class OfferingTypeController extends Controller
 
         $offeringType->update($request->validated());
 
-        return to_route('codes.offeringTypes.index')->with(FlashMessageKey::SUCCESS->value, 'Offering type updated successfully.');
+        return to_route('codes.offeringTypes.index')->with(
+            FlashMessageKey::SUCCESS->value,
+            __('flash.message.updated', ['model' => __('Code')])
+        );
     }
 
     /**
@@ -55,6 +61,9 @@ final class OfferingTypeController extends Controller
     {
         $offeringType->delete();
 
-        return to_route('codes.offeringTypes.index')->with(FlashMessageKey::SUCCESS->value, 'Offering type deleted successfully.');
+        return to_route('codes.offeringTypes.index')->with(
+            FlashMessageKey::SUCCESS->value,
+            __('flash.message.deleted', ['model' => __('Code')])
+        );
     }
 }

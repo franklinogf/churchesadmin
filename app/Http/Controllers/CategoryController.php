@@ -57,7 +57,10 @@ final class CategoryController extends Controller
 
         $action->handle($data, TagType::CATEGORY);
 
-        return to_route('categories.index')->with(FlashMessageKey::SUCCESS->value, __('Category created successfully.'));
+        return to_route('categories.index')->with(
+            FlashMessageKey::SUCCESS->value,
+            __('flash.message.created', ['model' => __('Category')])
+        );
     }
 
     /**
@@ -73,7 +76,10 @@ final class CategoryController extends Controller
 
         $action->handle($tag, $request->validated());
 
-        return to_route('categories.index')->with(FlashMessageKey::SUCCESS->value, __('Category updated successfully.'));
+        return to_route('categories.index')->with(
+            FlashMessageKey::SUCCESS->value,
+            __('flash.message.updated', ['model' => __('Category')])
+        );
     }
 
     /**
@@ -89,6 +95,9 @@ final class CategoryController extends Controller
 
         $action->handle($tag);
 
-        return to_route('categories.index')->with(FlashMessageKey::SUCCESS->value, __('Category deleted successfully.'));
+        return to_route('categories.index')->with(
+            FlashMessageKey::SUCCESS->value,
+            __('flash.message.deleted', ['model' => __('Category')])
+        );
     }
 }
