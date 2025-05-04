@@ -57,17 +57,16 @@ describe('if user has permission', function (): void {
 
         assertDatabaseCount('addresses', 0);
 
-        $updatedMember = Member::latest()->first();
+        $member->refresh();
 
-        expect($updatedMember)->not->toBeNull()
-            ->and($updatedMember->name)->toBe('John')
-            ->and($updatedMember->last_name)->toBe('Doe')
-            ->and($updatedMember->email)->toBe('john.doe@example.com')
-            ->and($updatedMember->phone)->toBe('+19293394305')
-            ->and($updatedMember->gender)->toBe(Gender::MALE)
-            ->and($updatedMember->dob->format('Y-m-d'))->toBe('1990-01-01')
-            ->and($updatedMember->civil_status)->toBe(CivilStatus::SINGLE)
-            ->and($updatedMember->address)->toBeNull();
+        expect($member->name)->toBe('John')
+            ->and($member->last_name)->toBe('Doe')
+            ->and($member->email)->toBe('john.doe@example.com')
+            ->and($member->phone)->toBe('+19293394305')
+            ->and($member->gender)->toBe(Gender::MALE)
+            ->and($member->dob->format('Y-m-d'))->toBe('1990-01-01')
+            ->and($member->civil_status)->toBe(CivilStatus::SINGLE)
+            ->and($member->address)->toBeNull();
     });
 
     it('can be updated without an address when it already has an address', function (): void {

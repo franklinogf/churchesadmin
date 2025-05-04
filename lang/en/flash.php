@@ -21,5 +21,7 @@ return [
         'imported' => ':model imported successfully.',
         'exported' => ':model exported successfully.',
         'synced' => ':model synced successfully.',
+        'insufficient_funds' => 'Insufficient funds in :wallet.',
+        'empty_balance' => 'The balance of :wallet is empty.',
     ],
 ];

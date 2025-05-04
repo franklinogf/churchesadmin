@@ -4,31 +4,23 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Dtos\WalletMetaDto;
 use Bavix\Wallet\Models\Transaction;
 use Bavix\Wallet\Models\Transfer;
 use Bavix\Wallet\Models\Wallet as BaseWallet;
-use Carbon\CarbonImmutable;
-use Spatie\Translatable\HasTranslations;
+use DateTimeInterface;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Stancl\Tenancy\Database\Concerns\CentralConnection;
 
 /**
- * @mixin \Bavix\Wallet\Models\Wallet
+ * @mixin BaseWallet
  *
  *  @property-read int $id
- * @property-read CarbonImmutable|null $deleted_at
- * @property-read WalletMetaDto|null $meta
+ * @property-read DateTimeInterface|null $deleted_at
  */
 final class Wallet extends BaseWallet
 {
-    use CentralConnection, HasTranslations;
-
-    /**
-     * The attributes that should be translatable.
-     *
-     * @var array<string>
-     */
-    public $translatable = ['name', 'description'];
+    /** @use HasFactory<\Database\Factories\WalletFactory> */
+    use CentralConnection, HasFactory;
 
     public function canWithdraw(int|string $amount, bool $allowZero = false): bool
     {
@@ -88,12 +80,5 @@ final class Wallet extends BaseWallet
     {
         // Implement your logic here
         return parent::withdraw($amount, $meta, $confirmed);
-    }
-
-    public function casts(): array
-    {
-        return [
-            'meta' => WalletMetaDto::class,
-        ];
     }
 }

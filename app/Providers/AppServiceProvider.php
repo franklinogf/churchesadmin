@@ -7,7 +7,8 @@ namespace App\Providers;
 use App\Models\Church;
 use App\Models\Member;
 use App\Models\Missionary;
-use App\Models\User;
+use App\Models\OfferingType;
+use App\Models\TenantUser;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -16,6 +17,7 @@ use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
+use Spatie\Translatable\Facades\Translatable;
 
 final class AppServiceProvider extends ServiceProvider
 {
@@ -37,6 +39,9 @@ final class AppServiceProvider extends ServiceProvider
         $this->configureModels();
         $this->configureValidations();
         $this->configureJsonResources();
+        Translatable::fallback(
+            fallbackAny: true
+        );
     }
 
     private function configureCommands(): void
@@ -58,8 +63,9 @@ final class AppServiceProvider extends ServiceProvider
         Relation::enforceMorphMap([
             'member' => Member::class,
             'missionary' => Missionary::class,
-            'user' => User::class,
+            'user' => TenantUser::class,
             'church' => Church::class,
+            'offering_type' => OfferingType::class,
         ]);
     }
 

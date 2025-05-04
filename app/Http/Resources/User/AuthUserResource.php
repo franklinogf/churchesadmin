@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * @mixin \App\Models\User
+ * @mixin \App\Models\TenantUser
  */
 final class AuthUserResource extends JsonResource
 {
@@ -23,7 +23,6 @@ final class AuthUserResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
-            'language' => $this->language,
             'emailVerifiedAt' => $this->email_verified_at,
             'roles' => $this->getRoleNames(),
             'permissions' => $this->getAllPermissions()->pluck('name')->toArray(),

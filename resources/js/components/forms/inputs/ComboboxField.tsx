@@ -74,40 +74,6 @@ export function ComboboxField({ error, label, disabled, className, placeholder, 
           </Command>
         </PopoverContent>
       </Popover>
-      {/* <Select required={required} name={id} disabled={disabled} value={value} onValueChange={onChange}>
-        <SelectTrigger
-          id={id}
-          className={cn('w-full', {
-            'border-destructive ring-offset-destructive focus-visible:ring-destructive': error,
-          })}
-        >
-          <SelectValue placeholder={placeholder} />
-        </SelectTrigger>
-        <SelectContent>
-          {options
-            ? options.map((item) => (
-                <SelectItem key={item.value} value={item.value.toString()}>
-                  {item.label}
-                </SelectItem>
-              ))
-            : children}
-          {clearable && (
-            <>
-              <SelectSeparator />
-              <Button
-                size="sm"
-                onClick={() => {
-                  onChange?.('');
-                }}
-                className="w-full"
-                variant="secondary"
-              >
-                {t('Deseleccionar')}
-              </Button>
-            </>
-          )}
-        </SelectContent>
-      </Select> */}
       <FieldError error={error} />
     </FieldContainer>
   );

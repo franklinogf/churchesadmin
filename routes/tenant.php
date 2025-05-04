@@ -3,6 +3,9 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ExpenseController;
+use App\Http\Controllers\ExpenseTypeController;
+use App\Http\Controllers\LoginLinkController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\MissionaryController;
 use App\Http\Controllers\OfferingController;
@@ -38,13 +41,14 @@ Route::middleware([
 
         return redirect()->back();
     })->name('locale');
+    Route::post('loginLink', LoginLinkController::class)->name('loginLink');
 
     Route::middleware(SetLocale::class)
         ->group(function (): void {
 
-            Route::get('/', fn (): string => app()->getLocale())->name('home');
+            Route::redirect('/', 'dashboard')->name('home');
 
-            Route::middleware('auth')->group(function (): void {
+            Route::middleware('auth:tenant')->group(function (): void {
                 Route::get('dashboard', fn () => inertia('dashboard'))->name('dashboard');
 
                 Route::resource('users', UserController::class)
@@ -84,15 +88,14 @@ Route::middleware([
                     ])
                     ->except(['create', 'edit']);
 
-                Route::resource('offerings', OfferingController::class)
-                    ->parameter('offerings', 'transaction')
-                    ->scoped([
-                        'offering' => 'uuid',
-                    ]);
+                Route::resource('offerings', OfferingController::class);
+                Route::resource('expenses', ExpenseController::class);
 
                 // codes
                 Route::prefix('codes')->name('codes.')->group(function (): void {
                     Route::resource('offeringTypes', OfferingTypeController::class)
+                        ->except(['show', 'create', 'edit']);
+                    Route::resource('expenseTypes', ExpenseTypeController::class)
                         ->except(['show', 'create', 'edit']);
                 });
             });

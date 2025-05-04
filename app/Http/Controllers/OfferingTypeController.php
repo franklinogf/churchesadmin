@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Enums\FlashMessageKey;
-use App\Http\Requests\StoreOfferingTypeRequest;
-use App\Http\Requests\UpdateOfferingTypeRequest;
+use App\Http\Requests\Code\StoreOfferingTypeRequest;
+use App\Http\Requests\Code\UpdateOfferingTypeRequest;
 use App\Http\Resources\Codes\OfferingTypeResource;
 use App\Models\OfferingType;
 use Illuminate\Http\RedirectResponse;
@@ -45,6 +45,7 @@ final class OfferingTypeController extends Controller
      */
     public function update(UpdateOfferingTypeRequest $request, OfferingType $offeringType): RedirectResponse
     {
+
         $offeringType->update($request->validated());
 
         return to_route('codes.offeringTypes.index')->with(

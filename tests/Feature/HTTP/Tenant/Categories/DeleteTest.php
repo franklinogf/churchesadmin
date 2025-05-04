@@ -15,19 +15,17 @@ describe('if user has permission', function (): void {
     });
 
     it('can be deleted', function (): void {
-        $category = Tag::factory()->category()->create()->fresh();
+        $category = Tag::factory()->category()->create();
 
         from(route('categories.index'))->delete(route('categories.destroy', ['tag' => $category]))
             ->assertRedirect(route('categories.index'));
 
         assertDatabaseCount('tags', 0);
 
-        expect(Tag::find($category->id))->toBeNull();
-
     });
 
     test('can delete a regular category', function (): void {
-        $category = Tag::factory()->regular()->category()->create()->fresh();
+        $category = Tag::factory()->category()->regular()->create();
 
         from(route('categories.index'))
             ->delete(route('categories.destroy', ['tag' => $category]))
@@ -35,8 +33,6 @@ describe('if user has permission', function (): void {
             ->assertSessionHas(FlashMessageKey::SUCCESS->value);
 
         assertDatabaseCount('tags', 0);
-
-        expect(Tag::find($category->id))->toBeNull();
     });
 
 });
@@ -46,8 +42,8 @@ describe('if user does not have permission', function (): void {
         asUserWithPermission(TenantPermission::MANAGE_CATEGORIES);
     });
 
-    test('cannot delete regular categories', function (): void {
-        $category = Tag::factory()->regular()->category()->create()->fresh();
+    test('cannot delete a regular category', function (): void {
+        $category = Tag::factory()->category()->regular()->create();
 
         from(route('categories.index'))
             ->delete(route('categories.destroy', ['tag' => $category]))
@@ -55,7 +51,5 @@ describe('if user does not have permission', function (): void {
             ->assertSessionHas(FlashMessageKey::ERROR->value);
 
         assertDatabaseCount('tags', 1);
-
-        expect(Tag::find($category->id))->not()->toBeNull();
     });
 });

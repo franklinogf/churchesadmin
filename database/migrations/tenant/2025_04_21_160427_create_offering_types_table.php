@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('offering_types', function (Blueprint $table) {
             $table->id();
-            $table->json('name');
+            $table->string('name')->unique();
             $table->timestamps();
         });
     }

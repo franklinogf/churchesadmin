@@ -19,19 +19,18 @@ final class WalletResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+
         return [
             'id' => $this->id,
             'uuid' => $this->uuid,
             'meta' => $this->meta !== null ? [
-                'bankName' => $this->meta->bank_name,
-                'bankRoutingNumber' => $this->meta->bank_routing_number,
-                'bankAccountNumber' => $this->meta->bank_account_number,
+                'bankName' => $this->meta['bank_name'] ?? null,
+                'bankRoutingNumber' => $this->meta['bank_routing_number'] ?? null,
+                'bankAccountNumber' => $this->meta['bank_account_number'] ?? null,
             ] : null,
             'name' => $this->name,
-            'nameTranslations' => $this->getTranslations('name'),
             'slug' => $this->slug,
             'description' => $this->description,
-            'descriptionTranslations' => $this->getTranslations('description'),
             'balance' => $this->balance,
             'balanceNumber' => $this->balanceInt,
             'balanceFloat' => $this->balanceFloat,

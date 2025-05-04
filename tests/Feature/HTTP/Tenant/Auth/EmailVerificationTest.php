@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-use App\Models\User;
+use App\Models\TenantUser;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\URL;
 
 test('email verification screen can be rendered', function (): void {
-    $user = User::factory()->unverified()->create();
+    $user = TenantUser::factory()->unverified()->create();
 
     $response = $this->actingAs($user)->get(route('verification.notice'));
 
@@ -16,7 +16,7 @@ test('email verification screen can be rendered', function (): void {
 });
 
 test('email can be verified', function (): void {
-    $user = User::factory()->unverified()->create();
+    $user = TenantUser::factory()->unverified()->create();
 
     Event::fake();
 
@@ -34,7 +34,7 @@ test('email can be verified', function (): void {
 });
 
 test('email is not verified with invalid hash', function (): void {
-    $user = User::factory()->unverified()->create();
+    $user = TenantUser::factory()->unverified()->create();
 
     $verificationUrl = URL::temporarySignedRoute(
         'verification.verify',

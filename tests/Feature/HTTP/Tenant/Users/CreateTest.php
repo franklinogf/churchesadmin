@@ -5,7 +5,7 @@ declare(strict_types=1);
 use App\Enums\FlashMessageKey;
 use App\Enums\TenantPermission;
 use App\Enums\TenantRole;
-use App\Models\User;
+use App\Models\TenantUser;
 use Inertia\Testing\AssertableInertia as Assert;
 
 use function Pest\Laravel\from;
@@ -48,7 +48,7 @@ describe('if user has permission', function (): void {
             ->assertSessionDoesntHaveErrors()
             ->assertRedirect(route('users.index'));
 
-        $user = User::latest()->first();
+        $user = TenantUser::latest()->first();
 
         expect($user)->not->toBeNull()
             ->and($user->name)->toBe('John')
@@ -71,7 +71,7 @@ describe('if user has permission', function (): void {
             ->assertSessionDoesntHaveErrors()
             ->assertRedirect(route('users.index'));
 
-        $user = User::latest()->first();
+        $user = TenantUser::latest()->first();
 
         expect($user)->not->toBeNull()
             ->and($user->name)->toBe('John')

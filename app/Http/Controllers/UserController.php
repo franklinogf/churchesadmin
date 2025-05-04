@@ -14,7 +14,7 @@ use App\Http\Requests\User\UpdateUserRequest;
 use App\Http\Resources\User\PermissionResource;
 use App\Http\Resources\User\RoleResource;
 use App\Http\Resources\User\UserResource;
-use App\Models\User;
+use App\Models\TenantUser;
 use Illuminate\Container\Attributes\CurrentUser;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Gate;
@@ -28,15 +28,15 @@ final class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(#[CurrentUser] User $user): Response|RedirectResponse
+    public function index(#[CurrentUser] TenantUser $user): Response|RedirectResponse
     {
-        $response = Gate::inspect('viewAny', User::class);
+        $response = Gate::inspect('viewAny', TenantUser::class);
 
         if ($response->denied()) {
             return to_route('dashboard')->with(FlashMessageKey::ERROR->value, $response->message());
         }
 
-        $users = User::query()
+        $users = TenantUser::query()
             ->withoutRole(TenantRole::SUPER_ADMIN)
             ->whereNotIn('id', [$user->id])
             ->with('roles', 'permissions')->latest()->get();
@@ -49,7 +49,7 @@ final class UserController extends Controller
      */
     public function create(): Response|RedirectResponse
     {
-        $response = Gate::inspect('create', User::class);
+        $response = Gate::inspect('create', TenantUser::class);
 
         if ($response->denied()) {
             return to_route('users.index')->with(FlashMessageKey::ERROR->value, $response->message());
@@ -73,7 +73,7 @@ final class UserController extends Controller
      */
     public function store(StoreUserRequest $request, CreateUserAction $action): RedirectResponse
     {
-        $response = Gate::inspect('create', User::class);
+        $response = Gate::inspect('create', TenantUser::class);
 
         if ($response->denied()) {
             return to_route('users.index')->with(FlashMessageKey::ERROR->value, $response->message());
@@ -103,7 +103,7 @@ final class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user): Response|RedirectResponse
+    public function edit(TenantUser $user): Response|RedirectResponse
     {
         $response = Gate::inspect('update', $user);
 
@@ -129,7 +129,7 @@ final class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateUserRequest $request, User $user, UpdateUserAction $action): RedirectResponse
+    public function update(UpdateUserRequest $request, TenantUser $user, UpdateUserAction $action): RedirectResponse
     {
         $response = Gate::inspect('update', $user);
 
@@ -155,7 +155,7 @@ final class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user, DeleteUserAction $action): RedirectResponse
+    public function destroy(TenantUser $user, DeleteUserAction $action): RedirectResponse
     {
         $response = Gate::inspect('delete', $user);
 

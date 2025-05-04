@@ -3,7 +3,8 @@
 declare(strict_types=1);
 
 use App\Enums\TenantPermission;
-use App\Models\User;
+use App\Models\TenantUser;
+use Illuminate\Support\Facades\Auth;
 use Tests\RefreshDatabaseWithTenant;
 use Tests\TestCase;
 
@@ -20,7 +21,9 @@ use Tests\TestCase;
 
 pest()->printer()->compact();
 pest()->extend(Tests\TestCase::class)->in('Feature', 'Unit');
-pest()->use(RefreshDatabaseWithTenant::class)->in('Feature/**/Tenant', 'Unit/**/Tenant');
+pest()->use(RefreshDatabaseWithTenant::class)->in('Feature/**/Tenant', 'Unit/**/Tenant')->beforeEach(function (): void {
+    Auth::shouldUse('tenant');
+});
 /*
 |--------------------------------------------------------------------------
 | Expectations
@@ -51,7 +54,7 @@ function asUserWithPermission(TenantPermission ...$permissions): TestCase
         \Database\Seeders\Tenants\PermissionSeeder::class,
         \Database\Seeders\Tenants\RoleSeeder::class,
     ]);
-    $user = User::factory()->create();
+    $user = TenantUser::factory()->create();
     $user->syncPermissions(...$permissions);
 
     return test()->actingAs($user);
@@ -59,7 +62,7 @@ function asUserWithPermission(TenantPermission ...$permissions): TestCase
 
 function asUserWithoutPermission(): TestCase
 {
-    $user = User::factory()->create();
+    $user = TenantUser::factory()->create();
 
     return test()->actingAs($user);
 }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Policies;
 
 use App\Enums\TenantPermission;
-use App\Models\User;
+use App\Models\TenantUser;
 use Illuminate\Auth\Access\Response;
 
 final class OfferingTypePolicy
@@ -13,7 +13,7 @@ final class OfferingTypePolicy
     /**
      * Determine whether the user can view models.
      */
-    public function viewAny(User $user): Response
+    public function viewAny(TenantUser $user): Response
     {
         if ($user->can(TenantPermission::MANAGE_OFFERINGS)) {
             return Response::allow();
@@ -25,7 +25,7 @@ final class OfferingTypePolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): Response
+    public function create(TenantUser $user): Response
     {
         if ($user->can(TenantPermission::CREATE_OFFERING_TYPES)) {
             return Response::allow();
@@ -37,7 +37,7 @@ final class OfferingTypePolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user): Response
+    public function update(TenantUser $user): Response
     {
         if ($user->can(TenantPermission::UPDATE_OFFERING_TYPES)) {
             return Response::allow();
@@ -49,7 +49,7 @@ final class OfferingTypePolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user): Response
+    public function delete(TenantUser $user): Response
     {
         if ($user->can(TenantPermission::DELETE_OFFERING_TYPES)) {
             return Response::allow();

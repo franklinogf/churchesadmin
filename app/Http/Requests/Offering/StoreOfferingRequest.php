@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Requests\Offering;
 
 use App\Enums\PaymentMethod;
+use App\Rules\SelectOptionWithModel;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -46,8 +47,7 @@ final class StoreOfferingRequest extends FormRequest
                     ->where('holder_id', (string) $tenantId),
             ],
             'offerings.*.payment_method' => ['required', 'string', Rule::enum(PaymentMethod::class)],
-            'offerings.*.recipient_id' => ['nullable', Rule::exists('missionaries', 'id')],
-            'offerings.*.offering_type_id' => ['required', 'string', Rule::exists('offering_types', 'id')],
+            'offerings.*.offering_type' => ['required', 'array', 'min:1', new SelectOptionWithModel],
             'offerings.*.amount' => ['required', 'decimal:2', 'min:1'],
             'offerings.*.note' => ['nullable', 'string', 'min:3', 'max:255'],
 

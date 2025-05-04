@@ -1,17 +1,11 @@
 import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem } from '@/types';
-
-const breadcrumbs: BreadcrumbItem[] = [
-  {
-    title: 'Dashboard',
-    href: route('dashboard'),
-  },
-];
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function Dashboard() {
+  const { t } = useLaravelReactI18n();
   return (
-    <AppLayout breadcrumbs={breadcrumbs} title="Dashboard">
+    <AppLayout breadcrumbs={[{ title: t('Dashboard') }]} title="Dashboard">
       <div className="flex h-full flex-1 flex-col gap-4 rounded-xl">
         <div className="grid auto-rows-min gap-4 md:grid-cols-3">
           <div className="border-sidebar-border/70 dark:border-sidebar-border relative aspect-video overflow-hidden rounded-xl border">

@@ -11,6 +11,7 @@ use App\Http\Requests\Wallet\UpdateWalletRequest;
 use App\Http\Resources\Wallet\WalletResource;
 use App\Models\Church;
 use App\Models\Wallet;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -23,7 +24,7 @@ final class WalletController extends Controller
     public function index(): Response
     {
 
-        $wallets = Church::current()?->wallets()->oldest()->get();
+        $wallets = Church::current()?->wallets()->withTrashed()->oldest()->get();
 
         return Inertia::render('wallets/index', [
             'wallets' => WalletResource::collection($wallets),
@@ -32,7 +33,10 @@ final class WalletController extends Controller
 
     public function show(Wallet $wallet): Response
     {
-        $wallet->load(['walletTransactions']);
+        $wallet->load(['walletTransactions.wallet' => function (BelongsTo $belongsTo): void {
+            /** @phpstan-ignore-next-line */
+            $belongsTo->withTrashed();
+        }]);
 
         return Inertia::render('wallets/show', [
             'wallet' => new WalletResource($wallet),
@@ -45,7 +49,7 @@ final class WalletController extends Controller
     public function store(StoreWalletRequest $request): RedirectResponse
     {
         /**
-         * @var array{balance:string,name:string,description:string,bank_name:string,bank_routing_number:string,bank_account_number:string} $validated
+         * @var array{balance:string|null,name:string,description:string,bank_name:string,bank_routing_number:string,bank_account_number:string} $validated
          */
         $validated = $request->validated();
 
@@ -54,13 +58,15 @@ final class WalletController extends Controller
                 'name' => $validated['name'],
                 'description' => $validated['description'],
                 'meta' => new WalletMetaDto(
-                    bank_name: $validated['bank_name'],
-                    bank_routing_number: $validated['bank_routing_number'],
-                    bank_account_number: $validated['bank_account_number'],
+                    $validated['bank_name'],
+                    $validated['bank_routing_number'],
+                    $validated['bank_account_number'],
                 )->toArray(),
             ]
         );
-        $wallet?->depositFloat($validated['balance']);
+        if ($validated['balance'] !== null) {
+            $wallet?->depositFloat($validated['balance']);
+        }
 
         return redirect()->route('wallets.index')->with(
             FlashMessageKey::SUCCESS->value,
@@ -83,9 +89,9 @@ final class WalletController extends Controller
                 'name' => $validated['name'],
                 'description' => $validated['description'],
                 'meta' => new WalletMetaDto(
-                    bank_name: $validated['bank_name'],
-                    bank_routing_number: $validated['bank_routing_number'],
-                    bank_account_number: $validated['bank_account_number'],
+                    $validated['bank_name'],
+                    $validated['bank_routing_number'],
+                    $validated['bank_account_number'],
                 )->toArray(),
             ]
         );

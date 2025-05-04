@@ -29,7 +29,7 @@ final class MemberResource extends JsonResource
             'email' => $this->email,
             'phone' => $this->phone,
             'gender' => $this->gender->value,
-            'dob' => $this->dob->format('Y-m-d'),
+            'dob' => $this->dob?->format('Y-m-d'),
             'civilStatus' => $this->civil_status->value,
             'skills' => TagRelationshipResource::collection($this->tagsWithType(TagType::SKILL->value)),
             'skillsCount' => $this->whenCounted('skills', $this->tagsWithType(TagType::SKILL->value)->count()),

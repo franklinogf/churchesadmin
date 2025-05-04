@@ -17,6 +17,7 @@ use App\Models\OfferingType;
 use App\Models\Transaction;
 use App\Models\Wallet;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -52,15 +53,23 @@ final class OfferingController extends Controller
             'label' => "{$member->name} {$member->last_name}",
         ])->toArray();
 
-        $missionaries = Missionary::all()->map(fn ($missionary): array => [
-            'value' => $missionary->id,
-            'label' => "{$missionary->name} {$missionary->last_name}",
-        ])->toArray();
+        $missionaries = [
+            'heading' => __('Missionaries'),
+            'model' => Relation::getMorphAlias(Missionary::class),
+            'options' => Missionary::all()->map(fn ($missionary): array => [
+                'value' => $missionary->id,
+                'label' => "{$missionary->name} {$missionary->last_name}",
+            ])->toArray(),
+        ];
 
-        $offeringTypes = OfferingType::all()->map(fn ($type): array => [
-            'value' => $type->id,
-            'label' => $type->name,
-        ])->toArray();
+        $offeringTypes = [
+            'heading' => __('Offering Types'),
+            'model' => Relation::getMorphAlias(OfferingType::class),
+            'options' => OfferingType::all()->map(fn ($offeringType): array => [
+                'value' => $offeringType->id,
+                'label' => $offeringType->name,
+            ])->toArray(),
+        ];
 
         return Inertia::render('offerings/create', [
             'paymentMethods' => $paymentMethods,
@@ -79,7 +88,12 @@ final class OfferingController extends Controller
         /**
          * @var array{
          * date:string,payer_id:int|string,
-         * offerings: array{wallet_id: int, amount: float, recipient_id: int, payment_method: string, offering_type_id: int, note: string}[]
+         * offerings: array{
+         * wallet_id: int,
+         * amount: float,
+         * payment_method: string,
+         * offering_type: array{id:string, model:string},
+         * note: string}[]
          * } $validated
          */
         $validated = $request->validated();
@@ -94,10 +108,10 @@ final class OfferingController extends Controller
                 Offering::create([
                     'transaction_id' => $transaction?->id,
                     'donor_id' => $validated['payer_id'] === 'non_member' ? null : $validated['payer_id'],
-                    'recipient_id' => $offering['recipient_id'],
                     'date' => Carbon::parse($validated['date'])->setTimeFrom(now()),
                     'payment_method' => $offering['payment_method'],
-                    'offering_type_id' => $offering['offering_type_id'],
+                    'offering_type_id' => $offering['offering_type']['id'],
+                    'offering_type_type' => $offering['offering_type']['model'],
                     'note' => $offering['note'],
                 ]);
             });

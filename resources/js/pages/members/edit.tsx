@@ -17,17 +17,6 @@ import { type Tag } from '@/types/models/tag';
 import { useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
-const breadcrumbs: BreadcrumbItem[] = [
-  {
-    title: 'Members',
-    href: route('members.index'),
-  },
-  {
-    title: 'Edit Member',
-    href: '',
-  },
-];
-
 type EditForm = MemberFormData & {
   address: AddressFormData;
 };
@@ -46,7 +35,7 @@ export default function Edit({ member, genders, civilStatuses, skills, categorie
     last_name: member.lastName,
     email: member.email,
     phone: member.phone,
-    dob: member.dob,
+    dob: member.dob ?? '',
     gender: member.gender,
     civil_status: member.civilStatus,
     skills: convertTagsToMultiselectOptions(member.skills),
@@ -70,7 +59,15 @@ export default function Edit({ member, genders, civilStatuses, skills, categorie
   const handleSubmit = () => {
     put(route('members.update', member.id));
   };
-
+  const breadcrumbs: BreadcrumbItem[] = [
+    {
+      title: t('Members'),
+      href: route('members.index'),
+    },
+    {
+      title: t('Edit Member'),
+    },
+  ];
   return (
     <AppLayout breadcrumbs={breadcrumbs} title={t('Members')}>
       <PageTitle>{t('Edit Member')}</PageTitle>
@@ -83,7 +80,7 @@ export default function Edit({ member, genders, civilStatuses, skills, categorie
             <PhoneField required label="Phone" value={data.phone} onChange={(value) => setData('phone', value)} error={errors.phone} />
           </FieldsGrid>
 
-          <DateField required label="Date of Birth" value={data.dob} onChange={(value) => setData('dob', value)} error={errors.dob} />
+          <DateField label="Date of Birth" value={data.dob} onChange={(value) => setData('dob', value)} error={errors.dob} />
 
           <FieldsGrid>
             <SelectField

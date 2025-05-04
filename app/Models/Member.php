@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Casts\AsUcWords;
 use App\Enums\CivilStatus;
 use App\Enums\Gender;
-use Carbon\CarbonImmutable;
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -23,11 +24,11 @@ use Spatie\Tags\HasTags;
  * @property-read string $email
  * @property-read string $phone
  * @property-read Gender $gender
- * @property-read CarbonImmutable $dob
+ * @property-read DateTimeInterface|null $dob
  * @property-read CivilStatus $civil_status
- * @property-read CarbonImmutable|null $deleted_at
- * @property-read CarbonImmutable $created_at
- * @property-read CarbonImmutable $updated_at
+ * @property-read DateTimeInterface|null $deleted_at
+ * @property-read DateTimeInterface $created_at
+ * @property-read DateTimeInterface $updated_at
  * @property-read Address|null $address
  * @property-read Collection<int,Tag> $tags
  */
@@ -63,13 +64,15 @@ final class Member extends Model
      *
      * @return array<string, string>
      */
-    protected function casts()
+    protected function casts(): array
     {
 
         return [
             'gender' => Gender::class,
             'dob' => 'immutable_date',
             'civil_status' => CivilStatus::class,
+            'name' => AsUcWords::class,
+            'last_name' => AsUcWords::class,
         ];
     }
 }

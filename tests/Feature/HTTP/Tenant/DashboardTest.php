@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Models\User;
+use App\Models\TenantUser;
 
 test('guests are redirected to the login page', function (): void {
     /** @var Tests\TestCase $this */
@@ -11,7 +11,7 @@ test('guests are redirected to the login page', function (): void {
 });
 
 test('authenticated users can visit the dashboard', function (): void {
-    $this->actingAs(User::factory()->create());
+    $this->actingAs(TenantUser::factory()->create());
 
     $this->get(route('dashboard'))->assertOk();
 });

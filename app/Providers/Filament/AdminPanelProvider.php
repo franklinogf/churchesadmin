@@ -18,6 +18,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Stephenjude\FilamentDebugger\DebuggerPlugin;
 
 final class AdminPanelProvider extends PanelProvider
 {
@@ -27,10 +28,19 @@ final class AdminPanelProvider extends PanelProvider
             ->default()
             ->id('admin')
             ->path('admin')
+            ->authGuard('web')
+            ->authPasswordBroker('users')
             ->login()
+            ->profile(isSimple: false)
+            ->emailVerification()
+            ->passwordReset()
             ->colors([
                 'primary' => Color::Cyan,
             ])
+            ->font('Poppins')
+            ->spa()
+            ->unsavedChangesAlerts()
+            ->sidebarFullyCollapsibleOnDesktop()
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
@@ -53,6 +63,9 @@ final class AdminPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+            ])
+            ->plugins([
+                DebuggerPlugin::make(),
             ]);
     }
 }

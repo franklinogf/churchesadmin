@@ -11,4 +11,19 @@ return [
         'deposit' => 'Deposit',
         'withdraw' => 'Withdrawal',
     ],
+    'civil_status' => [
+        'single' => 'Single',
+        'married' => 'Married',
+        'divorced' => 'Divorced',
+        'widowed' => 'Widowed',
+        'separated' => 'Separated',
+    ],
+    'gender' => [
+        'male' => 'Male',
+        'female' => 'Female',
+    ],
+    'language_code' => [
+        'en' => 'English',
+        'es' => 'Spanish',
+    ],
 ];

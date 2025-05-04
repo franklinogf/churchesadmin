@@ -20,7 +20,7 @@ describe('if user has permission', function (): void {
 
         from(route('skills.index'))
             ->post(route('skills.store'), [
-                'name' => ['en' => 'tag name'],
+                'name' => 'skill name',
                 'is_regular' => false,
             ])->assertRedirect(route('skills.index'));
 
@@ -28,8 +28,7 @@ describe('if user has permission', function (): void {
 
         $skill = Tag::withType(TagType::SKILL->value)->first();
 
-        expect($skill)->not->toBeNull()
-            ->and($skill->name)->toBe('tag name')
+        expect($skill->name)->toBe('skill name')
             ->and($skill->type)->toBe(TagType::SKILL->value);
 
     });
@@ -38,42 +37,39 @@ describe('if user has permission', function (): void {
 
         from(route('skills.index'))
             ->post(route('skills.store'), [
-                'name' => ['en' => ''],
+                'name' => '',
                 'is_regular' => false,
             ])->assertSessionHasErrors();
 
         assertDatabaseCount('tags', 0);
 
-        $skill = Tag::withType(TagType::SKILL->value)->first();
-        expect($skill)->toBeNull();
+        expect(Tag::withType(TagType::SKILL->value)->count())->toBe(0);
     });
 
     it('cannot be stored with a name that is too short', function (): void {
 
         from(route('skills.index'))
             ->post(route('skills.store'), [
-                'name' => ['en' => 'a'],
+                'name' => 'a',
                 'is_regular' => false,
             ])->assertSessionHasErrors();
 
         assertDatabaseCount('tags', 0);
 
-        $skill = Tag::withType(TagType::SKILL->value)->first();
-        expect($skill)->toBeNull();
+        expect(Tag::withType(TagType::SKILL->value)->count())->toBe(0);
     });
 
     it('cannot be stored if the name already exists', function (): void {
 
         Tag::factory()->skill()->create([
-            'name' => ['en' => 'tag name'],
+            'name' => 'skill name',
         ]);
         from(route('skills.index'))
             ->post(route('skills.store'), [
-                'name' => ['en' => 'tag name'],
+                'name' => 'skill name',
                 'is_regular' => false,
             ])->assertRedirect(route('skills.index'));
-
-        assertDatabaseCount('tags', 1);
+        expect(Tag::withType(TagType::SKILL->value)->count())->toBe(1);
 
     });
 
@@ -81,7 +77,7 @@ describe('if user has permission', function (): void {
 
         from(route('skills.index'))
             ->post(route('skills.store'), [
-                'name' => ['en' => 'tag name'],
+                'name' => 'skill name',
                 'is_regular' => true,
             ])->assertRedirect(route('skills.index'));
 
@@ -89,8 +85,7 @@ describe('if user has permission', function (): void {
 
         $skill = Tag::withType(TagType::SKILL->value)->first();
 
-        expect($skill)->not->toBeNull()
-            ->and($skill->name)->toBe('tag name')
+        expect($skill->name)->toBe('skill name')
             ->and($skill->type)->toBe(TagType::SKILL->value)
             ->and($skill->is_regular)->toBe(true);
 
@@ -108,7 +103,7 @@ describe('if user does not have permission', function (): void {
 
         from(route('skills.index'))
             ->post(route('skills.store'), [
-                'name' => ['en' => 'tag name'],
+                'name' => 'skill name',
                 'is_regular' => false,
             ])
             ->assertRedirect(route('skills.index'))
@@ -122,7 +117,7 @@ describe('if user does not have permission', function (): void {
 
         from(route('skills.index'))
             ->post(route('skills.store'), [
-                'name' => ['en' => 'tag name'],
+                'name' => 'skill name',
                 'is_regular' => true,
             ])
             ->assertRedirect(route('skills.index'))

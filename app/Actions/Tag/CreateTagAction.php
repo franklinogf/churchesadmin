@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\Tag;
 
+use App\Enums\LanguageCode;
 use App\Enums\TagType;
 use App\Models\Tag;
 
@@ -18,7 +19,9 @@ final class CreateTagAction
     {
 
         Tag::create([
-            'name' => $data['name'],
+            'name' => collect(LanguageCode::values())
+                ->mapWithKeys(fn (string $code) => [$code => $data['name']])
+                ->toArray(),
             'type' => $type?->value,
             'is_regular' => $data['is_regular'],
         ]);

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use App\Enums\FlashMessageKey;
-use App\Models\User;
+use App\Models\TenantUser;
 use Database\Seeders\Tenants\PermissionSeeder;
 use Database\Seeders\Tenants\RoleSeeder;
 use Inertia\Testing\AssertableInertia as Assert;
@@ -18,10 +18,10 @@ it('cannot be rendered if not authenticated', function (): void {
 
 it('can be rendered if authenticated user has permission', function (): void {
     $this->seed([PermissionSeeder::class, RoleSeeder::class]);
-    $user = User::factory()->superAdmin()->create();
-    User::factory()->admin()->create();
-    User::factory()->secretary()->create();
-    User::factory()->noRole()->create();
+    $user = TenantUser::factory()->superAdmin()->create();
+    TenantUser::factory()->admin()->create();
+    TenantUser::factory()->secretary()->create();
+    TenantUser::factory()->noRole()->create();
 
     actingAs($user)
         ->get(route('users.index'))

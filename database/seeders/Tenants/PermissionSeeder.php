@@ -19,7 +19,7 @@ final class PermissionSeeder extends Seeder
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
         $permissions = collect(TenantPermission::values())
-            ->map(fn ($permission) => ['name' => $permission, 'guard_name' => 'web']);
+            ->map(fn ($permission) => ['name' => $permission, 'guard_name' => 'tenant']);
 
         Permission::insert($permissions->toArray());
     }

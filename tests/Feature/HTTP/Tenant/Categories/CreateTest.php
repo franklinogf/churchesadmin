@@ -20,17 +20,15 @@ describe('if user has permission', function (): void {
 
         from(route('categories.index'))
             ->post(route('categories.store'), [
-                'name' => ['en' => 'tag name'],
+                'name' => 'category name',
                 'is_regular' => false,
-            ])
-            ->assertRedirect(route('categories.index'));
+            ])->assertRedirect(route('categories.index'));
 
         assertDatabaseCount('tags', 1);
 
         $category = Tag::withType(TagType::CATEGORY->value)->first();
 
-        expect($category)->not->toBeNull()
-            ->and($category->name)->toBe('tag name')
+        expect($category->name)->toBe('category name')
             ->and($category->type)->toBe(TagType::CATEGORY->value);
 
     });
@@ -39,45 +37,39 @@ describe('if user has permission', function (): void {
 
         from(route('categories.index'))
             ->post(route('categories.store'), [
-                'name' => ['en' => ''],
+                'name' => '',
                 'is_regular' => false,
-            ])
-            ->assertSessionHasErrors();
+            ])->assertSessionHasErrors();
 
         assertDatabaseCount('tags', 0);
 
-        $category = Tag::withType(TagType::CATEGORY->value)->first();
-        expect($category)->toBeNull();
+        expect(Tag::withType(TagType::CATEGORY->value)->count())->toBe(0);
     });
 
     it('cannot be stored with a name that is too short', function (): void {
 
         from(route('categories.index'))
             ->post(route('categories.store'), [
-                'name' => ['en' => 'a'],
+                'name' => 'a',
                 'is_regular' => false,
-            ])
-            ->assertSessionHasErrors();
+            ])->assertSessionHasErrors();
 
         assertDatabaseCount('tags', 0);
 
-        $category = Tag::withType(TagType::CATEGORY->value)->first();
-        expect($category)->toBeNull();
+        expect(Tag::withType(TagType::CATEGORY->value)->count())->toBe(0);
     });
 
     it('cannot be stored if the name already exists', function (): void {
 
         Tag::factory()->category()->create([
-            'name' => ['en' => 'tag name'],
+            'name' => 'category name',
         ]);
         from(route('categories.index'))
             ->post(route('categories.store'), [
-                'name' => ['en' => 'tag name'],
+                'name' => 'category name',
                 'is_regular' => false,
-            ])
-            ->assertRedirect(route('categories.index'));
-
-        assertDatabaseCount('tags', 1);
+            ])->assertRedirect(route('categories.index'));
+        expect(Tag::withType(TagType::CATEGORY->value)->count())->toBe(1);
 
     });
 
@@ -85,17 +77,15 @@ describe('if user has permission', function (): void {
 
         from(route('categories.index'))
             ->post(route('categories.store'), [
-                'name' => ['en' => 'tag name'],
+                'name' => 'category name',
                 'is_regular' => true,
-            ])
-            ->assertRedirect(route('categories.index'));
+            ])->assertRedirect(route('categories.index'));
 
         assertDatabaseCount('tags', 1);
 
         $category = Tag::withType(TagType::CATEGORY->value)->first();
 
-        expect($category)->not->toBeNull()
-            ->and($category->name)->toBe('tag name')
+        expect($category->name)->toBe('category name')
             ->and($category->type)->toBe(TagType::CATEGORY->value)
             ->and($category->is_regular)->toBe(true);
 
@@ -113,7 +103,7 @@ describe('if user does not have permission', function (): void {
 
         from(route('categories.index'))
             ->post(route('categories.store'), [
-                'name' => ['en' => 'tag name'],
+                'name' => 'category name',
                 'is_regular' => false,
             ])
             ->assertRedirect(route('categories.index'))
@@ -127,7 +117,7 @@ describe('if user does not have permission', function (): void {
 
         from(route('categories.index'))
             ->post(route('categories.store'), [
-                'name' => ['en' => 'tag name'],
+                'name' => 'category name',
                 'is_regular' => true,
             ])
             ->assertRedirect(route('categories.index'))

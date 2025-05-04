@@ -22,7 +22,6 @@ final class OfferingTypeResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'nameTranslations' => $this->getTranslations('name'),
             'createdAt' => $this->created_at->format('Y-m-d H:i:s'),
             'updatedAt' => $this->updated_at->format('Y-m-d H:i:s'),
         ];

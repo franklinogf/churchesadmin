@@ -3,6 +3,7 @@ import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTabl
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
+import { offeringTypeIsMissionary } from '@/lib/utils';
 import type { Offering } from '@/types/models/offering';
 import { type ColumnDef } from '@tanstack/react-table';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
@@ -31,29 +32,23 @@ export const columns: ColumnDef<Offering>[] = [
     enableHiding: false,
     header: ({ column }) => <DataTableColumnHeader column={column} title="Offering Type" />,
     accessorKey: 'offeringType',
+    sortingFn: (rowA, rowB) => {
+      const offeringTypeA = rowA.original.offeringType;
+      const offeringTypeB = rowB.original.offeringType;
+      if (!offeringTypeA && !offeringTypeB) return 0;
+      if (!offeringTypeA) return 1;
+      if (!offeringTypeB) return -1;
+      return offeringTypeA.name.localeCompare(offeringTypeB.name);
+    },
     cell: ({ row }) => (
       <DatatableCell justify="center">
-        <Badge>{row.original.offeringType.name}</Badge>
+        <Badge>
+          {offeringTypeIsMissionary(row.original.offeringType)
+            ? `${row.original.offeringType.name} ${row.original.offeringType.lastName}`
+            : row.original.offeringType.name}
+        </Badge>
       </DatatableCell>
     ),
-  },
-  {
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Recipient" />,
-    accessorKey: 'recipient',
-    cell: ({ row }) => {
-      const { recipient } = row.original;
-      if (!recipient) return null;
-      return (
-        <HoverCard>
-          <HoverCardTrigger asChild>
-            <Button variant="link" size="sm" className="px-0">
-              {`${recipient.name} ${recipient.lastName}`}
-            </Button>
-          </HoverCardTrigger>
-          <HoverCardContent>{recipient.email}</HoverCardContent>
-        </HoverCard>
-      );
-    },
   },
   {
     enableHiding: false,

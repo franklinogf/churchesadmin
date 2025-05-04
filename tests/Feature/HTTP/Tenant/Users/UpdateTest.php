@@ -5,14 +5,14 @@ declare(strict_types=1);
 use App\Enums\FlashMessageKey;
 use App\Enums\TenantPermission;
 use App\Enums\TenantRole;
-use App\Models\User;
+use App\Models\TenantUser;
 use Inertia\Testing\AssertableInertia as Assert;
 
 use function Pest\Laravel\from;
 use function Pest\Laravel\get;
 
 it('cannot be rendered if not authenticated', function (): void {
-    get(route('users.edit', ['user' => User::factory()->create()]))
+    get(route('users.edit', ['user' => TenantUser::factory()->create()]))
         ->assertRedirect(route('login'));
 });
 
@@ -23,7 +23,7 @@ describe('if user has permission', function (): void {
     });
 
     it('can be rendered if authenticated', function (): void {
-        $user = User::factory()->create();
+        $user = TenantUser::factory()->create();
 
         get(route('users.edit', ['user' => $user]))
             ->assertStatus(200)
@@ -36,7 +36,7 @@ describe('if user has permission', function (): void {
     });
 
     it('can be updated', function (): void {
-        $user = User::factory()->create();
+        $user = TenantUser::factory()->create();
         from(route('users.edit', ['user' => $user]))
             ->put(route('users.update', ['user' => $user]), [
                 'name' => 'John',
@@ -60,7 +60,7 @@ describe('if user has permission', function (): void {
 
     it('can be updated without additional permissions', function (): void {
 
-        $user = User::factory()->create();
+        $user = TenantUser::factory()->create();
         from(route('users.edit', ['user' => $user]))
             ->put(route('users.update', ['user' => $user]), [
                 'name' => 'John',
@@ -91,14 +91,13 @@ describe('if user does not have permission', function (): void {
     });
 
     it('cannot be rendered if authenticated', function (): void {
-        get(route('users.edit', ['user' => User::factory()->create()]))
+        get(route('users.edit', ['user' => TenantUser::factory()->create()]))
             ->assertRedirect(route('users.index'))
             ->assertSessionHas(FlashMessageKey::ERROR->value);
     });
 
     it('cannot be updated', function (): void {
-        $user = User::factory()->create();
-
+        $user = TenantUser::factory()->create();
         from(route('users.edit', ['user' => $user]))
             ->put(route('users.update', ['user' => $user]), [
                 'name' => 'John',

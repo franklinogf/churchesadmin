@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Casts\AsUcWords;
 use App\Enums\Gender;
 use App\Enums\OfferingFrequency;
-use Carbon\CarbonImmutable;
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -24,10 +26,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read string $church
  * @property-read float $offering
  * @property-read OfferingFrequency $offering_frequency
- * @property-read CarbonImmutable|null $deleted_at
- * @property-read CarbonImmutable $created_at
- * @property-read CarbonImmutable $updated_at
+ * @property-read DateTimeInterface|null $deleted_at
+ * @property-read DateTimeInterface $created_at
+ * @property-read DateTimeInterface $updated_at
  * @property-read Address|null $address
+ * @property-read Offering[] $offerings
  */
 final class Missionary extends Model
 {
@@ -45,6 +48,16 @@ final class Missionary extends Model
     }
 
     /**
+     * Get the offerings of this model.
+     *
+     * @return MorphMany<Offering, $this>
+     */
+    public function offerings(): MorphMany
+    {
+        return $this->morphMany(Offering::class, 'offering_type');
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
@@ -55,6 +68,8 @@ final class Missionary extends Model
             'gender' => Gender::class,
             'offering_frequency' => OfferingFrequency::class,
             'offering' => 'decimal:2',
+            'name' => AsUcWords::class,
+            'last_name' => AsUcWords::class,
         ];
     }
 }

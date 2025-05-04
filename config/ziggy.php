@@ -7,5 +7,6 @@ return [
         '_debugbar*',
         'telescope*',
         'admin*',
+        'filament*',
     ],
 ];
