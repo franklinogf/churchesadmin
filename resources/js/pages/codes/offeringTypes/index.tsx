@@ -15,15 +15,17 @@ export default function OfferingTypesIndex({ offeringTypes }: { offeringTypes: O
     <AppLayout title={t('Offering Types')} breadcrumbs={[{ title: t('Offering Types') }]}>
       <PageTitle>{t('Offering Types')}</PageTitle>
       <OfferingTypeForm open={open} setOpen={setOpen} />
-      <DataTable
-        headerButton={
-          <Button size="sm" onClick={() => setOpen(true)}>
-            {t('Add Offering Type')}
-          </Button>
-        }
-        data={offeringTypes}
-        columns={columns}
-      />
+      <div className="mx-auto w-full max-w-xl">
+        <DataTable
+          headerButton={
+            <Button size="sm" onClick={() => setOpen(true)}>
+              {t('Add Offering Type')}
+            </Button>
+          }
+          data={offeringTypes}
+          columns={columns}
+        />
+      </div>
     </AppLayout>
   );
 }

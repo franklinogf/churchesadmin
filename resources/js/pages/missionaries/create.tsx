@@ -9,14 +9,9 @@ import { PageTitle } from '@/components/PageTitle';
 import { Separator } from '@/components/ui/separator';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem, SelectOption } from '@/types';
-import { type AddressFormData } from '@/types/models/address';
-import { type MissionaryFormData } from '@/types/models/missionary';
 import { useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
-type CreateForm = MissionaryFormData & {
-  address: AddressFormData;
-};
 interface CreatePageProps {
   genders: SelectOption[];
   offeringFrequencies: SelectOption[];
@@ -24,7 +19,7 @@ interface CreatePageProps {
 export default function Create({ genders, offeringFrequencies }: CreatePageProps) {
   const { t } = useLaravelReactI18n();
 
-  const { data, setData, post, errors, processing } = useForm<CreateForm>({
+  const { data, setData, post, errors, processing } = useForm({
     name: '',
     last_name: '',
     email: '',

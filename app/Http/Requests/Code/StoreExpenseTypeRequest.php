@@ -26,6 +26,7 @@ final class StoreExpenseTypeRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255', Rule::unique('expense_types')],
+            'default_amount' => ['nullable', 'decimal:2', 'min:1'],
         ];
     }
 }

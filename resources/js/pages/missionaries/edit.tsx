@@ -7,16 +7,13 @@ import { PhoneField } from '@/components/forms/inputs/PhoneField';
 import { SelectField } from '@/components/forms/inputs/SelectField';
 import { PageTitle } from '@/components/PageTitle';
 import { Separator } from '@/components/ui/separator';
+import type { Gender, OfferingFrequency } from '@/enums';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem, SelectOption } from '@/types';
-import { type AddressFormData } from '@/types/models/address';
-import { type Missionary, type MissionaryFormData } from '@/types/models/missionary';
+import { type Missionary } from '@/types/models/missionary';
 import { useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
-type EditForm = MissionaryFormData & {
-  address: AddressFormData;
-};
 interface EditPageProps {
   genders: SelectOption[];
   missionary: Missionary;
@@ -25,7 +22,7 @@ interface EditPageProps {
 
 export default function Edit({ genders, missionary, offeringFrequencies }: EditPageProps) {
   const { t } = useLaravelReactI18n();
-  const { data, setData, put, errors, processing } = useForm<EditForm>({
+  const { data, setData, put, errors, processing } = useForm({
     name: missionary.name,
     last_name: missionary.lastName,
     email: missionary.email,
@@ -86,7 +83,7 @@ export default function Edit({ genders, missionary, offeringFrequencies }: EditP
               required
               label={t('Gender')}
               value={data.gender}
-              onChange={(value) => setData('gender', value)}
+              onChange={(value) => setData('gender', value as Gender)}
               options={genders}
               error={errors.gender}
             />
@@ -105,7 +102,7 @@ export default function Edit({ genders, missionary, offeringFrequencies }: EditP
               required
               label={t('Offering Frequency')}
               value={data.offering_frequency}
-              onChange={(value) => setData('offering_frequency', value)}
+              onChange={(value) => setData('offering_frequency', value as OfferingFrequency)}
               options={offeringFrequencies}
               error={errors.offering_frequency}
             />

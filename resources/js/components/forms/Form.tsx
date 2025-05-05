@@ -27,7 +27,7 @@ export function Form({ children, className, isSubmitting, showRequiredHelper = t
         {showRequiredHelper && (
           <CardHeader>
             <CardDescription className="flex items-center gap-1">
-              <span>Required fields</span>
+              <span>{t('Required fields')}</span>
               <RequiredFieldIcon />
             </CardDescription>
           </CardHeader>

@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * @property-read int $id
  * @property-read string $name
+ * @property float|null $default_amount
  * @property-read DateTimeInterface $created_at
  * @property-read DateTimeInterface $updated_at
  */

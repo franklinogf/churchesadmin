@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('expense_types', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
+            $table->decimal('default_amount', 10, 2)->nullable();
             $table->timestamps();
         });
     }

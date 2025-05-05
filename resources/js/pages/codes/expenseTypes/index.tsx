@@ -15,15 +15,17 @@ export default function ExpenseTypesIndex({ expenseTypes }: { expenseTypes: Expe
     <AppLayout title={t('Expense Types')} breadcrumbs={[{ title: t('Expense Types') }]}>
       <PageTitle>{t('Expense Types')}</PageTitle>
       <ExpenseTypeForm open={open} setOpen={setOpen} />
-      <DataTable
-        headerButton={
-          <Button size="sm" onClick={() => setOpen(true)}>
-            {t('Add Expense Type')}
-          </Button>
-        }
-        data={expenseTypes}
-        columns={columns}
-      />
+      <div className="mx-auto w-full max-w-xl">
+        <DataTable
+          headerButton={
+            <Button size="sm" onClick={() => setOpen(true)}>
+              {t('Add Expense Type')}
+            </Button>
+          }
+          data={expenseTypes}
+          columns={columns}
+        />
+      </div>
     </AppLayout>
   );
 }

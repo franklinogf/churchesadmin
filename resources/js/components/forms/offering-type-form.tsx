@@ -20,7 +20,7 @@ export function OfferingTypeForm({ offeringType, open, setOpen }: { offeringType
       });
     } else {
       post(route('codes.offeringTypes.store'), {
-        preserveState: true,
+        preserveState: false,
         onSuccess: () => {
           setOpen(false);
           reset();

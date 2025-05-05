@@ -22,6 +22,7 @@ final class ExpenseTypeResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'defaultAmount' => $this->default_amount,
             'createdAt' => $this->created_at->format('Y-m-d H:i:s'),
             'updatedAt' => $this->updated_at->format('Y-m-d H:i:s'),
         ];

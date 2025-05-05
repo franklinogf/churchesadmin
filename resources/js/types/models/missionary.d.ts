@@ -24,7 +24,7 @@ export type MissionaryFormData = {
   phone: string;
   gender: string;
   church: string;
-  offering: string;
+  offering: number;
   offering_frequency: string;
 };
 

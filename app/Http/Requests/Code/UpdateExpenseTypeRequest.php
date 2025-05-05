@@ -29,6 +29,7 @@ final class UpdateExpenseTypeRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255', Rule::unique('expense_types')->ignore($this->expenseType->id)],
+            'default_amount' => ['nullable', 'decimal:2', 'min:1'],
         ];
     }
 }

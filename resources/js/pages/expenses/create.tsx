@@ -10,6 +10,7 @@ import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, Tabl
 import { useCurrency } from '@/hooks/use-currency';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem, type SelectOption } from '@/types';
+import type { ExpenseType } from '@/types/models/expense-type';
 import type { Wallet } from '@/types/models/wallet';
 import { useForm } from '@inertiajs/react';
 import { formatDate } from 'date-fns';
@@ -20,7 +21,8 @@ import { useMemo } from 'react';
 interface CreatePageProps {
   wallets: Wallet[];
   members: SelectOption[];
-  expenseTypes: SelectOption[];
+  expenseTypes: ExpenseType[];
+  expenseTypesOptions: SelectOption[];
   walletOptions: SelectOption[];
 }
 
@@ -35,13 +37,13 @@ interface CreateForm {
   }[];
 }
 
-export default function Create({ wallets, members, expenseTypes, walletOptions }: CreatePageProps) {
+export default function Create({ wallets, members, expenseTypes, expenseTypesOptions, walletOptions }: CreatePageProps) {
   const { t } = useLaravelReactI18n();
   const { formatCurrency } = useCurrency();
 
   const initialExpense: CreateForm['expenses'][number] = {
     wallet_id: walletOptions[0]?.value.toString() ?? '',
-    expense_type_id: expenseTypes[0]?.value.toString() ?? '',
+    expense_type_id: expenseTypesOptions[0]?.value.toString() ?? '',
     amount: '',
     note: '',
     member_id: '',
@@ -168,10 +170,16 @@ export default function Create({ wallets, members, expenseTypes, walletOptions }
                       label={t('Expense type')}
                       value={expense.expense_type_id}
                       onChange={(value) => {
+                        const expenseType = expenseTypes.find((type) => type.id.toString() === value);
+                        if (!expenseType) {
+                          return;
+                        }
                         handleUpdateExpense(index, 'expense_type_id', value);
+
+                        handleUpdateExpense(index, 'amount', expenseType.defaultAmount !== null ? expenseType.defaultAmount.toString() : '');
                       }}
                       error={errors[`expenses.${index}.expense_type_id` as keyof typeof data]}
-                      options={expenseTypes}
+                      options={expenseTypesOptions}
                     />
 
                     <CurrencyField

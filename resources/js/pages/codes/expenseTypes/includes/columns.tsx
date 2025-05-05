@@ -1,7 +1,9 @@
+import { DatatableCell } from '@/components/custom-ui/datatable/DatatableCell';
 import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTableColumnHeader';
 import { ExpenseTypeForm } from '@/components/forms/expense-type-form';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { useCurrency } from '@/hooks/use-currency';
 import useConfirmationStore from '@/stores/confirmationStore';
 import type { ExpenseType } from '@/types/models/expense-type';
 import { router } from '@inertiajs/react';
@@ -15,6 +17,17 @@ export const columns: ColumnDef<ExpenseType>[] = [
     enableHiding: false,
     header: ({ column }) => <DataTableColumnHeader column={column} center={false} title="Name" />,
     accessorKey: 'name',
+  },
+  {
+    enableHiding: false,
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Default amount" />,
+    accessorKey: 'defaultAmount',
+    cell: function CellComponent({ row }) {
+      const { formatCurrency } = useCurrency();
+      const defaultAmount = row.original.defaultAmount;
+      if (defaultAmount === null) return null;
+      return <DatatableCell justify="end">{formatCurrency(defaultAmount)}</DatatableCell>;
+    },
   },
   {
     id: 'actions',

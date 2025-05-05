@@ -3,11 +3,13 @@ import { ResponsiveModal, ResponsiveModalFooterSubmit } from '@/components/respo
 import type { ExpenseType } from '@/types/models/expense-type';
 import { useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { CurrencyField } from './inputs/CurrencyField';
 
 export function ExpenseTypeForm({ expenseType, open, setOpen }: { expenseType?: ExpenseType; open: boolean; setOpen: (open: boolean) => void }) {
   const { t } = useLaravelReactI18n();
-  const { data, setData, post, put, errors, processing } = useForm({
+  const { data, setData, post, put, errors, processing, reset } = useForm({
     name: expenseType?.name ?? '',
+    default_amount: expenseType?.defaultAmount?.toString() ?? '',
   });
 
   function handleSubmit(e: React.FormEvent) {
@@ -20,10 +22,10 @@ export function ExpenseTypeForm({ expenseType, open, setOpen }: { expenseType?: 
       });
     } else {
       post(route('codes.expenseTypes.store'), {
-        preserveState: true,
+        preserveState: false,
         onSuccess: () => {
           setOpen(false);
-          setData({ name: '' });
+          reset();
         },
       });
     }
@@ -32,6 +34,13 @@ export function ExpenseTypeForm({ expenseType, open, setOpen }: { expenseType?: 
     <ResponsiveModal open={open} setOpen={setOpen} title={expenseType ? t('Edit Expense Type') : t('Add Expense Type')}>
       <form className="space-y-4" onSubmit={handleSubmit}>
         <InputField required label={t('Name')} value={data.name} onChange={(value) => setData('name', value)} error={errors.name} />
+        <CurrencyField
+          required
+          label={t('Default amount')}
+          value={data.default_amount}
+          onChange={(value) => setData('default_amount', value)}
+          error={errors.default_amount}
+        />
 
         <ResponsiveModalFooterSubmit isSubmitting={processing} label={t('Save')} />
       </form>

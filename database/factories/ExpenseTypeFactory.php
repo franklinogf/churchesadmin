@@ -20,6 +20,7 @@ final class ExpenseTypeFactory extends Factory
     {
         return [
             'name' => fake()->word(),
+            'default_amount' => fake()->optional()->randomFloat(2, 10, 500),
         ];
     }
 }

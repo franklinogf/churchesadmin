@@ -8,6 +8,7 @@ use App\Enums\FlashMessageKey;
 use App\Helpers\SelectOption;
 use App\Http\Requests\Expense\StoreExpenseRequest;
 use App\Http\Requests\Expense\UpdateExpenseRequest;
+use App\Http\Resources\Codes\ExpenseTypeResource;
 use App\Http\Resources\Expense\ExpenseResource;
 use App\Http\Resources\Wallet\WalletResource;
 use App\Models\Church;
@@ -52,13 +53,16 @@ final class ExpenseController extends Controller
 
         $members = SelectOption::create(Member::all(), labels: ['name', 'last_name']);
 
-        $expenseTypes = SelectOption::create(ExpenseType::all());
+        $expenseTypes = ExpenseType::all();
+        $expenseTypesOptions = SelectOption::create($expenseTypes);
 
         return Inertia::render('expenses/create', [
             'members' => $members,
             'wallets' => WalletResource::collection($wallets),
-            'expenseTypes' => $expenseTypes,
             'walletOptions' => $walletOptions,
+            'expenseTypes' => ExpenseTypeResource::collection($expenseTypes),
+            'expenseTypesOptions' => $expenseTypesOptions,
+
         ]);
     }
 
