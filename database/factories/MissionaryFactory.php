@@ -25,12 +25,12 @@ final class MissionaryFactory extends Factory
         return [
             'name' => fake()->firstName($gender),
             'last_name' => fake()->lastName(),
-            'email' => fake()->unique()->safeEmail(),
-            'phone' => fake()->unique()->e164PhoneNumber(),
+            'email' => fake()->optional()->unique()?->safeEmail(),
+            'phone' => fake()->optional(0.8)->unique()?->e164PhoneNumber(),
             'gender' => $gender,
-            'church' => fake()->company(),
-            'offering' => fake()->randomFloat(2, 10, 1000),
-            'offering_frequency' => fake()->randomElement(OfferingFrequency::values()),
+            'church' => fake()->optional()->company(),
+            'offering' => fake()->optional()->randomFloat(2, 10, 1000),
+            'offering_frequency' => fake()->optional()->randomElement(OfferingFrequency::values()),
         ];
     }
 }

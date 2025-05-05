@@ -7,13 +7,30 @@ import { PhoneField } from '@/components/forms/inputs/PhoneField';
 import { SelectField } from '@/components/forms/inputs/SelectField';
 import { PageTitle } from '@/components/PageTitle';
 import { Separator } from '@/components/ui/separator';
-import type { Gender, OfferingFrequency } from '@/enums';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem, SelectOption } from '@/types';
 import { type Missionary } from '@/types/models/missionary';
 import { useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
+type EditForm = {
+  name: string;
+  last_name: string;
+  email: string;
+  phone: string;
+  gender: string;
+  church: string;
+  offering: string;
+  offering_frequency: string;
+  address: {
+    address_1: string;
+    address_2: string;
+    city: string;
+    state: string;
+    country: string;
+    zip_code: string;
+  };
+};
 interface EditPageProps {
   genders: SelectOption[];
   missionary: Missionary;
@@ -22,15 +39,15 @@ interface EditPageProps {
 
 export default function Edit({ genders, missionary, offeringFrequencies }: EditPageProps) {
   const { t } = useLaravelReactI18n();
-  const { data, setData, put, errors, processing } = useForm({
+  const { data, setData, put, errors, processing } = useForm<EditForm>({
     name: missionary.name,
     last_name: missionary.lastName,
-    email: missionary.email,
-    phone: missionary.phone,
+    email: missionary.email || '',
+    phone: missionary.phone || '',
     gender: missionary.gender,
-    church: missionary.church,
-    offering: missionary.offering.toString(),
-    offering_frequency: missionary.offeringFrequency,
+    church: missionary.church || '',
+    offering: missionary.offering?.toString() || '',
+    offering_frequency: missionary.offeringFrequency || '',
     address: {
       address_1: missionary.address?.address1 ?? '',
       address_2: missionary.address?.address2 ?? '',
@@ -83,7 +100,7 @@ export default function Edit({ genders, missionary, offeringFrequencies }: EditP
               required
               label={t('Gender')}
               value={data.gender}
-              onChange={(value) => setData('gender', value as Gender)}
+              onChange={(value) => setData('gender', value)}
               options={genders}
               error={errors.gender}
             />
@@ -102,7 +119,7 @@ export default function Edit({ genders, missionary, offeringFrequencies }: EditP
               required
               label={t('Offering Frequency')}
               value={data.offering_frequency}
-              onChange={(value) => setData('offering_frequency', value as OfferingFrequency)}
+              onChange={(value) => setData('offering_frequency', value)}
               options={offeringFrequencies}
               error={errors.offering_frequency}
             />

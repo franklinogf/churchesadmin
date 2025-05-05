@@ -5,27 +5,16 @@ export interface Missionary {
   id: number;
   name: string;
   lastName: string;
-  email: string;
-  phone: string;
+  email: string | null;
+  phone: string | null;
   gender: Gender;
-  church: string;
-  offering: string;
-  offeringFrequency: OfferingFrequency;
+  church: string | null;
+  offering: number | null;
+  offeringFrequency: OfferingFrequency | null;
   address?: AddressRelationship | null;
   createdAt: string;
   updatedAt: string;
   deletedAt: string | null;
 }
-
-export type MissionaryFormData = {
-  name: string;
-  last_name: string;
-  email: string;
-  phone: string;
-  gender: string;
-  church: string;
-  offering: number;
-  offering_frequency: string;
-};
 
 export type MissionaryMorphClass = 'missionary';

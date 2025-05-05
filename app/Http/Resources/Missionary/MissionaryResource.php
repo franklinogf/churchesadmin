@@ -29,7 +29,7 @@ final class MissionaryResource extends JsonResource
             'gender' => $this->gender->value,
             'church' => $this->church,
             'offering' => $this->offering,
-            'offeringFrequency' => $this->offering_frequency->value,
+            'offeringFrequency' => $this->offering_frequency?->value,
             'address' => new AddressRelationshipResource($this->whenLoaded('address')),
             'createdAt' => $this->created_at->format('Y-m-d H:i:s'),
             'updatedAt' => $this->updated_at->format('Y-m-d H:i:s'),

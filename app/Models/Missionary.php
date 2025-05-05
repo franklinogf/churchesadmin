@@ -20,12 +20,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read int $id
  * @property-read string $name
  * @property-read string $last_name
- * @property-read string $email
- * @property-read string $phone
+ * @property-read string|null $email
+ * @property-read string|null $phone
  * @property-read Gender $gender
- * @property-read string $church
- * @property-read float $offering
- * @property-read OfferingFrequency $offering_frequency
+ * @property-read string|null $church
+ * @property-read float|null $offering
+ * @property-read OfferingFrequency|null $offering_frequency
  * @property-read DateTimeInterface|null $deleted_at
  * @property-read DateTimeInterface $created_at
  * @property-read DateTimeInterface $updated_at

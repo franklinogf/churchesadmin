@@ -16,10 +16,29 @@ interface CreatePageProps {
   genders: SelectOption[];
   offeringFrequencies: SelectOption[];
 }
+
+type CreateForm = {
+  name: string;
+  last_name: string;
+  email: string;
+  phone: string;
+  gender: string;
+  church: string;
+  offering: string;
+  offering_frequency: string;
+  address: {
+    address_1: string;
+    address_2: string;
+    city: string;
+    state: string;
+    country: string;
+    zip_code: string;
+  };
+};
 export default function Create({ genders, offeringFrequencies }: CreatePageProps) {
   const { t } = useLaravelReactI18n();
 
-  const { data, setData, post, errors, processing } = useForm({
+  const { data, setData, post, errors, processing } = useForm<CreateForm>({
     name: '',
     last_name: '',
     email: '',
@@ -66,15 +85,8 @@ export default function Create({ genders, offeringFrequencies }: CreatePageProps
             error={errors.last_name}
           />
           <FieldsGrid>
-            <InputField
-              required
-              label={t('Email')}
-              type="email"
-              value={data.email}
-              onChange={(value) => setData('email', value)}
-              error={errors.email}
-            />
-            <PhoneField required label={t('Phone')} value={data.phone} onChange={(value) => setData('phone', value)} error={errors.phone} />
+            <InputField label={t('Email')} type="email" value={data.email} onChange={(value) => setData('email', value)} error={errors.email} />
+            <PhoneField label={t('Phone')} value={data.phone} onChange={(value) => setData('phone', value)} error={errors.phone} />
           </FieldsGrid>
           <FieldsGrid>
             <SelectField
@@ -86,18 +98,16 @@ export default function Create({ genders, offeringFrequencies }: CreatePageProps
               error={errors.gender}
             />
           </FieldsGrid>
-          <InputField required label={t('Church')} value={data.church} onChange={(value) => setData('church', value)} error={errors.church} />
+          <InputField label={t('Church')} value={data.church} onChange={(value) => setData('church', value)} error={errors.church} />
           <FieldsGrid>
             <CurrencyField
               placeholder="0.00"
-              required
               label={t('Offering')}
               value={data.offering}
               onChange={(value) => setData('offering', value)}
               error={errors.offering}
             />
             <SelectField
-              required
               label={t('Offering Frequency')}
               value={data.offering_frequency}
               onChange={(value) => setData('offering_frequency', value)}
