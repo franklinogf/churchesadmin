@@ -71,11 +71,23 @@ export default function Create({ wallets, members, expenseTypes, expenseTypesOpt
     setData('expenses', updatedExpenses);
   }
 
-  function handleUpdateExpense(index: number, field: string, value: unknown) {
+  function handleUpdateExpense(index: number, field: keyof (typeof data)['expenses'][number], value: unknown) {
     const updatedExpenses = [...data.expenses];
     if (updatedExpenses[index] === undefined) {
       return;
     }
+
+    if (field === 'expense_type_id') {
+      const expenseType = expenseTypes.find((type) => type.id.toString() === value);
+      if (!expenseType) {
+        return;
+      }
+      updatedExpenses[index] = {
+        ...updatedExpenses[index],
+        amount: expenseType.defaultAmount?.toString() ?? '',
+      };
+    }
+
     updatedExpenses[index] = {
       ...updatedExpenses[index],
       [field]: value,
@@ -170,13 +182,7 @@ export default function Create({ wallets, members, expenseTypes, expenseTypesOpt
                       label={t('Expense type')}
                       value={expense.expense_type_id}
                       onChange={(value) => {
-                        const expenseType = expenseTypes.find((type) => type.id.toString() === value);
-                        if (!expenseType) {
-                          return;
-                        }
                         handleUpdateExpense(index, 'expense_type_id', value);
-
-                        handleUpdateExpense(index, 'amount', expenseType.defaultAmount !== null ? expenseType.defaultAmount.toString() : '');
                       }}
                       error={errors[`expenses.${index}.expense_type_id` as keyof typeof data]}
                       options={expenseTypesOptions}
