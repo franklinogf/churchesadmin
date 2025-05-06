@@ -43,7 +43,7 @@ export default function Create({ wallets, members, expenseTypes, expenseTypesOpt
 
   const initialExpense: CreateForm['expenses'][number] = {
     wallet_id: walletOptions[0]?.value.toString() ?? '',
-    expense_type_id: expenseTypesOptions[0]?.value.toString() ?? '',
+    expense_type_id: '',
     amount: '',
     note: '',
     member_id: '',

@@ -35,7 +35,6 @@ export function ExpenseTypeForm({ expenseType, open, setOpen }: { expenseType?: 
       <form className="space-y-4" onSubmit={handleSubmit}>
         <InputField required label={t('Name')} value={data.name} onChange={(value) => setData('name', value)} error={errors.name} />
         <CurrencyField
-          required
           label={t('Default amount')}
           value={data.default_amount}
           onChange={(value) => setData('default_amount', value)}
