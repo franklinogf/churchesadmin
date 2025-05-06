@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 
 import { PageTitle } from '@/components/PageTitle';
+import { useLocaleDate } from '@/hooks/use-locale-date';
 import type { BreadcrumbItem } from '@/types';
 import { type Offering, type OfferingGroupedByDate } from '@/types/models/offering';
 import { Link } from '@inertiajs/react';
@@ -17,12 +18,13 @@ interface IndexPageProps {
 
 export default function Index({ offerings, date }: IndexPageProps) {
   const { t } = useLaravelReactI18n();
+  const { formatLocaleDate } = useLocaleDate();
 
   const breadcrumbs: BreadcrumbItem[] = [{ title: t('Offerings'), href: route('offerings.index') }];
 
   if (date !== null) {
     breadcrumbs.push({
-      title: date,
+      title: formatLocaleDate(date, { dateStyle: 'long' }),
     });
   }
   return (

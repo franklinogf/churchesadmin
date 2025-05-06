@@ -4,3 +4,5 @@ export interface OfferingType {
   createdAt: string;
   updatedAt: string;
 }
+
+export type OfferingTypeMorphClass = 'offering_type';

@@ -1,13 +1,13 @@
+import { DatatableActionsDropdown } from '@/components/custom-ui/datatable/data-table-actions-dropdown';
 import { DatatableCell } from '@/components/custom-ui/datatable/DatatableCell';
 import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTableColumnHeader';
-import { Button } from '@/components/ui/button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { useCurrency } from '@/hooks/use-currency';
 import type { OfferingGroupedByDate } from '@/types/models/offering';
 import { Link } from '@inertiajs/react';
 import { type ColumnDef } from '@tanstack/react-table';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { FilesIcon, MoreHorizontalIcon } from 'lucide-react';
+import { FilesIcon } from 'lucide-react';
 
 export const groupByDateColumns: ColumnDef<OfferingGroupedByDate>[] = [
   {
@@ -51,22 +51,14 @@ export const groupByDateColumns: ColumnDef<OfferingGroupedByDate>[] = [
       const { t } = useLaravelReactI18n();
 
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="sm">
-              <MoreHorizontalIcon />
-              <span className="sr-only">{t('Actions')}</span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuItem asChild>
-              <Link href={route('offerings.index', { date: row.original.date })}>
-                <FilesIcon className="size-3" />
-                <span>{t('Offerings')}</span>
-              </Link>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <DatatableActionsDropdown>
+          <DropdownMenuItem asChild>
+            <Link href={route('offerings.index', { date: row.original.date })}>
+              <FilesIcon className="size-3" />
+              <span>{t('Offerings')}</span>
+            </Link>
+          </DropdownMenuItem>
+        </DatatableActionsDropdown>
       );
     },
   },

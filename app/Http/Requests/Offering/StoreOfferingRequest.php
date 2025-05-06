@@ -47,7 +47,7 @@ final class StoreOfferingRequest extends FormRequest
                     ->where('holder_id', (string) $tenantId),
             ],
             'offerings.*.payment_method' => ['required', 'string', Rule::enum(PaymentMethod::class)],
-            'offerings.*.offering_type' => ['required', 'array', 'min:1', new SelectOptionWithModel],
+            'offerings.*.offering_type' => ['required', new SelectOptionWithModel],
             'offerings.*.amount' => ['required', 'decimal:2', 'min:1'],
             'offerings.*.note' => ['nullable', 'string', 'min:3', 'max:255'],
 
@@ -62,15 +62,12 @@ final class StoreOfferingRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'message' => mb_strtolower(__('Message')),
-            'date' => mb_strtolower(__('Date')),
-            'offeringType' => mb_strtolower(__('Offering Type')),
             'payer_id' => mb_strtolower(__('Payer')),
+            'date' => mb_strtolower(__('Date')),
             'offerings' => mb_strtolower(__('Offerings')),
             'offerings.*.wallet_id' => mb_strtolower(__('Wallet')),
             'offerings.*.payment_method' => mb_strtolower(__('Payment Method')),
-            'offerings.*.recipient_id' => mb_strtolower(__('Recipient')),
-            'offerings.*.offering_type_id' => mb_strtolower(__('Offering Type')),
+            'offerings.*.offering_type' => mb_strtolower(__('Offering Type')),
             'offerings.*.amount' => mb_strtolower(__('Amount')),
             'offerings.*.note' => mb_strtolower(__('Note')),
         ];

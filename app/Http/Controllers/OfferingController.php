@@ -56,7 +56,7 @@ final class OfferingController extends Controller
 
         return Inertia::render('offerings/index', [
             'offerings' => $date !== null ? OfferingResource::collection($offerings) : $offerings,
-            'date' => $date !== null ? Carbon::parse($date)->format('F j, Y') : null,
+            'date' => $date,
         ]);
     }
 
@@ -86,7 +86,7 @@ final class OfferingController extends Controller
         ];
 
         $offeringTypes = [
-            'heading' => __('Offering Types'),
+            'heading' => __('Offering types'),
             'model' => Relation::getMorphAlias(OfferingType::class),
             'options' => OfferingType::all()->map(fn ($offeringType): array => [
                 'value' => $offeringType->id,
@@ -120,6 +120,7 @@ final class OfferingController extends Controller
          * } $validated
          */
         $validated = $request->validated();
+
         DB::transaction(function () use ($validated): void {
             collect($validated['offerings'])->each(function (array $offering) use ($validated): void {
                 $wallet = Wallet::find($offering['wallet_id']);
@@ -158,25 +159,107 @@ final class OfferingController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Transaction $transaction): void
+    public function edit(Offering $offering): Response
     {
-        //
+        $paymentMethods = PaymentMethod::options();
+        $wallets = Church::current()?->wallets()->get()->map(fn ($wallet): array => [
+            'value' => $wallet->id,
+            'label' => $wallet->name,
+        ])->toArray();
+        $members = Member::all()->map(fn ($member): array => [
+            'value' => $member->id,
+            'label' => "{$member->name} {$member->last_name}",
+        ])->toArray();
+
+        $missionaries = [
+            'heading' => __('Missionaries'),
+            'model' => Relation::getMorphAlias(Missionary::class),
+            'options' => Missionary::all()->map(fn ($missionary): array => [
+                'value' => $missionary->id,
+                'label' => "{$missionary->name} {$missionary->last_name}",
+            ])->toArray(),
+        ];
+
+        $offeringTypes = [
+            'heading' => __('Offering types'),
+            'model' => Relation::getMorphAlias(OfferingType::class),
+            'options' => OfferingType::all()->map(fn ($offeringType): array => [
+                'value' => $offeringType->id,
+                'label' => $offeringType->name,
+            ])->toArray(),
+        ];
+
+        return Inertia::render('offerings/edit', [
+            'paymentMethods' => $paymentMethods,
+            'wallets' => $wallets,
+            'members' => $members,
+            'offeringTypes' => $offeringTypes,
+            'missionaries' => $missionaries,
+            'offering' => new OfferingResource($offering),
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateOfferingRequest $request, Transaction $transaction): void
+    public function update(UpdateOfferingRequest $request, Offering $offering): RedirectResponse
     {
-        //
+        /**
+         * @var array{date:string,payer_id:int|string,wallet_id:int,amount:float,payment_method:string,offering_type:array{id:string,model:string},note:string} $validated
+         */
+        $validated = $request->validated();
+
+        DB::transaction(function () use ($validated, $offering): void {
+
+            $offering->update([
+                'donor_id' => $validated['payer_id'] === 'non_member' ? null : $validated['payer_id'],
+                'date' => Carbon::parse($validated['date'])->setTimeFrom(now()),
+                'payment_method' => $validated['payment_method'],
+                'offering_type_id' => $validated['offering_type']['id'],
+                'offering_type_type' => $validated['offering_type']['model'],
+                'note' => $validated['note'],
+            ]);
+
+            if ($validated['wallet_id'] !== $offering->transaction?->wallet_id) {
+                $wallet = Wallet::find($validated['wallet_id']);
+
+                $transaction = $wallet?->depositFloat(
+                    $validated['amount']
+                );
+
+                $offering->transaction->forceDelete();
+
+                // Update the transaction ID if the wallet has changed
+                $offering->update([
+                    'transaction_id' => $transaction?->id,
+                ]);
+                $wallet?->refreshBalance();
+            } else {
+                $offering->transaction?->update([
+                    'amount' => $validated['amount'],
+                ]);
+                $offering->transaction?->wallet->refreshBalance();
+            }
+
+        });
+
+        return to_route('offerings.index', ['date' => $validated['date']])->with(
+            FlashMessageKey::SUCCESS->value,
+            __('flash.message.updated', ['model' => __('offerings')])
+        );
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Transaction $transaction): void
+    public function destroy(Offering $offering): RedirectResponse
     {
-        //
+        $offering->delete();
+
+        return to_route('offerings.index')->with(
+            FlashMessageKey::SUCCESS->value,
+            __('flash.message.deleted', ['model' => __('offerings')])
+        );
     }
 
     private function formatAmount(float|int|string $amount): string

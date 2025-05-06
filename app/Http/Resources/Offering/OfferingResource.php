@@ -38,6 +38,7 @@ final class OfferingResource extends JsonResource
                 Relation::getMorphAlias(Missionary::class) => new MissionaryResource($this->offering_type),
                 default => null,
             },
+            'offeringTypeModel' => $this->offering_type_type,
             'note' => $this->note,
         ];
     }
