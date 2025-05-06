@@ -13,3 +13,8 @@ export interface Offering {
   offeringType: OfferingType | Missionary;
   note: string | null;
 }
+
+export type OfferingGroupedByDate = {
+  date: string;
+  total: string;
+} & Record<PaymentMethod, string>;

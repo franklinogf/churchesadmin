@@ -13,7 +13,6 @@ use App\Http\Controllers\OfferingTypeController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WalletController;
-use App\Http\Middleware\SetLocale;
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware;
 
@@ -43,66 +42,66 @@ Route::middleware([
     })->name('locale');
     Route::post('loginLink', LoginLinkController::class)->name('loginLink');
 
-    Route::middleware(SetLocale::class)
-        ->group(function (): void {
+    Route::redirect('/', 'dashboard')->name('home');
 
-            Route::redirect('/', 'dashboard')->name('home');
+    Route::middleware('auth:tenant')->group(function (): void {
+        Route::get('dashboard', fn () => inertia('dashboard'))->name('dashboard');
 
-            Route::middleware('auth:tenant')->group(function (): void {
-                Route::get('dashboard', fn () => inertia('dashboard'))->name('dashboard');
+        Route::resource('users', UserController::class)
+            ->except(['show']);
 
-                Route::resource('users', UserController::class)
-                    ->except(['show']);
+        Route::put('members/{member}/restore', [MemberController::class, 'restore'])
+            ->withTrashed()
+            ->name('members.restore');
+        Route::delete('members/{member}/forceDelete', [MemberController::class, 'forceDelete'])
+            ->withTrashed()
+            ->name('members.forceDelete');
+        Route::resource('members', MemberController::class);
 
-                Route::put('members/{member}/restore', [MemberController::class, 'restore'])
-                    ->withTrashed()
-                    ->name('members.restore');
-                Route::delete('members/{member}/forceDelete', [MemberController::class, 'forceDelete'])
-                    ->withTrashed()
-                    ->name('members.forceDelete');
-                Route::resource('members', MemberController::class);
+        Route::put('missionaries/{missionary}/restore', [MissionaryController::class, 'restore'])
+            ->withTrashed()
+            ->name('missionaries.restore');
+        Route::delete('missionaries/{missionary}/forceDelete', [MissionaryController::class, 'forceDelete'])
+            ->withTrashed()
+            ->name('missionaries.forceDelete');
+        Route::resource('missionaries', MissionaryController::class);
 
-                Route::put('missionaries/{missionary}/restore', [MissionaryController::class, 'restore'])
-                    ->withTrashed()
-                    ->name('missionaries.restore');
-                Route::delete('missionaries/{missionary}/forceDelete', [MissionaryController::class, 'forceDelete'])
-                    ->withTrashed()
-                    ->name('missionaries.forceDelete');
-                Route::resource('missionaries', MissionaryController::class);
+        Route::resource('skills', SkillController::class)
+            ->parameter('skills', 'tag')
+            ->except(['show', 'create', 'edit']);
 
-                Route::resource('skills', SkillController::class)
-                    ->parameter('skills', 'tag')
-                    ->except(['show', 'create', 'edit']);
+        Route::resource('categories', CategoryController::class)
+            ->parameter('categories', 'tag')
+            ->except(['show', 'create', 'edit']);
 
-                Route::resource('categories', CategoryController::class)
-                    ->parameter('categories', 'tag')
-                    ->except(['show', 'create', 'edit']);
+        Route::put('wallets/{wallet:uuid}/restore', [WalletController::class, 'restore'])
+            ->withTrashed()
+            ->name('wallets.restore');
+        Route::resource('wallets', WalletController::class)
+            ->withTrashed()
+            ->scoped([
+                'wallet' => 'uuid',
+            ])
+            ->except(['create', 'edit']);
 
-                Route::put('wallets/{wallet:uuid}/restore', [WalletController::class, 'restore'])
-                    ->withTrashed()
-                    ->name('wallets.restore');
-                Route::resource('wallets', WalletController::class)
-                    ->withTrashed()
-                    ->scoped([
-                        'wallet' => 'uuid',
-                    ])
-                    ->except(['create', 'edit']);
+        Route::get('offerings/{date?}', [OfferingController::class, 'index'])
+            ->where('date', '[0-9]{4}-[0-9]{2}-[0-9]{2}')
+            ->name('offerings.index');
 
-                Route::resource('offerings', OfferingController::class);
-                Route::resource('expenses', ExpenseController::class);
+        Route::resource('offerings', OfferingController::class)->except(['index']);
 
-                // codes
-                Route::prefix('codes')->name('codes.')->group(function (): void {
-                    Route::resource('offeringTypes', OfferingTypeController::class)
-                        ->except(['show', 'create', 'edit']);
-                    Route::resource('expenseTypes', ExpenseTypeController::class)
-                        ->except(['show', 'create', 'edit']);
-                });
-            });
+        Route::resource('expenses', ExpenseController::class);
 
-            require __DIR__.'/settings.php';
-            require __DIR__.'/auth.php';
-
+        // codes
+        Route::prefix('codes')->name('codes.')->group(function (): void {
+            Route::resource('offeringTypes', OfferingTypeController::class)
+                ->except(['show', 'create', 'edit']);
+            Route::resource('expenseTypes', ExpenseTypeController::class)
+                ->except(['show', 'create', 'edit']);
         });
+    });
+
+    require __DIR__.'/settings.php';
+    require __DIR__.'/auth.php';
 
 });

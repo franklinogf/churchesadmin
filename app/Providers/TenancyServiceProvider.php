@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use Carbon\Carbon;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Event;
@@ -88,6 +89,9 @@ final class TenancyServiceProvider extends ServiceProvider
             Events\InitializingTenancy::class => [],
             Events\TenancyInitialized::class => [
                 Listeners\BootstrapTenancy::class,
+                function (Events\TenancyInitialized $event): void {
+                    Carbon::setLocale($event->tenancy->tenant->locale ?? config('app.locale'));
+                },
             ],
 
             Events\EndingTenancy::class => [],

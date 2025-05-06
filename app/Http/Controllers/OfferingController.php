@@ -16,6 +16,7 @@ use App\Models\Offering;
 use App\Models\OfferingType;
 use App\Models\Transaction;
 use App\Models\Wallet;
+use Bavix\Wallet\Services\FormatterServiceInterface;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\RedirectResponse;
@@ -28,12 +29,33 @@ final class OfferingController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): Response
+    public function index(?string $date = null): Response
     {
-        $offerings = Offering::latest('date')->get();
+
+        $offerings = Offering::query()
+            ->when($date !== null, fn ($query) => $query->whereDate('date', $date))
+            ->get()
+            ->when($date === null, fn ($collection) => $collection->groupBy(fn ($offering) => $offering->date->format('Y-m-d'))->map(function ($group) {
+
+                /** @var string $sum */
+                $sum = $group->sum('transaction.amount');
+                $data = [
+                    'date' => $group->first()?->date->format('Y-m-d'),
+                    'total' => $this->formatAmount($sum),
+                ];
+
+                foreach (PaymentMethod::cases() as $paymentMethod) {
+                    /** @var string $groupSum */
+                    $groupSum = $group->where('payment_method', $paymentMethod->value)->sum('transaction.amount');
+                    $data[$paymentMethod->value] = $this->formatAmount($groupSum);
+                }
+
+                return $data;
+            })->values()->toArray());
 
         return Inertia::render('offerings/index', [
-            'offerings' => OfferingResource::collection($offerings),
+            'offerings' => $date !== null ? OfferingResource::collection($offerings) : $offerings,
+            'date' => $date !== null ? Carbon::parse($date)->format('F j, Y') : null,
         ]);
     }
 
@@ -154,5 +176,10 @@ final class OfferingController extends Controller
     public function destroy(Transaction $transaction): void
     {
         //
+    }
+
+    private function formatAmount(float|int|string $amount): string
+    {
+        return app(FormatterServiceInterface::class)->floatValue($amount, 2);
     }
 }

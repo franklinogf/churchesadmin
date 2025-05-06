@@ -393,7 +393,7 @@ return [
     'features' => [
         // Stancl\Tenancy\Features\UserImpersonation::class,
         Stancl\Tenancy\Features\TelescopeTags::class,
-        // Stancl\Tenancy\Features\TenantConfig::class,
+        Stancl\Tenancy\Features\TenantConfig::class,
         // Stancl\Tenancy\Features\CrossDomainRedirect::class,
         // Stancl\Tenancy\Features\ViteBundler::class,
         // Stancl\Tenancy\Features\DisallowSqliteAttach::class,

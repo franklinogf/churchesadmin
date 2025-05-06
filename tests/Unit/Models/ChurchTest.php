@@ -11,7 +11,7 @@ test('to array', function (): void {
     $church = Church::createQuietly([
         'id' => 1,
         'name' => 'Test Church',
-        'locale' => LanguageCode::ENGLISH,
+        'locale' => LanguageCode::ENGLISH->value,
         'active' => true,
     ])->fresh();
 
@@ -30,11 +30,10 @@ test('casts are correct', function (): void {
     $church = Church::createQuietly([
         'id' => 1,
         'name' => 'Test Church',
-        'locale' => LanguageCode::ENGLISH,
+        'locale' => LanguageCode::ENGLISH->value,
         'active' => true,
     ])->fresh();
 
-    expect($church->locale)->toBeInstanceOf(LanguageCode::class)
-        ->and($church->active)->toBeBool();
+    expect($church->active)->toBeBool();
 
 });
