@@ -105,6 +105,11 @@ export const columns: ColumnDef<Offering>[] = [
               <span>{t('Edit')}</span>
             </Link>
           </DropdownMenuItem>
+          <DropdownMenuItem>
+            <Link method="delete" href={route('offerings.destroy', { offering: row.original.id })}>
+              <span>{t('Delete')}</span>
+            </Link>
+          </DropdownMenuItem>
         </DatatableActionsDropdown>
       );
     },

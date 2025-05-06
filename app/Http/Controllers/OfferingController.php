@@ -254,9 +254,13 @@ final class OfferingController extends Controller
      */
     public function destroy(Offering $offering): RedirectResponse
     {
+        $wallet = $offering->transaction->wallet;
+        $date = $offering->date->format('Y-m-d');
+        $offering->transaction->forceDelete();
         $offering->delete();
+        $wallet->refreshBalance();
 
-        return to_route('offerings.index')->with(
+        return to_route('offerings.index', ['date' => $date])->with(
             FlashMessageKey::SUCCESS->value,
             __('flash.message.deleted', ['model' => __('offerings')])
         );
