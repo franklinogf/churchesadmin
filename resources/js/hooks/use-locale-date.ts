@@ -1,4 +1,4 @@
-import { intlFormat } from 'date-fns';
+import { intlFormat, parseISO } from 'date-fns';
 import { enUS, es, type Locale } from 'date-fns/locale';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
@@ -13,18 +13,17 @@ export function useLocaleDate() {
     return dateLocales[currentLocale()] || enUS;
   }
 
-  function formatDate(
+  function formatLocaleDate(
     date: string | Date = new Date(),
     { dateStyle }: { dateStyle: Intl.DateTimeFormatOptions['dateStyle'] } = {
       dateStyle: 'medium',
     },
   ) {
-    if (!date) return undefined;
-    return intlFormat(date, { dateStyle }, { locale: currentLocale() });
+    return intlFormat(typeof date === 'string' ? parseISO(date) : date, { dateStyle }, { locale: currentLocale() });
   }
 
   return {
     getCurrentDateLocale,
-    formatDate,
+    formatLocaleDate,
   };
 }
