@@ -35,23 +35,24 @@ final class OfferingController extends Controller
         $offerings = Offering::query()
             ->when($date !== null, fn ($query) => $query->whereDate('date', $date))
             ->get()
-            ->when($date === null, fn ($collection) => $collection->groupBy(fn ($offering) => $offering->date->format('Y-m-d'))->map(function ($group) {
+            ->when($date === null, fn ($collection) => $collection->groupBy(fn ($offering) => $offering->date->format('Y-m-d'))
+                ->map(function ($group) {
 
-                /** @var string $sum */
-                $sum = $group->sum('transaction.amount');
-                $data = [
-                    'date' => $group->first()?->date->format('Y-m-d'),
-                    'total' => $this->formatAmount($sum),
-                ];
+                    /** @var string $sum */
+                    $sum = $group->sum('transaction.amount');
+                    $data = [
+                        'date' => $group->first()?->date->format('Y-m-d'),
+                        'total' => $this->formatAmount($sum),
+                    ];
 
-                foreach (PaymentMethod::cases() as $paymentMethod) {
-                    /** @var string $groupSum */
-                    $groupSum = $group->where('payment_method', $paymentMethod->value)->sum('transaction.amount');
-                    $data[$paymentMethod->value] = $this->formatAmount($groupSum);
-                }
+                    foreach (PaymentMethod::cases() as $paymentMethod) {
+                        /** @var string $groupSum */
+                        $groupSum = $group->where('payment_method', $paymentMethod->value)->sum('transaction.amount');
+                        $data[$paymentMethod->value] = $this->formatAmount($groupSum);
+                    }
 
-                return $data;
-            })->values()->toArray());
+                    return $data;
+                })->values()->toArray());
 
         return Inertia::render('offerings/index', [
             'offerings' => $date !== null ? OfferingResource::collection($offerings) : $offerings,
