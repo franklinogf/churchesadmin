@@ -220,7 +220,7 @@ final class OfferingController extends Controller
                 'note' => $validated['note'],
             ]);
 
-            if ($validated['wallet_id'] !== $offering->transaction?->wallet_id) {
+            if ($validated['wallet_id'] !== $offering->transaction->wallet_id) {
                 $wallet = Wallet::find($validated['wallet_id']);
 
                 $transaction = $wallet?->depositFloat(
@@ -235,10 +235,10 @@ final class OfferingController extends Controller
                 ]);
                 $wallet?->refreshBalance();
             } else {
-                $offering->transaction?->update([
+                $offering->transaction->update([
                     'amount' => $validated['amount'],
                 ]);
-                $offering->transaction?->wallet->refreshBalance();
+                $offering->transaction->wallet->refreshBalance();
             }
 
         });
