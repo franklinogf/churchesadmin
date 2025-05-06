@@ -22,7 +22,7 @@ export function SidebarNav({ label, items = [] }: { label?: string; items: NavIt
             return (
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton asChild isActive={location.includes(item.href)} tooltip={{ children: item.title }}>
-                  <Link href={item.href} prefetch>
+                  <Link href={item.href}>
                     {item.icon && <Icon iconNode={item.icon} />}
                     <span>{item.title}</span>
                   </Link>
