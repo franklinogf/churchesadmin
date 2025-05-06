@@ -141,7 +141,7 @@ final class OfferingController extends Controller
             });
         });
 
-        return to_route('offerings.index')->with(
+        return to_route('offerings.index', ['date' => $validated['date']])->with(
             FlashMessageKey::SUCCESS->value,
             __('flash.message.created', ['model' => __('offerings')])
         );
