@@ -12,10 +12,10 @@ use Bavix\Wallet\Models\Wallet;
 use Bavix\Wallet\Services\FormatterService;
 use Illuminate\Support\Facades\DB;
 
-final class UpdateCheckAction
+final readonly class UpdateCheckAction
 {
     public function __construct(
-        private readonly FormatterService $formatterService,
+        private FormatterService $formatterService,
     ) {}
 
     /**
@@ -42,7 +42,7 @@ final class UpdateCheckAction
 
                 } else {
                     $oldTransaction->update([
-                        'amount' => $data['amount'] ? $this->formatterService->intValue($data['amount'], 2) : $oldTransaction->amount,
+                        'amount' => isset($data['amount']) ? $this->formatterService->intValue($data['amount'], 2) : $oldTransaction->amount,
                         'confirmed' => $data['confirmed'] ?? $oldTransaction->confirmed,
                     ]);
                     $oldTransaction->wallet->refreshBalance();
@@ -58,11 +58,11 @@ final class UpdateCheckAction
             return $check->refresh();
         } catch (InsufficientFunds) {
             throw new WalletException(__('flash.message.insufficient_funds', [
-                'wallet' => $wallet->name,
+                'wallet' => $wallet->name ?? 'unknown',
             ]));
         } catch (BalanceIsEmpty) {
             throw new WalletException(__('flash.message.empty_balance', [
-                'wallet' => $wallet->name,
+                'wallet' => $wallet->name ?? 'unknown',
             ]));
         }
 
