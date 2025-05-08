@@ -9,7 +9,9 @@ use App\Models\Check;
 use Bavix\Wallet\Exceptions\BalanceIsEmpty;
 use Bavix\Wallet\Exceptions\InsufficientFunds;
 use Bavix\Wallet\Models\Wallet;
+use Exception;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 final class CreateCheckAction
 {
@@ -17,7 +19,9 @@ final class CreateCheckAction
      * handle the creation of a check.
      *
      * @param  array{amount:string,member_id:string,date:string,type:string,confirmed:bool}  $data
-     * @return \App\Models\Check
+     * @return Check
+     *
+     * @throws WalletException
      */
     public function handle(array $data, Wallet $wallet): Check
     {
@@ -41,6 +45,13 @@ final class CreateCheckAction
             throw WalletException::insufficientFunds($wallet->name);
         } catch (BalanceIsEmpty) {
             throw WalletException::emptyBalance($wallet->name);
+        } catch (Exception $e) {
+            Log::error('Error creating check: '.$e->getMessage(), [
+                'data' => $data,
+                'wallet_id' => $wallet->id,
+            ]);
+
+            throw new Exception('An error occurred while creating the check', $e->getCode(), $e);
         }
 
     }

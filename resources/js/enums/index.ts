@@ -37,3 +37,10 @@ export enum CheckType {
   PAYMENT = 'payment',
   REFUND = 'refund',
 }
+
+export enum TransactionType {
+  INITIAL = 'initial',
+  CHECK = 'check',
+  OFFERING = 'offering',
+  EXPENSE = 'expense',
+}

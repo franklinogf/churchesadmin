@@ -8,4 +8,6 @@ enum TransactionType: string
 {
     case INITIAL = 'initial';
     case CHECK = 'check';
+    case OFFERING = 'offering';
+    case EXPENSE = 'expense';
 }
