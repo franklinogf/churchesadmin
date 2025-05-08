@@ -9,6 +9,7 @@ use App\Actions\Check\DeleteCheckAction;
 use App\Actions\Check\UpdateCheckAction;
 use App\Enums\CheckType;
 use App\Enums\FlashMessageKey;
+use App\Exceptions\WalletException;
 use App\Helpers\SelectOption;
 use App\Http\Requests\Check\StoreCheckRequest;
 use App\Http\Requests\Check\UpdateCheckRequest;
@@ -16,7 +17,6 @@ use App\Http\Resources\Check\CheckResource;
 use App\Models\Check;
 use App\Models\Church;
 use App\Models\Member;
-use Bavix\Wallet\Exceptions\InsufficientFunds;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -70,11 +70,12 @@ final class CheckController extends Controller
         try {
             $action->handle($validated, $wallet);
 
-        } catch (InsufficientFunds) {
-
+        } catch (WalletException $e) {
             return back()->with(FlashMessageKey::ERROR->value,
-                __('flash.message.insufficient_funds', ['wallet' => $wallet->name])
-            );
+                $e->getMessage()
+            )->withErrors([
+                'amount' => $e->getMessage(),
+            ]);
         }
 
         return to_route('checks.index')->with(FlashMessageKey::SUCCESS->value,
@@ -128,11 +129,12 @@ final class CheckController extends Controller
 
             $action->handle($check, $validated, $wallet);
 
-        } catch (InsufficientFunds) {
-
+        } catch (WalletException $e) {
             return back()->with(FlashMessageKey::ERROR->value,
-                __('flash.message.insufficient_funds', ['wallet' => $wallet->name])
-            );
+                $e->getMessage()
+            )->withErrors([
+                'amount' => $e->getMessage(),
+            ]);
         }
 
         return to_route('checks.index')->with(FlashMessageKey::SUCCESS->value,
