@@ -6,11 +6,13 @@ namespace App\Http\Controllers;
 
 use App\Dtos\WalletMetaDto;
 use App\Enums\FlashMessageKey;
+use App\Enums\TransactionType;
 use App\Http\Requests\Wallet\StoreWalletRequest;
 use App\Http\Requests\Wallet\UpdateWalletRequest;
 use App\Http\Resources\Wallet\WalletResource;
 use App\Models\Church;
 use App\Models\Wallet;
+use Bavix\Wallet\Services\FormatterService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Http\RedirectResponse;
@@ -27,7 +29,7 @@ final class WalletController extends Controller
 
         $wallets = Church::current()?->wallets()
             ->withCount(['walletTransactions' => function (Builder $query): void {
-                $query->whereJsonDoesntContainKey('meta->initial');
+                $query->whereNot('meta->type', TransactionType::INITIAL->value);
             }])
             ->withTrashed()
             ->oldest()
@@ -72,7 +74,7 @@ final class WalletController extends Controller
             ]
         );
         if ($validated['balance'] !== null) {
-            $wallet?->depositFloat($validated['balance'], ['initial' => true]);
+            $wallet?->depositFloat($validated['balance'], ['type' => TransactionType::INITIAL->value]);
         }
 
         return redirect()->route('wallets.index')->with(
@@ -85,7 +87,7 @@ final class WalletController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateWalletRequest $request, Wallet $wallet): RedirectResponse
+    public function update(UpdateWalletRequest $request, Wallet $wallet, FormatterService $formatterService): RedirectResponse
     {
         /**
          * @var array{balance:string|null,name:string,description:string,bank_name:string,bank_routing_number:string,bank_account_number:string} $validated
@@ -104,13 +106,13 @@ final class WalletController extends Controller
         );
         if ($validated['balance'] !== null) {
 
-            $transaction = $wallet->transactions()->where('meta->initial', true)->first();
+            $transaction = $wallet->transactions()->where('meta->type', TransactionType::INITIAL->value)->first();
 
             if ($transaction) {
-                $transaction->update(['amount' => $validated['balance']]);
+                $transaction->update(['amount' => $formatterService->intValue($validated['balance'], 2)]);
                 $wallet->refreshBalance();
             } else {
-                $wallet->depositFloat($validated['balance'], ['initial' => true]);
+                $wallet->depositFloat($validated['balance'], ['type' => TransactionType::INITIAL->value]);
             }
 
         }

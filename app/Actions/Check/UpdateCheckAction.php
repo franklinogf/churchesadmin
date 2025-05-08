@@ -4,13 +4,16 @@ declare(strict_types=1);
 
 namespace App\Actions\Check;
 
+use App\Enums\TransactionType;
 use App\Exceptions\WalletException;
 use App\Models\Check;
 use Bavix\Wallet\Exceptions\BalanceIsEmpty;
 use Bavix\Wallet\Exceptions\InsufficientFunds;
 use Bavix\Wallet\Models\Wallet;
 use Bavix\Wallet\Services\FormatterService;
+use Exception;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 final readonly class UpdateCheckAction
 {
@@ -35,17 +38,34 @@ final readonly class UpdateCheckAction
                 }
 
                 if ($oldTransaction->wallet->id !== $wallet->id) {
+
+                    // $oldTransaction->wallet->refreshBalance();
+                    $newTransaction = $wallet->withdrawFloat(
+                        $data['amount'] ?? $oldTransaction->amount,
+                        ['type' => TransactionType::CHECK->value],
+                        $data['confirmed'] ?? $oldTransaction->confirmed
+                    );
+                    $check->update(['transaction_id' => $newTransaction->id]);
                     $oldTransaction->forceDelete();
                     $oldTransaction->wallet->refreshBalance();
-                    $newTransaction = $wallet->withdrawFloat($data['amount'] ?? $oldTransaction->amount, confirmed: $data['confirmed'] ?? $oldTransaction->confirmed);
-                    $check->update(['transaction_id' => $newTransaction->id]);
 
                 } else {
-                    $oldTransaction->update([
-                        'amount' => isset($data['amount']) ? $this->formatterService->intValue($data['amount'], 2) : $oldTransaction->amount,
-                        'confirmed' => $data['confirmed'] ?? $oldTransaction->confirmed,
-                    ]);
-                    $oldTransaction->wallet->refreshBalance();
+                    if (isset($data['amount']) && ($oldTransaction->amountFloat !== '-'.$data['amount'])) {
+
+                        $newTransaction = $wallet->withdrawFloat(
+                            $data['amount'] ?? $oldTransaction->amount,
+                            ['type' => TransactionType::CHECK->value],
+                            $data['confirmed'] ?? $oldTransaction->confirmed
+                        );
+                        $oldTransaction->wallet->refreshBalance();
+                        $check->update(['transaction_id' => $newTransaction->id]);
+                        $oldTransaction->forceDelete();
+                    } else {
+                        $oldTransaction->update([
+                            'confirmed' => $data['confirmed'] ?? $oldTransaction->confirmed,
+                        ]);
+                        $oldTransaction->wallet->refreshBalance();
+                    }
                 }
 
                 $check->update([
@@ -57,13 +77,17 @@ final readonly class UpdateCheckAction
 
             return $check->refresh();
         } catch (InsufficientFunds) {
-            throw new WalletException(__('flash.message.insufficient_funds', [
-                'wallet' => $wallet->name ?? 'unknown',
-            ]));
+            throw WalletException::insufficientFunds($wallet->name ?? 'unknown');
         } catch (BalanceIsEmpty) {
-            throw new WalletException(__('flash.message.empty_balance', [
-                'wallet' => $wallet->name ?? 'unknown',
-            ]));
+            throw WalletException::emptyBalance($wallet->name ?? 'unknown');
+        } catch (Exception $e) {
+            Log::error('Error updating check: '.$e->getMessage(), [
+                'check_id' => $check->id,
+                'data' => $data,
+                'wallet_id' => $wallet?->id,
+            ]);
+
+            throw new Exception('An error occurred while updating the check');
         }
 
     }

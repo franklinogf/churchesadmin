@@ -38,13 +38,9 @@ final class CreateCheckAction
                 ]);
             });
         } catch (InsufficientFunds) {
-            throw new WalletException(__('flash.message.insufficient_funds', [
-                'wallet' => $wallet->name,
-            ]));
+            throw WalletException::insufficientFunds($wallet->name);
         } catch (BalanceIsEmpty) {
-            throw new WalletException(__('flash.message.empty_balance', [
-                'wallet' => $wallet->name,
-            ]));
+            throw WalletException::emptyBalance($wallet->name);
         }
 
     }
