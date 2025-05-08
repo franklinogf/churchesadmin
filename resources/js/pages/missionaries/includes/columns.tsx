@@ -87,10 +87,7 @@ export const columns: ColumnDef<Missionary>[] = [
                     actionVariant: 'destructive',
                     cancelLabel: t('Cancel'),
                     onAction: () => {
-                      router.delete(route('missionaries.destroy', row.original.id), {
-                        preserveState: true,
-                        preserveScroll: true,
-                      });
+                      router.delete(route('missionaries.destroy', row.original.id));
                     },
                   });
                 }}

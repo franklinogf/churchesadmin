@@ -6,11 +6,12 @@ import { Button } from '@/components/ui/button';
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 import { offeringTypeIsMissionary } from '@/lib/utils';
+import useConfirmationStore from '@/stores/confirmationStore';
 import type { Offering } from '@/types/models/offering';
-import { Link } from '@inertiajs/react';
+import { Link, router } from '@inertiajs/react';
 import { type ColumnDef } from '@tanstack/react-table';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { Edit2Icon } from 'lucide-react';
+import { Edit2Icon, Trash2Icon } from 'lucide-react';
 
 export const columns: ColumnDef<Offering>[] = [
   {
@@ -96,6 +97,7 @@ export const columns: ColumnDef<Offering>[] = [
     size: 0,
     cell: function CellComponent({ row }) {
       const { t } = useLaravelReactI18n();
+      const { openConfirmation } = useConfirmationStore();
 
       return (
         <DatatableActionsDropdown>
@@ -105,10 +107,23 @@ export const columns: ColumnDef<Offering>[] = [
               <span>{t('Edit')}</span>
             </Link>
           </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Link method="delete" href={route('offerings.destroy', { offering: row.original.id })}>
-              <span>{t('Delete')}</span>
-            </Link>
+          <DropdownMenuItem
+            variant="destructive"
+            onClick={() => {
+              openConfirmation({
+                title: t('Are you sure you want to delete this offering?'),
+                description: t('You can restore it any time.'),
+                actionLabel: t('Delete'),
+                actionVariant: 'destructive',
+                cancelLabel: t('Cancel'),
+                onAction: () => {
+                  router.delete(route('offerings.destroy', row.original.id));
+                },
+              });
+            }}
+          >
+            <Trash2Icon className="size-3" />
+            <span>{t('Delete')}</span>
           </DropdownMenuItem>
         </DatatableActionsDropdown>
       );
