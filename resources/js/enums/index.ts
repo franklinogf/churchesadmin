@@ -32,3 +32,8 @@ export enum PaymentMethod {
   CASH = 'cash',
   CHECK = 'check',
 }
+
+export enum CheckType {
+  PAYMENT = 'payment',
+  REFUND = 'refund',
+}

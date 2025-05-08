@@ -6,7 +6,7 @@ import { UserPermission } from '@/enums/user';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { CogIcon, CoinsIcon, HandCoinsIcon, LayoutGridIcon, ListIcon, Users2Icon, WalletCardsIcon } from 'lucide-react';
+import { BanknoteIcon, CogIcon, CoinsIcon, HandCoinsIcon, LayoutGridIcon, ListIcon, Users2Icon, WalletCardsIcon } from 'lucide-react';
 import { useMemo } from 'react';
 import AppLogo from './app-logo';
 
@@ -71,6 +71,11 @@ export function AppSidebar() {
             title: t('Expenses'),
             href: route('expenses.index'),
             icon: CoinsIcon,
+          },
+          {
+            title: t('Checks'),
+            href: route('checks.index'),
+            icon: BanknoteIcon,
           },
         ],
       },

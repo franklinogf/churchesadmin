@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CheckController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ExpenseTypeController;
 use App\Http\Controllers\LoginLinkController;
@@ -74,6 +75,7 @@ Route::middleware([
             ->parameter('categories', 'tag')
             ->except(['show', 'create', 'edit']);
 
+        // Accounting
         Route::put('wallets/{wallet:uuid}/restore', [WalletController::class, 'restore'])
             ->withTrashed()
             ->name('wallets.restore');
@@ -91,6 +93,7 @@ Route::middleware([
         Route::resource('offerings', OfferingController::class)->except(['index']);
 
         Route::resource('expenses', ExpenseController::class);
+        Route::resource('checks', CheckController::class);
 
         // codes
         Route::prefix('codes')->name('codes.')->group(function (): void {

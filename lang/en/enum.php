@@ -26,4 +26,8 @@ return [
         'en' => 'English',
         'es' => 'Spanish',
     ],
+    'check_type' => [
+        'payment' => 'Payment',
+        'refund' => 'Refund',
+    ],
 ];

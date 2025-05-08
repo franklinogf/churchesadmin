@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Enums\LanguageCode;
 use App\Enums\TenantRole;
 use App\Models\TenantUser;
 use Illuminate\Http\RedirectResponse;
@@ -45,7 +44,6 @@ final class LoginLinkController extends Controller
                 'name' => $name,
                 'email' => $email,
                 'password' => 'Password123',
-                'language' => LanguageCode::ENGLISH->value,
             ]);
             $user->assignRole($role);
 
