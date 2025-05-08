@@ -11,6 +11,7 @@ use App\Http\Requests\Wallet\UpdateWalletRequest;
 use App\Http\Resources\Wallet\WalletResource;
 use App\Models\Church;
 use App\Models\Wallet;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
@@ -24,7 +25,13 @@ final class WalletController extends Controller
     public function index(): Response
     {
 
-        $wallets = Church::current()?->wallets()->withTrashed()->oldest()->get();
+        $wallets = Church::current()?->wallets()
+            ->withCount(['walletTransactions' => function (Builder $query): void {
+                $query->whereJsonDoesntContainKey('meta->initial');
+            }])
+            ->withTrashed()
+            ->oldest()
+            ->get();
 
         return Inertia::render('wallets/index', [
             'wallets' => WalletResource::collection($wallets),
@@ -65,7 +72,7 @@ final class WalletController extends Controller
             ]
         );
         if ($validated['balance'] !== null) {
-            $wallet?->depositFloat($validated['balance']);
+            $wallet?->depositFloat($validated['balance'], ['initial' => true]);
         }
 
         return redirect()->route('wallets.index')->with(
@@ -81,7 +88,7 @@ final class WalletController extends Controller
     public function update(UpdateWalletRequest $request, Wallet $wallet): RedirectResponse
     {
         /**
-         * @var array{balance:string,name:string,description:string,bank_name:string,bank_routing_number:string,bank_account_number:string} $validated
+         * @var array{balance:string|null,name:string,description:string,bank_name:string,bank_routing_number:string,bank_account_number:string} $validated
          */
         $validated = $request->validated();
         $wallet->update(
@@ -95,6 +102,18 @@ final class WalletController extends Controller
                 )->toArray(),
             ]
         );
+        if ($validated['balance'] !== null) {
+
+            $transaction = $wallet->transactions()->where('meta->initial', true)->first();
+
+            if ($transaction) {
+                $transaction->update(['amount' => $validated['balance']]);
+                $wallet->refreshBalance();
+            } else {
+                $wallet->depositFloat($validated['balance'], ['initial' => true]);
+            }
+
+        }
 
         return redirect()->route('wallets.index')->with(
             FlashMessageKey::SUCCESS->value,

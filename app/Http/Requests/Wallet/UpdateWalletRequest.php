@@ -40,6 +40,7 @@ final class UpdateWalletRequest extends FormRequest
             'name' => ['required', 'string', 'min:3', 'max:255', Rule::unique("{$connection}.wallets")
                 ->ignore($this->wallet->id)
                 ->where('holder_id', $tenantId)],
+            'balance' => ['nullable', 'decimal:2', 'min:1'],
             'description' => ['nullable', 'string', 'min:3', 'max:255'],
             'bank_name' => ['required', 'string', 'min:3', 'max:255'],
             'bank_routing_number' => ['required', 'string', 'min:3', 'max:255'],

@@ -63,7 +63,7 @@ export function WalletForm({ wallet, open, setOpen }: { wallet?: Wallet; open: b
           error={errors.description}
         />
 
-        {!wallet && (
+        {(!wallet || wallet?.transactionsCount === 0) && (
           <CurrencyField label={t('Initial Amount')} value={data.balance} onChange={(value) => setData('balance', value)} error={errors.balance} />
         )}
 

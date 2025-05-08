@@ -56,11 +56,14 @@ final class CheckController extends Controller
      */
     public function store(StoreCheckRequest $request, CreateCheckAction $action): RedirectResponse
     {
+        /**
+         * @var array{amount:string,member_id:string,date:string,type:string,confirmed:bool,wallet_id:string} $validated
+         */
         $validated = $request->validated();
 
-        $wallet = Church::current()->getWallet($validated['wallet_id']);
+        $wallet = Church::current()?->getWallet($validated['wallet_id']);
 
-        if (! $wallet) {
+        if (! $wallet instanceof \Bavix\Wallet\Models\Wallet) {
             return back()->with(FlashMessageKey::ERROR->value, __('flash.message.wallet_not_found'));
         }
 
@@ -83,7 +86,7 @@ final class CheckController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Check $check)
+    public function show(Check $check): void
     {
         //
     }
@@ -110,11 +113,14 @@ final class CheckController extends Controller
      */
     public function update(UpdateCheckRequest $request, Check $check, UpdateCheckAction $action): RedirectResponse
     {
+        /**
+         * @var array{amount:string,member_id:string,date:string,type:string,confirmed:bool,wallet_id:string} $validated
+         */
         $validated = $request->validated();
 
-        $wallet = Church::current()->getWallet($validated['wallet_id']);
+        $wallet = Church::current()?->getWallet($validated['wallet_id']);
 
-        if (! $wallet) {
+        if (! $wallet instanceof \Bavix\Wallet\Models\Wallet) {
             return back()->with(FlashMessageKey::ERROR->value, __('flash.message.wallet_not_found'));
         }
 

@@ -74,7 +74,7 @@ export const walletColumns: ColumnDef<Wallet>[] = [
 
       return (
         <>
-          <WalletForm open={isEditing} setOpen={setIsEditing} />
+          <WalletForm open={isEditing} wallet={wallet} setOpen={setIsEditing} />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="sm">
