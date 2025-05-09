@@ -36,6 +36,7 @@ export interface SharedData {
   flash: {
     success: string | null;
     error: string | null;
+    message: string | null;
   };
   availableLocales: {
     label: Locale;

@@ -78,6 +78,7 @@ final class HandleInertiaRequests extends Middleware
         return [
             FlashMessageKey::SUCCESS->value => $request->session()->get(FlashMessageKey::SUCCESS->value),
             FlashMessageKey::ERROR->value => $request->session()->get(FlashMessageKey::ERROR->value),
+            FlashMessageKey::MESSAGE->value => $request->session()->get(FlashMessageKey::MESSAGE->value),
         ];
     }
 }

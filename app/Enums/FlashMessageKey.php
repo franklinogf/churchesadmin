@@ -11,4 +11,5 @@ enum FlashMessageKey: string
     use EnumToArray;
     case SUCCESS = 'success';
     case ERROR = 'error';
+    case MESSAGE = 'message';
 }

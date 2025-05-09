@@ -16,9 +16,15 @@ export default ({ children, breadcrumbs, title, ...props }: AppLayoutProps) => {
   useEffect(() => {
     if (pageProps.flash.success) {
       toast.success(pageProps.flash.success);
+      return;
     }
     if (pageProps.flash.error) {
       toast.error(pageProps.flash.error);
+      return;
+    }
+    if (pageProps.flash.message) {
+      toast.info(pageProps.flash.message);
+      return;
     }
   }, [pageProps.flash]);
   return (
