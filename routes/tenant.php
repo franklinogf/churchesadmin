@@ -86,13 +86,10 @@ Route::middleware([
             ])
             ->except(['create', 'edit']);
 
-        Route::get('offerings/{date?}', [OfferingController::class, 'index'])
-            ->where('date', '[0-9]{4}-[0-9]{2}-[0-9]{2}')
-            ->name('offerings.index');
-
-        Route::resource('offerings', OfferingController::class)->except(['index']);
+        Route::resource('offerings', OfferingController::class);
 
         Route::resource('expenses', ExpenseController::class);
+
         Route::resource('checks', CheckController::class);
 
         // codes

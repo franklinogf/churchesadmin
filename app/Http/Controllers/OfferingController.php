@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\FlashMessageKey;
 use App\Enums\PaymentMethod;
+use App\Http\Requests\Offering\ListOfferingRequest;
 use App\Http\Requests\Offering\StoreOfferingRequest;
 use App\Http\Requests\Offering\UpdateOfferingRequest;
 use App\Http\Resources\Offering\OfferingResource;
@@ -29,13 +30,15 @@ final class OfferingController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(?string $date = null): Response
+    public function index(ListOfferingRequest $request): Response
     {
 
+        $date = $request->string('date')->toString() ?: null;
+
         $offerings = Offering::query()
-            ->when($date !== null, fn ($query) => $query->whereDate('date', $date))
+            ->when(! is_null($date), fn ($query) => $query->whereDate('date', $date))
             ->get()
-            ->when($date === null, fn ($collection) => $collection->groupBy(fn ($offering) => $offering->date->format('Y-m-d'))
+            ->when(is_null($date), fn ($collection) => $collection->groupBy(fn (Offering $offering): string => $offering->date->format('Y-m-d'))
                 ->map(function ($group) {
 
                     /** @var string $sum */
@@ -55,7 +58,7 @@ final class OfferingController extends Controller
                 })->values()->toArray());
 
         return Inertia::render('offerings/index', [
-            'offerings' => $date !== null ? OfferingResource::collection($offerings) : $offerings,
+            'offerings' => is_null($date) ? $offerings : OfferingResource::collection($offerings),
             'date' => $date,
         ]);
     }
