@@ -51,7 +51,7 @@ final class CreateCheckAction
                 'wallet_id' => $wallet->id,
             ]);
 
-            throw new Exception('An error occurred while creating the check', $e->getCode(), $e);
+            throw new WalletException('An error occurred while creating the check', $e->getCode(), $e);
         }
 
     }

@@ -12,9 +12,10 @@ final class DeleteCheckAction
     public function handle(Check $check): void
     {
         DB::transaction(function () use ($check): void {
+            $wallet = $check->transaction->wallet;
             $check->transaction->forceDelete();
             $check->delete();
-            $check->transaction->wallet->refreshBalance();
+            $wallet->refreshBalance();
         });
     }
 }

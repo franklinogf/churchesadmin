@@ -78,7 +78,7 @@ final readonly class UpdateCheckAction
                 'wallet_id' => $wallet?->id,
             ]);
 
-            throw new Exception('An error occurred while updating the check', $e->getCode(), $e);
+            throw new WalletException('An error occurred while updating the check', $e->getCode(), $e);
         }
 
     }
