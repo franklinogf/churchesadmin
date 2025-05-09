@@ -13,7 +13,7 @@ final class SelectOption
      * Create an array of select options from a collection of items.
      *
      * @param  Collection<int,covariant Model>|null  $items
-     * @param  string|array<int,string>  $labels
+     * @param  string|string[]  $labels
      * @return array<mixed>
      */
     public static function create(?Collection $items, string $value = 'id', string|array $labels = 'name', string $separator = ' '): array
@@ -22,10 +22,10 @@ final class SelectOption
             return [];
         }
 
-        return $items->map(fn ($item): array => [
+        return $items->map(fn (Model $item): array => [
             'value' => $item->{$value},
             'label' => is_array($labels)
-            ? implode($separator, array_map(fn ($label) => $item->{$label}, $labels))
+            ? implode($separator, array_map(fn (string $label) => $item->{$label}, $labels))
              : $item->{$labels},
         ])->toArray();
     }
