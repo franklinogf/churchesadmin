@@ -6,7 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Dtos\WalletMetaDto;
 use App\Enums\FlashMessageKey;
-use App\Enums\TransactionType;
+use App\Enums\TransactionMetaType;
 use App\Http\Requests\Wallet\StoreWalletRequest;
 use App\Http\Requests\Wallet\UpdateWalletRequest;
 use App\Http\Resources\Wallet\WalletResource;
@@ -29,7 +29,7 @@ final class WalletController extends Controller
 
         $wallets = Church::current()?->wallets()
             ->withCount(['walletTransactions' => function (Builder $query): void {
-                $query->whereNot('meta->type', TransactionType::INITIAL->value);
+                $query->whereNot('meta->type', TransactionMetaType::INITIAL->value);
             }])
             ->withTrashed()
             ->oldest()
@@ -74,7 +74,7 @@ final class WalletController extends Controller
             ]
         );
         if ($validated['balance'] !== null) {
-            $wallet?->depositFloat($validated['balance'], ['type' => TransactionType::INITIAL->value]);
+            $wallet?->depositFloat($validated['balance'], ['type' => TransactionMetaType::INITIAL->value]);
         }
 
         return redirect()->route('wallets.index')->with(
@@ -106,13 +106,13 @@ final class WalletController extends Controller
         );
         if ($validated['balance'] !== null) {
 
-            $transaction = $wallet->transactions()->where('meta->type', TransactionType::INITIAL->value)->first();
+            $transaction = $wallet->transactions()->where('meta->type', TransactionMetaType::INITIAL->value)->first();
 
             if ($transaction) {
                 $transaction->update(['amount' => $formatterService->intValue($validated['balance'], 2)]);
                 $wallet->refreshBalance();
             } else {
-                $wallet->depositFloat($validated['balance'], ['type' => TransactionType::INITIAL->value]);
+                $wallet->depositFloat($validated['balance'], ['type' => TransactionMetaType::INITIAL->value]);
             }
 
         }

@@ -7,12 +7,6 @@ namespace App\Dtos;
 use DragonCode\Contracts\Support\Arrayable;
 use JsonSerializable;
 
-/**
- * @property-read string|null $payer_id
- * @property-read string|null $date
- * @property-read string $offering_type
- * @property-read string|null $message
- */
 final readonly class WalletMetaDto implements JsonSerializable, Arrayable
 {
     /**

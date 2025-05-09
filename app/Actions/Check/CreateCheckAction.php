@@ -4,17 +4,23 @@ declare(strict_types=1);
 
 namespace App\Actions\Check;
 
+use App\Actions\Wallet\WalletWithdrawalAction;
+use App\Dtos\TransactionDto;
+use App\Dtos\TransactionMetaDto;
+use App\Enums\TransactionMetaType;
 use App\Exceptions\WalletException;
 use App\Models\Check;
-use Bavix\Wallet\Exceptions\BalanceIsEmpty;
-use Bavix\Wallet\Exceptions\InsufficientFunds;
 use Bavix\Wallet\Models\Wallet;
-use Exception;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 final class CreateCheckAction
 {
+    public function __construct(
+        private readonly WalletWithdrawalAction $walletWithdrawalAction,
+    ) {}
+
     /**
      * handle the creation of a check.
      *
@@ -29,10 +35,13 @@ final class CreateCheckAction
         try {
             return DB::transaction(function () use ($data, $wallet): Check {
 
-                $transaction = $wallet->withdrawFloat(
-                    $data['amount'],
-                    confirmed: $data['confirmed'],
-                );
+                $transaction = $this->walletWithdrawalAction->handle($wallet, new TransactionDto(
+                    amount: $data['amount'],
+                    meta: new TransactionMetaDto(
+                        type: TransactionMetaType::CHECK,
+                    ),
+                    confirmed: $data['confirmed'] ?? true,
+                ));
 
                 return Check::create([
                     'transaction_id' => $transaction->id,
@@ -41,11 +50,7 @@ final class CreateCheckAction
                     'type' => $data['type'],
                 ]);
             });
-        } catch (InsufficientFunds) {
-            throw WalletException::insufficientFunds($wallet->name);
-        } catch (BalanceIsEmpty) {
-            throw WalletException::emptyBalance($wallet->name);
-        } catch (Exception $e) {
+        } catch (QueryException $e) {
             Log::error('Error creating check: '.$e->getMessage(), [
                 'data' => $data,
                 'wallet_id' => $wallet->id,

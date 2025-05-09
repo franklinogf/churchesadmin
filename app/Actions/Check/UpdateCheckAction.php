@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\Actions\Check;
 
+use App\Actions\Wallet\UpdateTransactionAction;
+use App\Dtos\TransactionDto;
+use App\Dtos\TransactionMetaDto;
+use App\Enums\TransactionMetaType;
 use App\Enums\TransactionType;
 use App\Exceptions\WalletException;
 use App\Models\Check;
@@ -16,6 +20,10 @@ use Illuminate\Support\Facades\Log;
 
 final readonly class UpdateCheckAction
 {
+    public function __construct(
+        private readonly UpdateTransactionAction $updateTransactionAction,
+    ) {}
+
     /**
      * handle the update of a check.
      *
@@ -28,38 +36,20 @@ final readonly class UpdateCheckAction
     {
         try {
             DB::transaction(function () use ($check, $data, $wallet): void {
-                $oldTransaction = $check->transaction;
 
-                if (! $wallet instanceof Wallet) {
-                    $wallet = $oldTransaction->wallet;
-                }
-
-                if ($oldTransaction->wallet->id !== $wallet->id) {
-                    $newTransaction = $wallet->withdrawFloat(
-                        $data['amount'] ?? $oldTransaction->amount,
-                        ['type' => TransactionType::CHECK->value],
-                        $data['confirmed'] ?? $oldTransaction->confirmed
-                    );
-                    $check->update(['transaction_id' => $newTransaction->id]);
-                    $oldTransaction->forceDelete();
-                    $oldTransaction->wallet->refreshBalance();
-                } elseif (isset($data['amount']) && ($oldTransaction->amountFloat !== '-'.$data['amount'])) {
-                    $newTransaction = $wallet->withdrawFloat(
-                        $data['amount'],
-                        ['type' => TransactionType::CHECK->value],
-                        $data['confirmed'] ?? $oldTransaction->confirmed
-                    );
-                    $oldTransaction->wallet->refreshBalance();
-                    $check->update(['transaction_id' => $newTransaction->id]);
-                    $oldTransaction->forceDelete();
-                } else {
-                    $oldTransaction->update([
-                        'confirmed' => $data['confirmed'] ?? $oldTransaction->confirmed,
-                    ]);
-                    $oldTransaction->wallet->refreshBalance();
-                }
+                $transaction = $this->updateTransactionAction
+                    ->handle($check->transaction, new TransactionDto(
+                        amount: $data['amount'] ?? $check->transaction->amountFloat,
+                        meta: new TransactionMetaDto(
+                            type: TransactionMetaType::tryFrom($data['type']) ?? TransactionMetaType::CHECK,
+                        ),
+                        confirmed: $data['confirmed'] ?? true,
+                    ),
+                        TransactionType::WITHDRAW,
+                        $wallet);
 
                 $check->update([
+                    'transaction_id' => $transaction->id,
                     'member_id' => $data['member_id'] ?? $check->member_id,
                     'date' => $data['date'] ?? $check->date,
                     'type' => $data['type'] ?? $check->type,
