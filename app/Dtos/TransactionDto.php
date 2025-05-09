@@ -21,7 +21,7 @@ final readonly class TransactionDto implements JsonSerializable, Arrayable
     /**
      * Get the instance as an array.
      *
-     * @return array{meta:array,amount:string,confirmed:bool}
+     * @return array{meta:array{type:string},amount:string,confirmed:bool}
      */
     public function toArray(): array
     {
@@ -35,7 +35,7 @@ final readonly class TransactionDto implements JsonSerializable, Arrayable
     /**
      * Specify the data which should be serialized to JSON.
      *
-     * @return array{meta:array,amount:string,confirmed:bool}
+     * @return array{meta:array{type:string},amount:string,confirmed:bool}
      */
     public function jsonSerialize(): array
     {

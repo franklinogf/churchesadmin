@@ -15,16 +15,16 @@ use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
-final class CreateCheckAction
+final readonly class CreateCheckAction
 {
     public function __construct(
-        private readonly WalletWithdrawalAction $walletWithdrawalAction,
+        private WalletWithdrawalAction $walletWithdrawalAction,
     ) {}
 
     /**
      * handle the creation of a check.
      *
-     * @param  array{amount:string,member_id:string,date:string,type:string,confirmed:bool}  $data
+     * @param  array{amount:string,member_id:string,date:string,type:string,confirmed?:bool}  $data
      * @return Check
      *
      * @throws WalletException

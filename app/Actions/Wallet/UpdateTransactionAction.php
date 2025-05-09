@@ -10,12 +10,12 @@ use Bavix\Wallet\Models\Transaction;
 use Bavix\Wallet\Models\Wallet;
 use Bavix\Wallet\Services\FormatterService;
 
-final class UpdateTransactionAction
+final readonly class UpdateTransactionAction
 {
     public function __construct(
-        private readonly WalletWithdrawalAction $walletWithdrawalAction,
-        private readonly WalletDepositAction $walletDepositAction,
-        private readonly FormatterService $formatterService,
+        private WalletWithdrawalAction $walletWithdrawalAction,
+        private WalletDepositAction $walletDepositAction,
+        private FormatterService $formatterService,
     ) {}
 
     public function handle(Transaction $transaction, TransactionDto $data, TransactionType $transactionType, ?Wallet $wallet = null): Transaction

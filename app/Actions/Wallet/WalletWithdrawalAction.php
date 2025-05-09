@@ -18,7 +18,6 @@ final class WalletWithdrawalAction
     /**
      * handle the creation of a transaction.
      *
-     * @param  array{amount:string,confirmed?:bool}  $data
      * @return Transaction
      *
      * @throws WalletException

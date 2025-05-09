@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Log;
 final readonly class UpdateCheckAction
 {
     public function __construct(
-        private readonly UpdateTransactionAction $updateTransactionAction,
+        private UpdateTransactionAction $updateTransactionAction,
     ) {}
 
     /**
@@ -41,7 +41,7 @@ final readonly class UpdateCheckAction
                     ->handle($check->transaction, new TransactionDto(
                         amount: $data['amount'] ?? $check->transaction->amountFloat,
                         meta: new TransactionMetaDto(
-                            type: TransactionMetaType::tryFrom($data['type']) ?? TransactionMetaType::CHECK,
+                            type: TransactionMetaType::CHECK,
                         ),
                         confirmed: $data['confirmed'] ?? true,
                     ),
