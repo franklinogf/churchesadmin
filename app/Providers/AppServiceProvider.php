@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Models\Church;
+use App\Models\ChurchWallet;
 use App\Models\Member;
 use App\Models\Missionary;
 use App\Models\OfferingType;
@@ -58,24 +59,25 @@ final class AppServiceProvider extends ServiceProvider
     {
 
         Model::unguard();
-        Model::shouldBeStrict(! app()->isProduction());
+        Model::shouldBeStrict(!app()->isProduction());
         Model::automaticallyEagerLoadRelationships();
         Relation::enforceMorphMap([
             'member' => Member::class,
             'missionary' => Missionary::class,
             'user' => TenantUser::class,
             'church' => Church::class,
+            'church_wallet' => ChurchWallet::class,
             'offering_type' => OfferingType::class,
         ]);
     }
 
     private function configureValidations(): void
     {
-        Password::defaults(fn () => app()->isProduction()
-        ? Password::min(8)->letters()
-            ->mixedCase()
-            ->numbers()
-        : Password::min(6));
+        Password::defaults(fn() => app()->isProduction()
+            ? Password::min(8)->letters()
+                ->mixedCase()
+                ->numbers()
+            : Password::min(6));
 
     }
 

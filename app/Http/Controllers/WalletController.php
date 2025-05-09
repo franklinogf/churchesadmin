@@ -11,7 +11,7 @@ use App\Http\Requests\Wallet\StoreWalletRequest;
 use App\Http\Requests\Wallet\UpdateWalletRequest;
 use App\Http\Resources\Wallet\WalletResource;
 use App\Models\Church;
-use App\Models\Wallet;
+use App\Models\ChurchWallet;
 use Bavix\Wallet\Services\FormatterService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -28,9 +28,11 @@ final class WalletController extends Controller
     {
 
         $wallets = Church::current()?->wallets()
-            ->withCount(['walletTransactions' => function (Builder $query): void {
-                $query->whereNot('meta->type', TransactionMetaType::INITIAL->value);
-            }])
+            ->withCount([
+                'walletTransactions' => function (Builder $query): void {
+                    $query->whereNot('meta->type', TransactionMetaType::INITIAL->value);
+                }
+            ])
             ->withTrashed()
             ->oldest()
             ->get();
@@ -40,12 +42,14 @@ final class WalletController extends Controller
         ]);
     }
 
-    public function show(Wallet $wallet): Response
+    public function show(ChurchWallet $wallet): Response
     {
-        $wallet->load(['walletTransactions.wallet' => function (BelongsTo $belongsTo): void {
-            /** @phpstan-ignore-next-line */
-            $belongsTo->withTrashed();
-        }]);
+        $wallet->load([
+            'walletTransactions.wallet' => function (BelongsTo $belongsTo): void {
+                /** @phpstan-ignore-next-line */
+                $belongsTo->withTrashed();
+            }
+        ]);
 
         return Inertia::render('wallets/show', [
             'wallet' => new WalletResource($wallet),
@@ -87,7 +91,7 @@ final class WalletController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateWalletRequest $request, Wallet $wallet, FormatterService $formatterService): RedirectResponse
+    public function update(UpdateWalletRequest $request, ChurchWallet $wallet, FormatterService $formatterService): RedirectResponse
     {
         /**
          * @var array{balance:string|null,name:string,description:string,bank_name:string,bank_routing_number:string,bank_account_number:string} $validated
@@ -126,7 +130,7 @@ final class WalletController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Wallet $wallet): RedirectResponse
+    public function destroy(ChurchWallet $wallet): RedirectResponse
     {
         $wallet->delete();
 
@@ -139,7 +143,7 @@ final class WalletController extends Controller
     /**
      * Restore the specified resource from storage.
      */
-    public function restore(Wallet $wallet): RedirectResponse
+    public function restore(ChurchWallet $wallet): RedirectResponse
     {
         $wallet->restore();
 

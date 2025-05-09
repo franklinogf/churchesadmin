@@ -8,13 +8,13 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+return new class() extends Migration
 {
     public function up(): void
     {
         Schema::create($this->table(), static function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->uuidMorphs('holder');
+            $table->morphs('holder');
             $table->string('name');
             $table->string('slug')
                 ->index();
@@ -49,11 +49,11 @@ return new class extends Migration
 
     private function table(): string
     {
-        return (new Wallet)->getTable();
+        return (new Wallet())->getTable();
     }
 
     private function transactionTable(): string
     {
-        return (new Transaction)->getTable();
+        return (new Transaction())->getTable();
     }
 };

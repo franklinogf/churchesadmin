@@ -1,13 +1,17 @@
 import type { CheckType } from '@/enums';
+import type { ExpenseType } from './expense-type';
 import type { Member } from './member';
 import type { Transaction } from './transaction';
 
 interface Check {
   id: number;
-  member: Member;
   transaction: Transaction;
-  date: string; // ISO date string
-  type: `${CheckType}`; // e.g., 'deposit', 'withdrawal'
+  member: Member;
+  expenseType: ExpenseType;
+  checkNumber: string | null;
+  date: string;
+  type: `${CheckType}`;
+  note: string | null;
   createdAt: string;
   updatedAt: string;
 }

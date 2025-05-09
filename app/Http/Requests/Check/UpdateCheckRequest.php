@@ -35,7 +35,7 @@ final class UpdateCheckRequest extends FormRequest
         $tenantId = tenant('id');
 
         return [
-            'wallet_id' => ['required', 'string',
+            'wallet_slug' => ['required', 'string',
                 Rule::exists("$connection.wallets", 'slug')
                     ->where('holder_id', (string) $tenantId),
             ],
@@ -45,7 +45,8 @@ final class UpdateCheckRequest extends FormRequest
             'amount' => ['required', 'decimal:2', 'min:1'],
             'date' => ['required', 'date:Y-m-d'],
             'type' => ['required', 'string', Rule::enum(CheckType::class)],
-            'confirmed' => ['required', 'boolean'],
+            'note' => ['nullable', 'string', 'min:1', 'max:255'],
+            'expense_type_id' => [Rule::exists('expense_types', 'id')],
         ];
     }
 }

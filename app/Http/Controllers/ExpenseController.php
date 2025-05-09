@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Enums\FlashMessageKey;
-use App\Helpers\SelectOption;
 use App\Http\Requests\Expense\StoreExpenseRequest;
 use App\Http\Requests\Expense\UpdateExpenseRequest;
 use App\Http\Resources\Codes\ExpenseTypeResource;
@@ -15,7 +14,8 @@ use App\Models\Church;
 use App\Models\Expense;
 use App\Models\ExpenseType;
 use App\Models\Member;
-use App\Models\Wallet;
+use App\Models\ChurchWallet;
+use App\Support\SelectOption;
 use Bavix\Wallet\Exceptions\BalanceIsEmpty;
 use Bavix\Wallet\Exceptions\InsufficientFunds;
 use Carbon\Carbon;
@@ -32,10 +32,12 @@ final class ExpenseController extends Controller
      */
     public function index(): Response
     {
-        $expenses = Expense::latest('date')->with(['transaction.wallet' => function (Relation $query): void {
-            /** @phpstan-ignore-next-line */
-            $query->withTrashed();
-        }])->get();
+        $expenses = Expense::latest('date')->with([
+            'transaction.wallet' => function (Relation $query): void {
+                /** @phpstan-ignore-next-line */
+                $query->withTrashed();
+            }
+        ])->get();
 
         return Inertia::render('expenses/index', [
             'expenses' => ExpenseResource::collection($expenses),
@@ -79,7 +81,7 @@ final class ExpenseController extends Controller
         DB::beginTransaction();
         try {
             foreach ($validated['expenses'] as $expense) {
-                $wallet = Wallet::find($expense['wallet_id']);
+                $wallet = ChurchWallet::find($expense['wallet_id']);
 
                 $transaction = $wallet?->withdrawFloat(
                     $expense['amount']
@@ -97,18 +99,24 @@ final class ExpenseController extends Controller
         } catch (InsufficientFunds) {
             DB::rollBack();
 
-            return back()->with(FlashMessageKey::ERROR->value,
-                __('flash.message.insufficient_funds', ['wallet' => $wallet->name ?? '']));
+            return back()->with(
+                FlashMessageKey::ERROR->value,
+                __('flash.message.insufficient_funds', ['wallet' => $wallet->name ?? ''])
+            );
 
         } catch (BalanceIsEmpty) {
             DB::rollBack();
 
-            return back()->with(FlashMessageKey::ERROR->value,
-                __('flash.message.empty_balance', ['wallet' => $wallet->name ?? '']));
+            return back()->with(
+                FlashMessageKey::ERROR->value,
+                __('flash.message.empty_balance', ['wallet' => $wallet->name ?? ''])
+            );
         }
 
-        return to_route('expenses.index')->with(FlashMessageKey::SUCCESS->value,
-            __('flash.message.created', ['model' => __('Expense')]));
+        return to_route('expenses.index')->with(
+            FlashMessageKey::SUCCESS->value,
+            __('flash.message.created', ['model' => __('Expense')])
+        );
     }
 
     /**
@@ -163,7 +171,7 @@ final class ExpenseController extends Controller
                 'note' => $validated['note'],
             ]);
             if ("-{$validated['amount']}" !== $expense->transaction->amountFloat) {
-                $wallet = Wallet::find($validated['wallet_id']);
+                $wallet = ChurchWallet::find($validated['wallet_id']);
                 $oldWallet = $expense->transaction->wallet;
                 $expense->transaction->forceDelete();
 
@@ -182,18 +190,24 @@ final class ExpenseController extends Controller
         } catch (InsufficientFunds) {
             DB::rollBack();
 
-            return back()->with(FlashMessageKey::ERROR->value,
-                __('flash.message.insufficient_funds', ['wallet' => $wallet->name ?? '']));
+            return back()->with(
+                FlashMessageKey::ERROR->value,
+                __('flash.message.insufficient_funds', ['wallet' => $wallet->name ?? ''])
+            );
 
         } catch (BalanceIsEmpty) {
             DB::rollBack();
 
-            return back()->with(FlashMessageKey::ERROR->value,
-                __('flash.message.empty_balance', ['wallet' => $wallet->name ?? '']));
+            return back()->with(
+                FlashMessageKey::ERROR->value,
+                __('flash.message.empty_balance', ['wallet' => $wallet->name ?? ''])
+            );
         }
 
-        return to_route('expenses.index')->with(FlashMessageKey::SUCCESS->value,
-            __('flash.message.created', ['model' => __('Expense')]));
+        return to_route('expenses.index')->with(
+            FlashMessageKey::SUCCESS->value,
+            __('flash.message.created', ['model' => __('Expense')])
+        );
 
     }
 
@@ -207,7 +221,9 @@ final class ExpenseController extends Controller
         $expense->delete();
         $wallet->refreshBalance();
 
-        return to_route('expenses.index')->with(FlashMessageKey::SUCCESS->value,
-            __('flash.message.deleted', ['model' => __('Expense')]));
+        return to_route('expenses.index')->with(
+            FlashMessageKey::SUCCESS->value,
+            __('flash.message.deleted', ['model' => __('Expense')])
+        );
     }
 }

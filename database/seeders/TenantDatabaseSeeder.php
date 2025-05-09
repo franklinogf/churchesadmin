@@ -7,8 +7,15 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 use App\Enums\LanguageCode;
+use App\Enums\TransactionMetaType;
 use App\Enums\WalletName;
 use App\Models\Church;
+use App\Models\ChurchWallet;
+use App\Models\ExpenseType;
+use App\Models\Member;
+use App\Models\Missionary;
+use App\Models\OfferingType;
+use App\Models\Tag;
 use Illuminate\Database\Seeder;
 
 final class TenantDatabaseSeeder extends Seeder
@@ -27,13 +34,22 @@ final class TenantDatabaseSeeder extends Seeder
             Tenants\CategorySeeder::class,
             Tenants\UserSeeder::class,
         ]);
-        $currentChurch = Church::current();
 
-        $currentChurch?->createWallet([
-            'name' => $currentChurch?->locale === LanguageCode::ENGLISH ? 'Primary Wallet' : 'Billetera Principal',
-            'description' => $currentChurch?->locale === LanguageCode::ENGLISH ? 'This is the primary wallet' : 'Esta es la billetera principal',
-            'slug' => WalletName::PRIMARY->value,
+
+        $wallet = ChurchWallet::create([
+            'name' => tenant('locale') === LanguageCode::ENGLISH->value ? 'Primary Wallet' : 'Billetera Principal',
+            'description' => tenant('locale') === LanguageCode::ENGLISH->value ? 'This is the primary wallet' : 'Esta es la billetera principal',
         ]);
+
+        if (app()->environment(['local', 'staging'])) {
+            $wallet->depositFloat('100.00', ['type' => TransactionMetaType::INITIAL->value]);
+            Member::factory(10)->create();
+            Missionary::factory(10)->create();
+            ExpenseType::factory(5)->create();
+            OfferingType::factory(5)->create();
+            Tag::factory(3)->skill()->create();
+            Tag::factory(3)->category()->create();
+        }
 
     }
 }

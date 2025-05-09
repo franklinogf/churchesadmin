@@ -17,8 +17,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('transaction_id');
             $table->foreignId('member_id')->constrained();
+            $table->foreignId('expense_type_id')->constrained();
+            $table->string('check_number')->nullable();
             $table->date('date');
             $table->string('type');
+            $table->string('note')->nullable();
             $table->timestamps();
         });
     }

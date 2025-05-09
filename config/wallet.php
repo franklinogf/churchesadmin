@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Enums\WalletName;
 use Bavix\Wallet\Internal\Assembler\AvailabilityDtoAssembler;
 use Bavix\Wallet\Internal\Assembler\BalanceUpdatedEventAssembler;
 use Bavix\Wallet\Internal\Assembler\ExtraDtoAssembler;
@@ -33,7 +32,9 @@ use Bavix\Wallet\Internal\Service\TranslatorService;
 use Bavix\Wallet\Internal\Service\UuidFactoryService;
 use Bavix\Wallet\Internal\Transform\TransactionDtoTransformer;
 use Bavix\Wallet\Internal\Transform\TransferDtoTransformer;
+use Bavix\Wallet\Models\Transaction;
 use Bavix\Wallet\Models\Transfer;
+use Bavix\Wallet\Models\Wallet;
 use Bavix\Wallet\Services\AssistantService;
 use Bavix\Wallet\Services\AtmService;
 use Bavix\Wallet\Services\AtomicService;
@@ -415,7 +416,7 @@ return [
          *
          * @see Transaction
          */
-        'model' => App\Models\Transaction::class,
+        'model' => Transaction::class,
     ],
 
     /**
@@ -469,7 +470,7 @@ return [
          *
          * @see Wallet
          */
-        'model' => App\Models\Wallet::class,
+        'model' => Wallet::class,
 
         /**
          * The configuration options for creating wallets.
@@ -489,14 +490,14 @@ return [
              *
              * @var string
              */
-            'name' => env('WALLET_DEFAULT_WALLET_NAME', WalletName::PRIMARY->label()),
+            'name' => env('WALLET_DEFAULT_WALLET_NAME', 'Default Wallet'),
 
             /**
              * The slug of the default wallet.
              *
              * @var string
              */
-            'slug' => env('WALLET_DEFAULT_WALLET_SLUG', WalletName::PRIMARY->value),
+            'slug' => env('WALLET_DEFAULT_WALLET_SLUG', 'default'),
 
             /**
              * The meta information of the default wallet.

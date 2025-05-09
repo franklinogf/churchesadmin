@@ -11,10 +11,9 @@ use App\Enums\TransactionMetaType;
 use App\Enums\TransactionType;
 use App\Exceptions\WalletException;
 use App\Models\Check;
-use Bavix\Wallet\Exceptions\BalanceIsEmpty;
-use Bavix\Wallet\Exceptions\InsufficientFunds;
+use App\Models\Church;
 use Bavix\Wallet\Models\Wallet;
-use Exception;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
@@ -27,13 +26,19 @@ final readonly class UpdateCheckAction
     /**
      * handle the update of a check.
      *
-     * @param  array{amount?:string,member_id?:string,date?:string,type?:string,confirmed?:bool}  $data
+     * @param  array{amount?:string,member_id?:string,date?:string,type?:string,confirmed?:bool,wallet_slug?:string,note?:string|null,expense_type_id?:string,check_number?:string}  $data
      * @return Check
      *
      * @throws WalletException
      */
-    public function handle(Check $check, array $data, ?Wallet $wallet = null): Check
+    public function handle(Check $check, array $data): Check
     {
+        $wallet = $data['wallet_slug'] ? Church::current()?->getWallet($data['wallet_slug']) : $check->transaction->wallet;
+
+        if (! $wallet instanceof Wallet) {
+            throw WalletException::notFound();
+        }
+
         try {
             DB::transaction(function () use ($check, $data, $wallet): void {
 
@@ -43,7 +48,7 @@ final readonly class UpdateCheckAction
                         meta: new TransactionMetaDto(
                             type: TransactionMetaType::CHECK,
                         ),
-                        confirmed: $data['confirmed'] ?? true,
+                        confirmed: $data['confirmed'] ?? $check->transaction->confirmed,
                     ),
                         TransactionType::WITHDRAW,
                         $wallet);
@@ -53,15 +58,14 @@ final readonly class UpdateCheckAction
                     'member_id' => $data['member_id'] ?? $check->member_id,
                     'date' => $data['date'] ?? $check->date,
                     'type' => $data['type'] ?? $check->type,
+                    'expense_type_id' => $data['expense_type_id'] ?? $check->expense_type_id,
+                    'check_number' => $data['check_number'] ?? $check->check_number,
+                    'note' => $data['note'] ?? $check->note,
                 ]);
             });
 
             return $check->refresh();
-        } catch (InsufficientFunds) {
-            throw WalletException::insufficientFunds($wallet->name ?? 'unknown');
-        } catch (BalanceIsEmpty) {
-            throw WalletException::emptyBalance($wallet->name ?? 'unknown');
-        } catch (Exception $e) {
+        } catch (QueryException $e) {
             Log::error('Error updating check: '.$e->getMessage(), [
                 'check_id' => $check->id,
                 'data' => $data,

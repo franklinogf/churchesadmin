@@ -4,23 +4,27 @@ import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 import type { Check } from '@/types/models/check';
 import { Link } from '@inertiajs/react';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { columns } from './includes/columns';
 
 interface IndexPageProps {
-  checks: Check[];
+  unconfirmedChecks: Check[];
 }
-export default function Index({ checks }: IndexPageProps) {
+export default function Index({ unconfirmedChecks }: IndexPageProps) {
+  const { t } = useLaravelReactI18n();
   return (
-    <AppLayout title="Checks" breadcrumbs={[{ title: 'Checks', href: route('checks.index') }]}>
-      <PageTitle>Checks</PageTitle>
-      <div className="mx-auto mt-4 w-full max-w-2xl">
+    <AppLayout title={t('Checks')} breadcrumbs={[{ title: t('Checks'), href: route('checks.index') }]}>
+      <PageTitle>{t('Checks')}</PageTitle>
+      <div className="mx-auto mt-4 w-full max-w-5xl">
         <DataTable
           headerButton={
             <Button size="sm">
-              <Link href={route('checks.create')}>New Check</Link>
+              <Link href={route('checks.create')}>{t('New Check')}</Link>
             </Button>
           }
-          data={checks}
+          sortingState={[{ id: 'date', desc: true }]}
+          visibilityState={{ expenseType: false }}
+          data={unconfirmedChecks}
           columns={columns}
         />
       </div>

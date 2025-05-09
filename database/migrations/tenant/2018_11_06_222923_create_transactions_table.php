@@ -7,13 +7,13 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+return new class() extends Migration
 {
     public function up(): void
     {
         Schema::create($this->table(), static function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->uuidMorphs('payable');
+            $table->morphs('payable');
             $table->unsignedBigInteger('wallet_id');
             $table->enum('type', ['deposit', 'withdraw'])->index();
             $table->decimal('amount', 64, 0);
@@ -38,6 +38,6 @@ return new class extends Migration
 
     private function table(): string
     {
-        return (new Transaction)->getTable();
+        return (new Transaction())->getTable();
     }
 };

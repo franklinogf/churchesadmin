@@ -21,4 +21,9 @@ final class WalletException extends Exception
             'wallet' => $walletName,
         ]));
     }
+
+    public static function notFound(): self
+    {
+        return new self(__('flash.message.wallet_not_found'));
+    }
 }

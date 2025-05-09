@@ -16,7 +16,7 @@ use App\Models\Missionary;
 use App\Models\Offering;
 use App\Models\OfferingType;
 use App\Models\Transaction;
-use App\Models\Wallet;
+use App\Models\ChurchWallet;
 use Bavix\Wallet\Models\Wallet as ModelsWallet;
 use Bavix\Wallet\Services\FormatterServiceInterface;
 use Carbon\Carbon;
@@ -39,9 +39,9 @@ final class OfferingController extends Controller
         $date = $request->string('date')->toString() ?: null;
 
         $offerings = Offering::query()
-            ->when(! is_null($date), fn (Builder $query) => $query->whereDate('date', $date))
+            ->when(!is_null($date), fn(Builder $query) => $query->whereDate('date', $date))
             ->get()
-            ->when(is_null($date), fn (Collection $collection) => $collection->groupBy(fn (Offering $offering): string => $offering->date->format('Y-m-d'))
+            ->when(is_null($date), fn(Collection $collection) => $collection->groupBy(fn(Offering $offering): string => $offering->date->format('Y-m-d'))
                 ->map(function (Collection $group): array {
 
                     /** @var string $sum */
@@ -73,11 +73,11 @@ final class OfferingController extends Controller
     {
 
         $paymentMethods = PaymentMethod::options();
-        $wallets = Church::current()?->wallets()->get()->map(fn (ModelsWallet $wallet): array => [
+        $wallets = Church::current()?->wallets()->get()->map(fn(ModelsWallet $wallet): array => [
             'value' => $wallet->id,
             'label' => $wallet->name,
         ])->toArray();
-        $members = Member::all()->map(fn (Member $member): array => [
+        $members = Member::all()->map(fn(Member $member): array => [
             'value' => $member->id,
             'label' => "{$member->name} {$member->last_name}",
         ])->toArray();
@@ -85,7 +85,7 @@ final class OfferingController extends Controller
         $missionaries = [
             'heading' => __('Missionaries'),
             'model' => Relation::getMorphAlias(Missionary::class),
-            'options' => Missionary::all()->map(fn (Missionary $missionary): array => [
+            'options' => Missionary::all()->map(fn(Missionary $missionary): array => [
                 'value' => $missionary->id,
                 'label' => "{$missionary->name} {$missionary->last_name}",
             ])->toArray(),
@@ -94,7 +94,7 @@ final class OfferingController extends Controller
         $offeringTypes = [
             'heading' => __('Offering types'),
             'model' => Relation::getMorphAlias(OfferingType::class),
-            'options' => OfferingType::all()->map(fn (OfferingType $offeringType): array => [
+            'options' => OfferingType::all()->map(fn(OfferingType $offeringType): array => [
                 'value' => $offeringType->id,
                 'label' => $offeringType->name,
             ])->toArray(),
@@ -129,7 +129,7 @@ final class OfferingController extends Controller
 
         DB::transaction(function () use ($validated): void {
             collect($validated['offerings'])->each(function (array $offering) use ($validated): void {
-                $wallet = Wallet::find($offering['wallet_id']);
+                $wallet = ChurchWallet::find($offering['wallet_id']);
 
                 $transaction = $wallet?->depositFloat(
                     $offering['amount']
@@ -168,11 +168,11 @@ final class OfferingController extends Controller
     public function edit(Offering $offering): Response
     {
         $paymentMethods = PaymentMethod::options();
-        $wallets = Church::current()?->wallets()->get()->map(fn (ModelsWallet $wallet): array => [
+        $wallets = Church::current()?->wallets()->get()->map(fn(ModelsWallet $wallet): array => [
             'value' => $wallet->id,
             'label' => $wallet->name,
         ])->toArray();
-        $members = Member::all()->map(fn (Member $member): array => [
+        $members = Member::all()->map(fn(Member $member): array => [
             'value' => $member->id,
             'label' => "{$member->name} {$member->last_name}",
         ])->toArray();
@@ -180,7 +180,7 @@ final class OfferingController extends Controller
         $missionaries = [
             'heading' => __('Missionaries'),
             'model' => Relation::getMorphAlias(Missionary::class),
-            'options' => Missionary::all()->map(fn (Missionary $missionary): array => [
+            'options' => Missionary::all()->map(fn(Missionary $missionary): array => [
                 'value' => $missionary->id,
                 'label' => "{$missionary->name} {$missionary->last_name}",
             ])->toArray(),
@@ -189,7 +189,7 @@ final class OfferingController extends Controller
         $offeringTypes = [
             'heading' => __('Offering types'),
             'model' => Relation::getMorphAlias(OfferingType::class),
-            'options' => OfferingType::all()->map(fn (OfferingType $offeringType): array => [
+            'options' => OfferingType::all()->map(fn(OfferingType $offeringType): array => [
                 'value' => $offeringType->id,
                 'label' => $offeringType->name,
             ])->toArray(),
@@ -227,7 +227,7 @@ final class OfferingController extends Controller
             ]);
 
             if ($validated['wallet_id'] !== $offering->transaction->wallet_id) {
-                $wallet = Wallet::find($validated['wallet_id']);
+                $wallet = ChurchWallet::find($validated['wallet_id']);
 
                 $transaction = $wallet?->depositFloat(
                     $validated['amount']
