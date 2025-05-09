@@ -39,6 +39,11 @@ export enum CheckType {
 }
 
 export enum TransactionType {
+  DEPOSIT = 'deposit',
+  WITHDRAW = 'withdraw',
+}
+
+export enum TransactionMetaType {
   INITIAL = 'initial',
   CHECK = 'check',
   OFFERING = 'offering',

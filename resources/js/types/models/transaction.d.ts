@@ -1,16 +1,15 @@
-import type { TransactionType as TransactionTypeEnum } from '@/enums';
+import type { TransactionMetaType, TransactionType } from '@/enums';
 import { type Wallet } from './wallet';
 
-export type TransactionType = 'deposit' | 'withdraw';
-
 type TransactionMeta = {
-  type: `${TransactionTypeEnum}`;
+  type: `${TransactionMetaType}`;
 };
+
 export interface Transaction {
   id: number;
   uuid: string;
   wallet?: Wallet;
-  type: TransactionType;
+  type: `${TransactionType}`;
   amount: number;
   amountFloat: string;
   meta: TransactionMeta | null;
