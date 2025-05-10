@@ -1,0 +1,33 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Bavix\Wallet\Models;
+use DateTimeInterface;
+
+
+/**
+ * Class Transaction.
+ *
+ * @property class-string $payable_type
+ * @property int|string $payable_id
+ * @property int $wallet_id
+ * @property non-empty-string $uuid
+ * @property string $type
+ * @property non-empty-string $amount
+ * @property int $amountInt
+ * @property non-empty-string $amountFloat
+ * @property bool $confirmed
+ * @property array<mixed> $meta
+ * @property WalletInterface $payable
+ * @property Wallet $wallet
+ * @property DateTimeInterface $created_at
+ * @property DateTimeInterface $updated_at
+ * @property DateTimeInterface|null $deleted_at
+ *
+ * @method int getKey()
+ */
+class Transaction  {}
+
+class  Wallet {}
+    interface WalletInterface {}
