@@ -22,9 +22,9 @@ final readonly class UpdateTransactionAction
         private FormatterService $formatterService,
     ) {}
 
-    public function handle(Transaction $transaction, TransactionDto $data, TransactionType $transactionType, ?ChurchWallet $wallet = null): Transaction
+    public function handle(Transaction $transaction, TransactionDto $transactionDto, TransactionType $transactionType, ?ChurchWallet $wallet = null): Transaction
     {
-        $oldWallet = $transaction->wallet;
+        $oldWallet = $transaction->wallet->holder;
         $isDeposit = $transactionType === TransactionType::DEPOSIT;
 
         if (! $wallet instanceof ChurchWallet) {
@@ -32,24 +32,29 @@ final readonly class UpdateTransactionAction
         }
 
         try {
-            return DB::transaction(function () use ($transaction, $data, $isDeposit, $wallet, $oldWallet): Transaction {
+            return DB::transaction(function () use ($transaction, $transactionDto, $isDeposit, $wallet, $oldWallet): Transaction {
                 if ($oldWallet->id !== $wallet->id) {
-                    $updatedTransaction = $isDeposit
-                        ? $this->walletDepositAction->handle($wallet, $data)
-                        : $this->walletWithdrawalAction->handle($wallet, $data);
                     $transaction->forceDelete();
 
+                    $updatedTransaction = $isDeposit
+                            ? $this->walletDepositAction->handle($wallet, $transactionDto)
+                            : $this->walletWithdrawalAction->handle($wallet, $transactionDto);
+                    $oldWallet->wallet->refreshBalance();
+
                 } else {
-                    $transaction->update([
-                        'amount' => $this->formatterService->intValue($isDeposit ? $data->amount : -abs((float) $data->amount), 2),
-                        'meta' => $data->meta->toArray(),
-                        'confirmed' => $data->confirmed,
-                    ]);
-                    $updatedTransaction = $transaction->refresh();
+                    $amount = $this->formatterService->intValue($isDeposit ? $transactionDto->amount : -abs((float) $transactionDto->amount), 2);
+                    if ($amount !== $transaction->amount) {
+                        $transaction->forceDelete();
+                        $oldWallet->wallet->refreshBalance();
+                        $updatedTransaction = $isDeposit
+                            ? $this->walletDepositAction->handle($wallet, $transactionDto)
+                            : $this->walletWithdrawalAction->handle($wallet, $transactionDto);
+                        $oldWallet->wallet->refreshBalance();
+                    } else {
+                        $updatedTransaction = $transaction;
+                    }
 
                 }
-
-                $oldWallet->refreshBalance();
 
                 return $updatedTransaction;
             });

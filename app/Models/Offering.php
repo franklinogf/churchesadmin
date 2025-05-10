@@ -69,12 +69,12 @@ final class Offering extends Pivot
     /**
      * The casts that should be used for the model's attributes.
      *
-     * @return array{date: string}
+     * @return array<string,string>
      */
     protected function casts(): array
     {
         return [
-            'date' => 'datetime',
+            'date' => 'date:Y-m-d',
         ];
     }
 }

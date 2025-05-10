@@ -20,7 +20,7 @@ import { useMemo } from 'react';
 
 interface CreatePageProps {
   wallets: Wallet[];
-  members: SelectOption[];
+  memberOptions: SelectOption[];
   expenseTypes: ExpenseType[];
   expenseTypesOptions: SelectOption[];
   walletOptions: SelectOption[];
@@ -37,7 +37,7 @@ interface CreateForm {
   }[];
 }
 
-export default function Create({ wallets, members, expenseTypes, expenseTypesOptions, walletOptions }: CreatePageProps) {
+export default function Create({ wallets, memberOptions, expenseTypes, expenseTypesOptions, walletOptions }: CreatePageProps) {
   const { t } = useLaravelReactI18n();
   const { formatCurrency } = useCurrency();
 
@@ -175,7 +175,7 @@ export default function Create({ wallets, members, expenseTypes, expenseTypesOpt
                         handleUpdateExpense(index, 'member_id', value);
                       }}
                       error={errors[`expenses.${index}.member_id` as keyof typeof data]}
-                      options={members}
+                      options={memberOptions}
                     />
                     <SelectField
                       required

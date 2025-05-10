@@ -48,8 +48,8 @@ export const columns: ColumnDef<Expense>[] = [
     accessorKey: 'amount',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Amount" />,
     cell: function CellComponent({ row }) {
-      const { formatCurrency } = useCurrency();
-      return <DatatableCell justify="end">{formatCurrency(row.original.transaction.amountFloat)}</DatatableCell>;
+      const { formatCurrency, toPositive } = useCurrency();
+      return <DatatableCell justify="end">{formatCurrency(toPositive(row.original.transaction.amountFloat))}</DatatableCell>;
     },
   },
   {

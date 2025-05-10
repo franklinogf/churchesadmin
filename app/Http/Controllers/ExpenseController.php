@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Actions\Expense\CreateExpenseAction;
+use App\Actions\Expense\DeleteExpenseAction;
+use App\Actions\Expense\UpdateExpenseAction;
 use App\Enums\FlashMessageKey;
+use App\Exceptions\WalletException;
 use App\Http\Requests\Expense\StoreExpenseRequest;
 use App\Http\Requests\Expense\UpdateExpenseRequest;
 use App\Http\Resources\Codes\ExpenseTypeResource;
 use App\Http\Resources\Expense\ExpenseResource;
 use App\Http\Resources\Wallet\ChurchWalletResource;
-use App\Models\Church;
 use App\Models\ChurchWallet;
 use App\Models\Expense;
 use App\Models\ExpenseType;
 use App\Models\Member;
 use App\Support\SelectOption;
-use Bavix\Wallet\Exceptions\BalanceIsEmpty;
-use Bavix\Wallet\Exceptions\InsufficientFunds;
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
@@ -49,17 +49,17 @@ final class ExpenseController extends Controller
      */
     public function create(): Response
     {
-        $wallets = Church::current()?->wallets()->get();
+        $wallets = ChurchWallet::all();
 
         $walletOptions = SelectOption::create($wallets);
 
-        $members = SelectOption::create(Member::all(), labels: ['name', 'last_name']);
+        $memberOptions = SelectOption::create(Member::all(), labels: ['name', 'last_name']);
 
         $expenseTypes = ExpenseType::all();
         $expenseTypesOptions = SelectOption::create($expenseTypes);
 
         return Inertia::render('expenses/create', [
-            'members' => $members,
+            'memberOptions' => $memberOptions,
             'wallets' => ChurchWalletResource::collection($wallets),
             'walletOptions' => $walletOptions,
             'expenseTypes' => ExpenseTypeResource::collection($expenseTypes),
@@ -71,45 +71,26 @@ final class ExpenseController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreExpenseRequest $request): RedirectResponse
+    public function store(StoreExpenseRequest $request, CreateExpenseAction $action): RedirectResponse
     {
         /**
-         * @var array{expenses:array{date:string,wallet_id:string,member_id:string|null,expense_type_id:string,amount:float,note:string|null}[]} $validated
+         * @var array{expenses:array{date:string,wallet_id:string,member_id:string|null,expense_type_id:string,amount:string,note:string|null}[]} $validated
          */
         $validated = $request->validated();
 
-        DB::beginTransaction();
         try {
-            foreach ($validated['expenses'] as $expense) {
-                $wallet = ChurchWallet::find($expense['wallet_id']);
+            DB::transaction(function () use ($validated, $action) {
 
-                $transaction = $wallet?->withdrawFloat(
-                    $expense['amount']
-                );
+                foreach ($validated['expenses'] as $expense) {
 
-                Expense::create([
-                    'date' => Carbon::parse($expense['date'])->setTimeFrom(now()),
-                    'transaction_id' => $transaction?->id,
-                    'member_id' => $expense['member_id'],
-                    'expense_type_id' => $expense['expense_type_id'],
-                    'note' => $expense['note'],
-                ]);
-            }
-            DB::commit();
-        } catch (InsufficientFunds) {
-            DB::rollBack();
+                    $action->handle($expense);
+                }
 
+            });
+        } catch (WalletException $e) {
             return back()->with(
                 FlashMessageKey::ERROR->value,
-                __('flash.message.insufficient_funds', ['wallet' => $wallet->name ?? ''])
-            );
-
-        } catch (BalanceIsEmpty) {
-            DB::rollBack();
-
-            return back()->with(
-                FlashMessageKey::ERROR->value,
-                __('flash.message.empty_balance', ['wallet' => $wallet->name ?? ''])
+                $e->getMessage()
             );
         }
 
@@ -132,19 +113,20 @@ final class ExpenseController extends Controller
      */
     public function edit(Expense $expense): Response
     {
-        $wallets = Church::current()?->wallets()->get();
+
+        $wallets = ChurchWallet::all();
 
         $walletOptions = SelectOption::create($wallets);
 
-        $members = SelectOption::create(Member::all(), labels: ['name', 'last_name']);
+        $memberOptions = SelectOption::create(Member::all(), labels: ['name', 'last_name']);
 
-        $expenseTypes = SelectOption::create(ExpenseType::all());
+        $expenseTypesOptions = SelectOption::create(ExpenseType::all());
 
         return Inertia::render('expenses/edit', [
             'expense' => new ExpenseResource($expense),
-            'members' => $members,
+            'memberOptions' => $memberOptions,
             'wallets' => ChurchWalletResource::collection($wallets),
-            'expenseTypes' => $expenseTypes,
+            'expenseTypesOptions' => $expenseTypesOptions,
             'walletOptions' => $walletOptions,
         ]);
     }
@@ -152,7 +134,7 @@ final class ExpenseController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateExpenseRequest $request, Expense $expense): RedirectResponse
+    public function update(UpdateExpenseRequest $request, Expense $expense, UpdateExpenseAction $action): RedirectResponse
     {
 
         /**
@@ -160,48 +142,16 @@ final class ExpenseController extends Controller
          */
         $validated = $request->validated();
 
-        DB::beginTransaction();
-
         try {
 
-            $expense->update([
-                'date' => Carbon::parse($validated['date'])->setTimeFrom(now()),
-                'member_id' => $validated['member_id'],
-                'expense_type_id' => $validated['expense_type_id'],
-                'note' => $validated['note'],
-            ]);
-            if ("-{$validated['amount']}" !== $expense->transaction->amountFloat) {
-                $wallet = ChurchWallet::find($validated['wallet_id']);
-                $oldWallet = $expense->transaction->wallet;
-                $expense->transaction->forceDelete();
+            $action->handle($expense, $validated);
 
-                $transaction = $wallet?->withdrawFloat(
-                    $validated['amount']
-                );
+        } catch (WalletException $e) {
 
-                $oldWallet->refreshBalance();
-                $wallet?->refreshBalance();
-                $expense->update([
-                    'transaction_id' => $transaction?->id,
+            return back()->with(FlashMessageKey::ERROR->value, $e->getMessage())
+                ->withErrors([
+                    'wallet_id' => $e->getMessage(),
                 ]);
-            }
-
-            DB::commit();
-        } catch (InsufficientFunds) {
-            DB::rollBack();
-
-            return back()->with(
-                FlashMessageKey::ERROR->value,
-                __('flash.message.insufficient_funds', ['wallet' => $wallet->name ?? ''])
-            );
-
-        } catch (BalanceIsEmpty) {
-            DB::rollBack();
-
-            return back()->with(
-                FlashMessageKey::ERROR->value,
-                __('flash.message.empty_balance', ['wallet' => $wallet->name ?? ''])
-            );
         }
 
         return to_route('expenses.index')->with(
@@ -214,12 +164,15 @@ final class ExpenseController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Expense $expense): RedirectResponse
+    public function destroy(Expense $expense, DeleteExpenseAction $action): RedirectResponse
     {
-        $wallet = $expense->transaction->wallet;
-        $expense->transaction->forceDelete();
-        $expense->delete();
-        $wallet->refreshBalance();
+
+        try {
+            $action->handle($expense);
+        } catch (WalletException $e) {
+            return back()
+                ->with(FlashMessageKey::ERROR->value, $e->getMessage());
+        }
 
         return to_route('expenses.index')->with(
             FlashMessageKey::SUCCESS->value,

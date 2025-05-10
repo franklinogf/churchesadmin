@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Actions\Offering\CreateOfferingAction;
+use App\Actions\Offering\DeleteOfferingAction;
 use App\Actions\Offering\UpdateOfferingAction;
 use App\Enums\FlashMessageKey;
 use App\Enums\PaymentMethod;
@@ -126,10 +127,8 @@ final class OfferingController extends Controller
             });
         } catch (WalletException $e) {
             return back()
-                ->with(FlashMessageKey::ERROR->value, $e->getMessage())
-                ->withErrors([
-                    'wallet_id' => $e->getMessage(),
-                ]);
+                ->with(FlashMessageKey::ERROR->value, $e->getMessage());
+
         }
 
         return to_route('offerings.index', ['date' => $validated['date']])->with(
@@ -207,15 +206,16 @@ final class OfferingController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Offering $offering): RedirectResponse
+    public function destroy(Offering $offering, DeleteOfferingAction $action): RedirectResponse
     {
-        $wallet = $offering->transaction->wallet;
-        $date = $offering->date->format('Y-m-d');
-        $offering->transaction->forceDelete();
-        $offering->delete();
-        $wallet->refreshBalance();
+        try {
+            $action->handle($offering);
+        } catch (WalletException $e) {
+            return back()
+                ->with(FlashMessageKey::ERROR->value, $e->getMessage());
+        }
 
-        return to_route('offerings.index', ['date' => $date])->with(
+        return to_route('offerings.index', ['date' => $offering->date])->with(
             FlashMessageKey::SUCCESS->value,
             __('flash.message.deleted', ['model' => __('offerings')])
         );

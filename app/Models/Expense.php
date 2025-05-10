@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Bavix\Wallet\Models\Transaction;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -56,5 +57,17 @@ final class Expense extends Model
     public function member(): BelongsTo
     {
         return $this->belongsTo(Member::class);
+    }
+
+    /**
+     * The casts that should be used for the model's attributes.
+     *
+     * @return array<string,string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'date' => 'date:Y-m-d',
+        ];
     }
 }

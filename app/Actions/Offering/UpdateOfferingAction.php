@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Actions\Offering;
 
 use App\Actions\Wallet\UpdateTransactionAction;
-use App\Actions\Wallet\WalletDepositAction;
 use App\Dtos\TransactionDto;
 use App\Dtos\TransactionMetaDto;
 use App\Enums\TransactionMetaType;
@@ -33,7 +32,6 @@ final readonly class UpdateOfferingAction
     public function handle(Offering $offering, array $data): Offering
     {
         $wallet = ChurchWallet::find($data['wallet_id']);
-
         if ($wallet === null) {
             throw WalletException::notFound();
         }

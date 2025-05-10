@@ -24,7 +24,7 @@ final class ExpenseResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'date' => $this->date,
+            'date' => $this->date->format('Y-m-d'),
             'transaction' => new TransactionResource($this->transaction),
             'member' => $this->member ? new MemberResource($this->member) : null,
             'expenseType' => new ExpenseTypeResource($this->expenseType),
