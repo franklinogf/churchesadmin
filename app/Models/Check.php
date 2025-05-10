@@ -7,6 +7,8 @@ namespace App\Models;
 use App\Enums\CheckType;
 use Bavix\Wallet\Models\Transaction;
 use DateTimeInterface;
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -59,6 +61,30 @@ final class Check extends Model
     public function expenseType(): BelongsTo
     {
         return $this->belongsTo(ExpenseType::class);
+    }
+
+    /**
+     * Scope a query to only include confirmed checks.
+     *
+     * @param  Builder<Check>|null  $query
+     * @return void
+     */
+    #[Scope]
+    protected function confirmed(?Builder $query = null): void
+    {
+        $query?->whereRelation('transaction', 'confirmed', true);
+    }
+
+    /**
+     * Scope a query to only include unconfirmed checks.
+     *
+     * @param  Builder<Check>|null  $query
+     * @return void
+     */
+    #[Scope]
+    protected function unconfirmed(?Builder $query = null): void
+    {
+        $query?->whereRelation('transaction', 'confirmed', false);
     }
 
     /**

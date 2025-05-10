@@ -9,25 +9,33 @@ import { columns } from './includes/columns';
 
 interface IndexPageProps {
   unconfirmedChecks: Check[];
+  confirmedChecks: Check[];
 }
-export default function Index({ unconfirmedChecks }: IndexPageProps) {
+export default function Index({ unconfirmedChecks, confirmedChecks }: IndexPageProps) {
   const { t } = useLaravelReactI18n();
   return (
     <AppLayout title={t('Checks')} breadcrumbs={[{ title: t('Checks'), href: route('checks.index') }]}>
-      <PageTitle>{t('Checks')}</PageTitle>
-      <div className="mx-auto mt-4 w-full max-w-5xl">
-        <DataTable
-          headerButton={
-            <Button size="sm">
-              <Link href={route('checks.create')}>{t('New Check')}</Link>
-            </Button>
-          }
-          sortingState={[{ id: 'date', desc: true }]}
-          visibilityState={{ expenseType: false }}
-          data={unconfirmedChecks}
-          columns={columns}
-        />
-      </div>
+      <header className="space-y-2">
+        <PageTitle>{t('Checks')}</PageTitle>
+        <Button size="sm">
+          <Link href={route('checks.create')}>{t('New Check')}</Link>
+        </Button>
+      </header>
+      <section className="mx-auto mt-4 w-full max-w-5xl space-y-16">
+        <div>
+          <PageTitle className="text-left text-xl font-semibold">{t('Unconfirmed Checks')}</PageTitle>
+          <DataTable
+            sortingState={[{ id: 'date', desc: true }]}
+            visibilityState={{ expenseType: false }}
+            data={unconfirmedChecks}
+            columns={columns}
+          />
+        </div>
+        <div>
+          <PageTitle className="text-left text-xl font-semibold">{t('Confirmed Checks')}</PageTitle>
+          <DataTable sortingState={[{ id: 'date', desc: true }]} visibilityState={{ expenseType: false }} data={confirmedChecks} columns={columns} />
+        </div>
+      </section>
     </AppLayout>
   );
 }

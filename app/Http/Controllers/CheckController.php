@@ -29,8 +29,8 @@ final class CheckController extends Controller
      */
     public function index(): Response
     {
-        $unconfirmedChecks = Check::latest()->get();
-        $confirmedChecks = Check::latest()->get();
+        $unconfirmedChecks = Check::latest()->unconfirmed()->get();
+        $confirmedChecks = Check::latest()->confirmed()->get();
 
         return Inertia::render('checks/index', [
             'unconfirmedChecks' => CheckResource::collection($unconfirmedChecks),
