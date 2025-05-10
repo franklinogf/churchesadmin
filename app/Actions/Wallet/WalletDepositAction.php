@@ -10,7 +10,7 @@ use App\Models\ChurchWallet;
 use Bavix\Wallet\Exceptions\AmountInvalid;
 use Bavix\Wallet\Internal\Exceptions\TransactionFailedException;
 use Bavix\Wallet\Models\Transaction;
-use Exception;
+use Illuminate\Database\QueryException;
 use Illuminate\Database\RecordsNotFoundException;
 use Illuminate\Support\Facades\Log;
 
@@ -37,7 +37,7 @@ final class WalletDepositAction
             throw WalletException::notFound();
         } catch (TransactionFailedException) {
             throw WalletException::transactionFailed();
-        } catch (Exception $e) {
+        } catch (QueryException $e) {
             Log::error('Error creating deposit transaction: '.$e->getMessage(), [
                 'data' => $transactionDto->toArray(),
                 'wallet_id' => $wallet->id,

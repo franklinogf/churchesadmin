@@ -34,8 +34,8 @@ final class OfferingResource extends JsonResource
             'date' => $this->date->format('Y-m-d'),
             'paymentMethod' => $this->payment_method,
             'offeringType' => match ($this->offering_type_type) {
-                Relation::getMorphAlias(OfferingType::class) => new OfferingTypeResource($this->offering_type),
-                Relation::getMorphAlias(Missionary::class) => new MissionaryResource($this->offering_type),
+                Relation::getMorphAlias(OfferingType::class) => new OfferingTypeResource($this->offeringType),
+                Relation::getMorphAlias(Missionary::class) => new MissionaryResource($this->offeringType),
                 default => null,
             },
             'offeringTypeModel' => $this->offering_type_type,

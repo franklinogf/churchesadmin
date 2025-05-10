@@ -6,7 +6,6 @@ namespace App\Support;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\Relation;
 
 final class SelectOption
 {
@@ -46,7 +45,7 @@ final class SelectOption
 
         return [
             'heading' => $heading,
-            'model' => Relation::getMorphAlias($items->getQueueableClass()),
+            'model' => $items->first()?->getMorphClass(),
             'options' => $items->map(fn (Model $item): array => [
                 'value' => $item->{$value},
                 'label' => is_array($labels)

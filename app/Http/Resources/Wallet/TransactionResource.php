@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace App\Http\Resources\Wallet;
 
+use Bavix\Wallet\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * @mixin \App\Models\Transaction
+ * @mixin Transaction
  */
 final class TransactionResource extends JsonResource
 {
@@ -27,7 +28,7 @@ final class TransactionResource extends JsonResource
             'amount' => $this->amount,
             'amountFloat' => $this->amountFloat,
             'confirmed' => $this->confirmed,
-            'wallet' => new ChurchWalletResource($this->whenLoaded('wallet')),
+            'wallet' => new ChurchWalletResource($this->whenLoaded('wallet', fn () => $this->wallet->holder)),
             'meta' => $this->meta,
             'createdAt' => $this->created_at->format('Y-m-d H:i:s'),
             'updatedAt' => $this->updated_at->format('Y-m-d H:i:s'),

@@ -12,7 +12,7 @@ use Bavix\Wallet\Exceptions\BalanceIsEmpty;
 use Bavix\Wallet\Exceptions\InsufficientFunds;
 use Bavix\Wallet\Internal\Exceptions\TransactionFailedException;
 use Bavix\Wallet\Models\Transaction;
-use Exception;
+use Illuminate\Database\QueryException;
 use Illuminate\Database\RecordsNotFoundException;
 use Illuminate\Support\Facades\Log;
 
@@ -43,7 +43,7 @@ final class WalletWithdrawalAction
             throw WalletException::notFound();
         } catch (TransactionFailedException) {
             throw WalletException::transactionFailed();
-        } catch (Exception $e) {
+        } catch (QueryException $e) {
             Log::error('Error creating withdrawal transaction: '.$e->getMessage(), [
                 'data' => $transactionDto->toArray(),
                 'wallet_id' => $wallet->id,
