@@ -79,7 +79,7 @@ final class ExpenseController extends Controller
         $validated = $request->validated();
 
         try {
-            DB::transaction(function () use ($validated, $action) {
+            DB::transaction(function () use ($validated, $action): void {
 
                 foreach ($validated['expenses'] as $expense) {
 

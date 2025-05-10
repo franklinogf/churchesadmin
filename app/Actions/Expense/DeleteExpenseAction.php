@@ -22,7 +22,7 @@ final class DeleteExpenseAction
 
         try {
 
-            DB::transaction(function () use ($expense) {
+            DB::transaction(function () use ($expense): void {
                 $wallet = $expense->transaction->wallet;
                 $expense->delete();
                 $expense->transaction->forceDelete();

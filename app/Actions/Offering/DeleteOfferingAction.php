@@ -20,7 +20,7 @@ final class DeleteOfferingAction
     public function handle(Offering $offering): void
     {
         try {
-            DB::transaction(function () use ($offering) {
+            DB::transaction(function () use ($offering): void {
                 $wallet = $offering->transaction->wallet;
                 $offering->delete();
                 $offering->transaction->forceDelete();
