@@ -27,7 +27,7 @@ final class TransactionResource extends JsonResource
             'amount' => $this->amount,
             'amountFloat' => $this->amountFloat,
             'confirmed' => $this->confirmed,
-            'wallet' => new WalletResource($this->whenLoaded('wallet')),
+            'wallet' => new ChurchWalletResource($this->whenLoaded('wallet')),
             'meta' => $this->meta,
             'createdAt' => $this->created_at->format('Y-m-d H:i:s'),
             'updatedAt' => $this->updated_at->format('Y-m-d H:i:s'),

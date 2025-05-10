@@ -10,6 +10,7 @@ use App\Models\Member;
 use App\Models\Missionary;
 use App\Models\OfferingType;
 use App\Models\TenantUser;
+use Bavix\Wallet\WalletConfigure;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
@@ -40,9 +41,12 @@ final class AppServiceProvider extends ServiceProvider
         $this->configureModels();
         $this->configureValidations();
         $this->configureJsonResources();
+
         Translatable::fallback(
             fallbackAny: true
         );
+
+        WalletConfigure::ignoreMigrations();
     }
 
     private function configureCommands(): void
@@ -59,7 +63,7 @@ final class AppServiceProvider extends ServiceProvider
     {
 
         Model::unguard();
-        Model::shouldBeStrict(!app()->isProduction());
+        Model::shouldBeStrict(! app()->isProduction());
         Model::automaticallyEagerLoadRelationships();
         Relation::enforceMorphMap([
             'member' => Member::class,
@@ -73,7 +77,7 @@ final class AppServiceProvider extends ServiceProvider
 
     private function configureValidations(): void
     {
-        Password::defaults(fn() => app()->isProduction()
+        Password::defaults(fn () => app()->isProduction()
             ? Password::min(8)->letters()
                 ->mixedCase()
                 ->numbers()

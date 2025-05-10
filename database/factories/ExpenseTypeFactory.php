@@ -19,7 +19,7 @@ final class ExpenseTypeFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => fake()->word(),
+            'name' => fake()->unique()->word(),
             'default_amount' => fake()->optional()->randomFloat(2, 10, 500),
         ];
     }

@@ -6,8 +6,8 @@ namespace App\Actions\Wallet;
 
 use App\Dtos\TransactionDto;
 use App\Enums\TransactionType;
+use App\Models\ChurchWallet;
 use Bavix\Wallet\Models\Transaction;
-use Bavix\Wallet\Models\Wallet;
 use Bavix\Wallet\Services\FormatterService;
 
 final readonly class UpdateTransactionAction
@@ -18,12 +18,12 @@ final readonly class UpdateTransactionAction
         private FormatterService $formatterService,
     ) {}
 
-    public function handle(Transaction $transaction, TransactionDto $data, TransactionType $transactionType, ?Wallet $wallet = null): Transaction
+    public function handle(Transaction $transaction, TransactionDto $data, TransactionType $transactionType, ?ChurchWallet $wallet = null): Transaction
     {
         $oldWallet = $transaction->wallet;
         $isDeposit = $transactionType === TransactionType::DEPOSIT;
 
-        if (! $wallet instanceof Wallet) {
+        if (! $wallet instanceof ChurchWallet) {
             $wallet = $oldWallet;
         }
 

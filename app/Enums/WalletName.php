@@ -11,7 +11,7 @@ enum WalletName: string
     public function label(): string
     {
         return match ($this) {
-            self::PRIMARY => 'Primary Wallet',
+            self::PRIMARY => 'Primary',
         };
     }
 }

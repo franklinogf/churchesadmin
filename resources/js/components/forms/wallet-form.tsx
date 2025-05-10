@@ -22,15 +22,15 @@ export function WalletForm({ wallet, open, setOpen }: { wallet?: Wallet; open: b
     name: wallet?.name ?? '',
     description: wallet?.description ?? '',
     balance: wallet?.balanceFloat ?? '',
-    bank_name: wallet?.meta?.bankName ?? '',
-    bank_account_number: wallet?.meta?.bankAccountNumber ?? '',
-    bank_routing_number: wallet?.meta?.bankRoutingNumber ?? '',
+    bank_name: wallet?.bankName ?? '',
+    bank_account_number: wallet?.bankAccountNumber ?? '',
+    bank_routing_number: wallet?.bankRoutingNumber ?? '',
   });
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (wallet) {
-      put(route('wallets.update', wallet.uuid), {
+      put(route('wallets.update', wallet.id), {
         onSuccess: () => {
           setOpen(false);
         },

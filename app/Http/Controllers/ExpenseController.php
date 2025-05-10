@@ -9,12 +9,12 @@ use App\Http\Requests\Expense\StoreExpenseRequest;
 use App\Http\Requests\Expense\UpdateExpenseRequest;
 use App\Http\Resources\Codes\ExpenseTypeResource;
 use App\Http\Resources\Expense\ExpenseResource;
-use App\Http\Resources\Wallet\WalletResource;
+use App\Http\Resources\Wallet\ChurchWalletResource;
 use App\Models\Church;
+use App\Models\ChurchWallet;
 use App\Models\Expense;
 use App\Models\ExpenseType;
 use App\Models\Member;
-use App\Models\ChurchWallet;
 use App\Support\SelectOption;
 use Bavix\Wallet\Exceptions\BalanceIsEmpty;
 use Bavix\Wallet\Exceptions\InsufficientFunds;
@@ -36,7 +36,7 @@ final class ExpenseController extends Controller
             'transaction.wallet' => function (Relation $query): void {
                 /** @phpstan-ignore-next-line */
                 $query->withTrashed();
-            }
+            },
         ])->get();
 
         return Inertia::render('expenses/index', [
@@ -60,7 +60,7 @@ final class ExpenseController extends Controller
 
         return Inertia::render('expenses/create', [
             'members' => $members,
-            'wallets' => WalletResource::collection($wallets),
+            'wallets' => ChurchWalletResource::collection($wallets),
             'walletOptions' => $walletOptions,
             'expenseTypes' => ExpenseTypeResource::collection($expenseTypes),
             'expenseTypesOptions' => $expenseTypesOptions,
@@ -143,7 +143,7 @@ final class ExpenseController extends Controller
         return Inertia::render('expenses/edit', [
             'expense' => new ExpenseResource($expense),
             'members' => $members,
-            'wallets' => WalletResource::collection($wallets),
+            'wallets' => ChurchWalletResource::collection($wallets),
             'expenseTypes' => $expenseTypes,
             'walletOptions' => $walletOptions,
         ]);

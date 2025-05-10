@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Enums\WalletName;
 use Bavix\Wallet\Internal\Assembler\AvailabilityDtoAssembler;
 use Bavix\Wallet\Internal\Assembler\BalanceUpdatedEventAssembler;
 use Bavix\Wallet\Internal\Assembler\ExtraDtoAssembler;
@@ -490,14 +491,14 @@ return [
              *
              * @var string
              */
-            'name' => env('WALLET_DEFAULT_WALLET_NAME', 'Default Wallet'),
+            'name' => env('WALLET_DEFAULT_WALLET_NAME', WalletName::PRIMARY->label()),
 
             /**
              * The slug of the default wallet.
              *
              * @var string
              */
-            'slug' => env('WALLET_DEFAULT_WALLET_SLUG', 'default'),
+            'slug' => env('WALLET_DEFAULT_WALLET_SLUG', WalletName::PRIMARY->value),
 
             /**
              * The meta information of the default wallet.

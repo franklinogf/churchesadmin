@@ -69,8 +69,8 @@ final class CheckController extends Controller
                 FlashMessageKey::ERROR->value,
                 $e->getMessage()
             )->withErrors([
-                        'amount' => $e->getMessage(),
-                    ]);
+                'amount' => $e->getMessage(),
+            ]);
         }
 
         return to_route('checks.index')->with(
@@ -121,8 +121,8 @@ final class CheckController extends Controller
                 FlashMessageKey::ERROR->value,
                 $e->getMessage()
             )->withErrors([
-                        'amount' => $e->getMessage(),
-                    ]);
+                'amount' => $e->getMessage(),
+            ]);
         }
 
         return to_route('checks.index')->with(

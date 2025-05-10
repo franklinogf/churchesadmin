@@ -6,11 +6,12 @@ namespace App\Actions\Wallet;
 
 use App\Dtos\TransactionDto;
 use App\Exceptions\WalletException;
-use Bavix\Wallet\Exceptions\BalanceIsEmpty;
-use Bavix\Wallet\Exceptions\InsufficientFunds;
+use App\Models\ChurchWallet;
+use Bavix\Wallet\Exceptions\AmountInvalid;
+use Bavix\Wallet\Internal\Exceptions\TransactionFailedException;
 use Bavix\Wallet\Models\Transaction;
-use Bavix\Wallet\Models\Wallet;
 use Exception;
+use Illuminate\Database\RecordsNotFoundException;
 use Illuminate\Support\Facades\Log;
 
 final class WalletDepositAction
@@ -22,7 +23,7 @@ final class WalletDepositAction
      *
      * @throws WalletException
      */
-    public function handle(Wallet $wallet, TransactionDto $transactionDto): Transaction
+    public function handle(ChurchWallet $wallet, TransactionDto $transactionDto): Transaction
     {
         try {
             return $wallet->depositFloat(
@@ -30,10 +31,12 @@ final class WalletDepositAction
                 $transactionDto->meta->toArray(),
                 $transactionDto->confirmed,
             );
-        } catch (InsufficientFunds) {
-            throw WalletException::insufficientFunds($wallet->name);
-        } catch (BalanceIsEmpty) {
-            throw WalletException::emptyBalance($wallet->name);
+        } catch (AmountInvalid) {
+            throw WalletException::invalidAmount();
+        } catch (RecordsNotFoundException) {
+            throw WalletException::notFound();
+        } catch (TransactionFailedException) {
+            throw WalletException::transactionFailed();
         } catch (Exception $e) {
             Log::error('Error creating deposit transaction: '.$e->getMessage(), [
                 'data' => $transactionDto->toArray(),

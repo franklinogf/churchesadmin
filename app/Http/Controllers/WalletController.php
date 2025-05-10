@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Dtos\WalletMetaDto;
+use App\Actions\Wallet\CreateWalletAction;
+use App\Actions\Wallet\DeleteWalletAction;
+use App\Actions\Wallet\RestoreWalletAction;
+use App\Actions\Wallet\UpdateWalletAction;
 use App\Enums\FlashMessageKey;
 use App\Enums\TransactionMetaType;
+use App\Exceptions\WalletException;
 use App\Http\Requests\Wallet\StoreWalletRequest;
 use App\Http\Requests\Wallet\UpdateWalletRequest;
-use App\Http\Resources\Wallet\WalletResource;
-use App\Models\Church;
+use App\Http\Resources\Wallet\ChurchWalletResource;
 use App\Models\ChurchWallet;
-use Bavix\Wallet\Services\FormatterService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Http\RedirectResponse;
@@ -27,18 +29,18 @@ final class WalletController extends Controller
     public function index(): Response
     {
 
-        $wallets = Church::current()?->wallets()
-            ->withCount([
-                'walletTransactions' => function (Builder $query): void {
-                    $query->whereNot('meta->type', TransactionMetaType::INITIAL->value);
-                }
-            ])
+        $wallets = ChurchWallet::query()
             ->withTrashed()
             ->oldest()
+            ->withCount([
+                'transactions' => function (Builder $query): void {
+                    $query->whereNot('meta->type', TransactionMetaType::INITIAL->value);
+                },
+            ])
             ->get();
 
         return Inertia::render('wallets/index', [
-            'wallets' => WalletResource::collection($wallets),
+            'wallets' => ChurchWalletResource::collection($wallets),
         ]);
     }
 
@@ -48,37 +50,36 @@ final class WalletController extends Controller
             'walletTransactions.wallet' => function (BelongsTo $belongsTo): void {
                 /** @phpstan-ignore-next-line */
                 $belongsTo->withTrashed();
-            }
+            },
         ]);
 
         return Inertia::render('wallets/show', [
-            'wallet' => new WalletResource($wallet),
+            'wallet' => new ChurchWalletResource($wallet),
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreWalletRequest $request): RedirectResponse
+    public function store(StoreWalletRequest $request, CreateWalletAction $action): RedirectResponse
     {
         /**
-         * @var array{balance:string|null,name:string,description:string,bank_name:string,bank_routing_number:string,bank_account_number:string} $validated
+         * @var array{
+         * balance:string|null,
+         * name:string,
+         * description:string|null,
+         * bank_name:string,
+         * bank_routing_number:string,
+         * bank_account_number:string} $validated
          */
         $validated = $request->validated();
-
-        $wallet = Church::current()?->createWallet(
-            [
-                'name' => $validated['name'],
-                'description' => $validated['description'],
-                'meta' => new WalletMetaDto(
-                    $validated['bank_name'],
-                    $validated['bank_routing_number'],
-                    $validated['bank_account_number'],
-                )->toArray(),
-            ]
-        );
-        if ($validated['balance'] !== null) {
-            $wallet?->depositFloat($validated['balance'], ['type' => TransactionMetaType::INITIAL->value]);
+        try {
+            $action->handle($validated);
+        } catch (WalletException $e) {
+            return back()->with(
+                FlashMessageKey::ERROR->value,
+                $e->getMessage()
+            );
         }
 
         return redirect()->route('wallets.index')->with(
@@ -91,35 +92,20 @@ final class WalletController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateWalletRequest $request, ChurchWallet $wallet, FormatterService $formatterService): RedirectResponse
+    public function update(UpdateWalletRequest $request, ChurchWallet $wallet, UpdateWalletAction $action): RedirectResponse
     {
         /**
-         * @var array{balance:string|null,name:string,description:string,bank_name:string,bank_routing_number:string,bank_account_number:string} $validated
+         * @var array{
+         * balance:string|null,
+         * name:string,
+         * description:string|null,
+         * bank_name:string,
+         * bank_routing_number:string,
+         * bank_account_number:string} $validated
          */
         $validated = $request->validated();
-        $wallet->update(
-            [
-                'name' => $validated['name'],
-                'description' => $validated['description'],
-                'meta' => new WalletMetaDto(
-                    $validated['bank_name'],
-                    $validated['bank_routing_number'],
-                    $validated['bank_account_number'],
-                )->toArray(),
-            ]
-        );
-        if ($validated['balance'] !== null) {
 
-            $transaction = $wallet->transactions()->where('meta->type', TransactionMetaType::INITIAL->value)->first();
-
-            if ($transaction) {
-                $transaction->update(['amount' => $formatterService->intValue($validated['balance'], 2)]);
-                $wallet->refreshBalance();
-            } else {
-                $wallet->depositFloat($validated['balance'], ['type' => TransactionMetaType::INITIAL->value]);
-            }
-
-        }
+        $action->handle($wallet, $validated);
 
         return redirect()->route('wallets.index')->with(
             FlashMessageKey::SUCCESS->value,
@@ -130,9 +116,9 @@ final class WalletController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(ChurchWallet $wallet): RedirectResponse
+    public function destroy(ChurchWallet $wallet, DeleteWalletAction $action): RedirectResponse
     {
-        $wallet->delete();
+        $action->handle($wallet);
 
         return redirect()->route('wallets.index')->with(
             FlashMessageKey::SUCCESS->value,
@@ -143,9 +129,9 @@ final class WalletController extends Controller
     /**
      * Restore the specified resource from storage.
      */
-    public function restore(ChurchWallet $wallet): RedirectResponse
+    public function restore(ChurchWallet $wallet, RestoreWalletAction $action): RedirectResponse
     {
-        $wallet->restore();
+        $action->handle($wallet);
 
         return redirect()->route('wallets.index')->with(
             FlashMessageKey::SUCCESS->value,

@@ -76,14 +76,12 @@ Route::middleware([
             ->except(['show', 'create', 'edit']);
 
         // Accounting
-        Route::put('wallets/{wallet:uuid}/restore', [WalletController::class, 'restore'])
+        Route::put('wallets/{wallet}/restore', [WalletController::class, 'restore'])
             ->withTrashed()
             ->name('wallets.restore');
+
         Route::resource('wallets', WalletController::class)
             ->withTrashed()
-            ->scoped([
-                'wallet' => 'uuid',
-            ])
             ->except(['create', 'edit']);
 
         Route::resource('offerings', OfferingController::class);

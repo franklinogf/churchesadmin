@@ -24,17 +24,9 @@ final class StoreWalletRequest extends FormRequest
      */
     public function rules(): array
     {
-        /**
-         * @var string $connection
-         */
-        $connection = config('tenancy.database.central_connection');
-        /**
-         * @var string $tenantId
-         */
-        $tenantId = tenant('id');
 
         return [
-            'name' => ['required', 'string', 'min:3', 'max:255', Rule::unique("{$connection}.wallets")->where('holder_id', $tenantId)],
+            'name' => ['required', 'string', 'min:3', 'max:255', Rule::unique('church_wallets')],
             'description' => ['nullable', 'string', 'min:3', 'max:255'],
             'balance' => ['nullable', 'decimal:2', 'min:1'],
             'bank_name' => ['required', 'string', 'min:3', 'max:255'],
