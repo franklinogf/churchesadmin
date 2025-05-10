@@ -24,11 +24,15 @@ final readonly class UpdateTransactionAction
 
     public function handle(Transaction $transaction, TransactionDto $transactionDto, TransactionType $transactionType, ?ChurchWallet $wallet = null): Transaction
     {
-        $oldWallet = $transaction->wallet->holder;
+        $oldWallet = ChurchWallet::find($transaction->wallet->holder_id);
         $isDeposit = $transactionType === TransactionType::DEPOSIT;
 
         if (! $wallet instanceof ChurchWallet) {
             $wallet = $oldWallet;
+        }
+
+        if (! $oldWallet instanceof ChurchWallet || ! $wallet instanceof ChurchWallet) {
+            throw WalletException::notFound();
         }
 
         try {

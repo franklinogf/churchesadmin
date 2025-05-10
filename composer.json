@@ -86,13 +86,13 @@
         ],
         "test:refactor": "rector --dry-run",
         "test:lint": "pint --test",
-        "test:types": "phpstan analyse",
+        "test:types": [
+            "phpstan analyse",
+            "pest --type-coverage --compact --colors=always --min=100"
+        ],
         "test:unit": "pest --testsuite=Unit --stop-on-failure",
         "test:feature": "pest --testsuite=Feature --stop-on-failure",
-        "test:all": [
-            "pest --type-coverage --compact --colors=always --min=100",
-            "pest --coverage  --compact --colors=always"
-        ],
+        "test:all": "pest --coverage  --compact --colors=always",
         "test:migrate": "php artisan migrate --database=testing",
         "test": [
             "@test:refactor",

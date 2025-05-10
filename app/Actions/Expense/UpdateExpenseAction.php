@@ -31,7 +31,7 @@ final readonly class UpdateExpenseAction
      */
     public function handle(Expense $expense, array $data): Expense
     {
-        $wallet = ChurchWallet::find($data['wallet_id']);
+        $wallet = ChurchWallet::find($data['wallet_id'] ?? $expense->transaction->wallet->holder_id);
 
         if ($wallet === null) {
             throw WalletException::notFound();

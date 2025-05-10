@@ -26,12 +26,13 @@ final readonly class UpdateOfferingAction
     /**
      * Handle the creation of an offering.
      *
-     * @param  array{wallet_id?:string, date?:string, donor_id?:string|null, amount?:string, payment_method?:string, offering_type?:array{id:string, model:string}}  $data
+     * @param  array{wallet_id?:string,note?:string|null, date?:string, donor_id?:string|null, amount?:string, payment_method?:string, offering_type?:array{id:string, model:string}}  $data
      * @return Offering
      */
     public function handle(Offering $offering, array $data): Offering
     {
-        $wallet = ChurchWallet::find($data['wallet_id']);
+        $wallet = ChurchWallet::find($data['wallet_id'] ?? $offering->transaction->wallet->holder_id);
+
         if ($wallet === null) {
             throw WalletException::notFound();
         }
@@ -54,7 +55,7 @@ final readonly class UpdateOfferingAction
                     'transaction_id' => $transaction->id,
                     'date' => $data['date'] ?? $offering->date,
                     'payment_method' => $data['payment_method'] ?? $offering->payment_method,
-                    'note' => $data['note'] ?? $offering->note,
+                    'note' => ArrayFallback::inputOrFallback($data, 'note', $offering->note),
                     'donor_id' => ArrayFallback::inputOrFallback($data, 'donor_id', $offering->donor_id),
                     'offering_type_id' => isset($data['offering_type']) ? $data['offering_type']['id'] : $offering->offering_type_id,
                     'offering_type_type' => isset($data['offering_type']) ? $data['offering_type']['model'] : $offering->offering_type_type,

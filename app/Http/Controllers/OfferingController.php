@@ -183,7 +183,7 @@ final class OfferingController extends Controller
     public function update(UpdateOfferingRequest $request, Offering $offering, UpdateOfferingAction $action): RedirectResponse
     {
         /**
-         * @var array{date:string,payer_id:int|string,wallet_id:string,amount:float,payment_method:string,offering_type:array{id:string,model:string},note:string} $validated
+         * @var array{date:string,payer_id:int|string,wallet_id:string,amount:string,payment_method:string,offering_type:array{id:string,model:string},note:string} $validated
          */
         $validated = $request->validated();
 

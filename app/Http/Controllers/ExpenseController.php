@@ -138,7 +138,7 @@ final class ExpenseController extends Controller
     {
 
         /**
-         * @var array{date:string,wallet_id:string,member_id:string|null,expense_type_id:string,amount:float,note:string|null} $validated
+         * @var array{date:string,wallet_id:string,member_id:string|null,expense_type_id:string,amount:string,note:string|null} $validated
          */
         $validated = $request->validated();
 

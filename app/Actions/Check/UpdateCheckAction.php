@@ -11,8 +11,7 @@ use App\Enums\TransactionMetaType;
 use App\Enums\TransactionType;
 use App\Exceptions\WalletException;
 use App\Models\Check;
-use App\Models\Church;
-use Bavix\Wallet\Models\Wallet;
+use App\Models\ChurchWallet;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -26,16 +25,16 @@ final readonly class UpdateCheckAction
     /**
      * handle the update of a check.
      *
-     * @param  array{amount?:string,member_id?:string,date?:string,type?:string,confirmed?:bool,wallet_slug?:string,note?:string|null,expense_type_id?:string,check_number?:string}  $data
+     * @param  array{amount?:string,member_id?:string,date?:string,type?:string,confirmed?:bool,wallet_id?:string,note?:string|null,expense_type_id?:string,check_number?:string}  $data
      * @return Check
      *
      * @throws WalletException
      */
     public function handle(Check $check, array $data): Check
     {
-        $wallet = $data['wallet_slug'] ? Church::current()?->getWallet($data['wallet_slug']) : $check->transaction->wallet;
+        $wallet = ChurchWallet::find($data['wallet_id'] ?? $check->transaction->wallet->holder_id);
 
-        if (! $wallet instanceof Wallet) {
+        if (! $wallet instanceof ChurchWallet) {
             throw WalletException::notFound();
         }
 
