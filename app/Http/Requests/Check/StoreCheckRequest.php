@@ -25,19 +25,10 @@ final class StoreCheckRequest extends FormRequest
      */
     public function rules(): array
     {
-        /**
-         * @var string $connection
-         */
-        $connection = config('tenancy.database.central_connection');
-        /**
-         * @var string $tenantId
-         */
-        $tenantId = tenant('id');
 
         return [
-            'wallet_slug' => ['required', 'string',
-                Rule::exists("$connection.wallets", 'slug')
-                    ->where('holder_id', (string) $tenantId),
+            'wallet_id' => ['required', 'string',
+                Rule::exists('church_wallets', 'id'),
             ],
             'member_id' => ['required', 'string',
                 Rule::exists('members', 'id'),

@@ -12,6 +12,7 @@ use App\Enums\TransactionType;
 use App\Exceptions\WalletException;
 use App\Models\Check;
 use App\Models\ChurchWallet;
+use App\Support\ArrayFallback;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -25,7 +26,7 @@ final readonly class UpdateCheckAction
     /**
      * handle the update of a check.
      *
-     * @param  array{amount?:string,member_id?:string,date?:string,type?:string,confirmed?:bool,wallet_id?:string,note?:string|null,expense_type_id?:string,check_number?:string}  $data
+     * @param  array{amount?:string,member_id?:string,date?:string,type?:string,confirmed?:bool,wallet_id?:string,note?:string|null,expense_type_id?:string,check_number?:string|null}  $data
      * @return Check
      *
      * @throws WalletException
@@ -58,8 +59,8 @@ final readonly class UpdateCheckAction
                     'date' => $data['date'] ?? $check->date,
                     'type' => $data['type'] ?? $check->type,
                     'expense_type_id' => $data['expense_type_id'] ?? $check->expense_type_id,
-                    'check_number' => $data['check_number'] ?? $check->check_number,
-                    'note' => $data['note'] ?? $check->note,
+                    'check_number' => ArrayFallback::inputOrFallback($data, 'check_number', $check->check_number),
+                    'note' => ArrayFallback::inputOrFallback($data, 'note', $check->note),
                 ]);
             });
 
@@ -68,7 +69,6 @@ final readonly class UpdateCheckAction
             Log::error('Error updating check: '.$e->getMessage(), [
                 'check_id' => $check->id,
                 'data' => $data,
-                'wallet_id' => $wallet?->id,
             ]);
 
             throw new WalletException('An error occurred while updating the check', $e->getCode(), $e);

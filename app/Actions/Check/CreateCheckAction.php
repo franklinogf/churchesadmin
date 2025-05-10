@@ -10,7 +10,7 @@ use App\Dtos\TransactionMetaDto;
 use App\Enums\TransactionMetaType;
 use App\Exceptions\WalletException;
 use App\Models\Check;
-use App\Models\Church;
+use App\Models\ChurchWallet;
 use Bavix\Wallet\Models\Wallet;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
@@ -25,16 +25,16 @@ final readonly class CreateCheckAction
     /**
      * handle the creation of a check.
      *
-     * @param  array{amount:string,member_id:string,date:string,type:string,wallet_slug:string,note?:string|null,expense_type_id:string,check_number?:string}  $data
+     * @param  array{amount:string,member_id:string,date:string,type:string,wallet_id:string,note?:string|null,expense_type_id:string,check_number?:string}  $data
      * @return Check
      *
      * @throws WalletException
      */
     public function handle(array $data): Check
     {
-        $wallet = Church::current()?->getWallet($data['wallet_slug']);
+        $wallet = ChurchWallet::find($data['wallet_id']);
 
-        if (! $wallet instanceof Wallet) {
+        if (! $wallet instanceof ChurchWallet) {
             throw WalletException::notFound();
         }
 
@@ -62,7 +62,6 @@ final readonly class CreateCheckAction
         } catch (QueryException $e) {
             Log::error('Error creating check: '.$e->getMessage(), [
                 'data' => $data,
-                'wallet_id' => $wallet->id,
             ]);
 
             throw new WalletException('An error occurred while creating the check', $e->getCode(), $e);

@@ -14,7 +14,7 @@ use App\Http\Requests\Check\StoreCheckRequest;
 use App\Http\Requests\Check\UpdateCheckRequest;
 use App\Http\Resources\Check\CheckResource;
 use App\Models\Check;
-use App\Models\Church;
+use App\Models\ChurchWallet;
 use App\Models\ExpenseType;
 use App\Models\Member;
 use App\Support\SelectOption;
@@ -43,16 +43,16 @@ final class CheckController extends Controller
      */
     public function create(): Response
     {
-        $wallets = SelectOption::create(Church::current()?->wallets()->get(), value: 'slug');
-        $members = SelectOption::create(Member::all(), labels: ['name', 'last_name']);
-        $checkTypes = CheckType::options();
-        $expenseTypes = SelectOption::create(ExpenseType::all());
+        $walletOptions = SelectOption::create(ChurchWallet::all());
+        $memberOptions = SelectOption::create(Member::all(), labels: ['name', 'last_name']);
+        $checkTypesOptions = CheckType::options();
+        $expenseTypesOptions = SelectOption::create(ExpenseType::all());
 
         return Inertia::render('checks/create', [
-            'wallets' => $wallets,
-            'members' => $members,
-            'checkTypes' => $checkTypes,
-            'expenseTypes' => $expenseTypes,
+            'walletOptions' => $walletOptions,
+            'memberOptions' => $memberOptions,
+            'checkTypesOptions' => $checkTypesOptions,
+            'expenseTypesOptions' => $expenseTypesOptions,
         ]);
     }
 
@@ -61,8 +61,12 @@ final class CheckController extends Controller
      */
     public function store(StoreCheckRequest $request, CreateCheckAction $action): RedirectResponse
     {
+        /**
+         * @var array{amount:string,member_id:string,date:string,type:string,wallet_id:string,note:string|null,expense_type_id:string} $validated
+         */
+        $validated = $request->validated();
         try {
-            $action->handle($request->validated());
+            $action->handle($validated);
 
         } catch (WalletException $e) {
             return back()->with(
@@ -93,16 +97,16 @@ final class CheckController extends Controller
      */
     public function edit(Check $check): Response
     {
-        $wallets = SelectOption::create(Church::current()?->wallets()->get(), value: 'slug');
-        $members = SelectOption::create(Member::all(), labels: ['name', 'last_name']);
-        $checkTypes = CheckType::options();
-        $expenseTypes = SelectOption::create(ExpenseType::all());
+        $walletOptions = SelectOption::create(ChurchWallet::all());
+        $memberOptions = SelectOption::create(Member::all(), labels: ['name', 'last_name']);
+        $checkTypesOptions = CheckType::options();
+        $expenseTypesOptions = SelectOption::create(ExpenseType::all());
 
         return Inertia::render('checks/edit', [
-            'wallets' => $wallets,
-            'members' => $members,
-            'checkTypes' => $checkTypes,
-            'expenseTypes' => $expenseTypes,
+            'walletOptions' => $walletOptions,
+            'memberOptions' => $memberOptions,
+            'checkTypesOptions' => $checkTypesOptions,
+            'expenseTypesOptions' => $expenseTypesOptions,
             'check' => new CheckResource($check),
         ]);
     }
@@ -112,9 +116,13 @@ final class CheckController extends Controller
      */
     public function update(UpdateCheckRequest $request, Check $check, UpdateCheckAction $action): RedirectResponse
     {
+        /**
+         * @var array{amount:string,member_id:string,date:string,type:string,wallet_id:string,note:string|null,expense_type_id:string} $validated
+         */
+        $validated = $request->validated();
         try {
 
-            $action->handle($check, $request->validated());
+            $action->handle($check, $validated);
 
         } catch (WalletException $e) {
             return back()->with(
@@ -137,7 +145,18 @@ final class CheckController extends Controller
      */
     public function destroy(Check $check, DeleteCheckAction $action): RedirectResponse
     {
-        $action->handle($check);
+        try {
+
+            $action->handle($check);
+
+        } catch (WalletException $e) {
+            return back()->with(
+                FlashMessageKey::ERROR->value,
+                $e->getMessage()
+            )->withErrors([
+                'amount' => $e->getMessage(),
+            ]);
+        }
 
         return to_route('checks.index')->with(
             FlashMessageKey::SUCCESS->value,

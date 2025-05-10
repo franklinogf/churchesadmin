@@ -11,16 +11,17 @@ import AppLayout from '@/layouts/app-layout';
 import type { SelectOption } from '@/types';
 import { useForm } from '@inertiajs/react';
 import { formatDate } from 'date-fns';
+import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 interface CreatePageProps {
-  wallets: SelectOption[];
-  members: SelectOption[];
-  checkTypes: SelectOption[];
-  expenseTypes: SelectOption[];
+  walletOptions: SelectOption[];
+  memberOptions: SelectOption[];
+  checkTypesOptions: SelectOption[];
+  expenseTypesOptions: SelectOption[];
 }
 
 type CreateForm = {
-  wallet_slug: string;
+  wallet_id: string;
   member_id: string;
   amount: string;
   date: string;
@@ -29,15 +30,16 @@ type CreateForm = {
   expense_type_id: string;
 };
 
-export default function ChecksCreate({ wallets, members, checkTypes, expenseTypes }: CreatePageProps) {
+export default function ChecksCreate({ walletOptions, memberOptions, checkTypesOptions, expenseTypesOptions }: CreatePageProps) {
+  const { t } = useLaravelReactI18n();
   const { data, setData, post, errors, processing } = useForm<CreateForm>({
-    wallet_slug: wallets[0]?.value.toString() ?? '',
-    member_id: members[0]?.value.toString() ?? '',
+    wallet_id: walletOptions[0]?.value.toString() ?? '',
+    member_id: memberOptions[0]?.value.toString() ?? '',
     amount: '',
     date: formatDate(new Date(), 'yyyy-MM-dd'),
-    type: checkTypes[0]?.value.toString() ?? '',
+    type: checkTypesOptions[0]?.value.toString() ?? '',
     note: '',
-    expense_type_id: expenseTypes[0]?.value.toString() ?? '',
+    expense_type_id: expenseTypesOptions[0]?.value.toString() ?? '',
   });
 
   function handleSubmit() {
@@ -45,8 +47,8 @@ export default function ChecksCreate({ wallets, members, checkTypes, expenseType
   }
 
   return (
-    <AppLayout title="Create check" breadcrumbs={[{ title: 'Checks', href: route('checks.index') }, { title: 'Create check' }]}>
-      <PageTitle>Create Check</PageTitle>
+    <AppLayout title={t('Create check')} breadcrumbs={[{ title: t('Checks'), href: route('checks.index') }, { title: t('Create check') }]}>
+      <PageTitle>{t('Create Check')}</PageTitle>
 
       <div className="mx-auto mt-4 w-full max-w-2xl">
         <Form onSubmit={handleSubmit} isSubmitting={processing}>
@@ -54,43 +56,43 @@ export default function ChecksCreate({ wallets, members, checkTypes, expenseType
             <ComboboxField
               required
               value={data.member_id}
-              label="Member"
+              label={t('Member')}
               onChange={(value) => setData('member_id', value)}
-              options={members}
+              options={memberOptions}
               error={errors.member_id}
             />
             <ComboboxField
               required
               value={data.expense_type_id}
-              label="Expense Type"
+              label={t('Expense Type')}
               onChange={(value) => setData('expense_type_id', value)}
-              options={expenseTypes}
+              options={expenseTypesOptions}
               error={errors.expense_type_id}
             />
           </FieldsGrid>
           <FieldsGrid>
             <SelectField
               required
-              label="Wallet"
-              value={data.wallet_slug}
-              onChange={(value) => setData('wallet_slug', value)}
-              options={wallets}
-              error={errors.wallet_slug}
+              label={t('Wallet')}
+              value={data.wallet_id}
+              onChange={(value) => setData('wallet_id', value)}
+              options={walletOptions}
+              error={errors.wallet_id}
             />
             <SelectField
               required
-              label="Type"
+              label={t('Type')}
               value={data.type}
               onChange={(value) => setData('type', value)}
-              options={checkTypes}
+              options={checkTypesOptions}
               error={errors.type}
             />
           </FieldsGrid>
-          <CurrencyField label="Amount" required value={data.amount} onChange={(value) => setData('amount', value)} error={errors.amount} />
+          <CurrencyField label={t('Amount')} required value={data.amount} onChange={(value) => setData('amount', value)} error={errors.amount} />
 
-          <DateField required label="Date" value={data.date} onChange={(value) => setData('date', value)} error={errors.date} />
+          <DateField required label={t('Date')} value={data.date} onChange={(value) => setData('date', value)} error={errors.date} />
 
-          <InputField label="Note" value={data.note} onChange={(value) => setData('note', value)} error={errors.note} />
+          <InputField label={t('Note')} value={data.note} onChange={(value) => setData('note', value)} error={errors.note} />
         </Form>
       </div>
     </AppLayout>
