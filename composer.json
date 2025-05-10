@@ -92,7 +92,7 @@
         ],
         "test:unit": "pest --testsuite=Unit --stop-on-failure",
         "test:feature": "pest --testsuite=Feature --stop-on-failure",
-        "test:all": "pest --coverage  --compact --colors=always",
+        "test:all": "pest --coverage --compact --colors=always --profile",
         "test:migrate": "php artisan migrate --database=testing",
         "test": [
             "@test:refactor",
