@@ -31,9 +31,9 @@ export const walletColumns: ColumnDef<Wallet>[] = [
           <HoverCardContent>
             <div className="flex flex-col gap-2">
               <span className="text-sm font-semibold">{wallet.name}</span>
-              {wallet.meta?.bankName && (
+              {wallet.bankName && (
                 <span className="text-muted-foreground text-sm">
-                  {wallet.meta.bankName} - {wallet.meta.bankAccountNumber}
+                  {wallet.bankName} - {wallet.bankAccountNumber}
                 </span>
               )}
               {wallet.description && <p className="text-muted-foreground text-sm">{wallet.description}</p>}
@@ -84,7 +84,7 @@ export const walletColumns: ColumnDef<Wallet>[] = [
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               <DropdownMenuItem asChild>
-                <Link href={route('wallets.show', wallet.uuid)}>
+                <Link href={route('wallets.show', wallet.id)}>
                   <WalletIcon className="size-3" />
                   <span>{t('Transactions')}</span>
                 </Link>
@@ -106,7 +106,7 @@ export const walletColumns: ColumnDef<Wallet>[] = [
                         actionLabel: t('Activate'),
                         cancelLabel: t('Cancel'),
                         onAction: () => {
-                          router.put(route('wallets.restore', wallet.uuid), {
+                          router.put(route('wallets.restore', wallet.id), {
                             preserveScroll: true,
                           });
                         },
@@ -127,7 +127,7 @@ export const walletColumns: ColumnDef<Wallet>[] = [
                         actionVariant: 'destructive',
                         cancelLabel: t('Cancel'),
                         onAction: () => {
-                          router.delete(route('wallets.destroy', wallet.uuid), {
+                          router.delete(route('wallets.destroy', wallet.id), {
                             preserveScroll: true,
                           });
                         },

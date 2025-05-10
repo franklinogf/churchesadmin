@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Models\User;
+use Filament\Panel;
 
 uses(Illuminate\Foundation\Testing\RefreshDatabase::class);
 
@@ -17,4 +18,10 @@ test('to array', function (): void {
         'created_at',
         'updated_at',
     ]);
+});
+
+test('can access panel', function (): void {
+    $user = User::factory()->create();
+
+    expect($user->canAccessPanel(app(Panel::class)))->toBeTrue();
 });

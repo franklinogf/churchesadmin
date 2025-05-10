@@ -24,20 +24,11 @@ final class UpdateExpenseRequest extends FormRequest
      */
     public function rules(): array
     {
-        /**
-         * @var string $connection
-         */
-        $connection = config('tenancy.database.central_connection');
-        /**
-         * @var string $tenantId
-         */
-        $tenantId = tenant('id');
 
         return [
             'date' => ['required', 'date:Y-m-d'],
             'wallet_id' => ['required', 'string',
-                Rule::exists("$connection.wallets", 'id')
-                    ->where('holder_id', $tenantId),
+                Rule::exists('church_wallets', 'id'),
             ],
             'member_id' => ['nullable', 'string',
                 Rule::exists('members', 'id'),

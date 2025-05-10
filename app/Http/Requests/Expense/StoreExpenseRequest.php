@@ -24,21 +24,12 @@ final class StoreExpenseRequest extends FormRequest
      */
     public function rules(): array
     {
-        /**
-         * @var string $connection
-         */
-        $connection = config('tenancy.database.central_connection');
-        /**
-         * @var string $tenantId
-         */
-        $tenantId = tenant('id');
 
         return [
             'expenses' => ['required', 'array', 'min:1'],
             'expenses.*.date' => ['required', 'date:Y-m-d'],
             'expenses.*.wallet_id' => ['required', 'string',
-                Rule::exists("$connection.wallets", 'id')
-                    ->where('holder_id', $tenantId),
+                Rule::exists('church_wallets', 'id'),
             ],
             'expenses.*.member_id' => ['nullable', 'string',
                 Rule::exists('members', 'id'),

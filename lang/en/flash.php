@@ -21,8 +21,12 @@ return [
         'imported' => ':model imported successfully.',
         'exported' => ':model exported successfully.',
         'synced' => ':model synced successfully.',
-        'insufficient_funds' => 'Insufficient funds in :wallet.',
-        'empty_balance' => 'The balance of :wallet is empty.',
-        'wallet_not_found' => 'Wallet not found or has been removed.',
+        'wallet' => [
+            'insufficient_funds' => 'Insufficient funds in :wallet.',
+            'empty_balance' => 'The balance of :wallet is empty.',
+            'not_found' => 'Wallet not found or has been removed.',
+            'invalid_amount' => 'Invalid amount given.',
+            'transaction_failed' => 'Transaction failed.',
+        ],
     ],
 ];

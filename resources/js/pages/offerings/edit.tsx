@@ -16,16 +16,16 @@ import { formatDate, parseISO } from 'date-fns';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 interface EditPageProps {
-  wallets: SelectOption[];
+  walletsOptions: SelectOption[];
   paymentMethods: SelectOption[];
-  members: SelectOption[];
-  missionaries: SelectOptionWithModel;
-  offeringTypes: SelectOptionWithModel;
+  membersOptions: SelectOption[];
+  missionariesOptions: SelectOptionWithModel;
+  offeringTypesOptions: SelectOptionWithModel;
   offering: Offering;
 }
 
 interface CreateForm {
-  payer_id: string;
+  donor_id: string;
   date: string;
   payment_method: string;
   offering_type: {
@@ -37,20 +37,13 @@ interface CreateForm {
   note: string;
 }
 
-const nonMemberOption: SelectOption[] = [
-  {
-    label: 'Non member',
-    value: 'non_member',
-  },
-];
-
-export default function Edit({ wallets, paymentMethods, members, missionaries, offeringTypes, offering }: EditPageProps) {
+export default function Edit({ walletsOptions, paymentMethods, membersOptions, missionariesOptions, offeringTypesOptions, offering }: EditPageProps) {
   const { t } = useLaravelReactI18n();
   const { formatLocaleDate } = useLocaleDate();
 
   const { data, setData, put, errors, processing } = useForm<Required<CreateForm>>({
     date: formatDate(parseISO(offering.date), 'yyyy-MM-dd'),
-    payer_id: offering.donor?.id?.toString() ?? 'non_member',
+    donor_id: offering.donor?.id?.toString() ?? 'non_member',
     wallet_id: offering.transaction.wallet?.id.toString() ?? '',
     payment_method: offering.paymentMethod,
     offering_type: {
@@ -85,12 +78,12 @@ export default function Edit({ wallets, paymentMethods, members, missionaries, o
       <div className="mt-2 flex items-center justify-center">
         <Form isSubmitting={processing} className="w-full max-w-2xl" onSubmit={handleSubmit}>
           <ComboboxField
-            required
+            placeholder=""
             label={t('Who is this offering from?')}
-            value={data.payer_id}
-            onChange={(value) => setData('payer_id', value)}
-            error={errors.payer_id}
-            options={nonMemberOption.concat(members)}
+            value={data.donor_id}
+            onChange={(value) => setData('donor_id', value)}
+            error={errors.donor_id}
+            options={membersOptions}
           />
           <FieldsGrid>
             <DateField required label={t('Date of Offering')} value={data.date} onChange={(value) => setData('date', value)} error={errors.date} />
@@ -106,7 +99,7 @@ export default function Edit({ wallets, paymentMethods, members, missionaries, o
                   setData('wallet_id', value);
                 }}
                 error={errors.wallet_id}
-                options={wallets}
+                options={walletsOptions}
               />
               <SelectField
                 required
@@ -128,7 +121,7 @@ export default function Edit({ wallets, paymentMethods, members, missionaries, o
                   setData('offering_type', value);
                 }}
                 error={errors.offering_type}
-                data={[offeringTypes, missionaries]}
+                data={[offeringTypesOptions, missionariesOptions]}
               />
 
               <CurrencyField

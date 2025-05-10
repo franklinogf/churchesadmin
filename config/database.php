@@ -56,7 +56,7 @@ return [
             'url' => env('DB_TESTING_URL'),
             'host' => env('DB_TESTING_HOST', '127.0.0.1'),
             'port' => env('DB_TESTING_PORT', '3306'),
-            'database' => env('DB_TESTING_DATABASE', 'test_churchroll'),
+            'database' => env('DB_TESTING_DATABASE', 'test_churchesadmin'),
             'username' => env('DB_TESTING_USERNAME', 'root'),
             'password' => env('DB_TESTING_PASSWORD', ''),
             'unix_socket' => env('DB_TESTING_SOCKET', ''),

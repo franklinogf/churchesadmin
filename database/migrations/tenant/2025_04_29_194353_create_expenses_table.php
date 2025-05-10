@@ -16,10 +16,10 @@ return new class extends Migration
 
         Schema::create('expenses', function (Blueprint $table): void {
             $table->id();
-            $table->foreignId('transaction_id');
+            $table->foreignId('transaction_id')->constrained('transactions', 'id');
             $table->foreignId('expense_type_id')->constrained('expense_types', 'id');
             $table->foreignId('member_id')->nullable()->constrained('members', 'id');
-            $table->timestamp('date');
+            $table->date('date');
             $table->string('note')->nullable();
             $table->timestamps();
         });

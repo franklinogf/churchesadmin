@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Bavix\Wallet\Models\Transaction;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -23,7 +24,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @property-read DateTimeInterface $created_at
  * @property-read DateTimeInterface $updated_at
  * @property-read Transaction $transaction
- * @property-read OfferingType|Member $offering_type
+ * @property-read OfferingType|Missionary $offering_type
  * @property-read Member $donor
  */
 final class Offering extends Pivot
@@ -50,7 +51,7 @@ final class Offering extends Pivot
      *
      * @return MorphTo<Model,$this>
      */
-    public function offering_type(): MorphTo
+    public function offeringType(): MorphTo
     {
         return $this->morphTo();
     }
@@ -68,12 +69,12 @@ final class Offering extends Pivot
     /**
      * The casts that should be used for the model's attributes.
      *
-     * @return array{date: string}
+     * @return array<string,string>
      */
     protected function casts(): array
     {
         return [
-            'date' => 'datetime',
+            'date' => 'date:Y-m-d',
         ];
     }
 }

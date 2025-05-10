@@ -16,15 +16,15 @@ import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { TrashIcon } from 'lucide-react';
 
 interface CreatePageProps {
-  wallets: SelectOption[];
+  walletsOptions: SelectOption[];
   paymentMethods: SelectOption[];
-  members: SelectOption[];
-  missionaries: SelectOptionWithModel;
-  offeringTypes: SelectOptionWithModel;
+  membersOptions: SelectOption[];
+  missionariesOptions: SelectOptionWithModel;
+  offeringTypesOptions: SelectOptionWithModel;
 }
 
 interface CreateForm {
-  payer_id: string;
+  donor_id: string;
   date: string;
   offerings: {
     payment_method: string;
@@ -38,24 +38,18 @@ interface CreateForm {
   }[];
 }
 
-const nonMemberOption: SelectOption[] = [
-  {
-    label: 'Non member',
-    value: 'non_member',
-  },
-];
-export default function Create({ wallets, paymentMethods, members, missionaries, offeringTypes }: CreatePageProps) {
+export default function Create({ walletsOptions, paymentMethods, membersOptions, missionariesOptions, offeringTypesOptions }: CreatePageProps) {
   const { t } = useLaravelReactI18n();
   const { data, setData, post, errors, processing } = useForm<Required<CreateForm>>({
     date: formatDate(new Date(), 'yyyy-MM-dd'),
-    payer_id: 'non_member',
+    donor_id: '',
     offerings: [
       {
-        wallet_id: wallets[0]?.value.toString() ?? '',
+        wallet_id: walletsOptions[0]?.value.toString() ?? '',
         payment_method: paymentMethods[0]?.value.toString() ?? '',
         offering_type: {
-          id: offeringTypes.options[0]?.value.toString() ?? '',
-          model: offeringTypes.model ?? '',
+          id: offeringTypesOptions.options[0]?.value.toString() ?? '',
+          model: offeringTypesOptions.model ?? '',
         },
         amount: '',
         note: '',
@@ -71,11 +65,11 @@ export default function Create({ wallets, paymentMethods, members, missionaries,
     setData('offerings', [
       ...data.offerings,
       {
-        wallet_id: wallets[0]?.value.toString() ?? '',
+        wallet_id: walletsOptions[0]?.value.toString() ?? '',
         payment_method: paymentMethods[0]?.value.toString() ?? '',
         offering_type: {
-          id: offeringTypes?.options[0]?.value.toString() ?? '',
-          model: offeringTypes?.model ?? '',
+          id: offeringTypesOptions?.options[0]?.value.toString() ?? '',
+          model: offeringTypesOptions?.model ?? '',
         },
         amount: '',
         note: '',
@@ -116,12 +110,12 @@ export default function Create({ wallets, paymentMethods, members, missionaries,
       <div className="mt-2 flex items-center justify-center">
         <Form isSubmitting={processing} className="w-full max-w-2xl" onSubmit={handleSubmit}>
           <ComboboxField
-            required
+            placeholder=""
             label={t('Who is this offering from?')}
-            value={data.payer_id}
-            onChange={(value) => setData('payer_id', value)}
-            error={errors.payer_id}
-            options={nonMemberOption.concat(members)}
+            value={data.donor_id}
+            onChange={(value) => setData('donor_id', value)}
+            error={errors.donor_id}
+            options={membersOptions}
           />
           <FieldsGrid>
             <DateField required label={t('Date of Offering')} value={data.date} onChange={(value) => setData('date', value)} error={errors.date} />
@@ -150,7 +144,7 @@ export default function Create({ wallets, paymentMethods, members, missionaries,
                       handleUpdateOffering(index, 'wallet_id', value);
                     }}
                     error={errors[`offerings.${index}.wallet_id` as keyof typeof data]}
-                    options={wallets}
+                    options={walletsOptions}
                   />
                   <SelectField
                     required
@@ -172,7 +166,7 @@ export default function Create({ wallets, paymentMethods, members, missionaries,
                       handleUpdateOffering(index, 'offering_type', value);
                     }}
                     error={errors[`offerings.${index}.offering_type` as keyof typeof data]}
-                    data={[offeringTypes, missionaries]}
+                    data={[offeringTypesOptions, missionariesOptions]}
                   />
 
                   <CurrencyField

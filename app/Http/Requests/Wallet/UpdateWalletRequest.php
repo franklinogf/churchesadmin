@@ -8,7 +8,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 /**
- * @property-read \App\Models\Wallet $wallet
+ * @property-read \App\Models\ChurchWallet $wallet
  */
 final class UpdateWalletRequest extends FormRequest
 {
@@ -27,20 +27,16 @@ final class UpdateWalletRequest extends FormRequest
      */
     public function rules(): array
     {
-        /**
-         * @var string $connection
-         */
-        $connection = config('tenancy.database.central_connection');
-        /**
-         * @var string $tenantId
-         */
-        $tenantId = tenant('id');
 
         return [
-            'name' => ['required', 'string', 'min:3', 'max:255', Rule::unique("{$connection}.wallets")
-                ->ignore($this->wallet->id)
-                ->where('holder_id', $tenantId)],
-            'balance' => ['nullable', 'decimal:2', 'min:1'],
+            'name' => [
+                'required',
+                'string',
+                'min:3',
+                'max:255',
+                Rule::unique('church_wallets')->ignore($this->wallet->id),
+            ],
+            'balance' => ['nullable', 'decimal:2', 'min:0'],
             'description' => ['nullable', 'string', 'min:3', 'max:255'],
             'bank_name' => ['required', 'string', 'min:3', 'max:255'],
             'bank_routing_number' => ['required', 'string', 'min:3', 'max:255'],

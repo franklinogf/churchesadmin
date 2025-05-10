@@ -26,25 +26,13 @@ final class StoreOfferingRequest extends FormRequest
      */
     public function rules(): array
     {
-        /**
-         * @var string $connection
-         */
-        $connection = config('tenancy.database.central_connection');
-        /**
-         * @var string $tenantId
-         */
-        $tenantId = tenant('id');
-
         return [
-            'payer_id' => ['required', Rule::anyOf([
-                Rule::exists('members', 'id'),
-                Rule::in(['non_member']),
-            ])],
+            'donor_id' => ['nullable', Rule::exists('members', 'id')],
             'date' => ['required', 'date:Y-m-d'],
             'offerings' => ['required', 'array', 'min:1'],
             'offerings.*.wallet_id' => ['required', 'string',
-                Rule::exists("$connection.wallets", 'id')
-                    ->where('holder_id', (string) $tenantId),
+                Rule::exists('church_wallets', 'id'),
+
             ],
             'offerings.*.payment_method' => ['required', 'string', Rule::enum(PaymentMethod::class)],
             'offerings.*.offering_type' => ['required', new SelectOptionWithModel],
@@ -62,7 +50,7 @@ final class StoreOfferingRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'payer_id' => mb_strtolower(__('Payer')),
+            'donor_id' => mb_strtolower(__('Payer')),
             'date' => mb_strtolower(__('Date')),
             'offerings' => mb_strtolower(__('Offerings')),
             'offerings.*.wallet_id' => mb_strtolower(__('Wallet')),

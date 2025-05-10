@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create($this->table(), static function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->uuidMorphs('holder');
+            $table->morphs('holder');
             $table->string('name');
             $table->string('slug')
                 ->index();

@@ -11,14 +11,14 @@ import { type BreadcrumbItem, type SelectOption } from '@/types';
 import type { Expense } from '@/types/models/expense';
 import type { Wallet } from '@/types/models/wallet';
 import { useForm } from '@inertiajs/react';
-import { formatDate } from 'date-fns';
+import { formatDate, parseISO } from 'date-fns';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 interface CreatePageProps {
   expense: Expense;
   wallets: Wallet[];
-  members: SelectOption[];
-  expenseTypes: SelectOption[];
+  memberOptions: SelectOption[];
+  expenseTypesOptions: SelectOption[];
   walletOptions: SelectOption[];
 }
 
@@ -31,7 +31,7 @@ interface CreateForm {
   date: string;
 }
 
-export default function Create({ wallets, members, expenseTypes, walletOptions, expense }: CreatePageProps) {
+export default function Create({ wallets, memberOptions, expenseTypesOptions, walletOptions, expense }: CreatePageProps) {
   const { t } = useLaravelReactI18n();
   const { formatCurrency, toPositive } = useCurrency();
 
@@ -41,7 +41,7 @@ export default function Create({ wallets, members, expenseTypes, walletOptions, 
     member_id: expense.member?.id.toString() || '',
     amount: toPositive(expense.transaction.amountFloat),
     note: expense.note || '',
-    date: formatDate(expense.date, 'yyyy-MM-dd'),
+    date: formatDate(parseISO(expense.date), 'yyyy-MM-dd'),
   });
 
   function handleSubmit() {
@@ -79,8 +79,10 @@ export default function Create({ wallets, members, expenseTypes, walletOptions, 
                   options={walletOptions}
                 />
                 {wallet && (
-                  <p className="text-muted-foreground flex justify-end text-xs">
+                  <p className="text-muted-foreground flex justify-end gap-0.5 text-xs">
                     {t('Current balance')}: <span className="font-semibold">{formatCurrency(wallet.balanceFloat)}</span>
+                    <span>+</span>
+                    <span className="font-semibold">{formatCurrency(toPositive(expense.transaction.amountFloat))}</span>
                   </p>
                 )}
               </div>
@@ -91,7 +93,7 @@ export default function Create({ wallets, members, expenseTypes, walletOptions, 
                 value={data.member_id}
                 onChange={(value) => setData('member_id', value)}
                 error={errors.member_id}
-                options={members}
+                options={memberOptions}
               />
               <SelectField
                 required
@@ -99,7 +101,7 @@ export default function Create({ wallets, members, expenseTypes, walletOptions, 
                 value={data.expense_type_id}
                 onChange={(value) => setData('expense_type_id', value)}
                 error={errors.expense_type_id}
-                options={expenseTypes}
+                options={expenseTypesOptions}
               />
 
               <CurrencyField required label={t('Amount')} value={data.amount} onChange={(value) => setData('amount', value)} error={errors.amount} />
