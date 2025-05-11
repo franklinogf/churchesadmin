@@ -38,7 +38,7 @@ export function CategoryForm({ category, open, setOpen }: { category?: Tag; open
     <ResponsiveModal
       open={open}
       setOpen={setOpen}
-      title={category ? t('Edit Category') : t('Add Category')}
+      title={category ? t('Edit Category') : t('Add :model', { model: t('Category') })}
       description={category ? t('Edit the details of this category') : t('Create a new category')}
     >
       <form className="space-y-4" onSubmit={handleSubmit}>

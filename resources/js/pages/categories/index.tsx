@@ -26,7 +26,7 @@ export default function Index({ categories }: IndexPageProps) {
           headerButton={
             userCan(UserPermission.CREATE_CATEGORIES) && (
               <Button size="sm" onClick={() => setOpen(true)}>
-                {t('Add Category')}
+                {t('Add :model', { model: t('Category') })}
               </Button>
             )
           }
