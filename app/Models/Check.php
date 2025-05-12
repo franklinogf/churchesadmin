@@ -63,6 +63,11 @@ final class Check extends Model
         return $this->belongsTo(ExpenseType::class);
     }
 
+    public function isConfirmed(): bool
+    {
+        return $this->transaction->confirmed;
+    }
+
     /**
      * Scope a query to only include confirmed checks.
      *

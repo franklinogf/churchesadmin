@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Bavix\Wallet\Interfaces\Confirmable;
 use Bavix\Wallet\Interfaces\Wallet;
 use Bavix\Wallet\Interfaces\WalletFloat;
+use Bavix\Wallet\Traits\CanConfirm;
 use Bavix\Wallet\Traits\HasWalletFloat;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Model;
@@ -27,7 +29,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * @mixin \Illuminate\Database\Eloquent\Builder<static>
  */
-final class ChurchWallet extends Model implements WalletFloat, Wallet
+final class ChurchWallet extends Model implements WalletFloat, Confirmable, Wallet
 {
-    use HasWalletFloat, SoftDeletes;
+    use CanConfirm, HasWalletFloat, SoftDeletes;
 }

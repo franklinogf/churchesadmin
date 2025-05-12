@@ -19,6 +19,7 @@ use App\Models\ExpenseType;
 use App\Models\Member;
 use App\Support\SelectOption;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -29,6 +30,8 @@ final class CheckController extends Controller
      */
     public function index(): Response
     {
+        Gate::authorize('viewAny', Check::class);
+
         $unconfirmedChecks = Check::latest()->unconfirmed()->get();
         $confirmedChecks = Check::latest()->confirmed()->get();
 
@@ -43,6 +46,8 @@ final class CheckController extends Controller
      */
     public function create(): Response
     {
+        Gate::authorize('create', Check::class);
+
         $walletOptions = SelectOption::create(ChurchWallet::all());
         $memberOptions = SelectOption::create(Member::all(), labels: ['name', 'last_name']);
         $checkTypesOptions = CheckType::options();
@@ -61,6 +66,7 @@ final class CheckController extends Controller
      */
     public function store(StoreCheckRequest $request, CreateCheckAction $action): RedirectResponse
     {
+
         /**
          * @var array{amount:string,member_id:string,date:string,type:string,wallet_id:string,note:string|null,expense_type_id:string} $validated
          */
@@ -97,6 +103,8 @@ final class CheckController extends Controller
      */
     public function edit(Check $check): Response
     {
+        Gate::authorize('update', $check);
+
         $walletOptions = SelectOption::create(ChurchWallet::all());
         $memberOptions = SelectOption::create(Member::all(), labels: ['name', 'last_name']);
         $checkTypesOptions = CheckType::options();
@@ -145,6 +153,7 @@ final class CheckController extends Controller
      */
     public function destroy(Check $check, DeleteCheckAction $action): RedirectResponse
     {
+        Gate::authorize('delete', $check);
         try {
 
             $action->handle($check);

@@ -17,7 +17,7 @@ import {
 } from '@tanstack/react-table';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { XSquare } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
 interface DataTableProps<TData, TValue> {
@@ -31,6 +31,7 @@ interface DataTableProps<TData, TValue> {
   headerButton?: React.ReactNode;
   visibilityState?: Record<keyof TData, boolean> | VisibilityState;
   sortingState?: { id: keyof TData; desc: boolean }[];
+  onSelectedRowsChange?: (selectedRows: Record<string, boolean>) => void;
 }
 
 export function DataTable<TData, TValue>({
@@ -44,6 +45,8 @@ export function DataTable<TData, TValue>({
   headerButton,
   visibilityState = {},
   sortingState = [],
+
+  onSelectedRowsChange,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>(sortingState as SortingState);
   const [globalFilter, setGlobalFilter] = useState<string>('');
@@ -65,6 +68,10 @@ export function DataTable<TData, TValue>({
     state: { sorting, globalFilter, rowSelection, columnVisibility },
     getRowId: rowId ? (row: TData) => row[rowId as keyof TData] as string : undefined,
   });
+  useEffect(() => {
+    if (!onSelectedRowsChange) return;
+    onSelectedRowsChange(rowSelection);
+  }, [rowSelection, onSelectedRowsChange]);
   const { t } = useLaravelReactI18n();
   const tableColumns = table.getAllColumns();
   const enabledHidingColumns = tableColumns.filter((column) => column.getCanHide());
@@ -127,13 +134,7 @@ export function DataTable<TData, TValue>({
           <TableBody className="bg-background/80">
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow
-                  onClick={() => {
-                    if (selectedActionButtonLabel) row.toggleSelected();
-                  }}
-                  key={row.id}
-                  data-state={row.getIsSelected() && 'selected'}
-                >
+                <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
                   {row.getVisibleCells().map((cell) => (
                     <TableCell className="p-2" key={cell.id}>
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
@@ -154,20 +155,19 @@ export function DataTable<TData, TValue>({
       <div className="mt-1">
         <DataTablePagination isSelectable={canSelect} table={table} />
       </div>
-      {canSelect && (
+      {canSelect && selectedActionButtonLabel && (
         <div className="mt-4 flex justify-center">
           <Button
             className="cursor-pointer"
             onClick={() => {
-              if (!onButtonClick) return;
               if (table.getSelectedRowModel().rows.length === 0) {
                 toast.info('Please select at least one row');
               } else {
-                onButtonClick(table.getSelectedRowModel().rows.map((row) => row.original));
+                onButtonClick?.(table.getSelectedRowModel().flatRows.map((row) => row.original));
               }
             }}
           >
-            {selectedActionButtonLabel ?? t('Continue')}
+            {selectedActionButtonLabel}
           </Button>
         </div>
       )}
