@@ -47,8 +47,8 @@ export default function ChecksCreate({ walletOptions, memberOptions, checkTypesO
   }
 
   return (
-    <AppLayout title={t('Create check')} breadcrumbs={[{ title: t('Checks'), href: route('checks.index') }, { title: t('Create check') }]}>
-      <PageTitle>{t('Create Check')}</PageTitle>
+    <AppLayout title={t('Create :model',{model:t('Check')})} breadcrumbs={[{ title: t('Checks'), href: route('checks.index') }, { title: t('Create :model',{model:t('Check')}) }]}>
+      <PageTitle>{t('Create :model',{model:t('Check')})}</PageTitle>
 
       <div className="mx-auto mt-4 w-full max-w-2xl">
         <Form onSubmit={handleSubmit} isSubmitting={processing}>

@@ -19,7 +19,7 @@ export default function ExpenseTypesIndex({ expenseTypes }: { expenseTypes: Expe
         <DataTable
           headerButton={
             <Button size="sm" onClick={() => setOpen(true)}>
-              {t('Add Expense Type')}
+              {t('Add :model', {model: t('Expense Type')})}
             </Button>
           }
           data={expenseTypes}

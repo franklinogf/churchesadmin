@@ -25,7 +25,7 @@ export default function Index({ missionaries }: IndexPageProps) {
         headerButton={
           userCan(UserPermission.CREATE_MISSIONARIES) && (
             <Button asChild>
-              <Link href={route('missionaries.create')}>{t('Add Missionary')}</Link>
+              <Link href={route('missionaries.create')}>{t('Add :model', {model: t("Missionary")})}</Link>
             </Button>
           )
         }

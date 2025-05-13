@@ -67,13 +67,13 @@ export default function Create({ genders, offeringFrequencies }: CreatePageProps
       href: route('missionaries.index'),
     },
     {
-      title: t('Create Missionary'),
+      title: t('Create :model',{model:t('Missionary')}),
     },
   ];
 
   return (
     <AppLayout breadcrumbs={breadcrumbs} title={t('Missionaries')}>
-      <PageTitle>{t('Add Missionary')}</PageTitle>
+      <PageTitle>{t('Add :model', {model: t("Missionary")})}</PageTitle>
       <div className="mt-2 flex items-center justify-center">
         <Form isSubmitting={processing} className="w-full max-w-2xl" onSubmit={handleSubmit}>
           <InputField required label={t('Name')} value={data.name} onChange={(value) => setData('name', value)} error={errors.name} />

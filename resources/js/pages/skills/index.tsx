@@ -27,7 +27,7 @@ export default function Index({ skills }: IndexPageProps) {
           headerButton={
             userCan(UserPermission.CREATE_SKILLS) && (
               <Button size="sm" onClick={() => setOpen(true)}>
-                {t('Add skill')}
+                {t('Add :model', {model:t('skill')})}
               </Button>
             )
           }

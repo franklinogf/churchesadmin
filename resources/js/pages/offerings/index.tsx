@@ -34,7 +34,7 @@ export default function Index({ offerings, date }: IndexPageProps) {
         <DataTable
           headerButton={
             <Button asChild>
-              <Link href={route('offerings.create')}>{t('New Offering')}</Link>
+              <Link href={route('offerings.create')}>{t('New :model',{model:t('Offering')})}</Link>
             </Button>
           }
           data={offerings as Offering[]}
@@ -46,7 +46,7 @@ export default function Index({ offerings, date }: IndexPageProps) {
         <DataTable
           headerButton={
             <Button asChild>
-              <Link href={route('offerings.create')}>{t('New Offering')}</Link>
+              <Link href={route('offerings.create')}>{t('New :model',{model:t('Offering')})}</Link>
             </Button>
           }
           data={offerings as OfferingGroupedByDate[]}

@@ -29,7 +29,7 @@ export function OfferingTypeForm({ offeringType, open, setOpen }: { offeringType
     }
   }
   return (
-    <ResponsiveModal open={open} setOpen={setOpen} title={offeringType ? t('Edit Offering Type') : t('Add Offering Type')}>
+    <ResponsiveModal open={open} setOpen={setOpen} title={offeringType ? t('Edit :model',{model:t('Offering Type')}) : t('Add :model', {model: t('Offering Type')})}>
       <form className="space-y-4" onSubmit={handleSubmit}>
         <InputField required label={t('Name')} value={data.name} onChange={(value) => setData('name', value)} error={errors.name} />
 
