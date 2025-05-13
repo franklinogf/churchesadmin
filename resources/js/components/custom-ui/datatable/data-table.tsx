@@ -68,10 +68,12 @@ export function DataTable<TData, TValue>({
     state: { sorting, globalFilter, rowSelection, columnVisibility },
     getRowId: rowId ? (row: TData) => row[rowId as keyof TData] as string : undefined,
   });
+
   useEffect(() => {
     if (!onSelectedRowsChange) return;
     onSelectedRowsChange(rowSelection);
   }, [rowSelection, onSelectedRowsChange]);
+
   const { t } = useLaravelReactI18n();
   const tableColumns = table.getAllColumns();
   const enabledHidingColumns = tableColumns.filter((column) => column.getCanHide());

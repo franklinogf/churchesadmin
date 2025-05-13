@@ -1,10 +1,13 @@
 import { DataTable } from '@/components/custom-ui/datatable/data-table';
 import { FieldError } from '@/components/forms/inputs/FieldError';
+import { FieldsGrid } from '@/components/forms/inputs/FieldsGrid';
 import { InputField } from '@/components/forms/inputs/InputField';
 import { SubmitButton } from '@/components/forms/SubmitButton';
 import { PageTitle } from '@/components/PageTitle';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
+import type { SharedData } from '@/types';
 import type { Check } from '@/types/models/check';
 import { Link, useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
@@ -12,33 +15,57 @@ import { useCallback, useState } from 'react';
 import { confirmedColumns } from './includes/confirmedColumns';
 import { unconfirmedColumns } from './includes/unconfirmedColumns';
 
-type ConfirmForm = {
+type GenerateCheckNumberForm = {
   checks: {
-    id: number;
+    id: string;
   }[];
   initial_check_number: string;
 };
-interface IndexPageProps {
+
+interface IndexPageProps extends SharedData {
   unconfirmedChecks: Check[];
   confirmedChecks: Check[];
+  nextCheckNumber: number;
 }
-export default function Index({ unconfirmedChecks, confirmedChecks }: IndexPageProps) {
+
+enum UnconfirmedFormAction {
+  GENERATE,
+  CONFIRM,
+  PRINT,
+}
+
+export default function Index({ unconfirmedChecks, confirmedChecks, flash, nextCheckNumber }: IndexPageProps) {
   const { t } = useLaravelReactI18n();
   const [confirmedSelectedRows, setConfirmedSelectedRows] = useState<string[]>([]);
+  const [unconfirmedAction, setUnconfirmedAction] = useState<UnconfirmedFormAction | null>(null);
 
-  const { data, setData, patch, errors, processing } = useForm<ConfirmForm>({
+  const { data, setData, errors, patch, processing } = useForm<GenerateCheckNumberForm>({
     checks: [],
-    initial_check_number: '',
+    initial_check_number: nextCheckNumber.toString(),
   });
 
-  function confirmChecks() {
-    patch(route('checks.confirm.multiple'));
+  function generateCheckNumbers(e: React.FormEvent) {
+    e.preventDefault();
+
+    setUnconfirmedAction(UnconfirmedFormAction.GENERATE);
+
+    patch(route('checks.generate-check-number'), {
+      onSuccess: () => {
+        setData('initial_check_number', '');
+      },
+    });
   }
+
+  function confirmChecks() {
+    setUnconfirmedAction(UnconfirmedFormAction.CONFIRM);
+    patch(route('checks.confirm-multiple'));
+  }
+
   const handleUnconfirmedSelection = useCallback(
     (selectedRows: Record<string, boolean>) => {
       setData(
         'checks',
-        Object.keys(selectedRows).map((key) => ({ id: parseInt(key) })),
+        Object.keys(selectedRows).map((key) => ({ id: key })),
       );
     },
     [setData],
@@ -47,6 +74,8 @@ export default function Index({ unconfirmedChecks, confirmedChecks }: IndexPageP
   const handleConfirmedSelection = useCallback((selectedRows: Record<string, boolean>) => {
     setConfirmedSelectedRows(Object.keys(selectedRows));
   }, []);
+
+  const unconfirmedSelected = data.checks.length > 0;
 
   return (
     <AppLayout title={t('Checks')} breadcrumbs={[{ title: t('Checks'), href: route('checks.index') }]}>
@@ -60,33 +89,57 @@ export default function Index({ unconfirmedChecks, confirmedChecks }: IndexPageP
             </Button>
 
             <div className="space-y-2">
-              <InputField
-                disabled={processing || unconfirmedChecks.length === 0}
-                errorOnTop
-                placeholder="Initial Check Number"
-                value={data.initial_check_number}
-                onChange={(value) => setData('initial_check_number', value)}
-                error={errors.initial_check_number}
-              />
+              {errors.initial_check_number && <FieldError error={errors.initial_check_number} />}
+              <form onSubmit={generateCheckNumbers}>
+                <FieldsGrid>
+                  <InputField
+                    required
+                    disabled={!unconfirmedSelected || processing}
+                    errorOnTop
+                    placeholder="Initial check number"
+                    value={data.initial_check_number}
+                    onChange={(value) => setData('initial_check_number', value)}
+                  />
+                  <SubmitButton
+                    disabled={!unconfirmedSelected || processing}
+                    isSubmitting={processing && unconfirmedAction === UnconfirmedFormAction.GENERATE}
+                    size="sm"
+                  >
+                    {t('Generate check numbers')}
+                  </SubmitButton>
+                </FieldsGrid>
+              </form>
 
-              <div className="flex items-center justify-end gap-2">
+              <div className="grid grid-cols-2 items-center gap-2">
                 <SubmitButton
-                  disabled={unconfirmedChecks.length === 0}
-                  isSubmitting={processing}
+                  disabled={!unconfirmedSelected || processing}
+                  isSubmitting={processing && unconfirmedAction === UnconfirmedFormAction.CONFIRM}
                   variant="secondary"
                   size="sm"
                   onClick={confirmChecks}
                 >
-                  Confirmar cheques
+                  {t('Confirm checks')}
                 </SubmitButton>
-                <Button disabled={processing || unconfirmedChecks.length === 0} variant="secondary" size="sm">
-                  Confirmar cheques e imprimir
-                </Button>
+                <SubmitButton
+                  disabled={!unconfirmedSelected || processing}
+                  isSubmitting={processing && unconfirmedAction === UnconfirmedFormAction.PRINT}
+                  variant="secondary"
+                  size="sm"
+                >
+                  {t('Confirm checks and print')}
+                </SubmitButton>
               </div>
               {errors.checks && <FieldError error={errors.checks} />}
             </div>
           </header>
-          <PageTitle className="text-left text-xl font-semibold">{t('Unconfirmed Checks')}</PageTitle>
+          <div className="flex flex-col items-start justify-between gap-y-2">
+            <PageTitle className="text-left text-xl font-semibold">{t('Unconfirmed Checks')}</PageTitle>
+            {flash.message && (
+              <Alert className="w-full max-w-fit">
+                <AlertDescription>{flash.message}</AlertDescription>
+              </Alert>
+            )}
+          </div>
           <DataTable
             rowId="id"
             onSelectedRowsChange={handleUnconfirmedSelection}
@@ -102,10 +155,9 @@ export default function Index({ unconfirmedChecks, confirmedChecks }: IndexPageP
             <div className="space-y-2">
               <div className="flex items-center justify-end gap-2">
                 <SubmitButton disabled={confirmedSelectedRows.length === 0} variant="secondary" size="sm">
-                  Imprimir cheques
+                  {t('Print checks')}
                 </SubmitButton>
               </div>
-              {errors.checks && <FieldError error={errors.checks} />}
             </div>
           </header>
           <DataTable

@@ -57,8 +57,8 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-  --color-brand: var(--brand);
-  --color-brand-foreground: var(--brand-foreground);
+  --color-brand: oklch(0.79 0.145 221.93);
+  --color-brand-foreground: oklch(0.166 0.141 0.135);
 }
 
 /*
@@ -113,9 +113,6 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.87 0 0);
-
-  --brand: oklch(0.79 0.145 221.93);
-  --brand-foreground: oklch(0.166 0.141 0.135);
 }
 
 .dark {

@@ -13,7 +13,7 @@ final class CheckPolicy
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(TenantUser $tenantUser): Response
+    public function viewAny(): Response
     {
         return Response::allow();
     }
@@ -21,7 +21,7 @@ final class CheckPolicy
     /**
      * Determine whether the user can view the model.
      */
-    public function view(TenantUser $tenantUser, Check $check): Response
+    public function view(): Response
     {
         return Response::allow();
     }
@@ -29,7 +29,7 @@ final class CheckPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(TenantUser $tenantUser): Response
+    public function create(): Response
     {
         return Response::allow();
     }
@@ -61,7 +61,7 @@ final class CheckPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(TenantUser $tenantUser, Check $check): Response
+    public function restore(): Response
     {
         return Response::allow();
     }

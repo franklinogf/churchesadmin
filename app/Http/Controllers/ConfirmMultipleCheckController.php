@@ -4,43 +4,36 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Actions\Wallet\ConfirmTransaction;
+use App\Enums\FlashMessageKey;
+use App\Exceptions\WalletException;
+use App\Http\Requests\Check\ConfirmMultipleCheckRequest;
 use App\Models\Check;
-use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
 
 final class ConfirmMultipleCheckController extends Controller
 {
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Request $request)
+    public function __invoke(ConfirmMultipleCheckRequest $request, ConfirmTransaction $action): RedirectResponse
     {
-        $validated = $request->validate([
-            'checks' => ['required', 'array'],
-            'checks.*.id' => ['required', 'exists:checks,id'],
-            'initial_check_number' => ['required', 'numeric', 'min:1',
-                function ($attribute, $value, $fail) {
-                    if (Check::confirmed()->where('check_number', $value)->exists()) {
-                        $fail('There is a check with this number.');
-                    }
-                },
-            ],
-            [
-                'messages' => ['checks.required' => 'At least one check must be selected.'],
-            ],
-        ]);
+        /**
+         * @var string[] $checkIds
+         */
+        $checkIds = $request->collect('checks')->flatten()->toArray();
 
-        $checkNumber = $validated['initial_check_number'];
-
-        Check::unconfirmed()->update(['check_number' => null]);
-
-        foreach ($validated['checks'] as $checkData) {
-            $check = Check::find($checkData['id']);
-            $check->update(['check_number' => $checkNumber]);
-
-            $check->transaction->wallet->confirm($check->transaction);
-            $checkNumber++;
+        try {
+            DB::transaction(function () use ($checkIds, $action): void {
+                Check::whereIn('id', $checkIds)->each(function (Check $check) use ($action) {
+                    $action->handle($check);
+                });
+            });
+        } catch (WalletException $e) {
+            return back()->with(FlashMessageKey::ERROR->value, $e->getMessage());
         }
 
-        return back()->with('success', 'Checks confirmed successfully.');
+        return back()->with(FlashMessageKey::SUCCESS->value, __('flash.message.check.confirmed'));
     }
 }

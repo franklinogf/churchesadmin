@@ -7,6 +7,7 @@ use App\Http\Controllers\CheckController;
 use App\Http\Controllers\ConfirmMultipleCheckController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\ExpenseTypeController;
+use App\Http\Controllers\GenerateCheckNumberController;
 use App\Http\Controllers\LoginLinkController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\MissionaryController;
@@ -89,8 +90,10 @@ Route::middleware([
 
         Route::resource('expenses', ExpenseController::class);
 
+        Route::patch('checks/generate-check-number', GenerateCheckNumberController::class)
+            ->name('checks.generate-check-number');
         Route::patch('checks/confirm', ConfirmMultipleCheckController::class)
-            ->name('checks.confirm.multiple');
+            ->name('checks.confirm-multiple');
 
         Route::resource('checks', CheckController::class);
 

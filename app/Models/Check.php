@@ -71,25 +71,23 @@ final class Check extends Model
     /**
      * Scope a query to only include confirmed checks.
      *
-     * @param  Builder<Check>|null  $query
+     * @param  Builder<Check>  $query
      * @return void
      */
-    #[Scope]
-    protected function confirmed(?Builder $query = null): void
+    public function scopeConfirmed(Builder $query): void
     {
-        $query?->whereRelation('transaction', 'confirmed', true);
+        $query->whereRelation('transaction', 'confirmed', true);
     }
 
     /**
      * Scope a query to only include unconfirmed checks.
      *
-     * @param  Builder<Check>|null  $query
+     * @param  Builder<Check>  $query
      * @return void
      */
-    #[Scope]
-    protected function unconfirmed(?Builder $query = null): void
+    public function scopeUnconfirmed(Builder $query): void
     {
-        $query?->whereRelation('transaction', 'confirmed', false);
+        $query->whereRelation('transaction', 'confirmed', false);
     }
 
     /**

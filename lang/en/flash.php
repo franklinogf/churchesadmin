@@ -27,6 +27,12 @@ return [
             'not_found' => 'Wallet not found or has been removed.',
             'invalid_amount' => 'Invalid amount given.',
             'transaction_failed' => 'Transaction failed.',
+            'already_confirmed' => 'Transaction has already been confirmed.',
+        ],
+        'check' => [
+            'number_generated' => 'Checks numbers generated successfully.',
+            'number_exists' => 'The following check number already exist: :numbers|The following check numbers already exist: :numbers',
+            'confirmed' => 'Checks confirmed successfully.',
         ],
     ],
 ];

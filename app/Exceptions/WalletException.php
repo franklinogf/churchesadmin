@@ -36,4 +36,9 @@ final class WalletException extends Exception
     {
         return new self(__('flash.message.wallet.transaction_failed'), 422);
     }
+
+    public static function alreadyConfirmed(): self
+    {
+        return new self(__('flash.message.wallet.already_confirmed'), 422);
+    }
 }

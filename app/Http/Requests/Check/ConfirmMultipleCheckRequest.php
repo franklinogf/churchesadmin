@@ -1,0 +1,58 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Http\Requests\Check;
+
+use App\Models\Check;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Validator;
+
+final class ConfirmMultipleCheckRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     */
+    public function rules(): array
+    {
+        return [
+            'checks' => ['required', 'array'],
+            'checks.*.id' => ['required', 'exists:checks,id'],
+        ];
+    }
+
+    /**
+     * Get the "after" validation callables for the request.
+     */
+    public function after(): array
+    {
+        return [
+            function (Validator $validator) {
+                /** @var string[] */
+                $checkIds = $this->array('checks.*.id');
+                Check::whereIn('id', $checkIds)
+                    ->each(function (Check $check) use ($validator) {
+                        if ($check->check_number === null) {
+                            $validator->errors()->add(
+                                'checks',
+                                'All checks must have a check number.'
+                            );
+
+                            return;
+                        }
+                    });
+
+            },
+        ];
+    }
+}
