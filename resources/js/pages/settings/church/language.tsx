@@ -39,7 +39,7 @@ export default function Language({ languages }: { languages: SelectOption[] }) {
     <AppLayout title="Church Settings" breadcrumbs={breadcrumbs}>
       <SettingsLayout>
         <div className="space-y-6">
-          <HeadingSmall title={t('Language')} description={t('Update the website language')} />
+          <HeadingSmall title={t('Language')} description={t('Update :model',{model:t('the website language')})} />
 
           <form onSubmit={submit} className="space-y-6">
             <SelectField

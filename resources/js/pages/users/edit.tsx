@@ -52,7 +52,7 @@ export default function Edit({ user, permissions, roles }: EditPageProps) {
 
   return (
     <AppLayout title={t('Users')}>
-      <PageTitle>{t('Edit User')}</PageTitle>
+      <PageTitle>{t('Edit :model',{model:t('User')})}</PageTitle>
       <div className="mt-2 flex w-full items-center justify-center">
         <Form className="w-full max-w-2xl" onSubmit={handleSubmit} isSubmitting={processing}>
           <InputField required label={t('Name')} value={data.name} error={errors.name} onChange={(value) => setData('name', value)} />

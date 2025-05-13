@@ -19,7 +19,7 @@ export default function OfferingTypesIndex({ offeringTypes }: { offeringTypes: O
         <DataTable
           headerButton={
             <Button size="sm" onClick={() => setOpen(true)}>
-              {t('Add Offering Type')}
+              {t('Add :model', {model: t('Offering Type')})}
             </Button>
           }
           data={offeringTypes}

@@ -28,7 +28,7 @@ export default function Index({ members }: IndexProps) {
         headerButton={
           userCan(UserPermission.CREATE_MEMBERS) && (
             <Button asChild>
-              <Link href={route('members.create')}>{t('Add Member')}</Link>
+              <Link href={route('members.create')}>{t('Add :model', {model: t('Member')})}</Link>
             </Button>
           )
         }
