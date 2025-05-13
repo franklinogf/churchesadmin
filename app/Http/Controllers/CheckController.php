@@ -43,7 +43,7 @@ final class CheckController extends Controller
 
         return Inertia::render('checks/index', [
             'unconfirmedChecks' => CheckResource::collection($unconfirmedChecks),
-            'confirmedChecks' => CheckResource::collection($confirmedChecks),
+            'confirmedChecks' => Inertia::defer(fn () => CheckResource::collection($confirmedChecks)),
             'nextCheckNumber' => $nextCheckNumber,
         ]);
     }

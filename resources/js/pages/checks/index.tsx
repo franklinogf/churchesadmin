@@ -6,10 +6,12 @@ import { SubmitButton } from '@/components/forms/SubmitButton';
 import { PageTitle } from '@/components/PageTitle';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
+
+import { DatatableFallback } from '@/components/fallbacks/data-table-fallback';
 import AppLayout from '@/layouts/app-layout';
 import type { SharedData } from '@/types';
 import type { Check } from '@/types/models/check';
-import { Link, useForm } from '@inertiajs/react';
+import { Deferred, Link, useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { useCallback, useState } from 'react';
 import { confirmedColumns } from './includes/confirmedColumns';
@@ -160,14 +162,16 @@ export default function Index({ unconfirmedChecks, confirmedChecks, flash, nextC
               </div>
             </div>
           </header>
-          <DataTable
-            rowId="id"
-            onSelectedRowsChange={handleConfirmedSelection}
-            sortingState={[{ id: 'date', desc: true }]}
-            visibilityState={{ expenseType: false }}
-            data={confirmedChecks}
-            columns={confirmedColumns}
-          />
+          <Deferred data="confirmedChecks" fallback={<DatatableFallback cols={6} />}>
+            <DataTable
+              rowId="id"
+              onSelectedRowsChange={handleConfirmedSelection}
+              sortingState={[{ id: 'date', desc: true }]}
+              visibilityState={{ expenseType: false }}
+              data={confirmedChecks}
+              columns={confirmedColumns}
+            />
+          </Deferred>
         </div>
       </section>
     </AppLayout>
