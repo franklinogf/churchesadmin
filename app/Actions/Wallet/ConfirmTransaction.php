@@ -9,28 +9,25 @@ use App\Models\ChurchWallet;
 use Bavix\Wallet\Exceptions\BalanceIsEmpty;
 use Bavix\Wallet\Exceptions\ConfirmedInvalid;
 use Bavix\Wallet\Exceptions\InsufficientFunds;
-use Bavix\Wallet\Interfaces\Wallet;
-use Illuminate\Database\Eloquent\Model;
+use Bavix\Wallet\Models\Transaction;
 
-/**
- * @template TModel of Wallet
- */
 final class ConfirmTransaction
 {
     /**
-     * @param  TModel  $model
+     * Handle the confirmation of a transaction.
+     *
      * @return bool
      */
-    public function handle(Model $model): bool
+    public function handle(Transaction $transaction): bool
     {
-        $churchWallet = ChurchWallet::find($model->transaction->wallet->holder_id);
+        $churchWallet = ChurchWallet::find($transaction->wallet->holder_id);
 
         if (! $churchWallet instanceof ChurchWallet) {
             throw WalletException::notFound();
         }
 
         try {
-            return $model->transaction->wallet->confirm($model->transaction);
+            return $transaction->wallet->confirm($transaction);
         } catch (ConfirmedInvalid) {
             throw WalletException::alreadyConfirmed();
         } catch (BalanceIsEmpty) {

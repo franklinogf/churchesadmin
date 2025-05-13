@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Actions\Wallet\ConfirmTransaction;
+use App\Actions\Check\ConfirmCheckAction;
 use App\Enums\FlashMessageKey;
 use App\Exceptions\WalletException;
 use App\Http\Requests\Check\ConfirmMultipleCheckRequest;
@@ -17,7 +17,7 @@ final class ConfirmMultipleCheckController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function __invoke(ConfirmMultipleCheckRequest $request, ConfirmTransaction $action): RedirectResponse
+    public function __invoke(ConfirmMultipleCheckRequest $request, ConfirmCheckAction $action): RedirectResponse
     {
         /**
          * @var string[] $checkIds
@@ -26,7 +26,7 @@ final class ConfirmMultipleCheckController extends Controller
 
         try {
             DB::transaction(function () use ($checkIds, $action): void {
-                Check::whereIn('id', $checkIds)->each(function (Check $check) use ($action) {
+                Check::whereIn('id', $checkIds)->each(function (Check $check) use ($action): void {
                     $action->handle($check);
                 });
             });

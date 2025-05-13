@@ -35,7 +35,11 @@ final class CheckController extends Controller
         $unconfirmedChecks = Check::latest()->get();
         $confirmedChecks = Check::latest()->confirmed()->get();
 
-        $nextCheckNumber = Check::confirmed()->max('check_number') + 1;
+        /**
+         * @var int $maxCheckNumber
+         */
+        $maxCheckNumber = Check::confirmed()->max('check_number');
+        $nextCheckNumber = $maxCheckNumber + 1;
 
         return Inertia::render('checks/index', [
             'unconfirmedChecks' => CheckResource::collection($unconfirmedChecks),

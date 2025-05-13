@@ -8,13 +8,14 @@ use App\Actions\Check\UpdateCheckAction;
 use App\Enums\FlashMessageKey;
 use App\Http\Requests\Check\GenerateCheckNumberRequest;
 use App\Models\Check;
+use Illuminate\Http\RedirectResponse;
 
 final class GenerateCheckNumberController extends Controller
 {
     /**
      * Handle the incoming request.
      */
-    public function __invoke(GenerateCheckNumberRequest $request, UpdateCheckAction $action)
+    public function __invoke(GenerateCheckNumberRequest $request, UpdateCheckAction $action): RedirectResponse
     {
 
         $checkNumber = $request->integer('initial_check_number');
@@ -40,20 +41,19 @@ final class GenerateCheckNumberController extends Controller
             }
 
             $action->handle($check, [
-                'check_number' => $checkNumber,
+                'check_number' => (string) $checkNumber,
             ]);
-            // $check->update(['check_number' => $checkNumber]);
 
             $checkNumber++;
         }
 
-        $message = ! empty($existingCheckNumbers)
-        ? trans_choice(
-            'flash.message.check.number_exists',
-            count($existingCheckNumbers),
-            ['numbers' => implode(', ', $existingCheckNumbers)]
-        )
-              : null;
+        $message = $existingCheckNumbers === []
+        ? null
+              : trans_choice(
+                  'flash.message.check.number_exists',
+                  count($existingCheckNumbers),
+                  ['numbers' => implode(', ', $existingCheckNumbers)]
+              );
 
         return back()
             ->with(FlashMessageKey::SUCCESS->value, __('flash.message.check.number_generated'))

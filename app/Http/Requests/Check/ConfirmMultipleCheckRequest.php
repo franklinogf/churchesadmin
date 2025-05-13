@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Requests\Check;
 
 use App\Models\Check;
+use Closure;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Validator;
 
@@ -33,15 +34,17 @@ final class ConfirmMultipleCheckRequest extends FormRequest
 
     /**
      * Get the "after" validation callables for the request.
+     *
+     * @return array<int, Closure>
      */
     public function after(): array
     {
         return [
-            function (Validator $validator) {
+            function (Validator $validator): void {
                 /** @var string[] */
                 $checkIds = $this->array('checks.*.id');
                 Check::whereIn('id', $checkIds)
-                    ->each(function (Check $check) use ($validator) {
+                    ->each(function (Check $check) use ($validator): void {
                         if ($check->check_number === null) {
                             $validator->errors()->add(
                                 'checks',
