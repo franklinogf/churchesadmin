@@ -113,20 +113,20 @@ export default function Index({ unconfirmedChecks, confirmedChecks, flash, nextC
               <div className="grid grid-cols-2 items-center gap-2">
                 <SubmitButton
                   disabled={!unconfirmedSelected || processing}
+                  isSubmitting={processing && unconfirmedAction === UnconfirmedFormAction.PRINT}
+                  variant="secondary"
+                  size="sm"
+                >
+                  {t('Confirm checks and print')}
+                </SubmitButton>
+                <SubmitButton
+                  disabled={!unconfirmedSelected || processing}
                   isSubmitting={processing && unconfirmedAction === UnconfirmedFormAction.CONFIRM}
                   variant="secondary"
                   size="sm"
                   onClick={confirmChecks}
                 >
                   {t('Confirm checks')}
-                </SubmitButton>
-                <SubmitButton
-                  disabled={!unconfirmedSelected || processing}
-                  isSubmitting={processing && unconfirmedAction === UnconfirmedFormAction.PRINT}
-                  variant="secondary"
-                  size="sm"
-                >
-                  {t('Confirm checks and print')}
                 </SubmitButton>
               </div>
               {errors.checks && <FieldError error={errors.checks} />}

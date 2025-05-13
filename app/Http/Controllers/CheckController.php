@@ -32,7 +32,7 @@ final class CheckController extends Controller
     {
         Gate::authorize('viewAny', Check::class);
 
-        $unconfirmedChecks = Check::latest()->get();
+        $unconfirmedChecks = Check::latest()->unconfirmed()->get();
         $confirmedChecks = Check::latest()->confirmed()->get();
 
         /**
