@@ -16,6 +16,7 @@ use App\Http\Controllers\OfferingTypeController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WalletController;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware;
 
@@ -104,6 +105,14 @@ Route::middleware([
             Route::resource('expenseTypes', ExpenseTypeController::class)
                 ->except(['show', 'create', 'edit']);
         });
+    });
+
+    Route::get('pdf', function () {
+
+        $pdf = Pdf::loadView('pdf.check', ['name' => 'Franklin', 'amount' => 10]);
+
+        return $pdf->stream();
+        // return view('pdf.check', ['name' => 'Franklin', 'amount' => 10]);
     });
 
     require __DIR__.'/settings.php';

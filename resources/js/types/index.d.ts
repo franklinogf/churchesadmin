@@ -62,3 +62,5 @@ export type SelectOptionWithModel = {
 export type Locale = `${LanguageCode}`;
 
 export type LanguageTranslations = Record<Locale, string | undefined>;
+
+export type CheckFieldName = `${CheckLayoutFieldName}`;

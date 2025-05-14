@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\CheckLayoutController;
 use App\Http\Controllers\Settings\PasswordController;
 use App\Http\Controllers\Settings\ProfileController;
 use App\Http\Controllers\Settings\TenantGeneralController;
@@ -23,14 +24,20 @@ Route::middleware('auth:tenant')->group(function (): void {
 
         Route::get('appearance', fn () => Inertia::render('settings/appearance'))->name('appearance');
 
-        Route::redirect('/church', 'church/general')->name('church.settings');
+        Route::prefix('church')->group(function (): void {
+            Route::redirect('/', 'church/general')->name('church.settings');
 
-        Route::get('church/language', [TenantLanguageController::class, 'edit'])->name('church.language.edit');
-        Route::patch('church/language', [TenantLanguageController::class, 'update'])->name('church.language.update');
+            Route::get('language', [TenantLanguageController::class, 'edit'])->name('church.language.edit');
+            Route::patch('language', [TenantLanguageController::class, 'update'])->name('church.language.update');
 
-        Route::get('church/general', [TenantGeneralController::class, 'edit'])->name('church.general.edit');
-        Route::put('church/general', [TenantGeneralController::class, 'update'])->name('church.general.update');
+            Route::get('general', [TenantGeneralController::class, 'edit'])->name('church.general.edit');
+            Route::put('general', [TenantGeneralController::class, 'update'])->name('church.general.update');
 
-        Route::post('church/logo', TenantLogoController::class)->name('church.logo');
+            Route::post('logo', TenantLogoController::class)->name('church.logo');
+
+            Route::get('check', [CheckLayoutController::class, 'edit'])->name('church.check.edit');
+            Route::put('check', [CheckLayoutController::class, 'update'])->name('church.check.update');
+        });
     });
+
 });
