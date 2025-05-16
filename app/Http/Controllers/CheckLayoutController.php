@@ -15,9 +15,9 @@ use Inertia\Inertia;
 
 final class CheckLayoutController extends Controller
 {
-    public function store(Request $request, ChurchWallet $wallet)
+    public function store(Request $request)
     {
-
+        $checkId = $request->input('check_id');
         $checkLayout = CheckLayout::create([
             'name' => $request->name,
             'width' => 455,
@@ -27,7 +27,11 @@ final class CheckLayoutController extends Controller
 
         $checkLayout->addMediaFromRequest('image')->toMediaCollection();
 
-        $wallet->checkLayout()->associate($checkLayout)->save();
+        if ($checkId) {
+            $wallet = ChurchWallet::find($checkId);
+            $wallet->checkLayout()->associate($checkLayout);
+            $wallet->save();
+        }
 
         return to_route('wallets.check.edit', ['wallet' => $wallet, 'layout' => $checkLayout->id])
             ->with('success', 'Check layout created successfully.');
@@ -50,7 +54,7 @@ final class CheckLayoutController extends Controller
         ]);
     }
 
-    public function update(Request $request, ChurchWallet $wallet, CheckLayout $checkLayout)
+    public function update(Request $request, CheckLayout $checkLayout)
     {
 
         $checkLayout->update(['fields' => $request->fields]);

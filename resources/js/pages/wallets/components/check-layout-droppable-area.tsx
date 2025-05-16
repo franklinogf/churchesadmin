@@ -18,9 +18,9 @@ export function CheckLayoutDroppableArea({
   return (
     <div
       id="droppable-area"
-      style={{ width: dimensions.width, height: dimensions.height }}
+      style={{ aspectRatio: `${dimensions.width}/${dimensions.height}`, width: dimensions.width, height: dimensions.height }}
       ref={ref}
-      className={cn('relative border shadow', {
+      className={cn('@container relative mx-auto border shadow', {
         'border-brand': isDropTarget,
       })}
     >

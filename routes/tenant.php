@@ -86,8 +86,8 @@ Route::middleware([
         // Accounting
         Route::put('wallets/{wallet}/check-layout', ChangeWalletLayoutController::class)->name('wallets.check.change-layout');
         Route::get('wallets/{wallet}/check-layout', [CheckLayoutController::class, 'edit'])->name('wallets.check.edit');
-        Route::post('wallets/{wallet}/check-layout', [CheckLayoutController::class, 'store'])->name('wallets.check.store');
-        Route::put('wallets/{wallet}/check-layout/{checkLayout}', [CheckLayoutController::class, 'update'])->name('wallets.check.update');
+        Route::post('check-layout', [CheckLayoutController::class, 'store'])->name('check-layout.store');
+        Route::put('check-layout/{checkLayout}', [CheckLayoutController::class, 'update'])->name('check-layout.update');
 
         Route::put('wallets/{wallet}/restore', [WalletController::class, 'restore'])
             ->withTrashed()

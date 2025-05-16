@@ -24,7 +24,7 @@ export function CheckLayoutDraggableField({
   return (
     <button
       style={{ top: position.y, left: position.x }}
-      className={cn('absolute cursor-move text-sm text-nowrap text-black hover:underline', { 'bg-brand/20': !isDragging })}
+      className={cn('absolute cursor-move text-sm text-nowrap text-black hover:underline', { 'bg-primary/10': !isDragging })}
       type="button"
       ref={ref}
     >
