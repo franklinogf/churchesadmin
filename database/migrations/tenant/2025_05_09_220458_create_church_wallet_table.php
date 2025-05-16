@@ -21,16 +21,10 @@ return new class extends Migration
             $table->string('bank_name')->nullable();
             $table->string('bank_account_number')->nullable();
             $table->string('bank_routing_number')->nullable();
+            $table->foreignId('check_layout_id')->nullable()->constrained('check_layouts');
             $table->timestamps();
             $table->softDeletes();
         });
-    }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        Schema::dropIfExists('church_wallets');
     }
 };

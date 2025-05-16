@@ -30,8 +30,8 @@ final class WalletController extends Controller
     {
 
         $wallets = ChurchWallet::query()
-            ->withTrashed()
             ->oldest()
+            ->with('checkLayout')
             ->withCount([
                 'transactions' => function (Builder $query): void {
                     $query->whereNot('meta->type', TransactionMetaType::INITIAL->value);

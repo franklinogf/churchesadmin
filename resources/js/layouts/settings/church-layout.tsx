@@ -25,10 +25,6 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
         title: t('Language'),
         href: route('church.language.edit'),
       },
-      {
-        title: t('Check layout'),
-        href: route('church.check.edit'),
-      },
       //   {
       //     title: t('Contact Information'),
       //     href: route('church.contact.edit'),

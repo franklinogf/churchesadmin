@@ -6,20 +6,30 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Check Test</title>
+    <style>
+        @page {
+            margin: 0;
+            font-size: 14px;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .page-break {
+            page-break-after: always;
+        }
+    </style>
 </head>
 
 <body>
 
-    <div style="width: 7in; height: 3in; position: relative;">
-        <img src={{ public_path("assets/check.png") }} style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;" />
-        <div style="position: absolute; top: 0.5in; left: 1in;">
-            <strong>Pay to the order of:</strong> {{ $name }}
-        </div>
-        <div style="position: absolute; top: 100px; left: 5.5in;">
-            <strong>${{ number_format($amount, 2) }}</strong>
-        </div>
-        <!-- Add other fields similarly -->
-    </div>
+    {{-- <div style="width: {{ $dimensions['width'] }}px; height: {{ $dimensions['height'] }}px; position: relative;"> --}}
+        @foreach ($fieldsLayout as $fieldId => $fieldLayout)
+            <div style="position: absolute; top: {{ $fieldLayout['position']['y'] }}px; left: {{ $fieldLayout['position']['x'] }}px;">
+                {{ $fields[$fieldId]}}
+            </div>
+        @endforeach
+
+        {{--
+    </div> --}}
 
 </body>
 

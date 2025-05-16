@@ -53,7 +53,7 @@ export enum TransactionMetaType {
 export enum CheckLayoutFieldName {
   PAYEE = 'payee',
   AMOUNT = 'amount',
-  AMOUNT_WORDS = 'amountWords',
+  AMOUNT_WORDS = 'amount_in_words',
   DATE = 'date',
   MEMO = 'memo',
 }

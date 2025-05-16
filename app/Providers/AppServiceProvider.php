@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Models\CheckLayout;
 use App\Models\Church;
 use App\Models\ChurchWallet;
 use App\Models\Member;
@@ -75,6 +76,7 @@ final class AppServiceProvider extends ServiceProvider
             'church' => Church::class,
             'church_wallet' => ChurchWallet::class,
             'offering_type' => OfferingType::class,
+            'check_layout' => CheckLayout::class,
         ]);
     }
 

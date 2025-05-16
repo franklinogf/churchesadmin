@@ -2,7 +2,8 @@
 
 declare(strict_types=1);
 
-use App\Provider\MediaLibrary\TenantAwareUrlGenerator;
+use App\Services\MediaLibrary\CustomPathGenerator;
+use App\Services\MediaLibrary\TenantAwareUrlGenerator;
 
 return [
 
@@ -85,7 +86,7 @@ return [
     /*
      * The class that contains the strategy for determining a media file's path.
      */
-    'path_generator' => Spatie\MediaLibrary\Support\PathGenerator\DefaultPathGenerator::class,
+    'path_generator' => CustomPathGenerator::class,
 
     /*
      * The class that contains the strategy for determining how to remove files.
@@ -279,7 +280,7 @@ return [
      * You can specify a prefix for that is used for storing all media.
      * If you set this to `/my-subdir`, all your media will be stored in a `/my-subdir` directory.
      */
-    'prefix' => env('MEDIA_PREFIX', ''),
+    'prefix' => env('MEDIA_PREFIX', 'images'),
 
     /*
      * When forcing lazy loading, media will be loaded even if you don't eager load media and you have

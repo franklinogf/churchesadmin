@@ -1,4 +1,5 @@
 import { type Transaction } from '@/types/models/transaction';
+import type { CheckLayout } from './check-layout';
 
 export interface Wallet {
   id: number;
@@ -17,4 +18,5 @@ export interface Wallet {
   deletedAt: string | null;
   transactions?: Transaction[];
   transactionsCount?: number;
+  checkLayout?: CheckLayout;
 }

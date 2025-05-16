@@ -4,88 +4,63 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Enums\CheckLayoutField;
+use App\Http\Resources\Wallet\CheckLayoutResource;
+use App\Http\Resources\Wallet\ChurchWalletResource;
+use App\Models\CheckLayout;
+use App\Models\ChurchWallet;
+use App\Support\SelectOption;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use NumberToWords\NumberToWords;
 
 final class CheckLayoutController extends Controller
 {
-    public function edit()
+    public function store(Request $request, ChurchWallet $wallet)
     {
-        $layout = [
-            [
-                'id' => 'payee',
-                'label' => 'Franklin Omar Gonzalez Flores',
-                'position' => [
-                    'x' => 0,
-                    'y' => 0,
-                ],
-            ],
-            [
-                'id' => 'amount',
-                'label' => '1,000',
-                'position' => [
-                    'x' => 0,
-                    'y' => 0,
-                ],
-            ],
-            [
-                'id' => 'amountWords',
-                'withDollars' => false,
-                'label' => NumberToWords::transformNumber(app()->getLocale(), 1000),
-                'position' => [
-                    'x' => 0,
-                    'y' => 0,
-                ],
-            ],
-            [
-                'id' => 'date',
-                'label' => '2023-10-01',
-                'position' => [
-                    'x' => 0,
-                    'y' => 0,
-                ],
-            ],
-            [
-                'id' => 'memo',
-                'label' => 'Memo',
-                'position' => [
-                    'x' => 0,
-                    'y' => 0,
-                ],
-            ],
-            [
-                'id' => 'signature',
-                'label' => 'Church Signature',
-                'position' => [
-                    'x' => 0,
-                    'y' => 0,
-                ],
-            ],
-        ];
 
-        $layout = collect($layout)->map(function ($item, $index) {
-            $isFirstTime = $item['position']['y'] === 0 && $item['position']['x'] === 0;
-            $item['position'] = [
-                'x' => $isFirstTime ? 0 : $item['position']['x'],
-                'y' => $isFirstTime ? $index * 20 : $item['position']['y'],
-            ];
+        $checkLayout = CheckLayout::create([
+            'name' => $request->name,
+            'width' => 455,
+            'height' => 300,
+            'fields' => CheckLayoutField::initialLayout(),
+        ]);
 
-            return $item;
-        })->toArray();
+        $checkLayout->addMediaFromRequest('image')->toMediaCollection();
 
-        return Inertia::render('settings/church/check-layout', [
-            'layout' => $layout,
+        $wallet->checkLayout()->associate($checkLayout)->save();
+
+        return to_route('wallets.check.edit', ['wallet' => $wallet, 'layout' => $checkLayout->id])
+            ->with('success', 'Check layout created successfully.');
+    }
+
+    public function edit(Request $request, ChurchWallet $wallet)
+    {
+        $wallet->load('checkLayout');
+
+        $checkLayoutId = $request->integer('layout', $wallet->checkLayout->id);
+
+        $checkLayout = CheckLayout::find($checkLayoutId);
+
+        $checkLayouts = SelectOption::create(CheckLayout::all());
+
+        return Inertia::render('wallets/check-layout', [
+            'wallet' => new ChurchWalletResource($wallet),
+            'checkLayouts' => $checkLayouts,
+            'checkLayout' => $checkLayout ? new CheckLayoutResource($checkLayout) : null,
         ]);
     }
 
-    public function update(Request $request)
+    public function update(Request $request, ChurchWallet $wallet, CheckLayout $checkLayout)
     {
-        $request->validate([
-            'layout' => 'required|string',
-        ]);
 
-        // Save the layout to the database or perform any other necessary actions
+        $checkLayout->update(['fields' => $request->fields]);
+
+        // $request->validate([
+        //     'layout' => 'required|string',
+        // ]);
+
+        // $wallet->checkLayout->fields = json_decode($request->layout, true);
+        // $wallet->checkLayout->save();
 
         return back()->with('success', 'Check layout updated successfully.');
     }
