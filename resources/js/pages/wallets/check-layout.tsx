@@ -70,7 +70,7 @@ export default function CheckLayout({ checkLayouts, wallet, checkLayout }: Check
                     <Link
                       href={route('wallets.check.change-layout', [wallet.id])}
                       method="put"
-                      data={{ layout: activeLayout }}
+                      data={{ check_layout_id: activeLayout }}
                       preserveScroll
                       as="button"
                     >

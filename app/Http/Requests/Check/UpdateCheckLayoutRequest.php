@@ -24,11 +24,16 @@ final class UpdateCheckLayoutRequest extends FormRequest
      */
     public function rules(): array
     {
+        /**
+         * @var array<string,string[]> $fields
+         */
+        $fields = collect(CheckLayoutField::cases())
+            ->mapWithKeys(fn (CheckLayoutField $field) => ["fields.{$field->value}" => ['required']])
+            ->toArray();
+
         return [
             'fields' => ['required', 'array'],
-            ...collect(CheckLayoutField::cases())
-                ->mapWithKeys(fn (CheckLayoutField $field) => ["fields.{$field->value}" => ['required']])
-                ->toArray(),
+            ...$fields,
             'fields.*.position.x' => ['required', 'numeric'],
             'fields.*.position.y' => ['required', 'numeric'],
             'width' => ['required', 'integer'],

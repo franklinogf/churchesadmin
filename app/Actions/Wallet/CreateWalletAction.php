@@ -31,7 +31,8 @@ final readonly class CreateWalletAction
      * description?:string|null,
      * bank_name:string,
      * bank_routing_number:string,
-     * bank_account_number:string} $data
+     * bank_account_number:string,
+     * check_layout_id?:int|null } $data
      * @return ChurchWallet
      */
     public function handle(array $data): ChurchWallet
@@ -45,6 +46,7 @@ final readonly class CreateWalletAction
                     'bank_routing_number' => $data['bank_routing_number'],
                     'bank_account_number' => $data['bank_account_number'],
                     'slug' => str($data['name'])->slug(),
+                    'check_layout_id' => $data['check_layout_id'] ?? null,
                 ]);
 
                 $balance = $data['balance'] ?? null;

@@ -35,7 +35,7 @@ final class CustomPathGenerator implements PathGenerator
      */
     private function getBasePath(Media $media): string
     {
-        $prefix = config('media-library.prefix', '');
+        $prefix = config()->string('media-library.prefix');
 
         $id = $media->uuid;
         $url = "{$media->model_type}/{$media->collection_name}/{$id}";

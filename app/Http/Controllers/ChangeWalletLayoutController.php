@@ -4,24 +4,23 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Actions\Wallet\UpdateWalletAction;
+use App\Enums\FlashMessageKey;
+use App\Http\Requests\Wallet\UpdateWalletCheckLayoutRequest;
 use App\Models\ChurchWallet;
-use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 
 final class ChangeWalletLayoutController extends Controller
 {
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Request $request, ChurchWallet $wallet)
+    public function __invoke(UpdateWalletCheckLayoutRequest $request, ChurchWallet $wallet, UpdateWalletAction $action): RedirectResponse
     {
-        $layout = $request->input('layout');
+        $check_layout_id = $request->integer('check_layout_id');
 
-        if ($layout) {
-            $wallet->checkLayout()->associate($layout);
-        }
+        $action->handle($wallet, ['check_layout_id' => $check_layout_id]);
 
-        $wallet->save();
-
-        return back()->with('success', 'Check layout updated successfully.');
+        return back()->with(FlashMessageKey::SUCCESS->value, __('flash.message.updated', ['model' => __('Wallet')]));
     }
 }

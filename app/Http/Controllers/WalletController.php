@@ -28,7 +28,6 @@ final class WalletController extends Controller
      */
     public function index(): Response
     {
-
         $wallets = ChurchWallet::query()
             ->oldest()
             ->with('checkLayout')
@@ -47,7 +46,7 @@ final class WalletController extends Controller
     public function show(ChurchWallet $wallet): Response
     {
         $wallet->load([
-            'walletTransactions.wallet' => function (BelongsTo $belongsTo): void {
+            'transactions.wallet' => function (BelongsTo $belongsTo): void {
                 /** @phpstan-ignore-next-line */
                 $belongsTo->withTrashed();
             },
@@ -96,7 +95,7 @@ final class WalletController extends Controller
     {
         /**
          * @var array{
-         * balance:string|null,
+         * balance?:string|null,
          * name:string,
          * description:string|null,
          * bank_name:string,

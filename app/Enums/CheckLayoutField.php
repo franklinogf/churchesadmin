@@ -12,18 +12,26 @@ enum CheckLayoutField: string
     case MEMO = 'memo';
     case AMOUNT_IN_WORDS = 'amount_in_words';
 
+    /**
+     * The initial layout of the check fields.
+     *
+     * @return array<string,array{position:array{x:int,y:int}}>
+     */
     public static function initialLayout(): array
     {
-        return collect(self::cases())
-            ->mapWithKeys(function (self $field, $index) {
-                return [
-                    $field->value => [
-                        'position' => [
-                            'x' => 0,
-                            'y' => $index * 20,
-                        ],
+        /**
+         * @var array<string,array{position:array{x:int,y:int}}> $initialLayout
+         */
+        $initialLayout = collect(self::cases())
+            ->mapWithKeys(fn (self $field, int $index): array => [
+                $field->value => [
+                    'position' => [
+                        'x' => 0,
+                        'y' => $index * 20,
                     ],
-                ];
-            })->toArray();
+                ],
+            ])->toArray();
+
+        return $initialLayout;
     }
 }

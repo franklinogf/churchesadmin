@@ -4,14 +4,17 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\TransactionMetaType;
 use Bavix\Wallet\Interfaces\Confirmable;
 use Bavix\Wallet\Interfaces\Wallet;
 use Bavix\Wallet\Interfaces\WalletFloat;
+use Bavix\Wallet\Models\Transaction;
 use Bavix\Wallet\Traits\CanConfirm;
 use Bavix\Wallet\Traits\HasWalletFloat;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -29,6 +32,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read DateTimeInterface|null $deleted_at
  * @property-read int|null $check_layout_id
  * @property-read CheckLayout|null $checkLayout
+ * @property-read Transaction|null $initialTransaction
  */
 final class ChurchWallet extends Model implements WalletFloat, Confirmable, Wallet
 {
@@ -42,5 +46,17 @@ final class ChurchWallet extends Model implements WalletFloat, Confirmable, Wall
     public function checkLayout(): BelongsTo
     {
         return $this->belongsTo(CheckLayout::class);
+    }
+
+    /**
+     * The transactions that belong to the wallet.
+     *
+     * @return MorphOne<Transaction, Model>
+     */
+    public function initialTransaction(): MorphOne
+    {
+        return $this->transactions()
+            ->one()
+            ->withAttributes(['meta->type' => TransactionMetaType::INITIAL->value]);
     }
 }

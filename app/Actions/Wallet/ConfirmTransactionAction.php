@@ -11,7 +11,7 @@ use Bavix\Wallet\Exceptions\ConfirmedInvalid;
 use Bavix\Wallet\Exceptions\InsufficientFunds;
 use Bavix\Wallet\Models\Transaction;
 
-final class ConfirmTransaction
+final class ConfirmTransactionAction
 {
     /**
      * Handle the confirmation of a transaction.

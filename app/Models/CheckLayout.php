@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\CheckLayoutField;
 use App\Enums\MediaCollectionName;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Model;
@@ -15,7 +16,7 @@ use Spatie\MediaLibrary\MediaCollections\File;
 /**
  * @property-read int $id
  * @property-read string $name
- * @property-read array $fields
+ * @property-read array<CheckLayoutField,array{position:array{x:float,y:float}}> $fields
  * @property-read int $width
  * @property-read int $height
  * @property-read DateTimeInterface $created_at
@@ -36,6 +37,11 @@ final class CheckLayout extends Model implements HasMedia
         return $this->hasMany(ChurchWallet::class);
     }
 
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string,string>
+     */
     public function casts(): array
     {
         return [
@@ -47,8 +53,6 @@ final class CheckLayout extends Model implements HasMedia
     {
         $this->addMediaCollection(MediaCollectionName::DEFAULT->value)
             ->singleFile()
-            ->acceptsFile(function (File $file) {
-                return str($file->mimeType)->startsWith('image/');
-            });
+            ->acceptsFile(fn (File $file) => str($file->mimeType)->startsWith('image/'));
     }
 }

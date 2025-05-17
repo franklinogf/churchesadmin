@@ -13,13 +13,15 @@ use App\Http\Resources\Wallet\ChurchWalletResource;
 use App\Models\CheckLayout;
 use App\Models\ChurchWallet;
 use App\Support\SelectOption;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
+use Inertia\Response;
 
 final class CheckLayoutController extends Controller
 {
-    public function store(StoreCheckLayoutRequest $request)
+    public function store(StoreCheckLayoutRequest $request): RedirectResponse
     {
         $wallet_id = $request->integer('wallet_id');
 
@@ -46,12 +48,12 @@ final class CheckLayoutController extends Controller
             ->with('success', 'Check layout created successfully.');
     }
 
-    public function edit(Request $request, ChurchWallet $wallet)
+    public function edit(Request $request, ChurchWallet $wallet): Response
     {
 
         $wallet->load('checkLayout');
 
-        $checkLayoutId = $request->integer('layout', $wallet->checkLayout->id);
+        $checkLayoutId = $request->integer('layout', $wallet->checkLayout->id ?? 0);
 
         $checkLayout = CheckLayout::find($checkLayoutId);
 
@@ -64,7 +66,7 @@ final class CheckLayoutController extends Controller
         ]);
     }
 
-    public function update(UpdateCheckLayoutRequest $request, CheckLayout $checkLayout)
+    public function update(UpdateCheckLayoutRequest $request, CheckLayout $checkLayout): RedirectResponse
     {
         $validated = $request->validated();
 
