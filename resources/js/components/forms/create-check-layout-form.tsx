@@ -15,12 +15,32 @@ export function CreateCheckLayoutForm({ walletId }: { walletId?: number }) {
     image: null as File | null,
   });
   function handleCreateLayout() {
-    post(route('check-layout.store'));
+    post(route('check-layout.store'), { preserveState: false });
   }
   return (
     <Form isSubmitting={processing} submitLabel={t('Create layout')} onSubmit={handleCreateLayout}>
       <InputField required label={t('Name')} placeholder={t('Enter layout name')} value={data.name} onChange={(value) => setData('name', value)} />
-      <Input required max={1} type="file" accept="image/*" onChange={(e) => setData('image', e.target.files?.[0] || null)} />
+      <Input
+        required
+        max={1}
+        type="file"
+        accept="image/*"
+        onChange={(e) => {
+          const file = e.target.files?.[0] || null;
+          if (!file) {
+            return;
+          }
+          const img = new Image();
+          img.onload = () => {
+            setData('width', img.width.toString());
+            setData('height', img.height.toString());
+            URL.revokeObjectURL(img.src);
+          };
+          img.src = URL.createObjectURL(file);
+
+          setData('image', file);
+        }}
+      />
       <FieldsGrid>
         <InputField
           required

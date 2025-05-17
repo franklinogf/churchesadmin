@@ -5,40 +5,50 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Enums\CheckLayoutField;
+use App\Enums\FlashMessageKey;
+use App\Http\Requests\Check\StoreCheckLayoutRequest;
+use App\Http\Requests\Check\UpdateCheckLayoutRequest;
 use App\Http\Resources\Wallet\CheckLayoutResource;
 use App\Http\Resources\Wallet\ChurchWalletResource;
 use App\Models\CheckLayout;
 use App\Models\ChurchWallet;
 use App\Support\SelectOption;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
 final class CheckLayoutController extends Controller
 {
-    public function store(Request $request)
+    public function store(StoreCheckLayoutRequest $request)
     {
-        $checkId = $request->input('check_id');
-        $checkLayout = CheckLayout::create([
-            'name' => $request->name,
-            'width' => 455,
-            'height' => 300,
-            'fields' => CheckLayoutField::initialLayout(),
-        ]);
+        $wallet_id = $request->integer('wallet_id');
 
-        $checkLayout->addMediaFromRequest('image')->toMediaCollection();
+        $checkLayoutId = DB::transaction(function () use ($request, $wallet_id) {
+            $checkLayout = CheckLayout::create([
+                'name' => $request->string('name'),
+                'width' => $request->integer('width'),
+                'height' => $request->integer('height'),
+                'fields' => CheckLayoutField::initialLayout(),
+            ]);
 
-        if ($checkId) {
-            $wallet = ChurchWallet::find($checkId);
-            $wallet->checkLayout()->associate($checkLayout);
-            $wallet->save();
-        }
+            $checkLayout->addMediaFromRequest('image')->toMediaCollection();
+            $wallet = ChurchWallet::find($wallet_id);
+            if ($wallet) {
+                $wallet->checkLayout()->associate($checkLayout);
+                $wallet->save();
+            }
 
-        return to_route('wallets.check.edit', ['wallet' => $wallet, 'layout' => $checkLayout->id])
+            return $checkLayout->id;
+
+        });
+
+        return to_route('wallets.check.edit', ['wallet' => $wallet_id, 'layout' => $checkLayoutId])
             ->with('success', 'Check layout created successfully.');
     }
 
     public function edit(Request $request, ChurchWallet $wallet)
     {
+
         $wallet->load('checkLayout');
 
         $checkLayoutId = $request->integer('layout', $wallet->checkLayout->id);
@@ -54,18 +64,14 @@ final class CheckLayoutController extends Controller
         ]);
     }
 
-    public function update(Request $request, CheckLayout $checkLayout)
+    public function update(UpdateCheckLayoutRequest $request, CheckLayout $checkLayout)
     {
+        $validated = $request->validated();
 
-        $checkLayout->update(['fields' => $request->fields]);
+        $checkLayout->update($validated);
 
-        // $request->validate([
-        //     'layout' => 'required|string',
-        // ]);
-
-        // $wallet->checkLayout->fields = json_decode($request->layout, true);
-        // $wallet->checkLayout->save();
-
-        return back()->with('success', 'Check layout updated successfully.');
+        return back()->with(FlashMessageKey::SUCCESS->value, __('flash.message.updated', [
+            'model' => __('Check layout'),
+        ]));
     }
 }

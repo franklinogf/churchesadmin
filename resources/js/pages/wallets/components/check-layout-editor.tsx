@@ -1,6 +1,7 @@
 import type { CheckFieldName, CheckLayout, CheckLayoutFields } from '@/types/models/check-layout';
 import { DragDropProvider, KeyboardSensor, PointerSensor } from '@dnd-kit/react';
 
+import { FormErrorList } from '@/components/forms/form-error-list';
 import { FieldsGrid } from '@/components/forms/inputs/FieldsGrid';
 import { InputField } from '@/components/forms/inputs/InputField';
 import { SubmitButton } from '@/components/forms/SubmitButton';
@@ -25,8 +26,7 @@ const initialFieldsMap: Record<CheckFieldName, string> = {
 export function CheckLayoutEditor({ checkLayout }: { checkLayout: CheckLayout }) {
   const { t } = useLaravelReactI18n();
   const [fieldsMap, setFieldsMap] = useState<Record<CheckFieldName, string>>(initialFieldsMap);
-  const { data, setData, put, processing, recentlySuccessful } = useForm('update-check-layout', {
-    id: checkLayout.id,
+  const { data, setData, put, processing, recentlySuccessful, errors } = useForm('update-check-layout', {
     fields: checkLayout.fields,
     width: checkLayout.width,
     height: checkLayout.height,
@@ -66,6 +66,7 @@ export function CheckLayoutEditor({ checkLayout }: { checkLayout: CheckLayout })
     <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
       <form onSubmit={submit} className="col-span-2 space-y-6">
         <p className="text-muted-foreground mb-4 text-sm">{t('You can edit the layout by dragging the fields to the desired position')}</p>
+        <FormErrorList errors={errors} />
         <FieldsGrid>
           <div className="w-full">
             <p>
