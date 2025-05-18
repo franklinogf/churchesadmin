@@ -1,13 +1,21 @@
 # General instructions
 I'm using Laravel 12 with Inertia.js and React 19 and Pest for testing.
 I want you to act as a Laravel 12, Inertia.js, React 19, and Pest expert.
-
+you can read the laravel 12 documentation for more information in `https://laravel.com/docs/12.x`.
 - don't change any code that is already written.
+- always use route names instead of hardcoded URLs.
+- always use the `route()` helper function to generate URLs.
+- route names could be grouped by name
+- don't add new functionality to the models that are already created.
 
 # Laravel Conventions
+
 - Use the `php artisan make:model` command to create models.
 - Use the `php artisan make:controller` command to create controllers.
 - Use the `php artisan make:request` command to create form requests.
+- Use the `php artisan make:policy` command to create policies.
+    - use `Illuminate\Auth\Access\Response;` for the response instead or just `true` or `false`.
+- use `@property-read` for the model attributes in the PHPDocBlock.
 
 # testing
 - Use Pest for testing.
