@@ -99,7 +99,7 @@ export const columns: ColumnDef<Expense>[] = [
               variant="destructive"
               onClick={() => {
                 openConfirmation({
-                  title: t('Are you sure you want to delete this expense?'),
+                  title: t('Are you sure you want to delete this :model', { model: t('expense?') }),
                   description: t('This action cannot be undone'),
                   actionLabel: t('Delete'),
                   actionVariant: 'destructive',

@@ -35,7 +35,7 @@ export const columns: ColumnDef<Offering>[] = [
   },
   {
     enableHiding: false,
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Offering Type" />,
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Offering type" />,
     accessorKey: 'offeringType',
     sortingFn: (rowA, rowB) => {
       const offeringTypeA = rowA.original.offeringType;
@@ -111,7 +111,7 @@ export const columns: ColumnDef<Offering>[] = [
             variant="destructive"
             onClick={() => {
               openConfirmation({
-                title: t('Are you sure you want to delete this offering?'),
+                title: t('Are you sure you want to delete this :model', { model: t('offering?') }),
                 description: t('You can restore it any time.'),
                 actionLabel: t('Delete'),
                 actionVariant: 'destructive',

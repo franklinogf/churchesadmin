@@ -101,7 +101,7 @@ export const walletColumns: ColumnDef<Wallet>[] = [
                   <DropdownMenuItem
                     onClick={() => {
                       openConfirmation({
-                        title: t('Are you sure you want to activate this wallet?'),
+                        title: t('Are you sure you want to activate this :model', { model: t('wallet?') }),
                         description: t('This wallet will be usable again'),
                         actionLabel: t('Activate'),
                         cancelLabel: t('Cancel'),
@@ -121,7 +121,7 @@ export const walletColumns: ColumnDef<Wallet>[] = [
                     variant="destructive"
                     onClick={() => {
                       openConfirmation({
-                        title: t('Are you sure you want to deactivate this wallet?'),
+                        title: t('Are you sure you want to deactivate this :model', { model: t('wallet?') }),
                         description: t("This wallet won't be usable until it is activated"),
                         actionLabel: t('Deactivate'),
                         actionVariant: 'destructive',
