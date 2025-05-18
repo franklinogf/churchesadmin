@@ -50,8 +50,8 @@ export function WalletForm({ wallet, open, setOpen }: { wallet?: Wallet; open: b
     <ResponsiveModal
       open={open}
       setOpen={setOpen}
-      title={wallet ? t('Edit :model',{model:t('Wallet')}) : t('Add :model', {model: t('Wallet')})}
-      description={wallet ? t('Edit the details of this :model',{model:t('wallet')}) : t('Create :model',{model:t('a new wallet')})}
+      title={wallet ? t('Edit :model', { model: t('Wallet') }) : t('Add :model', { model: t('Wallet') })}
+      description={wallet ? t('Edit the details of this :model', { model: t('wallet') }) : t('Create :model', { model: t('a new wallet') })}
     >
       <form className="space-y-4" onSubmit={handleSubmit}>
         <InputField required label={t('Name')} value={data.name} onChange={(value) => setData(`name`, value)} error={errors.name} />

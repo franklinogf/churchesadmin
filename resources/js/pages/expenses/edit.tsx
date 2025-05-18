@@ -57,13 +57,13 @@ export default function Create({ wallets, memberOptions, expenseTypesOptions, wa
       href: route('expenses.index'),
     },
     {
-      title: t('Edit :model',{model:t('Expense')}),
+      title: t('Edit :model', { model: t('Expense') }),
     },
   ];
 
   return (
     <AppLayout title={t('Expenses')} breadcrumbs={breadcrumbs}>
-      <PageTitle>{t('Edit :model',{model:t('Expense')})}</PageTitle>
+      <PageTitle>{t('Edit :model', { model: t('Expense') })}</PageTitle>
       <div className="mt-2 flex items-center justify-center">
         <Form isSubmitting={processing} className="w-full max-w-2xl" onSubmit={handleSubmit}>
           <div className="space-y-4 py-2">

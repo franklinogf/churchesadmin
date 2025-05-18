@@ -68,13 +68,13 @@ export default function Edit({ walletsOptions, paymentMethods, membersOptions, m
       href: route('offerings.index', { date: offering.date }),
     },
     {
-      title: t('Edit:model',{model:t('Offering')}),
+      title: t('Edit:model', { model: t('Offering') }),
     },
   ];
 
   return (
     <AppLayout title={t('Offerings')} breadcrumbs={breadcrumbs}>
-      <PageTitle>{t('Edit :model',{model:t('Offering')})}</PageTitle>
+      <PageTitle>{t('Edit :model', { model: t('Offering') })}</PageTitle>
       <div className="mt-2 flex items-center justify-center">
         <Form isSubmitting={processing} className="w-full max-w-2xl" onSubmit={handleSubmit}>
           <ComboboxField

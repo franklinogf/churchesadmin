@@ -25,7 +25,7 @@ export const columns: ColumnDef<Expense>[] = [
   },
   {
     enableHiding: false,
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Expense Type" />,
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Expense type" />,
     accessorKey: 'expenseType',
     cell: ({ row }) => (
       <DatatableCell justify="center">

@@ -119,13 +119,13 @@ export default function Create({ wallets, memberOptions, expenseTypes, expenseTy
       href: route('expenses.index'),
     },
     {
-      title: t('New :model',{model:t('Expense')}),
+      title: t('New :model', { model: t('Expense') }),
     },
   ];
 
   return (
     <AppLayout title={t('Expenses')} breadcrumbs={breadcrumbs}>
-      <PageTitle>{t('New :model',{model:t('Expense')})}</PageTitle>
+      <PageTitle>{t('New :model', { model: t('Expense') })}</PageTitle>
       <div className="mt-2 flex items-center justify-center">
         <Form isSubmitting={processing} className="w-full max-w-2xl" onSubmit={handleSubmit}>
           <div className="space-y-4 py-2">
@@ -212,7 +212,7 @@ export default function Create({ wallets, memberOptions, expenseTypes, expenseTy
           </div>
 
           <Button size="sm" variant="secondary" type="button" onClick={handleAddExpense}>
-            {t('Add :model', {model:('Add expense')})}
+            {t('Add :model', { model: 'xpense' })}
           </Button>
           <section className="mt-4">
             {Object.keys(walletExpenses).length > 0 && (

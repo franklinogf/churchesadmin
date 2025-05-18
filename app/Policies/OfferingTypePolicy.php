@@ -31,7 +31,7 @@ final class OfferingTypePolicy
             return Response::allow();
         }
 
-        return Response::deny(__('permission.create', ['label' => __('Offerings Types')]));
+        return Response::deny(__('permission.create', ['label' => __('Offerings types')]));
     }
 
     /**
@@ -43,7 +43,7 @@ final class OfferingTypePolicy
             return Response::allow();
         }
 
-        return Response::deny(__('permission.update', ['label' => __('Offerings Types')]));
+        return Response::deny(__('permission.update', ['label' => __('Offerings types')]));
     }
 
     /**
@@ -55,6 +55,6 @@ final class OfferingTypePolicy
             return Response::allow();
         }
 
-        return Response::deny(__('permission.delete', ['label' => __('Offerings Types')]));
+        return Response::deny(__('permission.delete', ['label' => __('Offerings types')]));
     }
 }

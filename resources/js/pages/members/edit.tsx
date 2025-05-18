@@ -65,12 +65,12 @@ export default function Edit({ member, genders, civilStatuses, skills, categorie
       href: route('members.index'),
     },
     {
-      title: t('Edit :model',{model:t('Member')}),
+      title: t('Edit :model', { model: t('Member') }),
     },
   ];
   return (
     <AppLayout breadcrumbs={breadcrumbs} title={t('Members')}>
-      <PageTitle>{t('Edit :model',{model:t('Member')})}</PageTitle>
+      <PageTitle>{t('Edit :model', { model: t('Member') })}</PageTitle>
       <div className="mt-2 flex items-center justify-center">
         <Form isSubmitting={processing} className="w-full max-w-2xl" onSubmit={handleSubmit}>
           <InputField required label="Name" value={data.name} onChange={(value) => setData('name', value)} error={errors.name} />

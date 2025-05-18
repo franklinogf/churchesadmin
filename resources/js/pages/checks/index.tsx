@@ -18,7 +18,7 @@ export default function Index({ unconfirmedChecks, confirmedChecks }: IndexPageP
       <header className="space-y-2">
         <PageTitle>{t('Checks')}</PageTitle>
         <Button size="sm">
-          <Link href={route('checks.create')}>{t('New :model',{model:t('Check')})}</Link>
+          <Link href={route('checks.create')}>{t('New :model', { model: t('Check') })}</Link>
         </Button>
       </header>
       <section className="mx-auto mt-4 w-full max-w-5xl space-y-16">

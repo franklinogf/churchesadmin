@@ -50,7 +50,7 @@ export default function Language({ church }: { church: Church }) {
     <AppLayout title="Church Settings" breadcrumbs={breadcrumbs}>
       <SettingsLayout>
         <div className="space-y-6">
-          <HeadingSmall title={t('General information')} description={t('Update :model',{model:t('the church information')})} />
+          <HeadingSmall title={t('General information')} description={t('Update :model', { model: t('the church information') })} />
 
           <form onSubmit={submitGeneral} className="space-y-6">
             <InputField

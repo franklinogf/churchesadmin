@@ -34,7 +34,7 @@ export function ExpenseTypeForm({ expenseType, open, setOpen }: { expenseType?: 
     <ResponsiveModal
       open={open}
       setOpen={setOpen}
-      title={expenseType ? t('Edit :model',{model:t('Expense Type')}) : t('Add :model', { model: t('Expense Type') })}
+      title={expenseType ? t('Edit :model', { model: t('Expense type') }) : t('Add :model', { model: t('Expense type') })}
       description={expenseType ? t('Edit the details of this expense type') : t('Create a new expense type')}
     >
       <form className="space-y-4" onSubmit={handleSubmit}>

@@ -38,8 +38,8 @@ export function SkillForm({ skill, open, setOpen }: { skill?: Tag; open: boolean
     <ResponsiveModal
       open={open}
       setOpen={setOpen}
-      title={skill ? t('Edit :model',{model:t('skill')}) : t('Add :model', {model:t('skill')})}
-      description={skill ? t('Edit the details of this :model',{model:t('skill')}) : t('Create :model',{model:t('a new skill')})}
+      title={skill ? t('Edit :model', { model: t('skill') }) : t('Add :model', { model: t('skill') })}
+      description={skill ? t('Edit the details of this :model', { model: t('skill') }) : t('Create :model', { model: t('a new skill') })}
     >
       <form className="space-y-4" onSubmit={handleSubmit}>
         <InputField label={t('Name')} value={data.name} onChange={(value) => setData(`name`, value)} error={errors.name} />
