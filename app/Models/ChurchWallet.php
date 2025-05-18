@@ -12,6 +12,7 @@ use Bavix\Wallet\Models\Transaction;
 use Bavix\Wallet\Traits\CanConfirm;
 use Bavix\Wallet\Traits\HasWalletFloat;
 use DateTimeInterface;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
@@ -36,7 +37,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 final class ChurchWallet extends Model implements WalletFloat, Confirmable, Wallet
 {
-    use CanConfirm, HasWalletFloat, SoftDeletes;
+    /** @use HasFactory<\Database\Factories\ChurchWalletFactory> */
+    use CanConfirm, HasFactory, HasWalletFloat, SoftDeletes;
 
     /**
      * The layout that the check is using.
