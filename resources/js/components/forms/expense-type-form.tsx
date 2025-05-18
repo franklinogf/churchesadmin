@@ -35,7 +35,7 @@ export function ExpenseTypeForm({ expenseType, open, setOpen }: { expenseType?: 
       open={open}
       setOpen={setOpen}
       title={expenseType ? t('Edit :model', { model: t('Expense type') }) : t('Add :model', { model: t('Expense type') })}
-      description={expenseType ? t('Edit the details of this expense type') : t('Create a new expense type')}
+      description={expenseType ? t('Edit the details of this expense type') : t('Create a new :model', { model: t('Expense type') })}
     >
       <form className="space-y-4" onSubmit={handleSubmit}>
         <InputField required label={t('Name')} value={data.name} onChange={(value) => setData('name', value)} error={errors.name} />
