@@ -9,7 +9,7 @@ use App\Actions\Tag\DeleteTagAction;
 use App\Actions\Tag\UpdateTagAction;
 use App\Enums\FlashMessageKey;
 use App\Enums\TagType;
-use App\Http\Requests\Tag\Skill\CreateSkillRequest;
+use App\Http\Requests\Tag\Skill\StoreSkillRequest;
 use App\Http\Requests\Tag\Skill\UpdateSkillRequest;
 use App\Http\Resources\Tag\TagResource;
 use App\Models\Tag;
@@ -37,7 +37,7 @@ final class SkillController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CreateSkillRequest $request, CreateTagAction $action): RedirectResponse
+    public function store(StoreSkillRequest $request, CreateTagAction $action): RedirectResponse
     {
         /**
          * @var array{name:string,is_regular:bool} $data

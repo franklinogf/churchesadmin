@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests\Tag\Category;
+namespace App\Http\Requests\Tag\Skill;
 
 use App\Enums\TagType;
 use App\Models\Tag;
@@ -11,14 +11,14 @@ use Illuminate\Auth\Access\Response;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 
-final class CreateCategoryRequest extends FormRequest
+final class StoreSkillRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): Response
     {
-        return Gate::authorize('create', [Tag::class, $this->boolean('is_regular'), TagType::CATEGORY]);
+        return Gate::authorize('create', [Tag::class, $this->boolean('is_regular'), TagType::SKILL]);
     }
 
     /**
@@ -29,7 +29,7 @@ final class CreateCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'min:3', 'max:255', UniqueTranslationRule::for('tags')->where('type', TagType::CATEGORY->value)],
+            'name' => ['required', 'string', 'min:3', 'max:255', UniqueTranslationRule::for('tags')->where('type', TagType::SKILL->value)],
             'is_regular' => ['required', 'boolean'],
         ];
     }

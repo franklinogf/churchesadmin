@@ -9,7 +9,7 @@ use App\Actions\Tag\DeleteTagAction;
 use App\Actions\Tag\UpdateTagAction;
 use App\Enums\FlashMessageKey;
 use App\Enums\TagType;
-use App\Http\Requests\Tag\Category\CreateCategoryRequest;
+use App\Http\Requests\Tag\Category\StoreCategoryRequest;
 use App\Http\Requests\Tag\Category\UpdateCategoryRequest;
 use App\Http\Resources\Tag\TagResource;
 use App\Models\Tag;
@@ -37,7 +37,7 @@ final class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CreateCategoryRequest $request, CreateTagAction $action): RedirectResponse
+    public function store(StoreCategoryRequest $request, CreateTagAction $action): RedirectResponse
     {
         /**
          * @var array{name:string,is_regular:bool} $data
