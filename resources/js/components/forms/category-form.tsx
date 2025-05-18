@@ -39,7 +39,7 @@ export function CategoryForm({ category, open, setOpen }: { category?: Tag; open
       open={open}
       setOpen={setOpen}
       title={category ? t('Edit :model', { model: t('Category') }) : t('Add :model', { model: t('Category') })}
-      description={category ? t('Edit the details of this :model', { model: t('category') }) : t('Create a new :model', { model: t('Category') })}
+      description={category ? t('Edit the details of this :model', { model: t('Category') }) : t('Create a new :model', { model: t('Category') })}
     >
       <form className="space-y-4" onSubmit={handleSubmit}>
         <InputField label={t('Name')} value={data.name} onChange={(value) => setData(`name`, value)} error={errors.name} />
