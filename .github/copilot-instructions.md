@@ -23,6 +23,7 @@ I want you to act as a Laravel 12, Inertia.js, React 19, and Pest expert.
             ```
 - tenant-specific functionality should be tested within a `/Tenant` folder.
     - for example, if a controller is used in `routes/tenant.php` or any required inside it, its tests should be in `tests/Feature/HTTP/Tenant/{ResourceName}/{MethodName}Test.php`.
+    - only add the tests for the methods that are used in the controller. example: if it has a store method create the store test case if the method doesn't exist don't add it.
         - for store use `CreateTest` as the file name.
         - for update use `UpdateTest` as the file name.
         - for delete use `DeleteTest` as the file name.
@@ -33,7 +34,7 @@ I want you to act as a Laravel 12, Inertia.js, React 19, and Pest expert.
 - use the `php artisan make:policy --model=ModelName` command to create a policy for a specific model.
     - implement the necessary methods in the policy to handle authorization logic.
 - add `Gate::authorize` in the controller methods to check for permissions.
-
-
-
-
+- run the tests and make sure they pass.
+ - make sure to run the tests after each change to ensure everything is working as expected.
+ - use `./vendor/bin/pest {folderPath}` to run the tests.
+   - for example, to run the tests for the OfferingType resource, you can use `./vendor/bin/pest tests/Feature/HTTP/Tenant/OfferingType`.
