@@ -30,8 +30,7 @@ it('cannot be deleted permanently if user does not have permission', function ()
     asUserWithPermission(TenantPermission::MANAGE_MISSIONARIES)
         ->from(route('missionaries.index'))
         ->delete(route('missionaries.forceDelete', ['missionary' => $missionary]))
-        ->assertRedirect(route('missionaries.index'))
-        ->assertSessionHas(FlashMessageKey::ERROR->value);
+        ->assertForbidden();
 
     assertDatabaseCount('missionaries', 1);
 

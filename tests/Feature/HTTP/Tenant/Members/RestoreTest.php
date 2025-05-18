@@ -28,8 +28,7 @@ it('cannot be restored if user does not have permission', function (): void {
 
     asUserWithPermission(TenantPermission::MANAGE_MEMBERS)
         ->put(route('members.restore', ['member' => $member]))
-        ->assertRedirect(route('members.index'))
-        ->assertSessionHas(FlashMessageKey::ERROR->value);
+        ->assertForbidden();
 
     assertDatabaseCount('members', 1);
 

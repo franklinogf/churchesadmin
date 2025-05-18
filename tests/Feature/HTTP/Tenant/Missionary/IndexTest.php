@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Enums\FlashMessageKey;
 use App\Enums\TenantPermission;
 use App\Models\Missionary;
 use Inertia\Testing\AssertableInertia as Assert;
@@ -40,9 +39,7 @@ it('only shows not trashed missionaries', function (): void {
 });
 
 it('cannot be rendered if authenticated user does not have permission', function (): void {
-
     asUserWithoutPermission()
         ->get(route('missionaries.index'))
-        ->assertRedirect(route('dashboard'))
-        ->assertSessionHas(FlashMessageKey::ERROR->value);
+        ->assertForbidden();
 });

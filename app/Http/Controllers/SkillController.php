@@ -23,13 +23,9 @@ final class SkillController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): Response|RedirectResponse
+    public function index(): Response
     {
-        $response = Gate::inspect('viewAny', [Tag::class, TagType::SKILL]);
-
-        if ($response->denied()) {
-            return to_route('dashboard')->with(FlashMessageKey::ERROR->value, $response->message());
-        }
+        Gate::authorize('viewAny', [Tag::class, TagType::SKILL]);
 
         $skills = Tag::whereType(TagType::SKILL->value)->orderByDesc('order_column')->get();
 
@@ -48,11 +44,7 @@ final class SkillController extends Controller
          */
         $data = $request->validated();
 
-        $response = Gate::inspect('create', [Tag::class, $data['is_regular'], TagType::SKILL]);
-
-        if ($response->denied()) {
-            return to_route('skills.index')->with(FlashMessageKey::ERROR->value, $response->message());
-        }
+        Gate::authorize('create', [Tag::class, $data['is_regular'], TagType::SKILL]);
 
         $action->handle($data, TagType::SKILL);
 
@@ -67,11 +59,7 @@ final class SkillController extends Controller
      */
     public function update(UpdateSkillRequest $request, Tag $tag, UpdateTagAction $action): RedirectResponse
     {
-        $response = Gate::inspect('update', $tag);
-
-        if ($response->denied()) {
-            return to_route('skills.index')->with(FlashMessageKey::ERROR->value, $response->message());
-        }
+        Gate::authorize('update', $tag);
 
         $action->handle($tag, $request->validated());
 
@@ -86,11 +74,7 @@ final class SkillController extends Controller
      */
     public function destroy(Tag $tag, DeleteTagAction $action): RedirectResponse
     {
-        $response = Gate::inspect('delete', $tag);
-
-        if ($response->denied()) {
-            return to_route('skills.index')->with(FlashMessageKey::ERROR->value, $response->message());
-        }
+        Gate::authorize('delete', $tag);
 
         $action->handle($tag);
 

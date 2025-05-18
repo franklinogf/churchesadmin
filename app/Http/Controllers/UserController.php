@@ -28,13 +28,9 @@ final class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(#[CurrentUser] TenantUser $user): Response|RedirectResponse
+    public function index(#[CurrentUser] TenantUser $user): Response
     {
-        $response = Gate::inspect('viewAny', TenantUser::class);
-
-        if ($response->denied()) {
-            return to_route('dashboard')->with(FlashMessageKey::ERROR->value, $response->message());
-        }
+        Gate::authorize('viewAny', TenantUser::class);
 
         $users = TenantUser::query()
             ->withoutRole(TenantRole::SUPER_ADMIN)
@@ -47,13 +43,9 @@ final class UserController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(): Response|RedirectResponse
+    public function create(): Response
     {
-        $response = Gate::inspect('create', TenantUser::class);
-
-        if ($response->denied()) {
-            return to_route('users.index')->with(FlashMessageKey::ERROR->value, $response->message());
-        }
+        Gate::authorize('create', TenantUser::class);
 
         $roles = Role::query()
             ->whereNotIn('name', [TenantRole::SUPER_ADMIN->value])
@@ -73,12 +65,6 @@ final class UserController extends Controller
      */
     public function store(StoreUserRequest $request, CreateUserAction $action): RedirectResponse
     {
-        $response = Gate::inspect('create', TenantUser::class);
-
-        if ($response->denied()) {
-            return to_route('users.index')->with(FlashMessageKey::ERROR->value, $response->message());
-        }
-
         $action->handle(
             $request->getUserData(),
             $request->getRoleData(),
@@ -103,13 +89,9 @@ final class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(TenantUser $user): Response|RedirectResponse
+    public function edit(TenantUser $user): Response
     {
-        $response = Gate::inspect('update', $user);
-
-        if ($response->denied()) {
-            return to_route('users.index')->with(FlashMessageKey::ERROR->value, $response->message());
-        }
+        Gate::authorize('update', $user);
 
         $user->load('roles', 'permissions');
         $roles = Role::query()
@@ -131,12 +113,6 @@ final class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, TenantUser $user, UpdateUserAction $action): RedirectResponse
     {
-        $response = Gate::inspect('update', $user);
-
-        if ($response->denied()) {
-            return to_route('users.index')->with(FlashMessageKey::ERROR->value, $response->message());
-        }
-
         $action->handle(
             $user,
             $request->getUserData(),
@@ -157,11 +133,7 @@ final class UserController extends Controller
      */
     public function destroy(TenantUser $user, DeleteUserAction $action): RedirectResponse
     {
-        $response = Gate::inspect('delete', $user);
-
-        if ($response->denied()) {
-            return to_route('users.index')->with(FlashMessageKey::ERROR->value, $response->message());
-        }
+        Gate::authorize('delete', $user);
 
         $action->handle($user);
 

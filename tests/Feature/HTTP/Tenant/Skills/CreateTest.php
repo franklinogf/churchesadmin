@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Enums\FlashMessageKey;
 use App\Enums\TagType;
 use App\Enums\TenantPermission;
 use App\Models\Tag;
@@ -106,8 +105,7 @@ describe('if user does not have permission', function (): void {
                 'name' => 'skill name',
                 'is_regular' => false,
             ])
-            ->assertRedirect(route('skills.index'))
-            ->assertSessionHas(FlashMessageKey::ERROR->value);
+            ->assertForbidden();
 
         assertDatabaseCount('tags', 0);
 
@@ -120,8 +118,7 @@ describe('if user does not have permission', function (): void {
                 'name' => 'skill name',
                 'is_regular' => true,
             ])
-            ->assertRedirect(route('skills.index'))
-            ->assertSessionHas(FlashMessageKey::ERROR->value);
+            ->assertForbidden();
 
         assertDatabaseCount('tags', 0);
 

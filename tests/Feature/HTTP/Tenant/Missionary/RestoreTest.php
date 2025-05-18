@@ -28,8 +28,7 @@ it('cannot be restored if user does not have permission', function (): void {
 
     asUserWithPermission(TenantPermission::MANAGE_MISSIONARIES)
         ->put(route('missionaries.restore', ['missionary' => $missionary]))
-        ->assertRedirect(route('missionaries.index'))
-        ->assertSessionHas(FlashMessageKey::ERROR->value);
+        ->assertForbidden();
 
     assertDatabaseCount('missionaries', 1);
 

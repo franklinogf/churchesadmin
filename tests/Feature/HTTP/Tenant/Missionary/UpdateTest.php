@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Enums\FlashMessageKey;
 use App\Enums\Gender;
 use App\Enums\OfferingFrequency;
 use App\Enums\TenantPermission;
@@ -190,8 +189,7 @@ describe('if user does not have permission', function (): void {
 
     it('cannot be rendered if authenticated', function (): void {
         get(route('missionaries.edit', ['missionary' => Missionary::factory()->create()]))
-            ->assertRedirect(route('missionaries.index'))
-            ->assertSessionHas(FlashMessageKey::ERROR->value);
+            ->assertForbidden();
     });
 
     it('cannot be updated', function (): void {
@@ -215,7 +213,6 @@ describe('if user does not have permission', function (): void {
                     'zip_code' => '12345',
                 ],
             ])
-            ->assertRedirect(route('missionaries.index'))
-            ->assertSessionHas(FlashMessageKey::ERROR->value);
+            ->assertForbidden();
     });
 });

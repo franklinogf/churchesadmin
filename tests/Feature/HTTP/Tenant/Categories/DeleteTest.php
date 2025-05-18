@@ -47,8 +47,7 @@ describe('if user does not have permission', function (): void {
 
         from(route('categories.index'))
             ->delete(route('categories.destroy', ['tag' => $category]))
-            ->assertRedirect(route('categories.index'))
-            ->assertSessionHas(FlashMessageKey::ERROR->value);
+            ->assertForbidden();
 
         assertDatabaseCount('tags', 1);
     });

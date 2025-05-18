@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Enums\FlashMessageKey;
 use App\Enums\TenantPermission;
 use App\Enums\TenantRole;
 use App\Models\TenantUser;
@@ -90,8 +89,7 @@ describe('if user does not have permission', function (): void {
 
     it('cannot be rendered if authenticated', function (): void {
         get(route('users.create'))
-            ->assertRedirect(route('users.index'))
-            ->assertSessionHas(FlashMessageKey::ERROR->value);
+            ->assertForbidden();
     });
 
     it('cannot be stored', function (): void {
@@ -104,7 +102,6 @@ describe('if user does not have permission', function (): void {
                 'roles' => [TenantRole::SECRETARY->value],
                 'additional_permissions' => [TenantPermission::MANAGE_USERS->value],
             ])
-            ->assertRedirect(route('users.index'))
-            ->assertSessionHas(FlashMessageKey::ERROR->value);
+            ->assertForbidden();
     });
 });

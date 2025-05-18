@@ -47,8 +47,7 @@ describe('if user does not have permission', function (): void {
 
         from(route('skills.index'))
             ->delete(route('skills.destroy', ['tag' => $skill]))
-            ->assertRedirect(route('skills.index'))
-            ->assertSessionHas(FlashMessageKey::ERROR->value);
+            ->assertForbidden();
 
         assertDatabaseCount('tags', 1);
     });

@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Enums\FlashMessageKey;
 use App\Models\TenantUser;
 use Database\Seeders\Tenants\PermissionSeeder;
 use Database\Seeders\Tenants\RoleSeeder;
@@ -33,9 +32,7 @@ it('can be rendered if authenticated user has permission', function (): void {
 });
 
 it('cannot be rendered if authenticated user does not have permission', function (): void {
-
     asUserWithoutPermission()
         ->get(route('users.index'))
-        ->assertRedirect(route('dashboard'))
-        ->assertSessionHas(FlashMessageKey::ERROR->value);
+        ->assertForbidden();
 });

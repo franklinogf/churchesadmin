@@ -6,7 +6,9 @@ namespace App\Http\Requests\Missionary;
 
 use App\Enums\Gender;
 use App\Enums\OfferingFrequency;
+use Illuminate\Auth\Access\Response;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 
 /**
@@ -17,9 +19,9 @@ final class UpdateMissionaryRequest extends FormRequest
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize(): bool
+    public function authorize(): Response
     {
-        return true;
+        return Gate::authorize('update', $this->missionary);
     }
 
     /**

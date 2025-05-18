@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Enums\FlashMessageKey;
 use App\Enums\TenantPermission;
 use App\Models\Tag;
 use Inertia\Testing\AssertableInertia as Assert;
@@ -27,10 +26,8 @@ it('can be rendered if authenticated user has permission', function (): void {
         );
 });
 
-it('cannot be rendered if user does not have permission', function (): void {
-
+it('cannot be rendered if authenticated user does not have permission', function (): void {
     asUserWithoutPermission()
         ->get(route('categories.index'))
-        ->assertRedirect(route('dashboard'))
-        ->assertSessionHas(FlashMessageKey::ERROR->value);
+        ->assertForbidden();
 });

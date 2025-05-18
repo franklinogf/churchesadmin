@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use App\Enums\CivilStatus;
-use App\Enums\FlashMessageKey;
 use App\Enums\Gender;
 use App\Enums\TenantPermission;
 use App\Models\Member;
@@ -116,8 +115,7 @@ describe('if user does not have permission', function (): void {
 
     it('cannot be rendered if authenticated', function (): void {
         get(route('members.create'))
-            ->assertRedirect(route('members.index'))
-            ->assertSessionHas(FlashMessageKey::ERROR->value);
+            ->assertForbidden();
     });
 
     it('cannot be stored', function (): void {
@@ -139,7 +137,6 @@ describe('if user does not have permission', function (): void {
                     'zip_code' => '12345',
                 ],
             ])
-            ->assertRedirect(route('members.index'))
-            ->assertSessionHas(FlashMessageKey::ERROR->value);
+            ->assertForbidden();
     });
 });

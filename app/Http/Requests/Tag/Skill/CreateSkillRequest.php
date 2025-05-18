@@ -5,17 +5,20 @@ declare(strict_types=1);
 namespace App\Http\Requests\Tag\Skill;
 
 use App\Enums\TagType;
+use App\Models\Tag;
 use CodeZero\UniqueTranslation\UniqueTranslationRule;
+use Illuminate\Auth\Access\Response;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 
 final class CreateSkillRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize(): bool
+    public function authorize(): Response
     {
-        return true;
+        return Gate::authorize('create', [Tag::class, $this->boolean('is_regular'), TagType::SKILL]);
     }
 
     /**
