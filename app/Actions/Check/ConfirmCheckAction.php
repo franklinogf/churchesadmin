@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Actions\Check;
 
-use App\Actions\Wallet\ConfirmTransaction;
+use App\Actions\Wallet\ConfirmTransactionAction;
 use App\Models\Check;
 
 final readonly class ConfirmCheckAction
 {
     public function __construct(
-        private ConfirmTransaction $confirmTransaction,
+        private ConfirmTransactionAction $confirmTransactionAction,
     ) {}
 
     /**
@@ -21,7 +21,7 @@ final readonly class ConfirmCheckAction
     public function handle(Check $check): bool
     {
 
-        return $this->confirmTransaction->handle($check->transaction);
+        return $this->confirmTransactionAction->handle($check->transaction);
 
     }
 }

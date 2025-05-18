@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Models\CheckLayout;
 use App\Models\Church;
 use App\Models\ChurchWallet;
 use App\Models\Member;
@@ -17,6 +18,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 use Spatie\Translatable\Facades\Translatable;
@@ -47,6 +49,8 @@ final class AppServiceProvider extends ServiceProvider
         );
 
         WalletConfigure::ignoreMigrations();
+
+        URL::forceScheme('https');
     }
 
     private function configureCommands(): void
@@ -72,6 +76,7 @@ final class AppServiceProvider extends ServiceProvider
             'church' => Church::class,
             'church_wallet' => ChurchWallet::class,
             'offering_type' => OfferingType::class,
+            'check_layout' => CheckLayout::class,
         ]);
     }
 

@@ -10,7 +10,7 @@ import type { Wallet } from '@/types/models/wallet';
 import { Link, router } from '@inertiajs/react';
 import { type ColumnDef } from '@tanstack/react-table';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { ArchiveIcon, ArchiveRestoreIcon, CheckIcon, Edit2Icon, MoreHorizontalIcon, WalletIcon, XCircleIcon } from 'lucide-react';
+import { ArchiveIcon, ArchiveRestoreIcon, CheckIcon, Edit2Icon, FilePenIcon, MoreHorizontalIcon, WalletIcon, XCircleIcon } from 'lucide-react';
 import { useState } from 'react';
 
 export const walletColumns: ColumnDef<Wallet>[] = [
@@ -61,6 +61,16 @@ export const walletColumns: ColumnDef<Wallet>[] = [
     ),
   },
   {
+    accessorKey: 'checkLayout',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Check layout" />,
+    meta: 'Check layout',
+    cell: ({ row }) => (
+      <DatatableCell justify="center">
+        {row.original.checkLayout ? <CheckIcon className="size-4 text-green-600" /> : <XCircleIcon className="text-destructive size-4" />}
+      </DatatableCell>
+    ),
+  },
+  {
     id: 'actions',
     enableHiding: false,
     enableSorting: false,
@@ -87,6 +97,12 @@ export const walletColumns: ColumnDef<Wallet>[] = [
                 <Link href={route('wallets.show', wallet.id)}>
                   <WalletIcon className="size-3" />
                   <span>{t('Transactions')}</span>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href={route('wallets.check.edit', wallet.id)}>
+                  <FilePenIcon className="size-3" />
+                  <span>{t('Check layout')}</span>
                 </Link>
               </DropdownMenuItem>
               {/* {userCan(UserPermission.UPDATE_SKILLS) && ( */}

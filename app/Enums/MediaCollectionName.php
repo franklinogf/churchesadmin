@@ -7,4 +7,5 @@ namespace App\Enums;
 enum MediaCollectionName: string
 {
     case LOGO = 'logo';
+    case DEFAULT = 'default';
 }

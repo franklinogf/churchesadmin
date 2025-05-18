@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Provider\MediaLibrary;
+namespace App\Services\MediaLibrary;
 
 use Spatie\MediaLibrary\Support\UrlGenerator\DefaultUrlGenerator;
 

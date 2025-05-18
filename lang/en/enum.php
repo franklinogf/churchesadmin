@@ -11,6 +11,12 @@ return [
         'deposit' => 'Deposit',
         'withdraw' => 'Withdrawal',
     ],
+    'transaction_meta_type' => [
+        'initial' => 'Initial',
+        'check' => 'Check',
+        'offering' => 'Offering',
+        'expense' => 'Expense',
+    ],
     'civil_status' => [
         'single' => 'Single',
         'married' => 'Married',

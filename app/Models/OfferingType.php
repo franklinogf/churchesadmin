@@ -39,7 +39,6 @@ final class OfferingType extends Model
      */
     protected function casts(): array
     {
-
         return [
             'name' => AsUcWords::class,
         ];

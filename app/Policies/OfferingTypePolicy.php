@@ -15,11 +15,11 @@ final class OfferingTypePolicy
      */
     public function viewAny(TenantUser $user): Response
     {
-        if ($user->can(TenantPermission::MANAGE_OFFERINGS)) {
+        if ($user->can(TenantPermission::MANAGE_OFFERING_TYPES)) {
             return Response::allow();
         }
 
-        return Response::deny(__('permission.view_any', ['label' => __('Offerings')]));
+        return Response::deny(__('permission.view_any', ['label' => __('Offering types')]));
     }
 
     /**
@@ -31,7 +31,7 @@ final class OfferingTypePolicy
             return Response::allow();
         }
 
-        return Response::deny(__('permission.create', ['label' => __('Offerings Types')]));
+        return Response::deny(__('permission.create', ['label' => __('Offering types')]));
     }
 
     /**
@@ -43,7 +43,7 @@ final class OfferingTypePolicy
             return Response::allow();
         }
 
-        return Response::deny(__('permission.update', ['label' => __('Offerings Types')]));
+        return Response::deny(__('permission.update', ['label' => __('Offering types')]));
     }
 
     /**
@@ -55,6 +55,6 @@ final class OfferingTypePolicy
             return Response::allow();
         }
 
-        return Response::deny(__('permission.delete', ['label' => __('Offerings Types')]));
+        return Response::deny(__('permission.delete', ['label' => __('Offerings types')]));
     }
 }

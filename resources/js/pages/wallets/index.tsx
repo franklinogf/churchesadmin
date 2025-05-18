@@ -21,20 +21,22 @@ export default function Index({ wallets }: IndexPageProps) {
     <AppLayout breadcrumbs={[{ title: t('Wallets') }]} title={t('Wallets')}>
       <PageTitle>{t('Wallets')}</PageTitle>
       <WalletForm open={open} setOpen={setOpen} />
-      <DataTable
-        headerButton={
-          <Button
-            size="sm"
-            onClick={() => {
-              setOpen(true);
-            }}
-          >
-            {t('Add Wallet')}
-          </Button>
-        }
-        data={wallets}
-        columns={walletColumns}
-      />
+      <section className="mx-auto mt-8 w-full max-w-2xl">
+        <DataTable
+          headerButton={
+            <Button
+              size="sm"
+              onClick={() => {
+                setOpen(true);
+              }}
+            >
+              {t('Add Wallet')}
+            </Button>
+          }
+          data={wallets}
+          columns={walletColumns}
+        />
+      </section>
     </AppLayout>
   );
 }
