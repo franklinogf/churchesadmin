@@ -1,14 +1,14 @@
 import Heading from '@/components/heading';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { useTranslations } from '@/hooks/use-translations';
 import { cn } from '@/lib/utils';
 import { type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { useMemo, type PropsWithChildren } from 'react';
 
 export default function SettingsLayout({ children }: PropsWithChildren) {
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations();
   const {
     props: {
       ziggy: { location },

@@ -6,9 +6,9 @@ import { useMemo, type FormEventHandler } from 'react';
 import { InputField } from '@/components/forms/inputs/InputField';
 import HeadingSmall from '@/components/heading-small';
 import { Button } from '@/components/ui/button';
+import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/profile-layout';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 type ProfileForm = {
   name: string;
@@ -16,7 +16,7 @@ type ProfileForm = {
 };
 
 export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: boolean; status?: string }) {
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations<string>();
   const { auth } = usePage<SharedData>().props;
 
   const { data, setData, patch, errors, processing, recentlySuccessful } = useForm<Required<ProfileForm>>({

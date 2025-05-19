@@ -2,11 +2,11 @@ import { DataTable } from '@/components/custom-ui/datatable/data-table';
 import { PageTitle } from '@/components/PageTitle';
 import { Button } from '@/components/ui/button';
 import { UserPermission } from '@/enums/user';
+import { useTranslations } from '@/hooks/use-translations';
 import { useUser } from '@/hooks/use-user';
 import AppLayout from '@/layouts/app-layout';
 import { type User } from '@/types/models/user';
 import { Link } from '@inertiajs/react';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { columns } from './includes/columns';
 
 interface IndexPageProps {
@@ -14,7 +14,7 @@ interface IndexPageProps {
 }
 
 export default function Index({ users }: IndexPageProps) {
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations<string>();
   const { can: userCan } = useUser();
   return (
     <AppLayout title={t('Users')} breadcrumbs={[{ title: t('Users') }]}>

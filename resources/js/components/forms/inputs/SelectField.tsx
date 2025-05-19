@@ -3,9 +3,9 @@ import { FieldError } from '@/components/forms/inputs/FieldError';
 import { FieldLabel } from '@/components/forms/inputs/FieldLabel';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectSeparator, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { useTranslations } from '@/hooks/use-translations';
 import { cn } from '@/lib/utils';
 import { type SelectOption } from '@/types';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 import React, { useId } from 'react';
 
 interface DefaultSelectFieldProps {
@@ -43,7 +43,7 @@ export function SelectField({
   onChange,
   required,
 }: SelectFieldProps) {
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations<string>();
   const id = useId();
   return (
     <FieldContainer className={className}>

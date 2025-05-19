@@ -2,9 +2,9 @@ import { CurrencyField } from '@/components/forms/inputs/CurrencyField';
 import { FieldsGrid } from '@/components/forms/inputs/FieldsGrid';
 import { InputField } from '@/components/forms/inputs/InputField';
 import { ResponsiveModal, ResponsiveModalFooterSubmit } from '@/components/responsive-modal';
+import { useTranslations } from '@/hooks/use-translations';
 import type { Wallet } from '@/types/models/wallet';
 import { useForm } from '@inertiajs/react';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 type WalletForm = {
   name: string;
@@ -16,7 +16,7 @@ type WalletForm = {
 };
 
 export function WalletForm({ wallet, open, setOpen }: { wallet?: Wallet; open: boolean; setOpen: (open: boolean) => void }) {
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations<string>();
 
   const { data, setData, post, put, errors, reset, processing } = useForm<WalletForm>({
     name: wallet?.name ?? '',

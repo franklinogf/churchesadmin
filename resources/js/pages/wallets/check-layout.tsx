@@ -6,11 +6,11 @@ import { PageTitle } from '@/components/PageTitle';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useTranslations } from '@/hooks/use-translations';
 import { type BreadcrumbItem, type SelectOption } from '@/types';
 import type { CheckLayout } from '@/types/models/check-layout';
 import type { Wallet } from '@/types/models/wallet';
 import { Link, router } from '@inertiajs/react';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { AlertCircleIcon } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { CheckLayoutEditor } from './components/check-layout-editor';
@@ -23,7 +23,7 @@ interface CheckLayoutProps {
 }
 
 export default function CheckLayout({ checkLayouts, wallet, checkLayout }: CheckLayoutProps) {
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations<string>();
   const isMobile = useIsMobile();
   const [activeLayout, setActiveLayout] = useState(checkLayout?.id.toString() || NEW_LAYOUT);
 

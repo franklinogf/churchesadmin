@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { useTranslations } from '@/hooks/use-translations';
 import {
   type Column,
   type ColumnDef,
@@ -15,7 +16,6 @@ import {
   useReactTable,
   type VisibilityState,
 } from '@tanstack/react-table';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { XSquare } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
@@ -74,7 +74,7 @@ export function DataTable<TData, TValue>({
     onSelectedRowsChange(rowSelection);
   }, [rowSelection, onSelectedRowsChange]);
 
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations<string>();
   const tableColumns = table.getAllColumns();
   const enabledHidingColumns = tableColumns.filter((column) => column.getCanHide());
   const canSelect = tableColumns.some((col) => col.id === 'select');
@@ -178,7 +178,7 @@ export function DataTable<TData, TValue>({
 }
 
 function VisibilityDropdownMenu<TData>({ columns }: { columns: Column<TData, unknown>[] }) {
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations<string>();
   if (columns.length === 0) return null;
   return (
     <DropdownMenu>

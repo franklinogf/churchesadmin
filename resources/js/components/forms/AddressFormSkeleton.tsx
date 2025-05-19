@@ -1,5 +1,5 @@
+import { useTranslations } from '@/hooks/use-translations';
 import { type AddressFormData } from '@/types/models/address';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { CountryField } from './inputs/CountryField';
 import { FieldsGrid } from './inputs/FieldsGrid';
 import { InputField } from './inputs/InputField';
@@ -13,7 +13,7 @@ interface AddressFormSkeletonProps {
 }
 
 export function AddressFormSkeleton({ data, setData, errors, errorsName, withTitle = true }: AddressFormSkeletonProps) {
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations<string>();
   return (
     <section>
       {withTitle && <h2 className="mb-4 text-lg font-semibold">{t('Address')}</h2>}

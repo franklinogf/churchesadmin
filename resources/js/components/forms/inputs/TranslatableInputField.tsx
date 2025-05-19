@@ -3,9 +3,9 @@ import { FieldError } from '@/components/forms/inputs/FieldError';
 import { FieldLabel } from '@/components/forms/inputs/FieldLabel';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useTranslations } from '@/hooks/use-translations';
 import { type LanguageTranslations, type SharedData } from '@/types';
 import { usePage } from '@inertiajs/react';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 import React, { useId } from 'react';
 
 interface TranslatableInputProps {
@@ -20,7 +20,7 @@ interface TranslatableInputProps {
 export function TranslatableInput({ label, errors, values, disabled, required, onChange }: TranslatableInputProps) {
   const locales = usePage<SharedData>().props.availableLocales;
   const [activeLocale, setActiveLocale] = React.useState(locales[0]?.value);
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations<string>();
 
   const errorMessage = errors?.errors[`${errors.name}.${activeLocale}`];
   const localeError = (locale: string) => Object.keys(errors?.errors ?? {}).some((key) => key.endsWith(locale));

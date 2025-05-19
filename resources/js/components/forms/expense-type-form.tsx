@@ -1,12 +1,12 @@
 import { InputField } from '@/components/forms/inputs/InputField';
 import { ResponsiveModal, ResponsiveModalFooterSubmit } from '@/components/responsive-modal';
+import { useTranslations } from '@/hooks/use-translations';
 import type { ExpenseType } from '@/types/models/expense-type';
 import { useForm } from '@inertiajs/react';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { CurrencyField } from './inputs/CurrencyField';
 
 export function ExpenseTypeForm({ expenseType, open, setOpen }: { expenseType?: ExpenseType; open: boolean; setOpen: (open: boolean) => void }) {
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations<string>();
   const { data, setData, post, put, errors, processing, reset } = useForm({
     name: expenseType?.name ?? '',
     default_amount: expenseType?.defaultAmount?.toString() ?? '',

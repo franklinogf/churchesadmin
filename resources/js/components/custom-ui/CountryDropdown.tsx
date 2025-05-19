@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils';
 
 // assets
 import { useCountries } from '@/hooks/use-countries';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { useTranslations } from '@/hooks/use-translations';
 import { CheckIcon, ChevronDown, XSquare } from 'lucide-react';
 import { Button } from '../ui/button';
 
@@ -26,7 +26,7 @@ export function CountryDropdown({ onChange, defaultValue, disabled = false, plac
   const { countries, getCurrentCountryName } = useCountries();
   const [open, setOpen] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState('');
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations();
 
   useEffect(() => {
     if (defaultValue) {

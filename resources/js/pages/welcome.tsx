@@ -3,7 +3,7 @@ import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuL
 import type { SharedData } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
 
-import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { useTranslations } from '@/hooks/use-translations';
 import { DollarSignIcon, GlobeIcon, TvIcon, UsersIcon } from 'lucide-react';
 import { motion } from 'motion/react';
 
@@ -11,7 +11,7 @@ export const menuItems = [] as const;
 
 export default function Welcome() {
   const { appName } = usePage<SharedData>().props;
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations();
   return (
     <>
       <Head title={t('Effortless Church Administration')} />
@@ -132,7 +132,7 @@ export default function Welcome() {
 }
 
 function CtaButton() {
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations();
   return (
     <Button variant="brand">
       <Link href={route('root.home')} prefetch>

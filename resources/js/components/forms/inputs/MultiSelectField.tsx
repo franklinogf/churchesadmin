@@ -2,10 +2,10 @@ import MultipleSelector, { type Option } from '@/components/custom-ui/MultiSelec
 import { FieldContainer } from '@/components/forms/inputs/FieldContainer';
 import { FieldError } from '@/components/forms/inputs/FieldError';
 import { FieldLabel } from '@/components/forms/inputs/FieldLabel';
+import { useTranslations } from '@/hooks/use-translations';
 import { convertTagsToMultiselectOptions } from '@/lib/mutliselect';
 import { type SelectOption } from '@/types';
 import { type Tag } from '@/types/models/tag';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export interface MultiSelectFieldProps {
   required?: boolean;
@@ -21,7 +21,7 @@ export interface MultiSelectFieldProps {
 }
 
 export function MultiSelectField({ error, label, disabled, className, placeholder, options, value, onChange, required }: MultiSelectFieldProps) {
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations<string>();
   const selectOptions = convertTagsToMultiselectOptions(options);
   return (
     <FieldContainer className={className}>

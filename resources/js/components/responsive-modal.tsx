@@ -1,7 +1,7 @@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle } from '@/components/ui/drawer';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { useTranslations } from '@/hooks/use-translations';
 import { SubmitButton } from './forms/SubmitButton';
 import { Button } from './ui/button';
 
@@ -42,7 +42,7 @@ export function ResponsiveModal({ title, description, open, setOpen, children }:
 }
 
 export function ResponsiveModalFooterSubmit({ isSubmitting, label }: { isSubmitting: boolean; label: string }) {
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations<string>();
   return (
     <div className="grid grid-cols-1 gap-2 md:flex md:justify-end md:gap-4">
       <DrawerClose asChild>

@@ -1,9 +1,9 @@
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { useTranslations } from '@/hooks/use-translations';
 import { AlertCircleIcon, MinusIcon } from 'lucide-react';
 
 export function FormErrorList({ errors }: { errors?: Record<string, string> }) {
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations<string>();
   if (!errors || Object.keys(errors).length === 0) {
     return null;
   }

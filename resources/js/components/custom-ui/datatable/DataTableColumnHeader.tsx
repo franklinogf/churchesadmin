@@ -4,8 +4,8 @@ import { ArrowDown, ArrowUp, ChevronsUpDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 
+import { useTranslations } from '@/hooks/use-translations';
 import { cn } from '@/lib/utils';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 interface DataTableColumnHeaderProps<TData, TValue> extends React.HTMLAttributes<HTMLDivElement> {
   column: Column<TData, TValue>;
@@ -14,7 +14,7 @@ interface DataTableColumnHeaderProps<TData, TValue> extends React.HTMLAttributes
 }
 
 export function DataTableColumnHeader<TData, TValue>({ column, title, className, center = true }: DataTableColumnHeaderProps<TData, TValue>) {
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations<string>();
   if (!column.getCanSort()) {
     return <div className={cn('text-foreground', { 'text-center': center }, className)}>{t(title)}</div>;
   }

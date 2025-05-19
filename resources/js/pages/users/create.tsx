@@ -6,11 +6,11 @@ import { MultiSelectField } from '@/components/forms/inputs/MultiSelectField';
 import { SwitchField } from '@/components/forms/inputs/SwitchField';
 import { PageTitle } from '@/components/PageTitle';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import { convertRolesToMultiselectOptions, getMultiselecOptionsValues } from '@/lib/mutliselect';
 import type { Permission, Role, User } from '@/types/models/user';
 import { useForm } from '@inertiajs/react';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { getUniquePermissions } from './includes/functions';
 
 type CreateForm = {
@@ -29,7 +29,7 @@ interface EditPageProps {
 }
 
 export default function Edit({ permissions, roles }: EditPageProps) {
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations<string>();
 
   // const userPermissions = user.permissions?.map((permission) => permission.name);
   const { data, setData, errors, post, processing, transform } = useForm<CreateForm>({

@@ -5,11 +5,11 @@ import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 import { WalletName } from '@/enums';
+import { useTranslations } from '@/hooks/use-translations';
 import useConfirmationStore from '@/stores/confirmationStore';
 import type { Wallet } from '@/types/models/wallet';
 import { Link, router } from '@inertiajs/react';
 import { type ColumnDef } from '@tanstack/react-table';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { ArchiveIcon, ArchiveRestoreIcon, CheckIcon, Edit2Icon, FilePenIcon, MoreHorizontalIcon, WalletIcon, XCircleIcon } from 'lucide-react';
 import { useState } from 'react';
 
@@ -76,7 +76,7 @@ export const walletColumns: ColumnDef<Wallet>[] = [
     enableSorting: false,
     size: 0,
     cell: function CellComponent({ row }) {
-      const { t } = useLaravelReactI18n();
+      const { t } = useTranslations<string>();
       const { openConfirmation } = useConfirmationStore();
       const [isEditing, setIsEditing] = useState(false);
       //   const { can: userCan } = useUser();
