@@ -109,7 +109,7 @@ export function CheckLayoutEditor({ checkLayout }: { checkLayout: CheckLayout })
             ))}
           </CheckLayoutDroppableArea>
         </DragDropProvider>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center justify-center gap-4">
           <SubmitButton isSubmitting={processing}>{t('Save')}</SubmitButton>
 
           <Transition
