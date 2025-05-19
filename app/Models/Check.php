@@ -69,8 +69,7 @@ final class Check extends Model
      * @param  Builder<Check>|null  $query
      * @return void
      */
-    #[Scope]
-    protected function confirmed(?Builder $query = null): void
+    #[Scope]private function confirmed(?Builder $query = null): void
     {
         $query?->whereRelation('transaction', 'confirmed', true);
     }
@@ -81,8 +80,7 @@ final class Check extends Model
      * @param  Builder<Check>|null  $query
      * @return void
      */
-    #[Scope]
-    protected function unconfirmed(?Builder $query = null): void
+    #[Scope]private function unconfirmed(?Builder $query = null): void
     {
         $query?->whereRelation('transaction', 'confirmed', false);
     }

@@ -58,7 +58,7 @@ export const columns: ColumnDef<Tag>[] = [
                   variant="destructive"
                   onClick={() => {
                     openConfirmation({
-                      title: t('Are you sure you want to delete this skill?'),
+                      title: t('Are you sure you want to delete this :model?', { model: t('Skill') }),
                       description: (skill.isRegular ? t('This is marked as regular.') + '\n' : '') + t('This action cannot be undone.'),
                       actionLabel: t('Delete'),
                       actionVariant: 'destructive',

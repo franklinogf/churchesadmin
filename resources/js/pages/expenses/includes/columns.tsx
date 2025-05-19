@@ -25,7 +25,7 @@ export const columns: ColumnDef<Expense>[] = [
   },
   {
     enableHiding: false,
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Expense Type" />,
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Expense type" />,
     accessorKey: 'expenseType',
     cell: ({ row }) => (
       <DatatableCell justify="center">
@@ -99,7 +99,7 @@ export const columns: ColumnDef<Expense>[] = [
               variant="destructive"
               onClick={() => {
                 openConfirmation({
-                  title: t('Are you sure you want to delete this expense?'),
+                  title: t('Are you sure you want to delete this :model?', { model: t('Expense') }),
                   description: t('This action cannot be undone'),
                   actionLabel: t('Delete'),
                   actionVariant: 'destructive',

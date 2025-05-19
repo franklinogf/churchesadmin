@@ -20,7 +20,7 @@ export default function Index({ expenses }: IndexPageProps) {
       <DataTable
         headerButton={
           <Button asChild>
-            <Link href={route('expenses.create')}>{t('New Expense')}</Link>
+            <Link href={route('expenses.create')}>{t('New :model', { model: t('Expense') })}</Link>
           </Button>
         }
         data={expenses}
