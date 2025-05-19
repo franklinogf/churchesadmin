@@ -2,7 +2,7 @@ import { InputField } from '@/components/forms/inputs/InputField';
 import { SwitchField } from '@/components/forms/inputs/SwitchField';
 import { ResponsiveModal, ResponsiveModalFooterSubmit } from '@/components/responsive-modal';
 import { UserPermission } from '@/enums/user';
-import { useUser } from '@/hooks/use-permissions';
+import { useUser } from '@/hooks/use-user';
 import type { Tag } from '@/types/models/tag';
 import { useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
@@ -43,7 +43,7 @@ export function SkillForm({ skill, open, setOpen }: { skill?: Tag; open: boolean
     >
       <form className="space-y-4" onSubmit={handleSubmit}>
         <InputField label={t('Name')} value={data.name} onChange={(value) => setData(`name`, value)} error={errors.name} />
-        {userCan(skill ? UserPermission.UPDATE_REGULAR_TAG : UserPermission.CREATE_REGULAR_TAG) && (
+        {userCan(skill ? UserPermission.REGULAR_TAG_UPDATE : UserPermission.REGULAR_TAG_CREATE) && (
           <SwitchField
             description={t('Only admins would be allowed to edit and delete this skill')}
             label={t('Mark this skill as regular')}

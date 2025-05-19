@@ -24,7 +24,7 @@ export function UserMenuContent({ user }: UserMenuContentProps) {
       <DropdownMenuSeparator />
       <DropdownMenuGroup>
         <DropdownMenuItem asChild>
-          <Link className="block w-full" href={route('settings')} as="button" prefetch onClick={cleanup}>
+          <Link className="block w-full" href={route('settings')} as="button" onClick={cleanup}>
             <Settings className="mr-2" />
             {t('Settings')}
           </Link>

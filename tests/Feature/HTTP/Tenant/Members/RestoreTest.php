@@ -11,7 +11,7 @@ use function Pest\Laravel\assertDatabaseCount;
 it('can be restored if user has permission', function (): void {
     $member = Member::factory()->trashed()->create()->fresh();
 
-    asUserWithPermission(TenantPermission::MANAGE_MEMBERS, TenantPermission::RESTORE_MEMBERS)
+    asUserWithPermission(TenantPermission::MEMBERS_MANAGE, TenantPermission::MEMBERS_RESTORE)
         ->put(route('members.restore', ['member' => $member]))
         ->assertRedirect(route('members.index'))
         ->assertSessionHas(FlashMessageKey::SUCCESS->value);
@@ -26,10 +26,9 @@ it('can be restored if user has permission', function (): void {
 it('cannot be restored if user does not have permission', function (): void {
     $member = Member::factory()->trashed()->create()->fresh();
 
-    asUserWithPermission(TenantPermission::MANAGE_MEMBERS)
+    asUserWithPermission(TenantPermission::MEMBERS_MANAGE)
         ->put(route('members.restore', ['member' => $member]))
-        ->assertRedirect(route('members.index'))
-        ->assertSessionHas(FlashMessageKey::ERROR->value);
+        ->assertForbidden();
 
     assertDatabaseCount('members', 1);
 

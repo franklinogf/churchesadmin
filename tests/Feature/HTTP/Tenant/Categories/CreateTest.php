@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Enums\FlashMessageKey;
 use App\Enums\TagType;
 use App\Enums\TenantPermission;
 use App\Models\Tag;
@@ -13,7 +12,7 @@ use function Pest\Laravel\from;
 describe('if user has permission', function (): void {
 
     beforeEach(function (): void {
-        asUserWithPermission(TenantPermission::MANAGE_CATEGORIES, TenantPermission::CREATE_CATEGORIES, TenantPermission::CREATE_REGULAR_TAG);
+        asUserWithPermission(TenantPermission::CATEGORIES_MANAGE, TenantPermission::CATEGORIES_CREATE, TenantPermission::REGULAR_TAG_CREATE);
     });
 
     it('can be stored', function (): void {
@@ -96,7 +95,7 @@ describe('if user has permission', function (): void {
 describe('if user does not have permission', function (): void {
 
     beforeEach(function (): void {
-        asUserWithPermission(TenantPermission::MANAGE_CATEGORIES);
+        asUserWithoutPermission();
     });
 
     it('cannot be stored', function (): void {
@@ -106,8 +105,7 @@ describe('if user does not have permission', function (): void {
                 'name' => 'category name',
                 'is_regular' => false,
             ])
-            ->assertRedirect(route('categories.index'))
-            ->assertSessionHas(FlashMessageKey::ERROR->value);
+            ->assertForbidden();
 
         assertDatabaseCount('tags', 0);
 
@@ -120,8 +118,7 @@ describe('if user does not have permission', function (): void {
                 'name' => 'category name',
                 'is_regular' => true,
             ])
-            ->assertRedirect(route('categories.index'))
-            ->assertSessionHas(FlashMessageKey::ERROR->value);
+            ->assertForbidden();
 
         assertDatabaseCount('tags', 0);
 

@@ -4,61 +4,69 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
+use App\Enums\TenantPermission;
+use App\Models\TenantUser;
+use Illuminate\Auth\Access\Response;
+
 final class WalletPolicy
 {
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(): bool
+    public function viewAny(TenantUser $user): Response
     {
-        return false;
+        if ($user->can(TenantPermission::WALLETS_MANAGE)) {
+            return Response::allow();
+        }
+
+        return Response::deny(__('permission.view_any', ['label' => __('Wallets')]));
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(): bool
+    public function view(TenantUser $user): Response
     {
-        return false;
+        if ($user->can(TenantPermission::WALLETS_MANAGE)) {
+            return Response::allow();
+        }
+
+        return Response::deny(__('permission.view', ['label' => __('Wallets')]));
     }
 
     /**
      * Determine whether the user can create models.
      */
-    public function create(): bool
+    public function create(TenantUser $user): Response
     {
-        return false;
+        if ($user->can(TenantPermission::WALLETS_CREATE)) {
+            return Response::allow();
+        }
+
+        return Response::deny(__('permission.create', ['label' => __('Wallets')]));
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(): bool
+    public function update(TenantUser $user): Response
     {
-        return false;
+        if ($user->can(TenantPermission::WALLETS_UPDATE)) {
+            return Response::allow();
+        }
+
+        return Response::deny(__('permission.update', ['label' => __('Wallets')]));
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(): bool
+    public function delete(TenantUser $user): Response
     {
-        return false;
-    }
+        if ($user->can(TenantPermission::WALLETS_DELETE)) {
+            return Response::allow();
+        }
 
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(): bool
-    {
-        return false;
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(): bool
-    {
-        return false;
+        return Response::deny(__('permission.delete', ['label' => __('Wallets')]));
     }
 }

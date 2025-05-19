@@ -11,7 +11,7 @@ use function Pest\Laravel\from;
 
 describe('if user has permission', function (): void {
     beforeEach(function (): void {
-        asUserWithPermission(TenantPermission::MANAGE_CATEGORIES, TenantPermission::DELETE_CATEGORIES, TenantPermission::DELETE_REGULAR_TAG);
+        asUserWithPermission(TenantPermission::CATEGORIES_MANAGE, TenantPermission::CATEGORIES_DELETE, TenantPermission::REGULAR_TAG_DELETE);
     });
 
     it('can be deleted', function (): void {
@@ -39,7 +39,7 @@ describe('if user has permission', function (): void {
 
 describe('if user does not have permission', function (): void {
     beforeEach(function (): void {
-        asUserWithPermission(TenantPermission::MANAGE_CATEGORIES);
+        asUserWithPermission(TenantPermission::CATEGORIES_MANAGE);
     });
 
     test('cannot delete a regular category', function (): void {
@@ -47,8 +47,7 @@ describe('if user does not have permission', function (): void {
 
         from(route('categories.index'))
             ->delete(route('categories.destroy', ['tag' => $category]))
-            ->assertRedirect(route('categories.index'))
-            ->assertSessionHas(FlashMessageKey::ERROR->value);
+            ->assertForbidden();
 
         assertDatabaseCount('tags', 1);
     });

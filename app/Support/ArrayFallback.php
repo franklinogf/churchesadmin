@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Support;
 
+use Illuminate\Support\Arr;
+
 final class ArrayFallback
 {
     /**
@@ -14,6 +16,6 @@ final class ArrayFallback
      */
     public static function inputOrFallback(array $data, string $key, mixed $fallback): mixed
     {
-        return array_key_exists($key, $data) ? $data[$key] : $fallback;
+        return Arr::exists($data, $key) ? $data[$key] : $fallback;
     }
 }

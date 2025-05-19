@@ -2,7 +2,7 @@ import { InputField } from '@/components/forms/inputs/InputField';
 import { SwitchField } from '@/components/forms/inputs/SwitchField';
 import { ResponsiveModal, ResponsiveModalFooterSubmit } from '@/components/responsive-modal';
 import { UserPermission } from '@/enums/user';
-import { useUser } from '@/hooks/use-permissions';
+import { useUser } from '@/hooks/use-user';
 import type { Tag } from '@/types/models/tag';
 import { useForm } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
@@ -43,7 +43,7 @@ export function CategoryForm({ category, open, setOpen }: { category?: Tag; open
     >
       <form className="space-y-4" onSubmit={handleSubmit}>
         <InputField label={t('Name')} value={data.name} onChange={(value) => setData(`name`, value)} error={errors.name} />
-        {userCan(category ? UserPermission.UPDATE_REGULAR_TAG : UserPermission.CREATE_REGULAR_TAG) && (
+        {userCan(category ? UserPermission.REGULAR_TAG_UPDATE : UserPermission.REGULAR_TAG_CREATE) && (
           <SwitchField
             description={t('Only admins would be allowed to edit and delete this category')}
             label={t('Mark this category as regular')}

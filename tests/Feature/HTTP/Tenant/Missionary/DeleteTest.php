@@ -11,7 +11,7 @@ use function Pest\Laravel\assertDatabaseCount;
 it('can be deleted if user has permission', function (): void {
     $missionary = Missionary::factory()->create()->fresh();
 
-    asUserWithPermission(TenantPermission::MANAGE_MISSIONARIES, TenantPermission::DELETE_MISSIONARIES)
+    asUserWithPermission(TenantPermission::MISSIONARIES_MANAGE, TenantPermission::MISSIONARIES_DELETE)
         ->from(route('missionaries.index'))
         ->delete(route('missionaries.destroy', ['missionary' => $missionary]))
         ->assertRedirect(route('missionaries.index'))
@@ -27,11 +27,10 @@ it('can be deleted if user has permission', function (): void {
 it('cannot be deleted if user does not have permission', function (): void {
     $missionary = Missionary::factory()->create()->fresh();
 
-    asUserWithPermission(TenantPermission::MANAGE_MISSIONARIES)
+    asUserWithPermission(TenantPermission::MISSIONARIES_MANAGE)
         ->from(route('missionaries.index'))
         ->delete(route('missionaries.destroy', ['missionary' => $missionary]))
-        ->assertRedirect(route('missionaries.index'))
-        ->assertSessionHas(FlashMessageKey::ERROR->value);
+        ->assertForbidden();
 
     assertDatabaseCount('missionaries', 1);
 

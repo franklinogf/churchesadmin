@@ -15,11 +15,11 @@ final class OfferingTypePolicy
      */
     public function viewAny(TenantUser $user): Response
     {
-        if ($user->can(TenantPermission::MANAGE_OFFERINGS)) {
+        if ($user->can(TenantPermission::OFFERING_TYPES_MANAGE)) {
             return Response::allow();
         }
 
-        return Response::deny(__('permission.view_any', ['label' => __('Offerings')]));
+        return Response::deny(__('permission.view_any', ['label' => __('Offering types')]));
     }
 
     /**
@@ -27,11 +27,11 @@ final class OfferingTypePolicy
      */
     public function create(TenantUser $user): Response
     {
-        if ($user->can(TenantPermission::CREATE_OFFERING_TYPES)) {
+        if ($user->can(TenantPermission::OFFERING_TYPES_CREATE)) {
             return Response::allow();
         }
 
-        return Response::deny(__('permission.create', ['label' => __('Offerings Types')]));
+        return Response::deny(__('permission.create', ['label' => __('Offering types')]));
     }
 
     /**
@@ -39,11 +39,11 @@ final class OfferingTypePolicy
      */
     public function update(TenantUser $user): Response
     {
-        if ($user->can(TenantPermission::UPDATE_OFFERING_TYPES)) {
+        if ($user->can(TenantPermission::OFFERING_TYPES_UPDATE)) {
             return Response::allow();
         }
 
-        return Response::deny(__('permission.update', ['label' => __('Offerings Types')]));
+        return Response::deny(__('permission.update', ['label' => __('Offering types')]));
     }
 
     /**
@@ -51,10 +51,10 @@ final class OfferingTypePolicy
      */
     public function delete(TenantUser $user): Response
     {
-        if ($user->can(TenantPermission::DELETE_OFFERING_TYPES)) {
+        if ($user->can(TenantPermission::OFFERING_TYPES_DELETE)) {
             return Response::allow();
         }
 
-        return Response::deny(__('permission.delete', ['label' => __('Offerings Types')]));
+        return Response::deny(__('permission.delete', ['label' => __('Offerings types')]));
     }
 }

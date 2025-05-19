@@ -3,7 +3,7 @@ import { SkillForm } from '@/components/forms/skill-form';
 import { PageTitle } from '@/components/PageTitle';
 import { Button } from '@/components/ui/button';
 import { UserPermission } from '@/enums/user';
-import { useUser } from '@/hooks/use-permissions';
+import { useUser } from '@/hooks/use-user';
 import AppLayout from '@/layouts/app-layout';
 import { type Tag } from '@/types/models/tag';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
@@ -25,7 +25,7 @@ export default function Index({ skills }: IndexPageProps) {
         <SkillForm open={open} setOpen={setOpen} />
         <DataTable
           headerButton={
-            userCan(UserPermission.CREATE_SKILLS) && (
+            userCan(UserPermission.SKILLS_CREATE) && (
               <Button size="sm" onClick={() => setOpen(true)}>
                 {t('Add skill')}
               </Button>

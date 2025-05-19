@@ -11,7 +11,7 @@ use function Pest\Laravel\assertDatabaseCount;
 it('can be deleted permanently if user has permission', function (): void {
     $member = Member::factory()->trashed()->create()->fresh();
 
-    asUserWithPermission(TenantPermission::MANAGE_MEMBERS, TenantPermission::FORCE_DELETE_MEMBERS)
+    asUserWithPermission(TenantPermission::MEMBERS_MANAGE, TenantPermission::MEMBERS_FORCE_DELETE)
         ->from(route('members.index'))
         ->delete(route('members.forceDelete', ['member' => $member]))
         ->assertRedirect(route('members.index'))
@@ -27,11 +27,10 @@ it('can be deleted permanently if user has permission', function (): void {
 it('cannot be deleted permanently if user does not have permission', function (): void {
     $member = Member::factory()->trashed()->create()->fresh();
 
-    asUserWithPermission(TenantPermission::MANAGE_MEMBERS)
+    asUserWithPermission(TenantPermission::MEMBERS_MANAGE)
         ->from(route('members.index'))
         ->delete(route('members.forceDelete', ['member' => $member]))
-        ->assertRedirect(route('members.index'))
-        ->assertSessionHas(FlashMessageKey::ERROR->value);
+        ->assertForbidden();
 
     assertDatabaseCount('members', 1);
 

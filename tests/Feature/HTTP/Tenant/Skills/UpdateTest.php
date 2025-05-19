@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Enums\FlashMessageKey;
 use App\Enums\TenantPermission;
 use App\Models\Tag;
 
@@ -10,7 +9,7 @@ use function Pest\Laravel\from;
 
 describe('if user has permission', function (): void {
     beforeEach(function (): void {
-        asUserWithPermission(TenantPermission::MANAGE_SKILLS, TenantPermission::UPDATE_SKILLS, TenantPermission::UPDATE_REGULAR_TAG);
+        asUserWithPermission(TenantPermission::SKILLS_MANAGE, TenantPermission::SKILLS_UPDATE, TenantPermission::REGULAR_TAG_UPDATE);
     });
 
     it('can be updated', function (): void {
@@ -81,7 +80,7 @@ describe('if user has permission', function (): void {
 
 describe('if user does not have permission', function (): void {
     beforeEach(function (): void {
-        asUserWithPermission(TenantPermission::MANAGE_SKILLS);
+        asUserWithPermission(TenantPermission::SKILLS_MANAGE);
     });
 
     it('cannot update a skill', function (): void {
@@ -95,8 +94,7 @@ describe('if user does not have permission', function (): void {
                 'name' => 'new name',
                 'is_regular' => false,
             ])
-            ->assertRedirect(route('skills.index'))
-            ->assertSessionHas(FlashMessageKey::ERROR->value);
+            ->assertForbidden();
 
         $skill->refresh();
         expect($skill->name)->toBe('old name')
@@ -113,8 +111,7 @@ describe('if user does not have permission', function (): void {
                 'name' => 'new name',
                 'is_regular' => false,
             ])
-            ->assertRedirect(route('skills.index'))
-            ->assertSessionHas(FlashMessageKey::ERROR->value);
+            ->assertForbidden();
 
         $skill->refresh();
         expect($skill->name)->toBe('old name')

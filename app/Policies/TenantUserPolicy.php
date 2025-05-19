@@ -15,7 +15,7 @@ final class TenantUserPolicy
      */
     public function viewAny(TenantUser $user): Response
     {
-        if ($user->can(TenantPermission::MANAGE_USERS)) {
+        if ($user->can(TenantPermission::USERS_MANAGE)) {
             return Response::allow();
         }
 
@@ -27,7 +27,7 @@ final class TenantUserPolicy
      */
     public function create(TenantUser $user): Response
     {
-        if ($user->can(TenantPermission::CREATE_USERS)) {
+        if ($user->can(TenantPermission::USERS_CREATE)) {
             return Response::allow();
         }
 
@@ -39,7 +39,7 @@ final class TenantUserPolicy
      */
     public function update(TenantUser $user): Response
     {
-        if ($user->can(TenantPermission::UPDATE_USERS)) {
+        if ($user->can(TenantPermission::USERS_UPDATE)) {
             return Response::allow();
         }
 
@@ -51,7 +51,7 @@ final class TenantUserPolicy
      */
     public function delete(TenantUser $user): Response
     {
-        if ($user->can(TenantPermission::DELETE_USERS)) {
+        if ($user->can(TenantPermission::USERS_DELETE)) {
             return Response::allow();
         }
 

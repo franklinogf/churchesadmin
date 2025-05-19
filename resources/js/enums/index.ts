@@ -49,3 +49,11 @@ export enum TransactionMetaType {
   OFFERING = 'offering',
   EXPENSE = 'expense',
 }
+
+export enum CheckLayoutFieldName {
+  PAYEE = 'payee',
+  AMOUNT = 'amount',
+  AMOUNT_WORDS = 'amount_in_words',
+  DATE = 'date',
+  MEMO = 'memo',
+}

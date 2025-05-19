@@ -22,6 +22,19 @@ export const transactionColumns: ColumnDef<Transaction>[] = [
   },
   {
     enableHiding: false,
+    header: ({ column }) => <DataTableColumnHeader column={column} title="From" />,
+    accessorKey: 'meta',
+    cell: function CellColumn({ row }) {
+      const { t } = useLaravelReactI18n();
+      return (
+        <DatatableCell justify="center">
+          <Badge variant="outline">{t(`enum.transaction_meta_type.${row.original.meta?.type}`)}</Badge>
+        </DatatableCell>
+      );
+    },
+  },
+  {
+    enableHiding: false,
     accessorKey: 'amountFloat',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Amount" />,
     cell: ({ row }) => <DatatableCell justify="end">${row.original.amountFloat}</DatatableCell>,

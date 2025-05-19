@@ -9,13 +9,15 @@ interface InputFieldProps extends Omit<React.ComponentProps<typeof Input>, 'onCh
   error?: string;
   label?: string;
   fieldClassName?: string;
+  errorOnTop?: boolean;
 }
 
-export function InputField({ required, error, label, disabled, className, value, onChange, fieldClassName, ...props }: InputFieldProps) {
+export function InputField({ required, error, label, disabled, className, value, onChange, fieldClassName, errorOnTop, ...props }: InputFieldProps) {
   const id = useId();
   return (
     <FieldContainer className={className}>
       <FieldLabel disabled={disabled} id={id} label={label} required={required} />
+      {errorOnTop && <FieldError error={error} />}
       <Input
         required={required}
         disabled={disabled}
@@ -33,7 +35,7 @@ export function InputField({ required, error, label, disabled, className, value,
         }}
         {...props}
       />
-      <FieldError error={error} />
+      {!errorOnTop && <FieldError error={error} />}
     </FieldContainer>
   );
 }

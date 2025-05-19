@@ -16,21 +16,23 @@ return new class extends Migration
         Schema::create('checks', function (Blueprint $table) {
             $table->id();
             $table->foreignId('transaction_id');
-            $table->foreignId('member_id')->constrained();
-            $table->foreignId('expense_type_id')->constrained();
+            $table->foreignId('member_id')->constrained('members');
+            $table->foreignId('expense_type_id')->constrained('expense_types');
             $table->string('check_number')->nullable();
             $table->date('date');
             $table->string('type');
             $table->string('note')->nullable();
             $table->timestamps();
         });
-    }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        Schema::dropIfExists('checks');
+        Schema::create('check_layouts', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->integer('width');
+            $table->integer('height');
+            $table->json('fields');
+            $table->timestamps();
+        });
+
     }
 };

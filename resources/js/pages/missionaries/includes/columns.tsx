@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { UserPermission } from '@/enums/user';
-import { useUser } from '@/hooks/use-permissions';
+import { useUser } from '@/hooks/use-user';
 
 import useConfirmationStore from '@/stores/confirmationStore';
 import { type Missionary } from '@/types/models/missionary';
@@ -68,7 +68,7 @@ export const columns: ColumnDef<Missionary>[] = [
                 <span>{t('View')}</span>
               </Link>
             </DropdownMenuItem>
-            {userCan(UserPermission.UPDATE_MISSIONARIES) && (
+            {userCan(UserPermission.MISSIONARIES_UPDATE) && (
               <DropdownMenuItem asChild>
                 <Link href={route('missionaries.edit', row.original.id)}>
                   <Edit2Icon className="size-3" />
@@ -76,7 +76,7 @@ export const columns: ColumnDef<Missionary>[] = [
                 </Link>
               </DropdownMenuItem>
             )}
-            {userCan(UserPermission.DELETE_MISSIONARIES) && (
+            {userCan(UserPermission.MISSIONARIES_DELETE) && (
               <DropdownMenuItem
                 variant="destructive"
                 onClick={() => {

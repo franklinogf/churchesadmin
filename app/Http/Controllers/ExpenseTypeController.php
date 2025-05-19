@@ -10,6 +10,7 @@ use App\Http\Requests\Code\UpdateExpenseTypeRequest;
 use App\Http\Resources\Codes\ExpenseTypeResource;
 use App\Models\ExpenseType;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -20,6 +21,8 @@ final class ExpenseTypeController extends Controller
      */
     public function index(): Response
     {
+        Gate::authorize('viewAny', ExpenseType::class);
+
         $expenseTypes = ExpenseType::latest()->get();
 
         return Inertia::render('codes/expenseTypes/index', [
@@ -32,7 +35,9 @@ final class ExpenseTypeController extends Controller
      */
     public function store(StoreExpenseTypeRequest $request): RedirectResponse
     {
-        ExpenseType::create($request->validated());
+        $validated = $request->validated();
+
+        ExpenseType::create($validated);
 
         return to_route('codes.expenseTypes.index')->with(FlashMessageKey::SUCCESS->value,
             __('flash.message.created', ['model' => 'Expense type']));
@@ -43,6 +48,8 @@ final class ExpenseTypeController extends Controller
      */
     public function update(UpdateExpenseTypeRequest $request, ExpenseType $expenseType): RedirectResponse
     {
+        Gate::authorize('update', $expenseType);
+
         $expenseType->update($request->validated());
 
         return to_route('codes.expenseTypes.index')->with(FlashMessageKey::SUCCESS->value,
@@ -54,6 +61,8 @@ final class ExpenseTypeController extends Controller
      */
     public function destroy(ExpenseType $expenseType): RedirectResponse
     {
+        Gate::authorize('delete', $expenseType);
+
         $expenseType->delete();
 
         return to_route('codes.expenseTypes.index')->with(FlashMessageKey::SUCCESS->value,

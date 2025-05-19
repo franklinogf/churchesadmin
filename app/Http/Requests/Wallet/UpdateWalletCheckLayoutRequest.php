@@ -2,20 +2,24 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests\Tag\Category;
+namespace App\Http\Requests\Wallet;
 
-use App\Enums\TagType;
-use CodeZero\UniqueTranslation\UniqueTranslationRule;
+use App\Models\ChurchWallet;
+use Illuminate\Auth\Access\Response;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 
-final class CreateCategoryRequest extends FormRequest
+/**
+ * @property-read ChurchWallet $wallet
+ */
+final class UpdateWalletCheckLayoutRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize(): bool
+    public function authorize(): Response
     {
-        return true;
+        return Gate::authorize('update', $this->wallet);
     }
 
     /**
@@ -26,8 +30,7 @@ final class CreateCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'string', 'min:3', 'max:255', UniqueTranslationRule::for('tags')->where('type', TagType::CATEGORY->value)],
-            'is_regular' => ['required', 'boolean'],
+            'check_layout_id' => ['required', 'exists:check_layouts,id'],
         ];
     }
 }

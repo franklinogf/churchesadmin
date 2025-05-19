@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Enums\FlashMessageKey;
 use App\Enums\TenantPermission;
 use App\Models\Missionary;
 use Inertia\Testing\AssertableInertia as Assert;
@@ -12,7 +11,7 @@ use function Pest\Laravel\get;
 it('can be rendered if authenticated user has permission', function (): void {
     Missionary::factory()->count(3)->create();
 
-    asUserWithPermission(TenantPermission::MANAGE_MISSIONARIES)
+    asUserWithPermission(TenantPermission::MISSIONARIES_MANAGE)
         ->get(route('missionaries.index'))
         ->assertStatus(200)
         ->assertInertia(fn (Assert $page): Assert => $page
@@ -30,7 +29,7 @@ it('only shows not trashed missionaries', function (): void {
     Missionary::factory()->count(3)->create();
     Missionary::factory()->count(2)->trashed()->create();
 
-    asUserWithPermission(TenantPermission::MANAGE_MISSIONARIES)
+    asUserWithPermission(TenantPermission::MISSIONARIES_MANAGE)
         ->get(route('missionaries.index'))
         ->assertStatus(200)
         ->assertInertia(fn (Assert $page): Assert => $page
@@ -40,9 +39,7 @@ it('only shows not trashed missionaries', function (): void {
 });
 
 it('cannot be rendered if authenticated user does not have permission', function (): void {
-
     asUserWithoutPermission()
         ->get(route('missionaries.index'))
-        ->assertRedirect(route('dashboard'))
-        ->assertSessionHas(FlashMessageKey::ERROR->value);
+        ->assertForbidden();
 });

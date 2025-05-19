@@ -7,81 +7,104 @@ use App\Enums\TenantPermission;
 it('has needed enums', function (): void {
 
     expect(TenantPermission::names())->toBe([
-        'UPDATE_REGULAR_TAG',
-        'DELETE_REGULAR_TAG',
-        'CREATE_REGULAR_TAG',
-        'MANAGE_USERS',
-        'CREATE_USERS',
-        'UPDATE_USERS',
-        'DELETE_USERS',
-        'MANAGE_SKILLS',
-        'CREATE_SKILLS',
-        'UPDATE_SKILLS',
-        'DELETE_SKILLS',
-        'MANAGE_CATEGORIES',
-        'CREATE_CATEGORIES',
-        'UPDATE_CATEGORIES',
-        'DELETE_CATEGORIES',
-        'MANAGE_MEMBERS',
-        'CREATE_MEMBERS',
-        'UPDATE_MEMBERS',
-        'DELETE_MEMBERS',
-        'FORCE_DELETE_MEMBERS',
-        'RESTORE_MEMBERS',
-        'MANAGE_MISSIONARIES',
-        'CREATE_MISSIONARIES',
-        'UPDATE_MISSIONARIES',
-        'DELETE_MISSIONARIES',
-        'FORCE_DELETE_MISSIONARIES',
-        'RESTORE_MISSIONARIES',
-        'MANAGE_OFFERINGS',
-        'CREATE_OFFERINGS',
-        'UPDATE_OFFERINGS',
-        'DELETE_OFFERINGS',
-        'MANAGE_OFFERING_TYPES',
-        'CREATE_OFFERING_TYPES',
-        'UPDATE_OFFERING_TYPES',
-        'DELETE_OFFERING_TYPES',
+        'REGULAR_TAG_UPDATE',
+        'REGULAR_TAG_DELETE',
+        'REGULAR_TAG_CREATE',
+        'USERS_MANAGE',
+        'USERS_CREATE',
+        'USERS_UPDATE',
+        'USERS_DELETE',
+        'SKILLS_MANAGE',
+        'SKILLS_CREATE',
+        'SKILLS_UPDATE',
+        'SKILLS_DELETE',
+        'CATEGORIES_MANAGE',
+        'CATEGORIES_CREATE',
+        'CATEGORIES_UPDATE',
+        'CATEGORIES_DELETE',
+        'MEMBERS_MANAGE',
+        'MEMBERS_CREATE',
+        'MEMBERS_UPDATE',
+        'MEMBERS_DELETE',
+        'MEMBERS_FORCE_DELETE',
+        'MEMBERS_RESTORE',
+        'MISSIONARIES_MANAGE',
+        'MISSIONARIES_CREATE',
+        'MISSIONARIES_UPDATE',
+        'MISSIONARIES_DELETE',
+        'MISSIONARIES_FORCE_DELETE',
+        'MISSIONARIES_RESTORE',
+        'OFFERINGS_MANAGE',
+        'OFFERINGS_CREATE',
+        'OFFERINGS_UPDATE',
+        'OFFERINGS_DELETE',
+        'OFFERING_TYPES_MANAGE',
+        'OFFERING_TYPES_CREATE',
+        'OFFERING_TYPES_UPDATE',
+        'OFFERING_TYPES_DELETE',
+        'EXPENSE_TYPES_MANAGE',
+        'EXPENSE_TYPES_CREATE',
+        'EXPENSE_TYPES_UPDATE',
+        'EXPENSE_TYPES_DELETE',
+        'WALLETS_MANAGE',
+        'WALLETS_CREATE',
+        'WALLETS_UPDATE',
+        'WALLETS_DELETE',
+        'CHECK_LAYOUTS_MANAGE',
+        'CHECK_LAYOUTS_CREATE',
+        'CHECK_LAYOUTS_UPDATE',
+        'CHECK_LAYOUTS_DELETE',
     ]);
 
 });
 
 test('label return correct label', function (): void {
 
-    expect(TenantPermission::UPDATE_REGULAR_TAG->label())->toBe(__('Update Regular Tag'));
-    expect(TenantPermission::DELETE_REGULAR_TAG->label())->toBe(__('Delete Regular Tag'));
-    expect(TenantPermission::CREATE_REGULAR_TAG->label())->toBe(__('Create Regular Tag'));
-    expect(TenantPermission::MANAGE_USERS->label())->toBe(__('Manage Users'));
-    expect(TenantPermission::CREATE_USERS->label())->toBe(__('Create User'));
-    expect(TenantPermission::UPDATE_USERS->label())->toBe(__('Update User'));
-    expect(TenantPermission::DELETE_USERS->label())->toBe(__('Delete User'));
-    expect(TenantPermission::MANAGE_SKILLS->label())->toBe(__('Manage Skills'));
-    expect(TenantPermission::CREATE_SKILLS->label())->toBe(__('Create Skill'));
-    expect(TenantPermission::UPDATE_SKILLS->label())->toBe(__('Update Skill'));
-    expect(TenantPermission::DELETE_SKILLS->label())->toBe(__('Delete Skill'));
-    expect(TenantPermission::MANAGE_CATEGORIES->label())->toBe(__('Manage Categories'));
-    expect(TenantPermission::CREATE_CATEGORIES->label())->toBe(__('Create Category'));
-    expect(TenantPermission::UPDATE_CATEGORIES->label())->toBe(__('Update Category'));
-    expect(TenantPermission::DELETE_CATEGORIES->label())->toBe(__('Delete Category'));
-    expect(TenantPermission::MANAGE_MEMBERS->label())->toBe(__('Manage Members'));
-    expect(TenantPermission::CREATE_MEMBERS->label())->toBe(__('Create Member'));
-    expect(TenantPermission::UPDATE_MEMBERS->label())->toBe(__('Update Member'));
-    expect(TenantPermission::DELETE_MEMBERS->label())->toBe(__('Delete Member'));
-    expect(TenantPermission::FORCE_DELETE_MEMBERS->label())->toBe(__('Force Delete Member'));
-    expect(TenantPermission::RESTORE_MEMBERS->label())->toBe(__('Restore Member'));
-    expect(TenantPermission::MANAGE_MISSIONARIES->label())->toBe(__('Manage Missionaries'));
-    expect(TenantPermission::CREATE_MISSIONARIES->label())->toBe(__('Create Missionary'));
-    expect(TenantPermission::UPDATE_MISSIONARIES->label())->toBe(__('Update Missionary'));
-    expect(TenantPermission::DELETE_MISSIONARIES->label())->toBe(__('Delete Missionary'));
-    expect(TenantPermission::FORCE_DELETE_MISSIONARIES->label())->toBe(__('Force Delete Missionary'));
-    expect(TenantPermission::RESTORE_MISSIONARIES->label())->toBe(__('Restore Missionary'));
-    expect(TenantPermission::MANAGE_OFFERINGS->label())->toBe(__('Manage Offerings'));
-    expect(TenantPermission::CREATE_OFFERINGS->label())->toBe(__('Create Offering'));
-    expect(TenantPermission::UPDATE_OFFERINGS->label())->toBe(__('Update Offering'));
-    expect(TenantPermission::DELETE_OFFERINGS->label())->toBe(__('Delete Offering'));
-    expect(TenantPermission::MANAGE_OFFERING_TYPES->label())->toBe(__('Manage Offering Types'));
-    expect(TenantPermission::CREATE_OFFERING_TYPES->label())->toBe(__('Create Offering Type'));
-    expect(TenantPermission::UPDATE_OFFERING_TYPES->label())->toBe(__('Update Offering Type'));
-    expect(TenantPermission::DELETE_OFFERING_TYPES->label())->toBe(__('Delete Offering Type'));
-
+    expect(TenantPermission::REGULAR_TAG_UPDATE->label())->toBe(__('Update Regular Tag'));
+    expect(TenantPermission::REGULAR_TAG_DELETE->label())->toBe(__('Delete Regular Tag'));
+    expect(TenantPermission::REGULAR_TAG_CREATE->label())->toBe(__('Create Regular Tag'));
+    expect(TenantPermission::USERS_MANAGE->label())->toBe(__('Manage Users'));
+    expect(TenantPermission::USERS_CREATE->label())->toBe(__('Create User'));
+    expect(TenantPermission::USERS_UPDATE->label())->toBe(__('Update User'));
+    expect(TenantPermission::USERS_DELETE->label())->toBe(__('Delete User'));
+    expect(TenantPermission::SKILLS_MANAGE->label())->toBe(__('Manage Skills'));
+    expect(TenantPermission::SKILLS_CREATE->label())->toBe(__('Create Skill'));
+    expect(TenantPermission::SKILLS_UPDATE->label())->toBe(__('Update Skill'));
+    expect(TenantPermission::SKILLS_DELETE->label())->toBe(__('Delete Skill'));
+    expect(TenantPermission::CATEGORIES_MANAGE->label())->toBe(__('Manage Categories'));
+    expect(TenantPermission::CATEGORIES_CREATE->label())->toBe(__('Create Category'));
+    expect(TenantPermission::CATEGORIES_UPDATE->label())->toBe(__('Update Category'));
+    expect(TenantPermission::CATEGORIES_DELETE->label())->toBe(__('Delete Category'));
+    expect(TenantPermission::MEMBERS_MANAGE->label())->toBe(__('Manage Members'));
+    expect(TenantPermission::MEMBERS_CREATE->label())->toBe(__('Create Member'));
+    expect(TenantPermission::MEMBERS_UPDATE->label())->toBe(__('Update Member'));
+    expect(TenantPermission::MEMBERS_DELETE->label())->toBe(__('Delete Member'));
+    expect(TenantPermission::MEMBERS_FORCE_DELETE->label())->toBe(__('Force Delete Member'));
+    expect(TenantPermission::MEMBERS_RESTORE->label())->toBe(__('Restore Member'));
+    expect(TenantPermission::MISSIONARIES_MANAGE->label())->toBe(__('Manage Missionaries'));
+    expect(TenantPermission::MISSIONARIES_CREATE->label())->toBe(__('Create Missionary'));
+    expect(TenantPermission::MISSIONARIES_UPDATE->label())->toBe(__('Update Missionary'));
+    expect(TenantPermission::MISSIONARIES_DELETE->label())->toBe(__('Delete Missionary'));
+    expect(TenantPermission::MISSIONARIES_FORCE_DELETE->label())->toBe(__('Force Delete Missionary'));
+    expect(TenantPermission::MISSIONARIES_RESTORE->label())->toBe(__('Restore Missionary'));
+    expect(TenantPermission::OFFERINGS_MANAGE->label())->toBe(__('Manage Offerings'));
+    expect(TenantPermission::OFFERINGS_CREATE->label())->toBe(__('Create Offering'));
+    expect(TenantPermission::OFFERINGS_UPDATE->label())->toBe(__('Update Offering'));
+    expect(TenantPermission::OFFERINGS_DELETE->label())->toBe(__('Delete Offering'));
+    expect(TenantPermission::OFFERING_TYPES_MANAGE->label())->toBe(__('Manage Offering Types'));
+    expect(TenantPermission::OFFERING_TYPES_CREATE->label())->toBe(__('Create Offering Type'));
+    expect(TenantPermission::OFFERING_TYPES_UPDATE->label())->toBe(__('Update Offering Type'));
+    expect(TenantPermission::OFFERING_TYPES_DELETE->label())->toBe(__('Delete Offering Type'));
+    expect(TenantPermission::EXPENSE_TYPES_MANAGE->label())->toBe(__('Manage Expense Types'));
+    expect(TenantPermission::EXPENSE_TYPES_CREATE->label())->toBe(__('Create Expense Type'));
+    expect(TenantPermission::EXPENSE_TYPES_UPDATE->label())->toBe(__('Update Expense Type'));
+    expect(TenantPermission::EXPENSE_TYPES_DELETE->label())->toBe(__('Delete Expense Type'));
+    expect(TenantPermission::WALLETS_MANAGE->label())->toBe(__('Manage Wallets'));
+    expect(TenantPermission::WALLETS_CREATE->label())->toBe(__('Create Wallet'));
+    expect(TenantPermission::WALLETS_UPDATE->label())->toBe(__('Update Wallet'));
+    expect(TenantPermission::WALLETS_DELETE->label())->toBe(__('Delete Wallet'));
+    expect(TenantPermission::CHECK_LAYOUTS_MANAGE->label())->toBe(__('Manage Check Layouts'));
+    expect(TenantPermission::CHECK_LAYOUTS_CREATE->label())->toBe(__('Create Check Layout'));
+    expect(TenantPermission::CHECK_LAYOUTS_UPDATE->label())->toBe(__('Update Check Layout'));
+    expect(TenantPermission::CHECK_LAYOUTS_DELETE->label())->toBe(__('Delete Check Layout'));
 });

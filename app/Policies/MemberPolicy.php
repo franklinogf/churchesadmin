@@ -15,7 +15,7 @@ final class MemberPolicy
      */
     public function viewAny(TenantUser $user): Response
     {
-        if ($user->can(TenantPermission::MANAGE_MEMBERS)) {
+        if ($user->can(TenantPermission::MEMBERS_MANAGE)) {
             return Response::allow();
         }
 
@@ -27,7 +27,7 @@ final class MemberPolicy
      */
     public function create(TenantUser $user): Response
     {
-        if ($user->can(TenantPermission::CREATE_MEMBERS)) {
+        if ($user->can(TenantPermission::MEMBERS_CREATE)) {
             return Response::allow();
         }
 
@@ -39,7 +39,7 @@ final class MemberPolicy
      */
     public function update(TenantUser $user): Response
     {
-        if ($user->can(TenantPermission::UPDATE_MEMBERS)) {
+        if ($user->can(TenantPermission::MEMBERS_UPDATE)) {
             return Response::allow();
         }
 
@@ -51,7 +51,7 @@ final class MemberPolicy
      */
     public function delete(TenantUser $user): Response
     {
-        if ($user->can(TenantPermission::DELETE_MEMBERS)) {
+        if ($user->can(TenantPermission::MEMBERS_DELETE)) {
             return Response::allow();
         }
 
@@ -63,7 +63,7 @@ final class MemberPolicy
      */
     public function restore(TenantUser $user): Response
     {
-        if ($user->can(TenantPermission::RESTORE_MEMBERS)) {
+        if ($user->can(TenantPermission::MEMBERS_RESTORE)) {
             return Response::allow();
         }
 
@@ -75,7 +75,7 @@ final class MemberPolicy
      */
     public function forceDelete(TenantUser $user): Response
     {
-        if ($user->can(TenantPermission::FORCE_DELETE_MEMBERS)) {
+        if ($user->can(TenantPermission::MEMBERS_FORCE_DELETE)) {
             return Response::allow();
         }
 

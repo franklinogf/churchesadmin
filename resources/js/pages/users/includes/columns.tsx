@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { UserPermission } from '@/enums/user';
-import { useUser } from '@/hooks/use-permissions';
+import { useUser } from '@/hooks/use-user';
 import useConfirmationStore from '@/stores/confirmationStore';
 import { type Role, type User } from '@/types/models/user';
 import { Link, router } from '@inertiajs/react';
@@ -51,7 +51,7 @@ export const columns: ColumnDef<User>[] = [
       const { can: userCan } = useUser();
       const user = row.original;
 
-      if (!userCan(UserPermission.UPDATE_USERS) && !userCan(UserPermission.DELETE_USERS)) {
+      if (!userCan(UserPermission.USERS_UPDATE) && !userCan(UserPermission.USERS_DELETE)) {
         return null;
       }
 
@@ -64,7 +64,7 @@ export const columns: ColumnDef<User>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
-            {userCan(UserPermission.UPDATE_USERS) && (
+            {userCan(UserPermission.USERS_UPDATE) && (
               <DropdownMenuItem asChild>
                 <Link href={route('users.edit', user.id)}>
                   <Edit2Icon className="size-3" />
@@ -72,7 +72,7 @@ export const columns: ColumnDef<User>[] = [
                 </Link>
               </DropdownMenuItem>
             )}
-            {userCan(UserPermission.DELETE_USERS) && (
+            {userCan(UserPermission.USERS_DELETE) && (
               <DropdownMenuItem
                 variant="destructive"
                 onClick={() => {

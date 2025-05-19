@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Enums\FlashMessageKey;
 use App\Enums\TenantPermission;
 use App\Models\Tag;
 use Inertia\Testing\AssertableInertia as Assert;
@@ -18,7 +17,7 @@ it('cannot be rendered if not authenticated', function (): void {
 it('can be rendered if authenticated user has permission', function (): void {
     Tag::factory(10)->skill()->create();
 
-    asUserWithPermission(TenantPermission::MANAGE_SKILLS)
+    asUserWithPermission(TenantPermission::SKILLS_MANAGE)
         ->get(route('skills.index'))
         ->assertStatus(200)
         ->assertInertia(fn (Assert $page): Assert => $page
@@ -28,9 +27,7 @@ it('can be rendered if authenticated user has permission', function (): void {
 });
 
 it('cannot be rendered if authenticated user does not have permission', function (): void {
-
     asUserWithoutPermission()
         ->get(route('skills.index'))
-        ->assertRedirect(route('dashboard'))
-        ->assertSessionHas(FlashMessageKey::ERROR->value);
+        ->assertForbidden();
 });

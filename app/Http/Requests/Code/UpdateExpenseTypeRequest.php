@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Code;
 
+use Illuminate\Auth\Access\Response;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 
 /**
@@ -15,9 +17,9 @@ final class UpdateExpenseTypeRequest extends FormRequest
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize(): bool
+    public function authorize(): Response
     {
-        return true;
+        return Gate::authorize('update', $this->expenseType);
     }
 
     /**
