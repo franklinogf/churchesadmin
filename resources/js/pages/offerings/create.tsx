@@ -122,7 +122,7 @@ export default function Create({ walletsOptions, paymentMethods, membersOptions,
           </FieldsGrid>
 
           <Button size="sm" variant="secondary" type="button" onClick={handleAddOffering}>
-            {t('Add :model', { model: t('offering') })}
+            {t('Add :model', { model: t('Offering') })}
           </Button>
 
           <div className="space-y-4 py-2">

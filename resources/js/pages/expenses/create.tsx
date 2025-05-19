@@ -212,7 +212,7 @@ export default function Create({ wallets, memberOptions, expenseTypes, expenseTy
           </div>
 
           <Button size="sm" variant="secondary" type="button" onClick={handleAddExpense}>
-            {t('Add :model', { model: 'xpense' })}
+            {t('Add :model', { model: 'Expense' })}
           </Button>
           <section className="mt-4">
             {Object.keys(walletExpenses).length > 0 && (

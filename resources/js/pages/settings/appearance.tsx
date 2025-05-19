@@ -11,7 +11,7 @@ export default function Appearance() {
     <AppLayout title={t('Appearance Settings')} breadcrumbs={[{ title: t('Appearance settings') }]}>
       <SettingsLayout>
         <div className="space-y-6">
-          <HeadingSmall title={t('Appearance settings')} description={t('Update :model', { model: t("account's appearance settings") })} />
+          <HeadingSmall title={t('Appearance settings')} description={t("Update account's appearance settings")} />
           <AppearanceTabs />
         </div>
       </SettingsLayout>
