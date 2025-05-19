@@ -43,7 +43,7 @@ export default function Edit({ walletsOptions, paymentMethods, membersOptions, m
 
   const { data, setData, put, errors, processing } = useForm<Required<CreateForm>>({
     date: formatDate(parseISO(offering.date), 'yyyy-MM-dd'),
-    donor_id: offering.donor?.id?.toString() ?? 'non_member',
+    donor_id: offering.donor?.id?.toString() ?? '',
     wallet_id: offering.transaction.wallet?.id.toString() ?? '',
     payment_method: offering.paymentMethod,
     offering_type: {
