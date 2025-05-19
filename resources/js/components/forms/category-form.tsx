@@ -43,7 +43,7 @@ export function CategoryForm({ category, open, setOpen }: { category?: Tag; open
     >
       <form className="space-y-4" onSubmit={handleSubmit}>
         <InputField label={t('Name')} value={data.name} onChange={(value) => setData(`name`, value)} error={errors.name} />
-        {userCan(category ? UserPermission.REGULAR_TAG_UPDATE : UserPermission.REGULAR_TAG_CREATE) && (
+        {userCan(category ? UserPermission.REGULAR_TAGS_UPDATE : UserPermission.REGULAR_TAGS_CREATE) && (
           <SwitchField
             description={t('Only admins would be allowed to edit and delete this category')}
             label={t('Mark this category as regular')}
