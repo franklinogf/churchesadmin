@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Dtos;
 
-use DragonCode\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Support\Arrayable;
 use JsonSerializable;
 
 final readonly class WalletMetaDto implements JsonSerializable, Arrayable
