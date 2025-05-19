@@ -19,19 +19,19 @@ export function AddressFormSkeleton({ data, setData, errors, errorsName, withTit
       {withTitle && <h2 className="mb-4 text-lg font-semibold">{t('Address')}</h2>}
       <div className="space-y-2">
         <InputField
-          label="Address line 1"
+          label={t('Address line 1')}
           value={data.address_1}
           onChange={(value) => setData({ ...data, address_1: value })}
           error={errors[`${errorsName ? errorsName + '.' : ''}address_1`]}
         />
         <InputField
-          label="Address line 2"
+          label={t('Address line 2')}
           value={data.address_2}
           onChange={(value) => setData({ ...data, address_2: value })}
           error={errors[`${errorsName ? errorsName + '.' : ''}address_2`]}
         />
         <CountryField
-          label="Country"
+          label={t('Country')}
           value={data.country}
           onChange={(country) => setData({ ...data, country })}
           error={errors[`${errorsName ? errorsName + '.' : ''}country`]}

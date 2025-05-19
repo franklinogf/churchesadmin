@@ -102,7 +102,7 @@ export default function Index({ unconfirmedChecks, confirmedChecks, flash, nextC
                     required
                     disabled={!unconfirmedSelected || processing}
                     errorOnTop
-                    placeholder="Initial check number"
+                    placeholder={t('Initial check number')}
                     value={data.initial_check_number}
                     onChange={(value) => setData('initial_check_number', value)}
                   />
