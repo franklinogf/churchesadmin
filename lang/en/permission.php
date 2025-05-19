@@ -9,5 +9,12 @@ return [
     'update' => 'You do not have permission to update :label.',
     'delete' => 'You do not have permission to delete :label.',
     'restore' => 'You do not have permission to restore :label.',
-    'force_delete' => 'You do not have permission to force delete :label.',
+    'force_delete' => 'You do not have permission to permanently delete :label.',
+    'confirm' => 'You do not have permission to confirm :label.',
+    'confirmed_check' => [
+        'delete' => 'You cannot delete a confirmed check.',
+        'update' => 'You cannot edit a confirmed check.',
+        'force_delete' => 'You cannot permanently delete a confirmed check.',
+        'confirm' => 'You cannot confirm a confirmed check.',
+    ],
 ];
