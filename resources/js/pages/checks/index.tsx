@@ -156,9 +156,11 @@ export default function Index({ unconfirmedChecks, confirmedChecks, flash, nextC
             <PageTitle className="text-left text-xl font-semibold">{t('Confirmed Checks')}</PageTitle>
             <div className="space-y-2">
               <div className="flex items-center justify-end gap-2">
-                <SubmitButton disabled={confirmedSelectedRows.length === 0} variant="secondary" size="sm">
-                  {t('Print checks')}
-                </SubmitButton>
+                <Button asChild size="sm" variant="secondary" disabled={confirmedSelectedRows.length === 0}>
+                  <a href={route('checks.pdf.multiple', { checks: confirmedSelectedRows })} target="_blank">
+                    {t('Print checks')}
+                  </a>
+                </Button>
               </div>
             </div>
           </header>

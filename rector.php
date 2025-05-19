@@ -7,6 +7,7 @@ use Rector\DeadCode\Rector\ClassMethod\RemoveUselessReturnTagRector;
 use Rector\DeadCode\Rector\If_\RemoveAlwaysTrueIfConditionRector;
 use Rector\DeadCode\Rector\Stmt\RemoveUnreachableStatementRector;
 use Rector\EarlyReturn\Rector\Return_\ReturnBinaryOrToEarlyReturnRector;
+use Rector\Privatization\Rector\ClassMethod\PrivatizeFinalClassMethodRector;
 
 return RectorConfig::configure()
     ->withPaths([
@@ -25,6 +26,9 @@ return RectorConfig::configure()
         ],
         RemoveAlwaysTrueIfConditionRector::class => [
             __DIR__.'/app/Policies',
+        ],
+        PrivatizeFinalClassMethodRector::class => [
+            __DIR__.'/app/Models',
         ],
 
     ])

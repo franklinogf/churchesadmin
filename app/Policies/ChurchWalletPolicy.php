@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Policies;
 
 use App\Enums\TenantPermission;
-use App\Models\ChurchWallet;
 use App\Models\TenantUser;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;

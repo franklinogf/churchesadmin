@@ -7,6 +7,9 @@ namespace App\Dtos;
 use Illuminate\Contracts\Support\Arrayable;
 use JsonSerializable;
 
+/**
+ * @implements Arrayable<string,string>
+ */
 final readonly class WalletMetaDto implements JsonSerializable, Arrayable
 {
     /**

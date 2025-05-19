@@ -8,6 +8,9 @@ use App\Enums\TransactionMetaType;
 use Illuminate\Contracts\Support\Arrayable;
 use JsonSerializable;
 
+/**
+ * @implements Arrayable<string,string>
+ */
 final readonly class TransactionMetaDto implements JsonSerializable, Arrayable
 {
     /**

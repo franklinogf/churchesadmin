@@ -24,6 +24,7 @@ use Bavix\Wallet\Services\FormatterService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -43,15 +44,16 @@ final class OfferingController extends Controller
             ->when(is_null($date), fn (Collection $collection) => $collection->groupBy(fn (Offering $offering): string => $offering->date->format('Y-m-d'))
                 ->map(function (Collection $group): array {
 
-                    /** @var string $sum */
+                    /** @var int $sum */
                     $sum = $group->sum('transaction.amount');
+
                     $data = [
                         'date' => $group->first()?->date->format('Y-m-d'),
                         'total' => $this->formatAmount($sum),
                     ];
 
                     foreach (PaymentMethod::cases() as $paymentMethod) {
-                        /** @var string $groupSum */
+                        /** @var int $groupSum */
                         $groupSum = $group->where('payment_method', $paymentMethod->value)->sum('transaction.amount');
                         $data[$paymentMethod->value] = $this->formatAmount($groupSum);
                     }
@@ -101,20 +103,29 @@ final class OfferingController extends Controller
     {
 
         try {
-            /**
-             * @var array{
-             *  amount:string,
-             *  date:string,
-             *  payment_method:string,
-             *  wallet_id:string,
-             *  member_id:string|null,
-             *  offering_type_ids:string[],
-             *  missionary_ids:string[]|null,
-             *  note:string|null,
-             * } $validated
-             */
-            $validated = $request->validated();
-            $action->handle($validated);
+
+            DB::transaction(function () use ($request, $action): void {
+                /**
+                 * @var array{
+                 *  wallet_id:string,
+                 *  payment_method:string,
+                 *  offering_type:array{id:string,model:string},
+                 *  amount:string,
+                 *  note:string|null
+                 * } $offering
+                 */
+                foreach ($request->array('offerings') as $offering) {
+                    $action->handle([
+                        'donor_id' => $request->string('donor_id')->value() ?: null,
+                        'date' => $request->string('date')->value(),
+                        'wallet_id' => $offering['wallet_id'],
+                        'payment_method' => $offering['payment_method'],
+                        'offering_type' => $offering['offering_type'],
+                        'amount' => $offering['amount'],
+                        'note' => $offering['note'],
+                    ]);
+                }
+            });
         } catch (WalletException $e) {
             return back()->with(FlashMessageKey::ERROR->value, $e->getMessage());
         }
@@ -170,8 +181,20 @@ final class OfferingController extends Controller
      */
     public function update(UpdateOfferingRequest $request, Offering $offering, UpdateOfferingAction $action): RedirectResponse
     {
+        /**
+         * @var array{
+         * donor_id:string|null,
+         * date:string,
+         *  wallet_id:string,
+         *  payment_method:string,
+         *  offering_type:array{id:string,model:string},
+         *  amount:string,
+         *  note:string|null
+         * } $validated
+         */
+        $validated = $request->validated();
         try {
-            $action->handle($offering, $request->validated());
+            $action->handle($offering, $validated);
         } catch (WalletException $e) {
             return back()->with(FlashMessageKey::ERROR->value, $e->getMessage());
         }
@@ -201,7 +224,7 @@ final class OfferingController extends Controller
         );
     }
 
-    private function formatAmount(string $amount): string
+    private function formatAmount(int $amount): string
     {
         $formatter = new FormatterService;
 

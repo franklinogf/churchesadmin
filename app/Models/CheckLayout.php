@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Enums\CheckLayoutField;
 use App\Enums\MediaCollectionName;
 use DateTimeInterface;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\MediaLibrary\HasMedia;
@@ -22,6 +23,7 @@ use Spatie\MediaLibrary\MediaCollections\File;
  * @property-read DateTimeInterface $created_at
  * @property-read DateTimeInterface $updated_at
  * @property-read DateTimeInterface|null $deleted_at
+ * @property-read string $imageUrl
  */
 final class CheckLayout extends Model implements HasMedia
 {
@@ -54,5 +56,17 @@ final class CheckLayout extends Model implements HasMedia
         $this->addMediaCollection(MediaCollectionName::DEFAULT->value)
             ->singleFile()
             ->acceptsFile(fn (File $file) => str($file->mimeType)->startsWith('image/'));
+    }
+
+    /**
+     * Get the URL of the layout image.
+     *
+     * @return Attribute<string,null>
+     */
+    protected function imageUrl(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): string => $this->getFirstMediaUrl(MediaCollectionName::DEFAULT->value),
+        );
     }
 }

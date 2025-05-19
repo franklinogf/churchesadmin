@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Dtos\CheckLayoutFieldsDto;
 use App\Enums\CheckType;
 use Bavix\Wallet\Models\Transaction;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -26,6 +28,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property-read Transaction $transaction
  * @property-read Member $member
  * @property-read ExpenseType $expenseType
+ * @property-read CheckLayout $layout
+ * @property-read CheckLayoutFieldsDto $fields
  */
 final class Check extends Model
 {
@@ -90,6 +94,43 @@ final class Check extends Model
     }
 
     /**
+     * Get the layout associated with the check.
+     *
+     * @return Attribute<CheckLayout,null>
+     */
+    protected function layout(): Attribute
+    {
+        /**
+         * @var ChurchWallet $wallet
+         */
+        $wallet = $this->transaction->wallet->holder;
+
+        return Attribute::make(
+            get: fn (): ?CheckLayout => $wallet->checkLayout,
+        );
+    }
+
+    /**
+     * Get the fields associated with the check.
+     *
+     * @return Attribute<CheckLayoutFieldsDto,null>
+     */
+    protected function fields(): Attribute
+    {
+
+        return Attribute::make(
+            get: fn (): CheckLayoutFieldsDto => CheckLayoutFieldsDto::fromArray(
+                [
+                    'date' => $this->date->format('Y-m-d'),
+                    'amount' => $this->transaction->amountFloat,
+                    'payee' => "{$this->member->name} {$this->member->last_name}",
+                    'memo' => $this->note,
+                ]
+            ),
+        );
+    }
+
+    /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
@@ -100,6 +141,7 @@ final class Check extends Model
         return [
             'date' => 'date:Y-m-d',
             'type' => CheckType::class,
+            'fields' => 'json',
         ];
     }
 }

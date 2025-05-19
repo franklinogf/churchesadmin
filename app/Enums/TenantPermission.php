@@ -115,6 +115,12 @@ enum TenantPermission: string
             self::CHECK_LAYOUTS_CREATE => __('Create Check Layout'),
             self::CHECK_LAYOUTS_UPDATE => __('Update Check Layout'),
             self::CHECK_LAYOUTS_DELETE => __('Delete Check Layout'),
+            self::CHECKS_MANAGE => __('Manage Checks'),
+            self::CHECKS_CREATE => __('Create Check'),
+            self::CHECKS_UPDATE => __('Update Check'),
+            self::CHECKS_DELETE => __('Delete Check'),
+            self::CHECKS_CONFIRM => __('Confirm Check'),
+            self::CHECKS_PRINT => __('Print Check'),
         };
     }
 }
