@@ -20,9 +20,6 @@ enum PaymentMethod: string
      */
     public function label(): string
     {
-        return match ($this) {
-            self::CASH => __('enum.payment_method.cash'),
-            self::CHECK => __('enum.payment_method.check'),
-        };
+        return __("enum.payment_method.{$this->value}");
     }
 }

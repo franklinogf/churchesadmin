@@ -16,9 +16,6 @@ enum TagType: string
 
     public function label(): string
     {
-        return match ($this) {
-            self::SKILL => __('Skill'),
-            self::CATEGORY => __('Category'),
-        };
+        return __("enum.tag_type.{$this->value}");
     }
 }

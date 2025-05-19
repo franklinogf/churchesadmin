@@ -23,10 +23,7 @@ enum LanguageCode: string implements HasLabel, HasColor
      */
     public function label(): string
     {
-        return match ($this) {
-            self::ENGLISH => __('enum.language_code.en'),
-            self::SPANISH => __('enum.language_code.es'),
-        };
+        return __("enum.language_code.{$this->value}");
     }
 
     public function getLabel(): string

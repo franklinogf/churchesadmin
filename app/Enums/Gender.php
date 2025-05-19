@@ -20,9 +20,6 @@ enum Gender: string
      */
     public function label(): string
     {
-        return match ($this) {
-            self::MALE => __('enum.gender.male'),
-            self::FEMALE => __('enum.gender.female'),
-        };
+        return __("enum.gender.{$this->value}");
     }
 }

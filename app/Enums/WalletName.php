@@ -10,8 +10,6 @@ enum WalletName: string
 
     public function label(): string
     {
-        return match ($this) {
-            self::PRIMARY => 'Primary',
-        };
+        return __("enum.wallet_name.{$this->value}");
     }
 }

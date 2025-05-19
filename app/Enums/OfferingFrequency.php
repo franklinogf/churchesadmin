@@ -26,16 +26,7 @@ enum OfferingFrequency: string
      */
     public function label(): string
     {
-        return match ($this) {
-            self::WEEKLY => __('Every week'),
-            self::BIWEEKLY => __('Every two weeks'),
-            self::MONTHLY => __('Every month'),
-            self::BIMONTHLY => __('Every two months'),
-            self::QUARTERLY => __('Every three months'),
-            self::SEMIANNUALLY => __('Every six months'),
-            self::ANNUALLY => __('Every year'),
-            self::ONE_TIME => __('One time only'),
-        };
+        return __("enum.offering_frequency.{$this->value}");
     }
 
     /**

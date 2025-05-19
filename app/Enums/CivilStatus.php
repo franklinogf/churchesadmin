@@ -23,12 +23,6 @@ enum CivilStatus: string
      */
     public function label(): string
     {
-        return match ($this) {
-            self::SINGLE => __('enum.civil_status.single'),
-            self::MARRIED => __('enum.civil_status.married'),
-            self::DIVORCED => __('enum.civil_status.divorced'),
-            self::WIDOWED => __('enum.civil_status.widowed'),
-            self::SEPARATED => __('enum.civil_status.separated'),
-        };
+        return __("enum.civil_status.{$this->value}");
     }
 }
