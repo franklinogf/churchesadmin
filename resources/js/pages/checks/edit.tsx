@@ -50,8 +50,11 @@ export default function ChecksEdit({ walletOptions, memberOptions, checkTypesOpt
   }
 
   return (
-    <AppLayout title={t('Edit Check')} breadcrumbs={[{ title: t('Checks'), href: route('checks.index') }, { title: t('Edit Check') }]}>
-      <PageTitle>{t('Edit Check')}</PageTitle>
+    <AppLayout
+      title={t('Edit :model', { model: t('Check') })}
+      breadcrumbs={[{ title: t('Checks'), href: route('checks.index') }, { title: t('Edit :model', { model: t('Check') }) }]}
+    >
+      <PageTitle>{t('Edit :model', { model: t('Check') })}</PageTitle>
 
       <div className="mx-auto mt-4 w-full max-w-2xl">
         <Form onSubmit={handleSubmit} isSubmitting={processing}>
@@ -67,7 +70,7 @@ export default function ChecksEdit({ walletOptions, memberOptions, checkTypesOpt
             <ComboboxField
               required
               value={data.expense_type_id}
-              label={t('Expense Type')}
+              label={t('Expense type')}
               onChange={(value) => setData('expense_type_id', value)}
               options={expenseTypesOptions}
               error={errors.expense_type_id}

@@ -58,7 +58,7 @@ final class StoreOfferingRequest extends FormRequest
             'offerings' => mb_strtolower(__('Offerings')),
             'offerings.*.wallet_id' => mb_strtolower(__('Wallet')),
             'offerings.*.payment_method' => mb_strtolower(__('Payment Method')),
-            'offerings.*.offering_type' => mb_strtolower(__('Offering Type')),
+            'offerings.*.offering_type' => mb_strtolower(__('Offering type')),
             'offerings.*.amount' => mb_strtolower(__('Amount')),
             'offerings.*.note' => mb_strtolower(__('Note')),
         ];

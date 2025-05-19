@@ -101,12 +101,12 @@ export default function Create({ walletsOptions, paymentMethods, membersOptions,
       href: route('offerings.index'),
     },
     {
-      title: t('New Offering'),
+      title: t('New :model', { model: t('Offering') }),
     },
   ];
   return (
     <AppLayout title={t('Offerings')} breadcrumbs={breadcrumbs}>
-      <PageTitle>{t('New Offering')}</PageTitle>
+      <PageTitle>{t('New :model', { model: t('Offering') })}</PageTitle>
       <div className="mt-2 flex items-center justify-center">
         <Form isSubmitting={processing} className="w-full max-w-2xl" onSubmit={handleSubmit}>
           <ComboboxField
@@ -122,7 +122,7 @@ export default function Create({ walletsOptions, paymentMethods, membersOptions,
           </FieldsGrid>
 
           <Button size="sm" variant="secondary" type="button" onClick={handleAddOffering}>
-            {t('Add offering')}
+            {t('Add :model', { model: t('Offering') })}
           </Button>
 
           <div className="space-y-4 py-2">

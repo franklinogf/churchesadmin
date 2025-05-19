@@ -20,7 +20,7 @@ export function ViewExpenseModal({ expense, children }: { expense: Expense; chil
             <strong>{t('Wallet')}:</strong> {expense.transaction.wallet?.name}
           </p>
           <p>
-            <strong>{t('Expense Type')}:</strong> {expense.expenseType.name}
+            <strong>{t('Expense type')}:</strong> {expense.expenseType.name}
           </p>
           <p>
             <strong>{t('Member')}:</strong> {expense.member ? `${expense.member.name} ${expense.member.lastName}` : 'N/A'}

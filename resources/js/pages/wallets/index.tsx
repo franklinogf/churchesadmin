@@ -30,7 +30,7 @@ export default function Index({ wallets }: IndexPageProps) {
                 setOpen(true);
               }}
             >
-              {t('Add Wallet')}
+              {t('Add :model', { model: t('Wallet') })}
             </Button>
           }
           data={wallets}

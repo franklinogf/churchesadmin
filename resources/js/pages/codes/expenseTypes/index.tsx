@@ -12,14 +12,14 @@ export default function ExpenseTypesIndex({ expenseTypes }: { expenseTypes: Expe
   const { t } = useLaravelReactI18n();
   const [open, setOpen] = useState(false);
   return (
-    <AppLayout title={t('Expense Types')} breadcrumbs={[{ title: t('Expense Types') }]}>
-      <PageTitle>{t('Expense Types')}</PageTitle>
+    <AppLayout title={t('Expense types')} breadcrumbs={[{ title: t('Expense types') }]}>
+      <PageTitle>{t('Expense types')}</PageTitle>
       <ExpenseTypeForm open={open} setOpen={setOpen} />
       <div className="mx-auto w-full max-w-xl">
         <DataTable
           headerButton={
             <Button size="sm" onClick={() => setOpen(true)}>
-              {t('Add Expense Type')}
+              {t('Add :model', { model: t('Expense type') })}
             </Button>
           }
           data={expenseTypes}
