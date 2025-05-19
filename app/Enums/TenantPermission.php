@@ -11,9 +11,9 @@ enum TenantPermission: string
 {
     use EnumToArray, HasOptions;
 
-    case REGULAR_TAG_UPDATE = 'regular.tag.update';
-    case REGULAR_TAG_DELETE = 'regular.tag.delete';
-    case REGULAR_TAG_CREATE = 'regular.tag.create';
+    case REGULAR_TAGS_UPDATE = 'regular.tags.update';
+    case REGULAR_TAGS_DELETE = 'regular.tags.delete';
+    case REGULAR_TAGS_CREATE = 'regular.tags.create';
     case USERS_MANAGE = 'users.manage';
     case USERS_CREATE = 'users.create';
     case USERS_UPDATE = 'users.update';
@@ -58,13 +58,19 @@ enum TenantPermission: string
     case CHECK_LAYOUTS_CREATE = 'check.layouts.create';
     case CHECK_LAYOUTS_UPDATE = 'check.layouts.update';
     case CHECK_LAYOUTS_DELETE = 'check.layouts.delete';
+    case CHECKS_MANAGE = 'checks.manage';
+    case CHECKS_CREATE = 'checks.create';
+    case CHECKS_UPDATE = 'checks.update';
+    case CHECKS_DELETE = 'checks.delete';
+    case CHECKS_CONFIRM = 'checks.confirm';
+    case CHECKS_PRINT = 'checks.print';
 
     public function label(): string
     {
         return match ($this) {
-            self::REGULAR_TAG_UPDATE => __('Update Regular Tag'),
-            self::REGULAR_TAG_DELETE => __('Delete Regular Tag'),
-            self::REGULAR_TAG_CREATE => __('Create Regular Tag'),
+            self::REGULAR_TAGS_UPDATE => __('Update Regular Tag'),
+            self::REGULAR_TAGS_DELETE => __('Delete Regular Tag'),
+            self::REGULAR_TAGS_CREATE => __('Create Regular Tag'),
             self::USERS_MANAGE => __('Manage Users'),
             self::USERS_CREATE => __('Create User'),
             self::USERS_UPDATE => __('Update User'),

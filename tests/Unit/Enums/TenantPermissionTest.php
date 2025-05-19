@@ -60,9 +60,9 @@ it('has needed enums', function (): void {
 
 test('label return correct label', function (): void {
 
-    expect(TenantPermission::REGULAR_TAG_UPDATE->label())->toBe(__('Update Regular Tag'));
-    expect(TenantPermission::REGULAR_TAG_DELETE->label())->toBe(__('Delete Regular Tag'));
-    expect(TenantPermission::REGULAR_TAG_CREATE->label())->toBe(__('Create Regular Tag'));
+    expect(TenantPermission::REGULAR_TAGS_UPDATE->label())->toBe(__('Update Regular Tag'));
+    expect(TenantPermission::REGULAR_TAGS_DELETE->label())->toBe(__('Delete Regular Tag'));
+    expect(TenantPermission::REGULAR_TAGS_CREATE->label())->toBe(__('Create Regular Tag'));
     expect(TenantPermission::USERS_MANAGE->label())->toBe(__('Manage Users'));
     expect(TenantPermission::USERS_CREATE->label())->toBe(__('Create User'));
     expect(TenantPermission::USERS_UPDATE->label())->toBe(__('Update User'));

@@ -9,7 +9,7 @@ use function Pest\Laravel\from;
 
 describe('if user has permission', function (): void {
     beforeEach(function (): void {
-        asUserWithPermission(TenantPermission::CATEGORIES_MANAGE, TenantPermission::CATEGORIES_UPDATE, TenantPermission::REGULAR_TAG_UPDATE);
+        asUserWithPermission(TenantPermission::CATEGORIES_MANAGE, TenantPermission::CATEGORIES_UPDATE, TenantPermission::REGULAR_TAGS_UPDATE);
     });
 
     it('can be updated', function (): void {
