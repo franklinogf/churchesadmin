@@ -11,7 +11,7 @@ use function Pest\Laravel\assertDatabaseCount;
 it('can be deleted if user has permission', function (): void {
     $user = TenantUser::factory()->create()->fresh();
 
-    asUserWithPermission(TenantPermission::MANAGE_USERS, TenantPermission::DELETE_USERS)
+    asUserWithPermission(TenantPermission::USERS_MANAGE, TenantPermission::USERS_DELETE)
         ->from(route('users.index'))
         ->delete(route('users.destroy', ['user' => $user]))
         ->assertRedirect(route('users.index'))
@@ -24,7 +24,7 @@ it('can be deleted if user has permission', function (): void {
 it('cannot be deleted if user does not have permission', function (): void {
     $user = TenantUser::factory()->create()->fresh();
 
-    asUserWithPermission(TenantPermission::MANAGE_USERS)
+    asUserWithPermission(TenantPermission::USERS_MANAGE)
         ->from(route('users.index'))
         ->delete(route('users.destroy', ['user' => $user]))
         ->assertForbidden();

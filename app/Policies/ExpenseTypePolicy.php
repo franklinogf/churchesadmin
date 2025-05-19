@@ -5,21 +5,23 @@ declare(strict_types=1);
 namespace App\Policies;
 
 use App\Enums\TenantPermission;
+use App\Models\ExpenseType;
 use App\Models\TenantUser;
+use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
-final class TenantUserPolicy
+final class ExpenseTypePolicy
 {
     /**
-     * Determine whether the user can view models.
+     * Determine whether the user can view any models.
      */
     public function viewAny(TenantUser $user): Response
     {
-        if ($user->can(TenantPermission::USERS_MANAGE)) {
+        if ($user->can(TenantPermission::EXPENSE_TYPES_MANAGE)) {
             return Response::allow();
         }
 
-        return Response::deny(__('permission.view_any', ['label' => __('Users')]));
+        return Response::deny(__('permission.view_any', ['label' => __('Expense Types')]));
     }
 
     /**
@@ -27,11 +29,11 @@ final class TenantUserPolicy
      */
     public function create(TenantUser $user): Response
     {
-        if ($user->can(TenantPermission::USERS_CREATE)) {
+        if ($user->can(TenantPermission::EXPENSE_TYPES_CREATE)) {
             return Response::allow();
         }
 
-        return Response::deny(__('permission.create', ['label' => __('Users')]));
+        return Response::deny(__('permission.create', ['label' => __('Expense Types')]));
     }
 
     /**
@@ -39,11 +41,11 @@ final class TenantUserPolicy
      */
     public function update(TenantUser $user): Response
     {
-        if ($user->can(TenantPermission::USERS_UPDATE)) {
+        if ($user->can(TenantPermission::EXPENSE_TYPES_UPDATE)) {
             return Response::allow();
         }
 
-        return Response::deny(__('permission.update', ['label' => __('Users')]));
+        return Response::deny(__('permission.update', ['label' => __('Expense Types')]));
     }
 
     /**
@@ -51,10 +53,10 @@ final class TenantUserPolicy
      */
     public function delete(TenantUser $user): Response
     {
-        if ($user->can(TenantPermission::USERS_DELETE)) {
+        if ($user->can(TenantPermission::EXPENSE_TYPES_DELETE)) {
             return Response::allow();
         }
 
-        return Response::deny(__('permission.delete', ['label' => __('Users')]));
+        return Response::deny(__('permission.delete', ['label' => __('Expense Types')]));
     }
 }

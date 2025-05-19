@@ -11,6 +11,7 @@ use App\Http\Requests\Check\ConfirmMultipleCheckRequest;
 use App\Models\Check;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 
 final class ConfirmMultipleCheckController extends Controller
 {
@@ -19,6 +20,8 @@ final class ConfirmMultipleCheckController extends Controller
      */
     public function __invoke(ConfirmMultipleCheckRequest $request, ConfirmCheckAction $action): RedirectResponse
     {
+        Gate::authorize('update', Check::class);
+
         /**
          * @var string[] $checkIds
          */

@@ -1,6 +1,6 @@
 import { Icon } from '@/components/icon';
 import { SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
-import { useUser } from '@/hooks/use-permissions';
+import { useUser } from '@/hooks/use-user';
 import type { NavItem, SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
 

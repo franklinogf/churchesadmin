@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { UserPermission } from '@/enums/user';
 import AppLayout from '@/layouts/app-layout';
 
-import { useUser } from '@/hooks/use-permissions';
+import { useUser } from '@/hooks/use-user';
 import { type Missionary } from '@/types/models/missionary';
 import { Link } from '@inertiajs/react';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
@@ -23,7 +23,7 @@ export default function Index({ missionaries }: IndexPageProps) {
       <PageTitle>{t('Missionaries')}</PageTitle>
       <DataTable
         headerButton={
-          userCan(UserPermission.CREATE_MISSIONARIES) && (
+          userCan(UserPermission.MISSIONARIES_CREATE) && (
             <Button asChild>
               <Link href={route('missionaries.create')}>{t('Add Missionary')}</Link>
             </Button>

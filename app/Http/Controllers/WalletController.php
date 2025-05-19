@@ -18,6 +18,7 @@ use App\Models\ChurchWallet;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -28,6 +29,8 @@ final class WalletController extends Controller
      */
     public function index(): Response
     {
+        Gate::authorize('viewAny', ChurchWallet::class);
+
         $wallets = ChurchWallet::query()
             ->oldest()
             ->with('checkLayout')
@@ -45,6 +48,8 @@ final class WalletController extends Controller
 
     public function show(ChurchWallet $wallet): Response
     {
+        Gate::authorize('view', $wallet);
+
         $wallet->load([
             'transactions.wallet' => function (BelongsTo $belongsTo): void {
                 /** @phpstan-ignore-next-line */
@@ -85,7 +90,6 @@ final class WalletController extends Controller
             FlashMessageKey::SUCCESS->value,
             __('flash.message.created', ['model' => __('Wallet')])
         );
-
     }
 
     /**
@@ -117,6 +121,8 @@ final class WalletController extends Controller
      */
     public function destroy(ChurchWallet $wallet, DeleteWalletAction $action): RedirectResponse
     {
+        Gate::authorize('delete', $wallet);
+
         $action->handle($wallet);
 
         return redirect()->route('wallets.index')->with(

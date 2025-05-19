@@ -17,7 +17,7 @@ it('cannot be rendered if not authenticated', function (): void {
 
 describe('if user has permission', function (): void {
     beforeEach(function (): void {
-        asUserWithPermission(TenantPermission::MANAGE_USERS, TenantPermission::CREATE_USERS);
+        asUserWithPermission(TenantPermission::USERS_MANAGE, TenantPermission::USERS_CREATE);
         $this->travel(1)->days();
     });
 
@@ -42,7 +42,7 @@ describe('if user has permission', function (): void {
                 'password' => 'password',
                 'password_confirmation' => 'password',
                 'roles' => [TenantRole::SECRETARY->value],
-                'additional_permissions' => [TenantPermission::MANAGE_USERS->value],
+                'additional_permissions' => [TenantPermission::USERS_MANAGE->value],
             ])
             ->assertSessionDoesntHaveErrors()
             ->assertRedirect(route('users.index'));
@@ -53,7 +53,7 @@ describe('if user has permission', function (): void {
             ->and($user->name)->toBe('John')
             ->and($user->email)->toBe('john.doe@example.com')
             ->and($user->hasRole(TenantRole::SECRETARY))->toBeTrue()
-            ->and($user->hasDirectPermission(TenantPermission::MANAGE_USERS))->toBeTrue();
+            ->and($user->hasDirectPermission(TenantPermission::USERS_MANAGE))->toBeTrue();
     });
 
     it('can be stored without additional permissions', function (): void {
@@ -84,7 +84,7 @@ describe('if user has permission', function (): void {
 
 describe('if user does not have permission', function (): void {
     beforeEach(function (): void {
-        asUserWithPermission(TenantPermission::MANAGE_USERS);
+        asUserWithPermission(TenantPermission::USERS_MANAGE);
     });
 
     it('cannot be rendered if authenticated', function (): void {
@@ -100,7 +100,7 @@ describe('if user does not have permission', function (): void {
                 'password' => 'password',
                 'password_confirmation' => 'password',
                 'roles' => [TenantRole::SECRETARY->value],
-                'additional_permissions' => [TenantPermission::MANAGE_USERS->value],
+                'additional_permissions' => [TenantPermission::USERS_MANAGE->value],
             ])
             ->assertForbidden();
     });

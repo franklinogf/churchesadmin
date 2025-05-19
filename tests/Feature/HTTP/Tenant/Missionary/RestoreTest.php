@@ -11,7 +11,7 @@ use function Pest\Laravel\assertDatabaseCount;
 it('can be restored if user has permission', function (): void {
     $missionary = Missionary::factory()->trashed()->create()->fresh();
 
-    asUserWithPermission(TenantPermission::MANAGE_MISSIONARIES, TenantPermission::RESTORE_MISSIONARIES)
+    asUserWithPermission(TenantPermission::MISSIONARIES_MANAGE, TenantPermission::MISSIONARIES_RESTORE)
         ->put(route('missionaries.restore', ['missionary' => $missionary]))
         ->assertRedirect(route('missionaries.index'))
         ->assertSessionHas(FlashMessageKey::SUCCESS->value);
@@ -26,7 +26,7 @@ it('can be restored if user has permission', function (): void {
 it('cannot be restored if user does not have permission', function (): void {
     $missionary = Missionary::factory()->trashed()->create()->fresh();
 
-    asUserWithPermission(TenantPermission::MANAGE_MISSIONARIES)
+    asUserWithPermission(TenantPermission::MISSIONARIES_MANAGE)
         ->put(route('missionaries.restore', ['missionary' => $missionary]))
         ->assertForbidden();
 

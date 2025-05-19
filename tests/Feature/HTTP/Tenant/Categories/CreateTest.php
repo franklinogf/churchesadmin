@@ -12,7 +12,7 @@ use function Pest\Laravel\from;
 describe('if user has permission', function (): void {
 
     beforeEach(function (): void {
-        asUserWithPermission(TenantPermission::MANAGE_CATEGORIES, TenantPermission::CREATE_CATEGORIES, TenantPermission::CREATE_REGULAR_TAG);
+        asUserWithPermission(TenantPermission::CATEGORIES_MANAGE, TenantPermission::CATEGORIES_CREATE, TenantPermission::REGULAR_TAG_CREATE);
     });
 
     it('can be stored', function (): void {
@@ -95,7 +95,7 @@ describe('if user has permission', function (): void {
 describe('if user does not have permission', function (): void {
 
     beforeEach(function (): void {
-        asUserWithPermission(TenantPermission::MANAGE_CATEGORIES);
+        asUserWithoutPermission();
     });
 
     it('cannot be stored', function (): void {

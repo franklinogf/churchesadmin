@@ -2,7 +2,7 @@ import { CategoryForm } from '@/components/forms/category-form';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { UserPermission } from '@/enums/user';
-import { useUser } from '@/hooks/use-permissions';
+import { useUser } from '@/hooks/use-user';
 import useConfirmationStore from '@/stores/confirmationStore';
 import { type Tag } from '@/types/models/tag';
 import { router } from '@inertiajs/react';
@@ -28,11 +28,11 @@ export const columns: ColumnDef<Tag>[] = [
       const { can: userCan } = useUser();
       const [isEditing, setIsEditing] = useState(false);
       const category = row.original;
-      if (category.isRegular && !userCan(UserPermission.UPDATE_REGULAR_TAG) && !userCan(UserPermission.DELETE_REGULAR_TAG)) {
+      if (category.isRegular && !userCan(UserPermission.REGULAR_TAG_UPDATE) && !userCan(UserPermission.REGULAR_TAG_DELETE)) {
         return null;
       }
 
-      if (!userCan(UserPermission.UPDATE_CATEGORIES) && !userCan(UserPermission.DELETE_CATEGORIES)) {
+      if (!userCan(UserPermission.CATEGORIES_UPDATE) && !userCan(UserPermission.CATEGORIES_DELETE)) {
         return null;
       }
 
@@ -47,14 +47,14 @@ export const columns: ColumnDef<Tag>[] = [
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              {userCan(UserPermission.UPDATE_CATEGORIES) && (
+              {userCan(UserPermission.CATEGORIES_UPDATE) && (
                 <DropdownMenuItem onSelect={() => setIsEditing(true)}>
                   <Edit2Icon className="size-3" />
                   <span>{t('Edit')}</span>
                 </DropdownMenuItem>
               )}
 
-              {userCan(UserPermission.DELETE_CATEGORIES) && (
+              {userCan(UserPermission.CATEGORIES_DELETE) && (
                 <DropdownMenuItem
                   variant="destructive"
                   onClick={() => {

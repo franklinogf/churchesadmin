@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { UserPermission } from '@/enums/user';
-import { useUser } from '@/hooks/use-permissions';
+import { useUser } from '@/hooks/use-user';
 import useConfirmationStore from '@/stores/confirmationStore';
 import { type Member } from '@/types/models/member';
 import { Link, router } from '@inertiajs/react';
@@ -79,7 +79,7 @@ export const columns: ColumnDef<Member>[] = [
                 <span>{t('View')}</span>
               </Link>
             </DropdownMenuItem>
-            {userCan(UserPermission.UPDATE_MEMBERS) && (
+            {userCan(UserPermission.MEMBERS_UPDATE) && (
               <DropdownMenuItem asChild>
                 <Link href={route('members.edit', row.original.id)}>
                   <Edit2Icon className="size-3" />
@@ -87,7 +87,7 @@ export const columns: ColumnDef<Member>[] = [
                 </Link>
               </DropdownMenuItem>
             )}
-            {userCan(UserPermission.DELETE_MEMBERS) && (
+            {userCan(UserPermission.MEMBERS_DELETE) && (
               <DropdownMenuItem
                 variant="destructive"
                 onClick={() => {

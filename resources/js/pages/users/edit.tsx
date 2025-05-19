@@ -6,7 +6,7 @@ import { SwitchField } from '@/components/forms/inputs/SwitchField';
 import { PageTitle } from '@/components/PageTitle';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { UserRole } from '@/enums/user';
-import { useUser } from '@/hooks/use-permissions';
+import { useUser } from '@/hooks/use-user';
 import AppLayout from '@/layouts/app-layout';
 import { convertRolesToMultiselectOptions, getMultiselecOptionsValues } from '@/lib/mutliselect';
 import type { Permission, Role, User } from '@/types/models/user';

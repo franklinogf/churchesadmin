@@ -17,7 +17,7 @@ it('cannot be rendered if not authenticated', function (): void {
 it('can be rendered if authenticated user has permission', function (): void {
     Tag::factory(10)->skill()->create();
 
-    asUserWithPermission(TenantPermission::MANAGE_SKILLS)
+    asUserWithPermission(TenantPermission::SKILLS_MANAGE)
         ->get(route('skills.index'))
         ->assertStatus(200)
         ->assertInertia(fn (Assert $page): Assert => $page

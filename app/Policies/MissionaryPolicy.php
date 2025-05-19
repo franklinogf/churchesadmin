@@ -15,7 +15,7 @@ final class MissionaryPolicy
      */
     public function viewAny(TenantUser $user): Response
     {
-        if ($user->can(TenantPermission::MANAGE_MISSIONARIES)) {
+        if ($user->can(TenantPermission::MISSIONARIES_MANAGE)) {
             return Response::allow();
         }
 
@@ -24,7 +24,7 @@ final class MissionaryPolicy
 
     public function create(TenantUser $user): Response
     {
-        if ($user->can(TenantPermission::CREATE_MISSIONARIES)) {
+        if ($user->can(TenantPermission::MISSIONARIES_CREATE)) {
             return Response::allow();
         }
 
@@ -36,7 +36,7 @@ final class MissionaryPolicy
      */
     public function update(TenantUser $user): Response
     {
-        if ($user->can(TenantPermission::UPDATE_MISSIONARIES)) {
+        if ($user->can(TenantPermission::MISSIONARIES_UPDATE)) {
             return Response::allow();
         }
 
@@ -48,7 +48,7 @@ final class MissionaryPolicy
      */
     public function delete(TenantUser $user): Response
     {
-        if ($user->can(TenantPermission::DELETE_MISSIONARIES)) {
+        if ($user->can(TenantPermission::MISSIONARIES_DELETE)) {
             return Response::allow();
         }
 
@@ -60,7 +60,7 @@ final class MissionaryPolicy
      */
     public function restore(TenantUser $user): Response
     {
-        if ($user->can(TenantPermission::RESTORE_MISSIONARIES)) {
+        if ($user->can(TenantPermission::MISSIONARIES_RESTORE)) {
             return Response::allow();
         }
 
@@ -72,7 +72,7 @@ final class MissionaryPolicy
      */
     public function forceDelete(TenantUser $user): Response
     {
-        if ($user->can(TenantPermission::FORCE_DELETE_MISSIONARIES)) {
+        if ($user->can(TenantPermission::MISSIONARIES_FORCE_DELETE)) {
             return Response::allow();
         }
 

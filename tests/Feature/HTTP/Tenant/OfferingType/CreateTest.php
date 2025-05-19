@@ -10,7 +10,7 @@ use function Pest\Laravel\from;
 
 describe('if user has permission', function (): void {
     beforeEach(function (): void {
-        asUserWithPermission(TenantPermission::MANAGE_OFFERING_TYPES, TenantPermission::CREATE_OFFERING_TYPES);
+        asUserWithPermission(TenantPermission::OFFERING_TYPES_MANAGE, TenantPermission::OFFERING_TYPES_CREATE);
     });
 
     it('can be stored', function (): void {
@@ -32,7 +32,7 @@ describe('if user has permission', function (): void {
 
 describe('if user does not have permission', function (): void {
     beforeEach(function (): void {
-        asUserWithPermission(TenantPermission::MANAGE_OFFERING_TYPES);
+        asUserWithPermission(TenantPermission::OFFERING_TYPES_MANAGE);
     });
 
     it('cannot be stored', function (): void {

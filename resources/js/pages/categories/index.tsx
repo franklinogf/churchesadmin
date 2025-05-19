@@ -3,7 +3,7 @@ import { CategoryForm } from '@/components/forms/category-form';
 import { PageTitle } from '@/components/PageTitle';
 import { Button } from '@/components/ui/button';
 import { UserPermission } from '@/enums/user';
-import { useUser } from '@/hooks/use-permissions';
+import { useUser } from '@/hooks/use-user';
 import AppLayout from '@/layouts/app-layout';
 import { type Tag } from '@/types/models/tag';
 import { useLaravelReactI18n } from 'laravel-react-i18n';
@@ -24,7 +24,7 @@ export default function Index({ categories }: IndexPageProps) {
         <CategoryForm open={open} setOpen={setOpen} />
         <DataTable
           headerButton={
-            userCan(UserPermission.CREATE_CATEGORIES) && (
+            userCan(UserPermission.CATEGORIES_CREATE) && (
               <Button size="sm" onClick={() => setOpen(true)}>
                 {t('Add Category')}
               </Button>

@@ -6,17 +6,22 @@ namespace App\Http\Requests\Offering;
 
 use App\Enums\PaymentMethod;
 use App\Rules\SelectOptionWithModel;
+use Illuminate\Auth\Access\Response;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 
+/**
+ * @property-read \App\Models\Offering $offering
+ */
 final class UpdateOfferingRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize(): bool
+    public function authorize(): Response
     {
-        return true;
+        return Gate::authorize('update', $this->offering);
     }
 
     /**

@@ -9,6 +9,7 @@ use App\Enums\FlashMessageKey;
 use App\Http\Requests\Wallet\UpdateWalletCheckLayoutRequest;
 use App\Models\ChurchWallet;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Gate;
 
 final class ChangeWalletLayoutController extends Controller
 {
@@ -17,6 +18,8 @@ final class ChangeWalletLayoutController extends Controller
      */
     public function __invoke(UpdateWalletCheckLayoutRequest $request, ChurchWallet $wallet, UpdateWalletAction $action): RedirectResponse
     {
+        Gate::authorize('update', $wallet);
+
         $check_layout_id = $request->integer('check_layout_id');
 
         $action->handle($wallet, ['check_layout_id' => $check_layout_id]);

@@ -15,7 +15,7 @@ final class OfferingPolicy
      */
     public function viewAny(TenantUser $user): Response
     {
-        if ($user->can(TenantPermission::MANAGE_OFFERINGS)) {
+        if ($user->can(TenantPermission::OFFERINGS_MANAGE)) {
             return Response::allow();
         }
 
@@ -27,7 +27,7 @@ final class OfferingPolicy
      */
     public function create(TenantUser $user): Response
     {
-        if ($user->can(TenantPermission::CREATE_OFFERINGS)) {
+        if ($user->can(TenantPermission::OFFERINGS_CREATE)) {
             return Response::allow();
         }
 
@@ -39,7 +39,7 @@ final class OfferingPolicy
      */
     public function update(TenantUser $user): Response
     {
-        if ($user->can(TenantPermission::UPDATE_OFFERINGS)) {
+        if ($user->can(TenantPermission::OFFERINGS_UPDATE)) {
             return Response::allow();
         }
 
@@ -51,7 +51,7 @@ final class OfferingPolicy
      */
     public function delete(TenantUser $user): Response
     {
-        if ($user->can(TenantPermission::DELETE_OFFERINGS)) {
+        if ($user->can(TenantPermission::OFFERINGS_DELETE)) {
             return Response::allow();
         }
 

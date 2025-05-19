@@ -20,11 +20,11 @@ use App\Models\Missionary;
 use App\Models\Offering;
 use App\Models\OfferingType;
 use App\Support\SelectOption;
-use Bavix\Wallet\Services\FormatterServiceInterface;
+use Bavix\Wallet\Services\FormatterService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -35,7 +35,6 @@ final class OfferingController extends Controller
      */
     public function index(ListOfferingRequest $request): Response
     {
-
         $date = $request->string('date')->toString() ?: null;
 
         $offerings = Offering::query()
@@ -71,7 +70,6 @@ final class OfferingController extends Controller
      */
     public function create(): Response
     {
-
         $paymentMethods = PaymentMethod::options();
         $walletsOptions = SelectOption::create(ChurchWallet::all());
         $membersOptions = SelectOption::create(Member::all(), labels: ['name', 'last_name']);
@@ -102,40 +100,29 @@ final class OfferingController extends Controller
     public function store(StoreOfferingRequest $request, CreateOfferingAction $action): RedirectResponse
     {
 
-        /**
-         * @var array{
-         * date:string,donor_id:string|null,
-         * offerings: array{
-         * wallet_id: string,
-         * amount: string,
-         * payment_method: string,
-         * offering_type: array{id:string, model:string},
-         * note: string}[]
-         * } $validated
-         */
-        $validated = $request->validated();
-
         try {
-            DB::transaction(function () use ($validated, $action): void {
-                foreach ($validated['offerings'] as $offering) {
-                    $action->handle([
-                        ...$offering,
-                        'date' => $validated['date'],
-                        'donor_id' => $validated['donor_id'],
-                    ]);
-                }
-            });
+            /**
+             * @var array{
+             *  amount:string,
+             *  date:string,
+             *  payment_method:string,
+             *  wallet_id:string,
+             *  member_id:string|null,
+             *  offering_type_ids:string[],
+             *  missionary_ids:string[]|null,
+             *  note:string|null,
+             * } $validated
+             */
+            $validated = $request->validated();
+            $action->handle($validated);
         } catch (WalletException $e) {
-            return back()
-                ->with(FlashMessageKey::ERROR->value, $e->getMessage());
-
+            return back()->with(FlashMessageKey::ERROR->value, $e->getMessage());
         }
 
-        return to_route('offerings.index', ['date' => $validated['date']])->with(
+        return to_route('offerings.index')->with(
             FlashMessageKey::SUCCESS->value,
-            __('flash.message.created', ['model' => __('offerings')])
+            __('flash.message.created', ['model' => __('Offering')])
         );
-
     }
 
     /**
@@ -143,7 +130,7 @@ final class OfferingController extends Controller
      */
     public function show(Offering $offering): void
     {
-        //
+        Gate::authorize('view', $offering);
     }
 
     /**
@@ -151,6 +138,7 @@ final class OfferingController extends Controller
      */
     public function edit(Offering $offering): Response
     {
+        Gate::authorize('update', $offering);
 
         $paymentMethods = PaymentMethod::options();
         $walletsOptions = SelectOption::create(ChurchWallet::all());
@@ -182,24 +170,15 @@ final class OfferingController extends Controller
      */
     public function update(UpdateOfferingRequest $request, Offering $offering, UpdateOfferingAction $action): RedirectResponse
     {
-        /**
-         * @var array{date:string,payer_id:int|string,wallet_id:string,amount:string,payment_method:string,offering_type:array{id:string,model:string},note:string} $validated
-         */
-        $validated = $request->validated();
-
         try {
-            $action->handle($offering, $validated);
+            $action->handle($offering, $request->validated());
         } catch (WalletException $e) {
-            return back()
-                ->with(FlashMessageKey::ERROR->value, $e->getMessage())
-                ->withErrors([
-                    'wallet_id' => $e->getMessage(),
-                ]);
+            return back()->with(FlashMessageKey::ERROR->value, $e->getMessage());
         }
 
-        return to_route('offerings.index', ['date' => $validated['date']])->with(
+        return to_route('offerings.index')->with(
             FlashMessageKey::SUCCESS->value,
-            __('flash.message.updated', ['model' => __('offerings')])
+            __('flash.message.updated', ['model' => __('Offering')])
         );
     }
 
@@ -208,21 +187,24 @@ final class OfferingController extends Controller
      */
     public function destroy(Offering $offering, DeleteOfferingAction $action): RedirectResponse
     {
+        Gate::authorize('delete', $offering);
+
         try {
             $action->handle($offering);
         } catch (WalletException $e) {
-            return back()
-                ->with(FlashMessageKey::ERROR->value, $e->getMessage());
+            return back()->with(FlashMessageKey::ERROR->value, $e->getMessage());
         }
 
-        return to_route('offerings.index', ['date' => $offering->date])->with(
+        return to_route('offerings.index')->with(
             FlashMessageKey::SUCCESS->value,
-            __('flash.message.deleted', ['model' => __('offerings')])
+            __('flash.message.deleted', ['model' => __('Offering')])
         );
     }
 
-    private function formatAmount(float|int|string $amount): string
+    private function formatAmount(string $amount): string
     {
-        return app(FormatterServiceInterface::class)->floatValue($amount, 2);
+        $formatter = new FormatterService;
+
+        return $formatter->floatValue($amount, 2);
     }
 }

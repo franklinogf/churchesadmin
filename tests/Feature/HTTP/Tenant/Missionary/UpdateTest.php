@@ -21,7 +21,7 @@ it('cannot be rendered if not authenticated', function (): void {
 describe('if user has permission', function (): void {
 
     beforeEach(function (): void {
-        asUserWithPermission(TenantPermission::MANAGE_MISSIONARIES, TenantPermission::UPDATE_MISSIONARIES);
+        asUserWithPermission(TenantPermission::MISSIONARIES_MANAGE, TenantPermission::MISSIONARIES_UPDATE);
     });
 
     it('can be rendered if authenticated', function (): void {
@@ -184,7 +184,7 @@ describe('if user has permission', function (): void {
 
 describe('if user does not have permission', function (): void {
     beforeEach(function (): void {
-        asUserWithPermission(TenantPermission::MANAGE_MISSIONARIES);
+        asUserWithPermission(TenantPermission::MISSIONARIES_MANAGE);
     });
 
     it('cannot be rendered if authenticated', function (): void {

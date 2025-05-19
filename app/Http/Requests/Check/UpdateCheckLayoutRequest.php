@@ -5,16 +5,18 @@ declare(strict_types=1);
 namespace App\Http\Requests\Check;
 
 use App\Enums\CheckLayoutField;
+use Illuminate\Auth\Access\Response;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 
 final class UpdateCheckLayoutRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize(): bool
+    public function authorize(): Response
     {
-        return true;
+        return Gate::authorize('update', $this->route('checkLayout'));
     }
 
     /**

@@ -50,7 +50,6 @@ final class CheckLayoutController extends Controller
 
     public function edit(Request $request, ChurchWallet $wallet): Response
     {
-
         $wallet->load('checkLayout');
 
         $checkLayoutId = $request->integer('layout', $wallet->checkLayout->id ?? 0);

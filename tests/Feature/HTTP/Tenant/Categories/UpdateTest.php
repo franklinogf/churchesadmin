@@ -9,7 +9,7 @@ use function Pest\Laravel\from;
 
 describe('if user has permission', function (): void {
     beforeEach(function (): void {
-        asUserWithPermission(TenantPermission::MANAGE_CATEGORIES, TenantPermission::UPDATE_CATEGORIES, TenantPermission::UPDATE_REGULAR_TAG);
+        asUserWithPermission(TenantPermission::CATEGORIES_MANAGE, TenantPermission::CATEGORIES_UPDATE, TenantPermission::REGULAR_TAG_UPDATE);
     });
 
     it('can be updated', function (): void {
@@ -80,7 +80,7 @@ describe('if user has permission', function (): void {
 
 describe('if user does not have permission', function (): void {
     beforeEach(function (): void {
-        asUserWithPermission(TenantPermission::MANAGE_CATEGORIES);
+        asUserWithoutPermission();
     });
 
     it('cannot update a category', function (): void {

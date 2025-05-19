@@ -9,7 +9,7 @@ use function Pest\Laravel\from;
 
 describe('if user has permission', function (): void {
     beforeEach(function (): void {
-        asUserWithPermission(TenantPermission::MANAGE_OFFERING_TYPES, TenantPermission::UPDATE_OFFERING_TYPES);
+        asUserWithPermission(TenantPermission::OFFERING_TYPES_MANAGE, TenantPermission::OFFERING_TYPES_UPDATE);
     });
 
     it('can be updated', function (): void {
@@ -33,7 +33,7 @@ describe('if user has permission', function (): void {
 
 describe('if user does not have permission', function (): void {
     beforeEach(function (): void {
-        asUserWithPermission(TenantPermission::MANAGE_OFFERING_TYPES);
+        asUserWithPermission(TenantPermission::OFFERING_TYPES_MANAGE);
     });
 
     it('cannot be updated', function (): void {

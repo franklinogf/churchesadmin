@@ -17,7 +17,7 @@ it('cannot be rendered if not authenticated', function (): void {
 it('can be rendered if authenticated user has permission', function (): void {
     Tag::factory(10)->category()->create();
 
-    asUserWithPermission(TenantPermission::MANAGE_CATEGORIES)
+    asUserWithPermission(TenantPermission::CATEGORIES_MANAGE)
         ->get(route('categories.index'))
         ->assertStatus(200)
         ->assertInertia(fn (Assert $page): Assert => $page

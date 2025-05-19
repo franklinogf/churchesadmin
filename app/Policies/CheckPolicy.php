@@ -19,14 +19,6 @@ final class CheckPolicy
     }
 
     /**
-     * Determine whether the user can view the model.
-     */
-    public function view(): Response
-    {
-        return Response::allow();
-    }
-
-    /**
      * Determine whether the user can create models.
      */
     public function create(): Response
@@ -73,6 +65,19 @@ final class CheckPolicy
     {
         if ($check->isConfirmed()) {
             return Response::deny('You cannot permanently delete a confirmed check.');
+        }
+
+        return Response::allow();
+    }
+
+    /**
+     * Determine whether the user can confirm checks.
+     */
+    public function confirm(TenantUser $tenantUser, Check $check): Response
+    {
+        if ($check->isConfirmed()) {
+            return Response::deny('This check is already confirmed.');
+
         }
 
         return Response::allow();

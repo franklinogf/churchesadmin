@@ -2,7 +2,7 @@ import { DataTable } from '@/components/custom-ui/datatable/data-table';
 import { PageTitle } from '@/components/PageTitle';
 import { Button } from '@/components/ui/button';
 import { UserPermission } from '@/enums/user';
-import { useUser } from '@/hooks/use-permissions';
+import { useUser } from '@/hooks/use-user';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem } from '@/types';
 import { type Member } from '@/types/models/member';
@@ -26,7 +26,7 @@ export default function Index({ members }: IndexProps) {
       <PageTitle>{t('Members')}</PageTitle>
       <DataTable
         headerButton={
-          userCan(UserPermission.CREATE_MEMBERS) && (
+          userCan(UserPermission.MEMBERS_CREATE) && (
             <Button asChild>
               <Link href={route('members.create')}>{t('Add Member')}</Link>
             </Button>

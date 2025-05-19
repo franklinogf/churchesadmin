@@ -16,7 +16,7 @@ it('cannot be rendered if not authenticated', function (): void {
 it('can be rendered if authenticated user has permission', function (): void {
     OfferingType::factory(3)->create();
 
-    asUserWithPermission(TenantPermission::MANAGE_OFFERING_TYPES)
+    asUserWithPermission(TenantPermission::OFFERING_TYPES_MANAGE)
         ->get(route('codes.offeringTypes.index'))
         ->assertStatus(200)
         ->assertInertia(fn (Assert $page): Assert => $page
