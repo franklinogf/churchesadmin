@@ -27,9 +27,8 @@ final class TenantDatabaseSeeder extends Seeder
         if (app()->environment('testing')) {
             return;
         }
+
         $this->call([
-            Tenants\PermissionSeeder::class,
-            Tenants\RoleSeeder::class,
             Tenants\CategorySeeder::class,
             Tenants\UserSeeder::class,
         ]);
