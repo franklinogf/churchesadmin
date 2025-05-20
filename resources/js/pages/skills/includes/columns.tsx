@@ -1,3 +1,4 @@
+import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTableColumnHeader';
 import { SkillForm } from '@/components/forms/skill-form';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
@@ -14,7 +15,7 @@ import { useState } from 'react';
 export const columns: ColumnDef<Tag>[] = [
   {
     enableHiding: false,
-    header: 'Name',
+    header: ({ column }) => <DataTableColumnHeader column={column} center={false} title="Name" />,
     accessorKey: 'name',
   },
   {

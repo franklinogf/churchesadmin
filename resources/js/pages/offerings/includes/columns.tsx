@@ -87,7 +87,6 @@ export const columns: ColumnDef<Offering>[] = [
   {
     accessorKey: 'date',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Date" />,
-    meta: 'Date',
     cell: ({ row }) => <DatatableCell justify="center">{row.original.date}</DatatableCell>,
   },
   {

@@ -57,7 +57,6 @@ export const confirmedColumns: ColumnDef<Check>[] = [
   {
     header: ({ column }) => <DataTableColumnHeader column={column} title="Expense type" />,
     accessorKey: 'expenseType',
-    meta: 'Expense type',
     cell: function CellComponent({ row }) {
       const { expenseType } = row.original;
       return (
