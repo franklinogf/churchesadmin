@@ -103,6 +103,7 @@ return [
         'wallets.create' => 'Create Wallet',
         'wallets.update' => 'Update Wallet',
         'wallets.delete' => 'Delete Wallet',
+        'wallets.check.layout.update' => 'Update Wallet Check Layout',
         'check.layouts.manage' => 'Manage Check Layouts',
         'check.layouts.create' => 'Create Check Layout',
         'check.layouts.update' => 'Update Check Layout',

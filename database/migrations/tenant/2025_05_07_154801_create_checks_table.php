@@ -30,7 +30,7 @@ return new class extends Migration
             $table->string('name');
             $table->integer('width');
             $table->integer('height');
-            $table->json('fields');
+            $table->json('fields')->nullable();
             $table->timestamps();
         });
 

@@ -4,20 +4,13 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Enums\CheckLayoutField;
 use App\Enums\FlashMessageKey;
 use App\Http\Requests\Check\StoreCheckLayoutRequest;
 use App\Http\Requests\Check\UpdateCheckLayoutRequest;
-use App\Http\Resources\Wallet\CheckLayoutResource;
-use App\Http\Resources\Wallet\ChurchWalletResource;
 use App\Models\CheckLayout;
 use App\Models\ChurchWallet;
-use App\Support\SelectOption;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Inertia\Inertia;
-use Inertia\Response;
 
 final class CheckLayoutController extends Controller
 {
@@ -30,7 +23,7 @@ final class CheckLayoutController extends Controller
                 'name' => $request->string('name'),
                 'width' => $request->integer('width'),
                 'height' => $request->integer('height'),
-                'fields' => CheckLayoutField::initialLayout(),
+                'fields' => null,
             ]);
 
             $checkLayout->addMediaFromRequest('image')->toMediaCollection();
@@ -45,24 +38,9 @@ final class CheckLayoutController extends Controller
         });
 
         return to_route('wallets.check.edit', ['wallet' => $wallet_id, 'layout' => $checkLayoutId])
-            ->with('success', 'Check layout created successfully.');
-    }
-
-    public function edit(Request $request, ChurchWallet $wallet): Response
-    {
-        $wallet->load('checkLayout');
-
-        $checkLayoutId = $request->integer('layout', $wallet->checkLayout->id ?? 0);
-
-        $checkLayout = CheckLayout::find($checkLayoutId);
-
-        $checkLayouts = SelectOption::create(CheckLayout::all());
-
-        return Inertia::render('wallets/check-layout', [
-            'wallet' => new ChurchWalletResource($wallet),
-            'checkLayouts' => $checkLayouts,
-            'checkLayout' => $checkLayout ? new CheckLayoutResource($checkLayout) : null,
-        ]);
+            ->with(FlashMessageKey::SUCCESS->value, __('flash.message.created', [
+                'model' => __('Check layout'),
+            ]));
     }
 
     public function update(UpdateCheckLayoutRequest $request, CheckLayout $checkLayout): RedirectResponse

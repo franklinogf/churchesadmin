@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\ChangeWalletLayoutController;
 use App\Http\Controllers\CheckController;
 use App\Http\Controllers\CheckLayoutController;
 use App\Http\Controllers\ConfirmMultipleCheckController;
@@ -19,6 +18,7 @@ use App\Http\Controllers\Pdf\CheckPdfController;
 use App\Http\Controllers\Pdf\ChecksPdfController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WalletCheckLayoutController;
 use App\Http\Controllers\WalletController;
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware;
@@ -82,11 +82,11 @@ Route::middleware([
             ->except(['show', 'create', 'edit']);
 
         // Accounting
-        Route::put('wallets/{wallet}/check-layout', ChangeWalletLayoutController::class)->name('wallets.check.change-layout');
-        Route::get('wallets/{wallet}/check-layout', [CheckLayoutController::class, 'edit'])->name('wallets.check.edit');
         Route::post('check-layout', [CheckLayoutController::class, 'store'])->name('check-layout.store');
         Route::put('check-layout/{checkLayout}', [CheckLayoutController::class, 'update'])->name('check-layout.update');
 
+        Route::put('wallets/{wallet}/check-layout', [WalletCheckLayoutController::class, 'update'])->name('wallets.check.update');
+        Route::get('wallets/{wallet}/check-layout', [WalletCheckLayoutController::class, 'edit'])->name('wallets.check.edit');
         Route::put('wallets/{wallet}/restore', [WalletController::class, 'restore'])
             ->withTrashed()
             ->name('wallets.restore');

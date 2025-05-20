@@ -8,6 +8,7 @@ use App\Enums\CheckLayoutField;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\Rule;
 
 final class UpdateCheckLayoutRequest extends FormRequest
 {
@@ -26,16 +27,9 @@ final class UpdateCheckLayoutRequest extends FormRequest
      */
     public function rules(): array
     {
-        /**
-         * @var array<string,string[]> $fields
-         */
-        $fields = collect(CheckLayoutField::cases())
-            ->mapWithKeys(fn (CheckLayoutField $field) => ["fields.{$field->value}" => ['required']])
-            ->toArray();
-
         return [
-            'fields' => ['required', 'array'],
-            ...$fields,
+            'fields' => ['required', 'array', 'min:1'],
+            'fields.*.target' => ['required', 'string', Rule::enum(CheckLayoutField::class)],
             'fields.*.position.x' => ['required', 'numeric'],
             'fields.*.position.y' => ['required', 'numeric'],
             'width' => ['required', 'integer'],

@@ -2,12 +2,9 @@
 
 <x-layouts.pdf :title="__('Checks')">
     @foreach ($checks as $check)
-        @php
-            $fields = new CheckLayoutFieldsDto($check->date->format('Y-m-d'), $check->transaction->amountFloat, "{$check->member->name} {$check->member->last_name}", $check->note)->toArray();
-        @endphp
-        @foreach ($check->layout->fields as $fieldId => $fieldLayout)
+        @foreach ($check->layout->fields as $fieldLayout)
             <div style="position: absolute; top: {{ $fieldLayout['position']['y'] }}px; left: {{ $fieldLayout['position']['x'] }}px;">
-                {{ $check->fields->toArray()[$fieldId] }}
+                {{ $check->fields->toArray()[$fieldLayout['target']] }}
             </div>
         @endforeach
         @if(!$loop->last)

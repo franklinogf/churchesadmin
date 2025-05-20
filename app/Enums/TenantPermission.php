@@ -54,6 +54,7 @@ enum TenantPermission: string
     case WALLETS_CREATE = 'wallets.create';
     case WALLETS_UPDATE = 'wallets.update';
     case WALLETS_DELETE = 'wallets.delete';
+    case WALLETS_CHECK_LAYOUT_UPDATE = 'wallets.check.layout.update';
     case CHECK_LAYOUTS_MANAGE = 'check.layouts.manage';
     case CHECK_LAYOUTS_CREATE = 'check.layouts.create';
     case CHECK_LAYOUTS_UPDATE = 'check.layouts.update';

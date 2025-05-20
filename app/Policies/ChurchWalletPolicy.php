@@ -70,4 +70,16 @@ final class ChurchWalletPolicy
 
         return Response::deny(__('permission.delete', ['label' => __('Wallets')]));
     }
+
+    /**
+     * Determine whether the user can update the check layout.
+     */
+    public function updateCheckLayout(TenantUser $user): Response
+    {
+        if ($user->can(TenantPermission::WALLETS_CHECK_LAYOUT_UPDATE)) {
+            return Response::allow();
+        }
+
+        return Response::deny(__('permission.update', ['label' => __('Wallet').' '.__('Check Layout')]));
+    }
 }

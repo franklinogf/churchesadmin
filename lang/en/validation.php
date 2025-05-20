@@ -178,4 +178,9 @@ return [
         'zip' => 'zip',
         'postal_code' => 'postal code',
     ],
+    'custom' => [
+        'fields' => [
+            'required' => 'You need at least one field to print on the check.',
+        ],
+    ],
 ];

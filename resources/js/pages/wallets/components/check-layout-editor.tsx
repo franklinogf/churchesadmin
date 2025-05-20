@@ -1,20 +1,26 @@
-import type { CheckFieldName, CheckLayout, CheckLayoutFields } from '@/types/models/check-layout';
+import type { CheckFieldName, CheckLayout, CheckLayoutField, CheckLayoutPosition } from '@/types/models/check-layout';
 import { DragDropProvider, KeyboardSensor, PointerSensor } from '@dnd-kit/react';
 
 import { FormErrorList } from '@/components/forms/form-error-list';
 import { FieldsGrid } from '@/components/forms/inputs/FieldsGrid';
 import { InputField } from '@/components/forms/inputs/InputField';
 import { SubmitButton } from '@/components/forms/SubmitButton';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
 import { useTranslations } from '@/hooks/use-translations';
 import { Transition } from '@headlessui/react';
 import { useForm } from '@inertiajs/react';
 import { format } from 'date-fns';
+import { PlusIcon } from 'lucide-react';
 import { useState } from 'react';
 import { CheckLayoutDraggableField } from './check-layout-draggable-field';
 import { CheckLayoutDroppableArea } from './check-layout-droppable-area';
-
+type CheckLayoutForm = {
+  fields: CheckLayoutField[];
+  width: number;
+  height: number;
+};
 export function CheckLayoutEditor({ checkLayout }: { checkLayout: CheckLayout }) {
   const { t } = useTranslations();
   const initialFieldsMap: Record<CheckFieldName, string> = {
@@ -25,25 +31,37 @@ export function CheckLayoutEditor({ checkLayout }: { checkLayout: CheckLayout })
     memo: t('Memo'),
   };
   const [fieldsMap, setFieldsMap] = useState<Record<CheckFieldName, string>>(initialFieldsMap);
-  const { data, setData, put, processing, recentlySuccessful, errors } = useForm('update-check-layout', {
-    fields: checkLayout.fields,
+  const { data, setData, put, processing, recentlySuccessful, errors } = useForm<CheckLayoutForm>({
+    fields: checkLayout.fields || [],
     width: checkLayout.width,
     height: checkLayout.height,
   });
 
-  function updateFieldPosition(fieldId: CheckFieldName, { position }: { position: { x: number; y: number } }) {
-    const newFields = { ...data.fields };
-    const field = newFields[fieldId];
-    const fieldPosition = field.position || { x: 0, y: 0 };
+  function updateFieldPosition(index: number, { position }: CheckLayoutPosition) {
+    const updatedFields = [...data.fields];
+    if (!updatedFields[index]) {
+      return;
+    }
     const newPosition = {
-      x: fieldPosition.x + position.x,
-      y: fieldPosition.y + position.y,
+      x: updatedFields[index].position.x + position.x,
+      y: updatedFields[index].position.y + position.y,
     };
-    newFields[fieldId] = {
-      ...field,
+    updatedFields[index] = {
+      ...updatedFields[index],
       position: newPosition,
     };
-    setData('fields', newFields);
+
+    setData('fields', updatedFields);
+  }
+
+  function handleAddField(fieldId: CheckFieldName) {
+    setData('fields', [...data.fields, { target: fieldId, position: { x: 10, y: 15 } }]);
+  }
+
+  function handleRemoveField(index: number) {
+    const updatedFields = [...data.fields];
+    updatedFields.splice(index, 1);
+    setData('fields', updatedFields);
   }
 
   function handleFieldChange(fieldId: CheckFieldName, value: string) {
@@ -90,7 +108,7 @@ export function CheckLayoutEditor({ checkLayout }: { checkLayout: CheckLayout })
             if (target?.id !== 'droppable-area') return;
             if (!source) return;
 
-            const id = source.id as keyof CheckLayoutFields;
+            const id = source.id as number;
 
             updateFieldPosition(id, {
               position: {
@@ -101,11 +119,17 @@ export function CheckLayoutEditor({ checkLayout }: { checkLayout: CheckLayout })
           }}
         >
           <CheckLayoutDroppableArea dimensions={{ height: data.height, width: data.width }} imageUrl={checkLayout.imageUrl}>
-            {Object.entries(data.fields).map(([id, { position }]) => (
-              <CheckLayoutDraggableField key={id} id={id as CheckFieldName} position={position}>
-                {fieldsMap[id as CheckFieldName]}
-              </CheckLayoutDraggableField>
-            ))}
+            {data.fields &&
+              data.fields.map((field, index) => (
+                <CheckLayoutDraggableField
+                  key={`${field.target}-${index}`}
+                  id={index}
+                  position={field.position}
+                  onRemoveField={() => handleRemoveField(index)}
+                >
+                  {fieldsMap[field.target]}
+                </CheckLayoutDraggableField>
+              ))}
           </CheckLayoutDroppableArea>
         </DragDropProvider>
         <div className="flex items-center justify-center gap-4">
@@ -130,14 +154,18 @@ export function CheckLayoutEditor({ checkLayout }: { checkLayout: CheckLayout })
           </CardHeader>
           <CardContent>
             {Object.entries(fieldsMap).map(([id, value]) => (
-              <div key={id} className="mb-4 gap-2">
+              <div key={id} className="mb-4 flex items-center gap-2">
                 <InputField
+                  className="grow"
                   label={id.toUpperCase().replaceAll('_', ' ')}
                   type="text"
                   value={value}
-                  onChange={(value) => handleFieldChange(id as CheckFieldName, value)}
+                  onChange={(value) => handleFieldChange(id as CheckFieldName, value === '' ? initialFieldsMap[id as CheckFieldName] : value)}
                   placeholder={t('Enter the value for this field')}
                 />
+                <Button variant="outline" size="icon" className="self-end" onClick={() => handleAddField(id as CheckFieldName)}>
+                  <PlusIcon className="h-4 w-4" />
+                </Button>
               </div>
             ))}
           </CardContent>

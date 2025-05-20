@@ -179,4 +179,9 @@ return [
         'postal_code' => 'código postal',
 
     ],
+    'custom' => [
+        'fields' => [
+            'required' => 'Necesitas al menos un campo para imprimir en el cheque.',
+        ],
+    ],
 ];

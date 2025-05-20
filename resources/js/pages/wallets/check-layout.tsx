@@ -68,7 +68,7 @@ export default function CheckLayout({ checkLayouts, wallet, checkLayout }: Check
                 {activeLayout !== NEW_LAYOUT && (
                   <Button disabled={isWalletLayout} variant="outline" className="self-end" asChild>
                     <Link
-                      href={route('wallets.check.change-layout', [wallet.id])}
+                      href={route('wallets.check.update', [wallet.id])}
                       method="put"
                       data={{ check_layout_id: activeLayout }}
                       preserveScroll

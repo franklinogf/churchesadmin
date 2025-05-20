@@ -23,7 +23,7 @@ final class ChecksPdfController extends Controller
         }
 
         $checks = Check::whereIn('id', $checkIds)->get();
-
+        // dd($checks[0]->layout->fields);
         if ($checks->isEmpty()) {
             abort(404, 'No checks found');
         }

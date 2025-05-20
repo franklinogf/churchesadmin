@@ -19,7 +19,7 @@ final class UpdateWalletCheckLayoutRequest extends FormRequest
      */
     public function authorize(): Response
     {
-        return Gate::authorize('update', $this->wallet);
+        return Gate::authorize('updateCheckLayout', $this->wallet);
     }
 
     /**
