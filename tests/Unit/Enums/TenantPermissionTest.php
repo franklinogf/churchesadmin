@@ -7,9 +7,9 @@ use App\Enums\TenantPermission;
 it('has needed enums', function (): void {
 
     expect(TenantPermission::names())->toBe([
-        'REGULAR_TAG_UPDATE',
-        'REGULAR_TAG_DELETE',
-        'REGULAR_TAG_CREATE',
+        'REGULAR_TAGS_UPDATE',
+        'REGULAR_TAGS_DELETE',
+        'REGULAR_TAGS_CREATE',
         'USERS_MANAGE',
         'USERS_CREATE',
         'USERS_UPDATE',
@@ -54,15 +54,22 @@ it('has needed enums', function (): void {
         'CHECK_LAYOUTS_CREATE',
         'CHECK_LAYOUTS_UPDATE',
         'CHECK_LAYOUTS_DELETE',
+        'CHECKS_MANAGE',
+        'CHECKS_CREATE',
+        'CHECKS_UPDATE',
+        'CHECKS_DELETE',
+        'CHECKS_CONFIRM',
+        'CHECKS_PRINT',
+
     ]);
 
 });
 
 test('label return correct label', function (): void {
 
-    expect(TenantPermission::REGULAR_TAG_UPDATE->label())->toBe(__('Update Regular Tag'));
-    expect(TenantPermission::REGULAR_TAG_DELETE->label())->toBe(__('Delete Regular Tag'));
-    expect(TenantPermission::REGULAR_TAG_CREATE->label())->toBe(__('Create Regular Tag'));
+    expect(TenantPermission::REGULAR_TAGS_UPDATE->label())->toBe(__('Update Regular Tag'));
+    expect(TenantPermission::REGULAR_TAGS_DELETE->label())->toBe(__('Delete Regular Tag'));
+    expect(TenantPermission::REGULAR_TAGS_CREATE->label())->toBe(__('Create Regular Tag'));
     expect(TenantPermission::USERS_MANAGE->label())->toBe(__('Manage Users'));
     expect(TenantPermission::USERS_CREATE->label())->toBe(__('Create User'));
     expect(TenantPermission::USERS_UPDATE->label())->toBe(__('Update User'));
@@ -107,4 +114,10 @@ test('label return correct label', function (): void {
     expect(TenantPermission::CHECK_LAYOUTS_CREATE->label())->toBe(__('Create Check Layout'));
     expect(TenantPermission::CHECK_LAYOUTS_UPDATE->label())->toBe(__('Update Check Layout'));
     expect(TenantPermission::CHECK_LAYOUTS_DELETE->label())->toBe(__('Delete Check Layout'));
+    expect(TenantPermission::CHECKS_MANAGE->label())->toBe(__('Manage Checks'));
+    expect(TenantPermission::CHECKS_CREATE->label())->toBe(__('Create Check'));
+    expect(TenantPermission::CHECKS_UPDATE->label())->toBe(__('Update Check'));
+    expect(TenantPermission::CHECKS_DELETE->label())->toBe(__('Delete Check'));
+    expect(TenantPermission::CHECKS_CONFIRM->label())->toBe(__('Confirm Check'));
+    expect(TenantPermission::CHECKS_PRINT->label())->toBe(__('Print Check'));
 });

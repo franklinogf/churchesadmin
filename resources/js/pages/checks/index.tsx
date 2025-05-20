@@ -77,6 +77,10 @@ export default function Index({ unconfirmedChecks, confirmedChecks, flash, nextC
     setConfirmedSelectedRows(Object.keys(selectedRows));
   }, []);
 
+  const handlePrintConfirmedChecks = () => {
+    window.open(route('checks.pdf.multiple', { checks: confirmedSelectedRows }), '_blank');
+  };
+
   const unconfirmedSelected = data.checks.length > 0;
 
   return (
@@ -160,9 +164,9 @@ export default function Index({ unconfirmedChecks, confirmedChecks, flash, nextC
             <PageTitle className="text-left text-xl font-semibold">{t('Confirmed Checks')}</PageTitle>
             <div className="space-y-2">
               <div className="flex items-center justify-end gap-2">
-                <SubmitButton disabled={confirmedSelectedRows.length === 0} variant="secondary" size="sm">
+                <Button size="sm" variant="secondary" disabled={confirmedSelectedRows.length === 0} onClick={handlePrintConfirmedChecks}>
                   {t('Print checks')}
-                </SubmitButton>
+                </Button>
               </div>
             </div>
           </header>

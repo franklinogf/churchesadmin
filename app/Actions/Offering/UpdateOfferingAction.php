@@ -69,7 +69,7 @@ final readonly class UpdateOfferingAction
                 'wallet_id' => $wallet->id,
             ]);
 
-            throw new WalletException('An error occurred while creating the offering', $e->getCode(), $e);
+            throw new WalletException('An error occurred while updating the offering', (int) $e->getCode(), $e);
         }
     }
 }

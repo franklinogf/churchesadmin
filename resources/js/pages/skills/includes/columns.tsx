@@ -28,7 +28,7 @@ export const columns: ColumnDef<Tag>[] = [
       const { can: userCan } = useUser();
       const [isEditing, setIsEditing] = useState(false);
       const skill = row.original;
-      if (skill.isRegular && !userCan(UserPermission.REGULAR_TAG_UPDATE) && !userCan(UserPermission.REGULAR_TAG_DELETE)) {
+      if (skill.isRegular && !userCan(UserPermission.REGULAR_TAGS_UPDATE) && !userCan(UserPermission.REGULAR_TAGS_DELETE)) {
         return null;
       }
 

@@ -18,7 +18,7 @@ final class ConfirmMultipleCheckRequest extends FormRequest
      */
     public function authorize(): Response
     {
-        return Gate::authorize('update', Check::class);
+        return Gate::authorize('confirm', Check::class);
     }
 
     /**
@@ -41,6 +41,7 @@ final class ConfirmMultipleCheckRequest extends FormRequest
      */
     public function after(): array
     {
+
         return [
             function (Validator $validator): void {
                 /** @var string[] */

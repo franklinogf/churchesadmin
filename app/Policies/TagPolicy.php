@@ -29,7 +29,7 @@ final class TagPolicy
      */
     public function create(TenantUser $user, bool $is_regular, ?TagType $tagType = null): Response
     {
-        if ($is_regular && $user->cannot(TenantPermission::REGULAR_TAG_CREATE)) {
+        if ($is_regular && $user->cannot(TenantPermission::REGULAR_TAGS_CREATE)) {
             return Response::deny(__('permission.create', ['label' => __('Regular tags')]));
         }
 
@@ -45,7 +45,7 @@ final class TagPolicy
      */
     public function update(TenantUser $user, Tag $tag): Response
     {
-        if ($tag->is_regular && $user->cannot(TenantPermission::REGULAR_TAG_UPDATE)) {
+        if ($tag->is_regular && $user->cannot(TenantPermission::REGULAR_TAGS_UPDATE)) {
             return Response::deny(__('permission.update', ['label' => __('Regular tags')]));
         }
 
@@ -63,7 +63,7 @@ final class TagPolicy
      */
     public function delete(TenantUser $user, Tag $tag): Response
     {
-        if ($tag->is_regular && $user->cannot(TenantPermission::REGULAR_TAG_DELETE)) {
+        if ($tag->is_regular && $user->cannot(TenantPermission::REGULAR_TAGS_DELETE)) {
             return Response::deny(__('permission.delete', ['label' => __('Regular tags')]));
         }
 

@@ -1,7 +1,7 @@
 export enum UserPermission {
-  REGULAR_TAG_UPDATE = 'regular.tag.update',
-  REGULAR_TAG_DELETE = 'regular.tag.delete',
-  REGULAR_TAG_CREATE = 'regular.tag.create',
+  REGULAR_TAGS_UPDATE = 'regular.tags.update',
+  REGULAR_TAGS_DELETE = 'regular.tags.delete',
+  REGULAR_TAGS_CREATE = 'regular.tags.create',
   USERS_MANAGE = 'users.manage',
   USERS_CREATE = 'users.create',
   USERS_UPDATE = 'users.update',
@@ -46,7 +46,14 @@ export enum UserPermission {
   CHECK_LAYOUTS_CREATE = 'check.layouts.create',
   CHECK_LAYOUTS_UPDATE = 'check.layouts.update',
   CHECK_LAYOUTS_DELETE = 'check.layouts.delete',
+  CHECKS_MANAGE = 'checks.manage',
+  CHECKS_CREATE = 'checks.create',
+  CHECKS_UPDATE = 'checks.update',
+  CHECKS_DELETE = 'checks.delete',
+  CHECKS_CONFIRM = 'checks.confirm',
+  CHECKS_PRINT = 'checks.print',
 }
+
 export enum UserRole {
   SUPER_ADMIN = 'super_admin',
   ADMIN = 'admin',

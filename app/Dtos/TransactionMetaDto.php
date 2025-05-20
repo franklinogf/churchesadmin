@@ -5,9 +5,12 @@ declare(strict_types=1);
 namespace App\Dtos;
 
 use App\Enums\TransactionMetaType;
-use DragonCode\Contracts\Support\Arrayable;
+use Illuminate\Contracts\Support\Arrayable;
 use JsonSerializable;
 
+/**
+ * @implements Arrayable<string,string>
+ */
 final readonly class TransactionMetaDto implements JsonSerializable, Arrayable
 {
     /**

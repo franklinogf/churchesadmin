@@ -11,7 +11,7 @@ use function Pest\Laravel\from;
 
 describe('if user has permission', function (): void {
     beforeEach(function (): void {
-        asUserWithPermission(TenantPermission::SKILLS_MANAGE, TenantPermission::SKILLS_DELETE, TenantPermission::REGULAR_TAG_DELETE);
+        asUserWithPermission(TenantPermission::SKILLS_MANAGE, TenantPermission::SKILLS_DELETE, TenantPermission::REGULAR_TAGS_DELETE);
     });
 
     it('can be deleted', function (): void {

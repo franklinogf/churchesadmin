@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
+use App\Enums\TenantPermission;
 use App\Models\Check;
 use App\Models\TenantUser;
 use Illuminate\Auth\Access\Response;
@@ -13,17 +14,26 @@ final class CheckPolicy
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(): Response
+    public function viewAny(TenantUser $tenantUser): Response
     {
-        return Response::allow();
+        if ($tenantUser->can(TenantPermission::CHECKS_MANAGE)) {
+            return Response::allow();
+        }
+
+        return Response::deny(__('permission.view_any', ['label' => __('Checks')]));
+
     }
 
     /**
      * Determine whether the user can create models.
      */
-    public function create(): Response
+    public function create(TenantUser $tenantUser): Response
     {
-        return Response::allow();
+        if ($tenantUser->can(TenantPermission::CHECKS_CREATE)) {
+            return Response::allow();
+        }
+
+        return Response::deny(__('permission.create', ['label' => __('Checks')]));
     }
 
     /**
@@ -32,10 +42,14 @@ final class CheckPolicy
     public function update(TenantUser $tenantUser, Check $check): Response
     {
         if ($check->isConfirmed()) {
-            return Response::deny('You cannot edit a confirmed check.');
+            return Response::deny(__('permission.confirmed_check.update'));
         }
 
-        return Response::allow();
+        if ($tenantUser->can(TenantPermission::CHECKS_UPDATE)) {
+            return Response::allow();
+        }
+
+        return Response::deny(__('permission.update', ['label' => __('Checks')]));
     }
 
     /**
@@ -44,18 +58,14 @@ final class CheckPolicy
     public function delete(TenantUser $tenantUser, Check $check): Response
     {
         if ($check->isConfirmed()) {
-            return Response::deny('You cannot delete a confirmed check.');
+            return Response::deny(__('permission.confirmed_check.delete'));
         }
 
-        return Response::allow();
-    }
+        if ($tenantUser->can(TenantPermission::CHECKS_DELETE)) {
+            return Response::allow();
+        }
 
-    /**
-     * Determine whether the user can restore the model.
-     */
-    public function restore(): Response
-    {
-        return Response::allow();
+        return Response::deny(__('permission.delete', ['label' => __('Checks')]));
     }
 
     /**
@@ -64,22 +74,25 @@ final class CheckPolicy
     public function forceDelete(TenantUser $tenantUser, Check $check): Response
     {
         if ($check->isConfirmed()) {
-            return Response::deny('You cannot permanently delete a confirmed check.');
+            return Response::deny(__('permission.confirmed_check.force_delete'));
         }
 
-        return Response::allow();
+        return Response::deny(__('permission.force_delete', ['label' => __('Checks')]));
     }
 
     /**
      * Determine whether the user can confirm checks.
      */
-    public function confirm(TenantUser $tenantUser, Check $check): Response
+    public function confirm(TenantUser $tenantUser, ?Check $check = null): Response
     {
-        if ($check->isConfirmed()) {
-            return Response::deny('This check is already confirmed.');
-
+        if ($check && $check->isConfirmed()) {
+            return Response::deny(__('permission.confirmed_check.confirm'));
         }
 
-        return Response::allow();
+        if ($tenantUser->can(TenantPermission::CHECKS_CONFIRM)) {
+            return Response::allow();
+        }
+
+        return Response::deny(__('permission.confirm', ['label' => __('Checks')]));
     }
 }

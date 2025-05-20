@@ -38,22 +38,19 @@ final readonly class UpdateTransactionAction
         try {
             return DB::transaction(function () use ($transaction, $transactionDto, $isDeposit, $wallet, $oldWallet): Transaction {
                 if ($oldWallet->id !== $wallet->id) {
-                    $transaction->forceDelete();
+                    $transaction->delete();
 
                     $updatedTransaction = $isDeposit
                             ? $this->walletDepositAction->handle($wallet, $transactionDto)
                             : $this->walletWithdrawalAction->handle($wallet, $transactionDto);
-                    $oldWallet->wallet->refreshBalance();
 
                 } else {
                     $amount = $this->formatterService->intValue($isDeposit ? $transactionDto->amount : -abs((float) $transactionDto->amount), 2);
                     if ($amount !== $transaction->amount) {
-                        $transaction->forceDelete();
-                        $oldWallet->wallet->refreshBalance();
+                        $transaction->delete();
                         $updatedTransaction = $isDeposit
                             ? $this->walletDepositAction->handle($wallet, $transactionDto)
                             : $this->walletWithdrawalAction->handle($wallet, $transactionDto);
-                        $oldWallet->wallet->refreshBalance();
                     } else {
                         $updatedTransaction = $transaction;
                     }

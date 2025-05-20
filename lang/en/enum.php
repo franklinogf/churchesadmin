@@ -107,5 +107,11 @@ return [
         'check.layouts.create' => 'Create Check Layout',
         'check.layouts.update' => 'Update Check Layout',
         'check.layouts.delete' => 'Delete Check Layout',
+        'checks.manage' => 'Manage Checks',
+        'checks.create' => 'Create Check',
+        'checks.update' => 'Update Check',
+        'checks.delete' => 'Delete Check',
+        'checks.confirm' => 'Confirm Check',
+        'checks.print' => 'Print Check',
     ],
 ];
