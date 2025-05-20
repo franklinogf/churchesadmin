@@ -58,7 +58,7 @@ export default function Edit({ genders, missionary, offeringFrequencies }: EditP
     },
   });
   const handleSubmit = () => {
-    put(route('missionaries.update', missionary.id));
+    put(route('missionaries.update', missionary.id), { preserveScroll: true });
   };
 
   const breadcrumbs: BreadcrumbItem[] = [

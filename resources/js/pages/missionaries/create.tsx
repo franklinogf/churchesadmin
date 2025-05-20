@@ -58,7 +58,7 @@ export default function Create({ genders, offeringFrequencies }: CreatePageProps
   });
 
   const handleSubmit = () => {
-    post(route('missionaries.store'));
+    post(route('missionaries.store'), { preserveScroll: true });
   };
 
   const breadcrumbs: BreadcrumbItem[] = [

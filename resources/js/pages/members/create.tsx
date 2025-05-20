@@ -57,7 +57,7 @@ export default function Create({ genders, civilStatuses, skills, categories }: C
   }));
 
   const handleSubmit = () => {
-    post(route('members.store'));
+    post(route('members.store'), { preserveScroll: true });
   };
 
   const breadcrumbs: BreadcrumbItem[] = [

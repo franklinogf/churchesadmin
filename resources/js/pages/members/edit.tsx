@@ -57,7 +57,7 @@ export default function Edit({ member, genders, civilStatuses, skills, categorie
   }));
 
   const handleSubmit = () => {
-    put(route('members.update', member.id));
+    put(route('members.update', member.id), { preserveScroll: true });
   };
   const breadcrumbs: BreadcrumbItem[] = [
     {
