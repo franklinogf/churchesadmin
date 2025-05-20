@@ -87,7 +87,7 @@ export function DataTable<TData, TValue>({
             <div className="relative mr-auto">
               <Input
                 name="datatable-filter"
-                placeholder="Filter"
+                placeholder={t('datatable.filter')}
                 value={globalFilter}
                 onChange={(e) => {
                   table.setGlobalFilter(e.target.value);
@@ -147,7 +147,7 @@ export function DataTable<TData, TValue>({
             ) : (
               <TableRow>
                 <TableCell colSpan={columns.length} className="h-24 text-center">
-                  {t('No data')}
+                  {t('datatable.empty')}
                 </TableCell>
               </TableRow>
             )}
@@ -163,7 +163,7 @@ export function DataTable<TData, TValue>({
             className="cursor-pointer"
             onClick={() => {
               if (table.getSelectedRowModel().rows.length === 0) {
-                toast.info('Please select at least one row');
+                toast.info(t('datatable.no_selected_rows'));
               } else {
                 onButtonClick?.(table.getSelectedRowModel().flatRows.map((row) => row.original));
               }
@@ -184,7 +184,7 @@ function VisibilityDropdownMenu<TData>({ columns }: { columns: Column<TData, unk
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" className="ml-auto">
-          {t('Columns')}
+          {t('datatable.visibility_button')}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">

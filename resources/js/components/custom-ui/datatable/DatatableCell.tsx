@@ -15,8 +15,9 @@ const cellVariants = cva('flex items-center', {
 
 interface DatatableCellCenterProps extends VariantProps<typeof cellVariants> {
   children: React.ReactNode;
+  className?: string;
 }
 
-export function DatatableCell({ children, justify = 'start' }: DatatableCellCenterProps) {
-  return <div className={cellVariants({ justify })}>{children}</div>;
+export function DatatableCell({ children, justify = 'start', className }: DatatableCellCenterProps) {
+  return <div className={cellVariants({ justify, className })}>{children}</div>;
 }

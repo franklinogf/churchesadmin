@@ -9,7 +9,7 @@ export function DatatableActionsDropdown({ children }: { children: React.ReactNo
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="sm">
           <MoreHorizontalIcon />
-          <span className="sr-only">{t('Actions')}</span>
+          <span className="sr-only">{t('datatable.actions')}</span>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>{children}</DropdownMenuContent>
