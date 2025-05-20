@@ -35,7 +35,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read CheckLayout|null $checkLayout
  * @property-read Transaction|null $initialTransaction
  */
-final class ChurchWallet extends Model implements WalletFloat, Confirmable, Wallet
+final class ChurchWallet extends Model implements Confirmable, Wallet, WalletFloat
 {
     /** @use HasFactory<\Database\Factories\ChurchWalletFactory> */
     use CanConfirm, HasFactory, HasWalletFloat, SoftDeletes;

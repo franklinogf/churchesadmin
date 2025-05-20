@@ -12,7 +12,7 @@ use NumberToWords\NumberToWords;
 /**
  * @implements Arrayable<string,string|null>
  */
-final readonly class CheckLayoutFieldsDto implements JsonSerializable, Arrayable
+final readonly class CheckLayoutFieldsDto implements Arrayable, JsonSerializable
 {
     /**
      * Create a new class instance.

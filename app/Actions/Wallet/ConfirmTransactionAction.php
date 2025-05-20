@@ -15,8 +15,6 @@ final class ConfirmTransactionAction
 {
     /**
      * Handle the confirmation of a transaction.
-     *
-     * @return bool
      */
     public function handle(Transaction $transaction): bool
     {

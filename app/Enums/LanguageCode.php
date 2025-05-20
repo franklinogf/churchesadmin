@@ -10,7 +10,7 @@ use Filament\Support\Colors\Color;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 
-enum LanguageCode: string implements HasLabel, HasColor
+enum LanguageCode: string implements HasColor, HasLabel
 {
     use EnumToArray, HasOptions;
     case ENGLISH = 'en';
@@ -18,8 +18,6 @@ enum LanguageCode: string implements HasLabel, HasColor
 
     /**
      * Get the label for the language code.
-     *
-     * @return string
      */
     public function label(): string
     {

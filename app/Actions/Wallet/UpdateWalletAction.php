@@ -37,7 +37,6 @@ final readonly class UpdateWalletAction
      * bank_account_number?:string,
      * check_layout_id?:int|null,
      * } $data
-     * @return ChurchWallet
      */
     public function handle(ChurchWallet $wallet, array $data): ChurchWallet
     {

@@ -30,7 +30,7 @@ use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
  * @property-read DateTimeInterface $created_at
  * @property-read DateTimeInterface $updated_at
  */
-final class Church extends BaseTenant implements TenantWithDatabase, WalletFloat, HasMedia, Wallet
+final class Church extends BaseTenant implements HasMedia, TenantWithDatabase, Wallet, WalletFloat
 {
     use HasDatabase, HasDomains, HasWalletFloat, HasWallets, InteractsWithMedia, MaintenanceMode;
 

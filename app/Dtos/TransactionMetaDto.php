@@ -11,7 +11,7 @@ use JsonSerializable;
 /**
  * @implements Arrayable<string,string>
  */
-final readonly class TransactionMetaDto implements JsonSerializable, Arrayable
+final readonly class TransactionMetaDto implements Arrayable, JsonSerializable
 {
     /**
      * Create a new class instance.

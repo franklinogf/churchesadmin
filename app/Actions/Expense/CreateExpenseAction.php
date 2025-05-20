@@ -25,7 +25,6 @@ final readonly class CreateExpenseAction
      * Handle the creation of an expense.
      *
      * @param  array{date:string,wallet_id:string,member_id?:string|null,expense_type_id:string,amount:string,note?:string|null}  $data
-     * @return Expense
      */
     public function handle(array $data): Expense
     {

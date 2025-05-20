@@ -19,7 +19,6 @@ final class WalletDepositAction
     /**
      * handle the creation of a transaction.
      *
-     * @return Transaction
      *
      * @throws WalletException
      */

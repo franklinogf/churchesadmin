@@ -10,7 +10,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 /**
- * @property-read \App\Models\TenantUser $user
+ * @property-read TenantUser $user
  */
 final class ProfileUpdateRequest extends FormRequest
 {

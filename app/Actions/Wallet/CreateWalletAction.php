@@ -33,7 +33,6 @@ final readonly class CreateWalletAction
      * bank_routing_number:string,
      * bank_account_number:string,
      * check_layout_id?:int|null } $data
-     * @return ChurchWallet
      */
     public function handle(array $data): ChurchWallet
     {

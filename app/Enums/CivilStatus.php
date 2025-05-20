@@ -18,8 +18,6 @@ enum CivilStatus: string
 
     /**
      * Get the label.
-     *
-     * @return string
      */
     public function label(): string
     {

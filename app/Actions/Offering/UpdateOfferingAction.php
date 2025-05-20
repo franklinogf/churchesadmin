@@ -27,7 +27,6 @@ final readonly class UpdateOfferingAction
      * Handle the creation of an offering.
      *
      * @param  array{wallet_id?:string,note?:string|null, date?:string, donor_id?:string|null, amount?:string, payment_method?:string, offering_type?:array{id:string, model:string}}  $data
-     * @return Offering
      */
     public function handle(Offering $offering, array $data): Offering
     {

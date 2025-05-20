@@ -10,7 +10,7 @@ use JsonSerializable;
 /**
  * @implements Arrayable<string,string>
  */
-final readonly class TransactionDto implements JsonSerializable, Arrayable
+final readonly class TransactionDto implements Arrayable, JsonSerializable
 {
     /**
      * Create a new class instance.

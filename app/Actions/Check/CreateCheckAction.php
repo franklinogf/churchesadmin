@@ -26,7 +26,6 @@ final readonly class CreateCheckAction
      * handle the creation of a check.
      *
      * @param  array{amount:string,member_id:string,date:string,type:string,wallet_id:string,note?:string|null,expense_type_id:string,check_number?:string}  $data
-     * @return Check
      *
      * @throws WalletException
      */

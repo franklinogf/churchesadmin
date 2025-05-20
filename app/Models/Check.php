@@ -75,7 +75,6 @@ final class Check extends Model
      * Scope a query to only include confirmed checks.
      *
      * @param  Builder<Check>  $query
-     * @return void
      */
     public function scopeConfirmed(Builder $query): void
     {
@@ -86,7 +85,6 @@ final class Check extends Model
      * Scope a query to only include unconfirmed checks.
      *
      * @param  Builder<Check>  $query
-     * @return void
      */
     public function scopeUnconfirmed(Builder $query): void
     {

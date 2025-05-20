@@ -27,7 +27,6 @@ final readonly class UpdateCheckAction
      * handle the update of a check.
      *
      * @param  array{amount?:string,member_id?:string,date?:string,type?:string,confirmed?:bool,wallet_id?:string,note?:string|null,expense_type_id?:string,check_number?:string|null}  $data
-     * @return Check
      *
      * @throws WalletException
      */

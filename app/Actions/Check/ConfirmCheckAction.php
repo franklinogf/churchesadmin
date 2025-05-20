@@ -15,8 +15,6 @@ final readonly class ConfirmCheckAction
 
     /**
      * Handle the confirmation of a check.
-     *
-     * @return bool
      */
     public function handle(Check $check): bool
     {

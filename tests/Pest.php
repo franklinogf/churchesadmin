@@ -19,7 +19,7 @@ use Tests\TestCase;
 |
 */
 
-pest()->extend(Tests\TestCase::class)->in('Feature', 'Unit');
+pest()->extend(TestCase::class)->in('Feature', 'Unit');
 pest()->use(RefreshDatabaseWithTenant::class)->in('Feature/**/Tenant', 'Unit/**/Tenant')->beforeEach(function (): void {
     Auth::shouldUse('tenant');
 });

@@ -41,8 +41,6 @@ final class Member extends Model
 
     /**
      * The name of the table associated with the Tag model.
-     *
-     * @return string
      */
     public static function getTagClassName(): string
     {

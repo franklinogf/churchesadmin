@@ -14,8 +14,6 @@ final class DeleteOfferingAction
 {
     /**
      * Handle the deletion of an offering.
-     *
-     * @return void
      */
     public function handle(Offering $offering): void
     {

@@ -12,7 +12,6 @@ final class ArrayFallback
      * Get the value from the array or return the fallback value.
      *
      * @param  array<string,mixed>  $data
-     * @return mixed
      */
     public static function inputOrFallback(array $data, string $key, mixed $fallback): mixed
     {

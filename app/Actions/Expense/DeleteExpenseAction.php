@@ -14,8 +14,6 @@ final class DeleteExpenseAction
 {
     /**
      * Handle the deletion of an expense.
-     *
-     * @return void
      */
     public function handle(Expense $expense): void
     {

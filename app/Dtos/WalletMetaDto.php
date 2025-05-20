@@ -10,7 +10,7 @@ use JsonSerializable;
 /**
  * @implements Arrayable<string,string>
  */
-final readonly class WalletMetaDto implements JsonSerializable, Arrayable
+final readonly class WalletMetaDto implements Arrayable, JsonSerializable
 {
     /**
      * Create a new class instance.
