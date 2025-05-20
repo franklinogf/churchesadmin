@@ -8,11 +8,11 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 
 import { DatatableFallback } from '@/components/fallbacks/data-table-fallback';
+import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import type { SharedData } from '@/types';
 import type { Check } from '@/types/models/check';
 import { Deferred, Link, useForm } from '@inertiajs/react';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { useCallback, useState } from 'react';
 import { confirmedColumns } from './includes/confirmedColumns';
 import { unconfirmedColumns } from './includes/unconfirmedColumns';
@@ -37,7 +37,7 @@ enum UnconfirmedFormAction {
 }
 
 export default function Index({ unconfirmedChecks, confirmedChecks, flash, nextCheckNumber }: IndexPageProps) {
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations();
   const [confirmedSelectedRows, setConfirmedSelectedRows] = useState<string[]>([]);
   const [unconfirmedAction, setUnconfirmedAction] = useState<UnconfirmedFormAction | null>(null);
 
@@ -85,17 +85,12 @@ export default function Index({ unconfirmedChecks, confirmedChecks, flash, nextC
 
   return (
     <AppLayout title={t('Checks')} breadcrumbs={[{ title: t('Checks'), href: route('checks.index') }]}>
-      <header className="space-y-2">
-        <PageTitle>{t('Checks')}</PageTitle>
-        <Button size="sm">
-          <Link href={route('checks.create')}>{t('New :model', { model: t('Check') })}</Link>
-        </Button>
-      </header>
+      <PageTitle>{t('Checks')}</PageTitle>
       <section className="mx-auto mt-4 w-full max-w-5xl space-y-16">
         <div>
           <header className="mt-8 flex items-center justify-between space-y-2">
             <Button size="sm">
-              <Link href={route('checks.create')}>{t('New Check')}</Link>
+              <Link href={route('checks.create')}>{t('New :model', { model: t('Check') })}</Link>
             </Button>
 
             <div className="space-y-2">

@@ -4,11 +4,11 @@ import { ExpenseTypeForm } from '@/components/forms/expense-type-form';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { useCurrency } from '@/hooks/use-currency';
+import { useTranslations } from '@/hooks/use-translations';
 import useConfirmationStore from '@/stores/confirmationStore';
 import type { ExpenseType } from '@/types/models/expense-type';
 import { router } from '@inertiajs/react';
 import { type ColumnDef } from '@tanstack/react-table';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { Edit2Icon, MoreHorizontalIcon, Trash2Icon } from 'lucide-react';
 import { useState } from 'react';
 
@@ -35,7 +35,7 @@ export const columns: ColumnDef<ExpenseType>[] = [
     enableSorting: false,
     size: 0,
     cell: function CellComponent({ row }) {
-      const { t } = useLaravelReactI18n();
+      const { t } = useTranslations();
       const { openConfirmation } = useConfirmationStore();
       const [isEditing, setIsEditing] = useState(false);
       const expenseType = row.original;

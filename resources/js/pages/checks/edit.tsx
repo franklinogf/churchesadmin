@@ -7,12 +7,12 @@ import { InputField } from '@/components/forms/inputs/InputField';
 import { SelectField } from '@/components/forms/inputs/SelectField';
 import { PageTitle } from '@/components/PageTitle';
 import { useCurrency } from '@/hooks/use-currency';
+import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import type { SelectOption } from '@/types';
 import type { Check } from '@/types/models/check';
 import { useForm } from '@inertiajs/react';
 import { formatDate } from 'date-fns';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 interface EditPageProps {
   walletOptions: SelectOption[];
@@ -34,7 +34,7 @@ type EditForm = {
 
 export default function ChecksEdit({ walletOptions, memberOptions, checkTypesOptions, expenseTypesOptions, check }: EditPageProps) {
   const { toPositive } = useCurrency();
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations();
   const { data, setData, put, errors, processing } = useForm<EditForm>({
     wallet_id: walletOptions[0]?.value.toString() ?? '',
     member_id: memberOptions[0]?.value.toString() ?? '',

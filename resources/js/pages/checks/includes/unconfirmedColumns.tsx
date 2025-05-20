@@ -5,11 +5,11 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { useCurrency } from '@/hooks/use-currency';
+import { useTranslations } from '@/hooks/use-translations';
 import useConfirmationStore from '@/stores/confirmationStore';
 import type { Check } from '@/types/models/check';
 import { Link, router } from '@inertiajs/react';
 import { type ColumnDef } from '@tanstack/react-table';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { Edit2Icon, MoreHorizontalIcon, Trash2Icon } from 'lucide-react';
 
 export const unconfirmedColumns: ColumnDef<Check>[] = [
@@ -50,7 +50,7 @@ export const unconfirmedColumns: ColumnDef<Check>[] = [
     header: ({ column }) => <DataTableColumnHeader column={column} title="Type" />,
     accessorKey: 'type',
     cell: function CellComponent({ row }) {
-      const { t } = useLaravelReactI18n();
+      const { t } = useTranslations();
       const { type } = row.original;
       return (
         <DatatableCell justify="center">
@@ -89,7 +89,7 @@ export const unconfirmedColumns: ColumnDef<Check>[] = [
     enableSorting: false,
     size: 0,
     cell: function CellComponent({ row }) {
-      const { t } = useLaravelReactI18n();
+      const { t } = useTranslations();
       const { openConfirmation } = useConfirmationStore();
       const check = row.original;
 

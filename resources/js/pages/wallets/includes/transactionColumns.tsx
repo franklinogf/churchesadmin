@@ -61,7 +61,7 @@ export const transactionColumns: ColumnDef<Transaction>[] = [
   //     enableSorting: false,
   //     size: 0,
   //     cell: function CellComponent({ row }) {
-  //       const { t } = useLaravelReactI18n();
+  //       const { t } = useTranslations()
   //       const { openConfirmation } = useConfirmationStore();
   //       //   const { can: userCan } = useUser();
   //       const wallet = row.original;
