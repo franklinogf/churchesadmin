@@ -21,6 +21,7 @@ final class MissionaryFactory extends Factory
     public function definition(): array
     {
         $gender = fake()->randomElement(Gender::values());
+        $offering = fake()->optional()->randomFloat(2, 10, 1000);
 
         return [
             'name' => fake()->firstName($gender),
@@ -29,8 +30,8 @@ final class MissionaryFactory extends Factory
             'phone' => fake()->optional(0.8)->unique()?->e164PhoneNumber(),
             'gender' => $gender,
             'church' => fake()->optional()->company(),
-            'offering' => fake()->optional()->randomFloat(2, 10, 1000),
-            'offering_frequency' => fake()->optional()->randomElement(OfferingFrequency::values()),
+            'offering' => $offering,
+            'offering_frequency' => $offering ? fake()->randomElement(OfferingFrequency::values()) : null,
         ];
     }
 }
