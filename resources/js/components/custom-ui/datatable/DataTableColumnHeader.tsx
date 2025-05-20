@@ -16,7 +16,7 @@ interface DataTableColumnHeaderProps<TData, TValue> extends React.HTMLAttributes
 
 export function DataTableColumnHeader<TData, TValue>({ column, title, className, center = true }: DataTableColumnHeaderProps<TData, TValue>) {
   const { t } = useTranslations();
-  if (!column.getCanSort()) {
+  if (!column.getCanSort() && !column.getCanHide()) {
     return <div className={cn('text-foreground', { 'text-center': center }, className)}>{t(title)}</div>;
   }
 
@@ -26,24 +26,29 @@ export function DataTableColumnHeader<TData, TValue>({ column, title, className,
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" size="sm" className="text-foreground data-[state=open]:bg-accent data-[state=open]:text-accent-foreground h-8">
             <span>{t(title)}</span>
-            {column.getIsSorted() === 'desc' ? (
-              <ArrowDown className="size-4" />
-            ) : column.getIsSorted() === 'asc' ? (
-              <ArrowUp className="size-4" />
-            ) : (
-              <ChevronsUpDown className="size-4" />
-            )}
+            {column.getCanSort() &&
+              (column.getIsSorted() === 'desc' ? (
+                <ArrowDown className="size-4" />
+              ) : column.getIsSorted() === 'asc' ? (
+                <ArrowUp className="size-4" />
+              ) : (
+                <ChevronsUpDown className="size-4" />
+              ))}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="start">
-          <DropdownMenuItem onClick={() => column.toggleSorting(false)}>
-            <ArrowUp className="text-muted-foreground/70 size-3.5" />
-            {t('datatable.sort.ascending')}
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => column.toggleSorting(true)}>
-            <ArrowDown className="text-muted-foreground/70 size-3.5" />
-            {t('datatable.sort.descending')}
-          </DropdownMenuItem>
+          {column.getCanSort() && (
+            <>
+              <DropdownMenuItem onClick={() => column.toggleSorting(false)}>
+                <ArrowUp className="text-muted-foreground/70 size-3.5" />
+                {t('datatable.sort.ascending')}
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => column.toggleSorting(true)}>
+                <ArrowDown className="text-muted-foreground/70 size-3.5" />
+                {t('datatable.sort.descending')}
+              </DropdownMenuItem>
+            </>
+          )}
           {column.getCanHide() && (
             <>
               <DropdownMenuSeparator />
