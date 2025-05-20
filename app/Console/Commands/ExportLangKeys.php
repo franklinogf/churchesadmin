@@ -23,12 +23,12 @@ final class ExportLangKeys extends Command
      */
     protected $description = 'Generate TypeScript translation keys';
 
-    protected ProgressBar $progressBar;
+    private ProgressBar $progressBar;
 
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): void
     {
         $separator = DIRECTORY_SEPARATOR;
 
@@ -41,7 +41,7 @@ final class ExportLangKeys extends Command
 
         $output = "export type TranslationKey =\n";
         $output .= collect($keys)
-            ->map(fn ($key) => "  | '".str($key)->replace("'", "\\'")."'")
+            ->map(fn (int|string $key): string => "  | '".str((string) $key)->replace("'", "\\'")."'")
             ->implode("\n");
         $output .= ";\n";
 
@@ -53,6 +53,11 @@ final class ExportLangKeys extends Command
 
     }
 
+    /**
+     * Get the translation keys from the language files.
+     *
+     * @return list<int|string>
+     */
     private function getLangKeys(): array
     {
 
@@ -73,13 +78,34 @@ final class ExportLangKeys extends Command
         return $keys;
     }
 
+    /**
+     * Get the translation keys from the JSON language file.
+     *
+     * @return list<int|string>
+     */
     private function getJsonFilesKeys(): array
     {
+
+        $jsonPath = lang_path('en.json');
+        if (! file_exists($jsonPath)) {
+            $this->info('JSON language file not found.');
+
+            return [];
+        }
+
         $this->progressBar->setMessage('Processing JSON files...');
         $keys = [];
-        $jsonPath = lang_path('en.json');
 
-        $json = json_decode(file_get_contents($jsonPath), true);
+        $jsonFile = file_get_contents($jsonPath);
+        if ($jsonFile === false) {
+            $this->error('Failed to read JSON language file.');
+
+            return [];
+        }
+        /**
+         * @var array<string, mixed> $json
+         */
+        $json = json_decode($jsonFile, true);
         $count = count(array_keys($json));
         $this->progressBar->setMaxSteps($this->progressBar->getMaxSteps() + $count);
         foreach (array_keys($json) as $key) {
@@ -90,6 +116,11 @@ final class ExportLangKeys extends Command
         return $keys;
     }
 
+    /**
+     * Get the translation keys from the PHP language files.
+     *
+     * @return array<int,string>
+     */
     private function getPhpFilesKeys(): array
     {
         $this->progressBar->setMessage('Processing PHP files...');
@@ -104,13 +135,23 @@ final class ExportLangKeys extends Command
             'validation',
         ];
         $langPath = lang_path('en');
-        $phpFiles = collect(glob("{$langPath}{$separator}*.php"))
-            ->filter(fn ($file) => ! in_array(basename($file, '.php'), $excludedFiles))
+
+        $files = glob("{$langPath}{$separator}*.php");
+        if ($files === false) {
+            return [];
+        }
+        /**
+         * @var string[] $phpFiles
+         */
+        $phpFiles = collect($files)
+            ->filter(fn (string $file): bool => ! in_array(basename($file, '.php'), $excludedFiles))
             ->toArray();
 
         foreach ($phpFiles as $file) {
             $filename = basename($file, '.php');
-
+            /**
+             * @var array<mixed, mixed> $translations
+             */
             $translations = include $file;
             $count = count(array_keys($translations));
             $this->progressBar->setMaxSteps($this->progressBar->getMaxSteps() + $count);
@@ -120,11 +161,19 @@ final class ExportLangKeys extends Command
         return $keys;
     }
 
-    private function flattenLang(array $array, string $prefix, array &$keys, string $parent = '')
+    /**
+     * Recursively flatten the language array.
+     *
+     * @param  array<mixed, mixed>  $array
+     * @param  string  $prefix
+     * @param  array<int, string>  $keys
+     * @param  string  $parent
+     */
+    private function flattenLang(array $array, string $prefix, array &$keys, string $parent = ''): void
     {
         foreach ($array as $key => $value) {
 
-            $fullKey = $parent ? "$parent.$key" : "$prefix.$key";
+            $fullKey = $parent !== '' && $parent !== '0' ? "$parent.$key" : "$prefix.$key";
 
             if (is_array($value)) {
                 $this->flattenLang($value, $prefix, $keys, $fullKey);
