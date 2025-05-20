@@ -5,11 +5,11 @@ import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 import { WalletName } from '@/enums';
+import { useTranslations } from '@/hooks/use-translations';
 import useConfirmationStore from '@/stores/confirmationStore';
 import type { Wallet } from '@/types/models/wallet';
 import { Link, router } from '@inertiajs/react';
 import { type ColumnDef } from '@tanstack/react-table';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { ArchiveIcon, ArchiveRestoreIcon, CheckIcon, Edit2Icon, FilePenIcon, MoreHorizontalIcon, WalletIcon, XCircleIcon } from 'lucide-react';
 import { useState } from 'react';
 
@@ -76,7 +76,7 @@ export const walletColumns: ColumnDef<Wallet>[] = [
     enableSorting: false,
     size: 0,
     cell: function CellComponent({ row }) {
-      const { t } = useLaravelReactI18n();
+      const { t } = useTranslations();
       const { openConfirmation } = useConfirmationStore();
       const [isEditing, setIsEditing] = useState(false);
       //   const { can: userCan } = useUser();
@@ -117,7 +117,7 @@ export const walletColumns: ColumnDef<Wallet>[] = [
                   <DropdownMenuItem
                     onClick={() => {
                       openConfirmation({
-                        title: t('Are you sure you want to activate this wallet?'),
+                        title: t('Are you sure you want to activate this :model?', { model: t('Wallet') }),
                         description: t('This wallet will be usable again'),
                         actionLabel: t('Activate'),
                         cancelLabel: t('Cancel'),
@@ -137,7 +137,7 @@ export const walletColumns: ColumnDef<Wallet>[] = [
                     variant="destructive"
                     onClick={() => {
                       openConfirmation({
-                        title: t('Are you sure you want to deactivate this wallet?'),
+                        title: t('Are you sure you want to deactivate this :model?', { model: t('Wallet') }),
                         description: t("This wallet won't be usable until it is activated"),
                         actionLabel: t('Deactivate'),
                         actionVariant: 'destructive',

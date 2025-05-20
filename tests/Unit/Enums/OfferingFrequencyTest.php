@@ -7,7 +7,7 @@ use App\Enums\OfferingFrequency;
 it('has needed enums', function (): void {
 
     expect(OfferingFrequency::names())->toBe([
-        'ONE_TIME',
+        'ONETIME',
         'WEEKLY',
         'BIWEEKLY',
         'MONTHLY',
@@ -22,38 +22,36 @@ it('has needed enums', function (): void {
 
 test('label return correct label', function (): void {
 
-    expect(OfferingFrequency::ONE_TIME->label())->toBe(__('One time only'))->toBeString();
-    expect(OfferingFrequency::WEEKLY->label())->toBe(__('Every week'))->toBeString();
-    expect(OfferingFrequency::BIWEEKLY->label())->toBe(__('Every two weeks'))->toBeString();
-    expect(OfferingFrequency::MONTHLY->label())->toBe(__('Every month'))->toBeString();
-    expect(OfferingFrequency::BIMONTHLY->label())->toBe(__('Every two months'))->toBeString();
-    expect(OfferingFrequency::QUARTERLY->label())->toBe(__('Every three months'))->toBeString();
-    expect(OfferingFrequency::SEMIANNUALLY->label())->toBe(__('Every six months'))->toBeString();
-    expect(OfferingFrequency::ANNUALLY->label())->toBe(__('Every year'))->toBeString();
+    expect(OfferingFrequency::ONETIME->label())->toBe(__('enum.offering_frequency.one_time'))
+        ->and(OfferingFrequency::WEEKLY->label())->toBe(__('enum.offering_frequency.weekly'))
+        ->and(OfferingFrequency::BIWEEKLY->label())->toBe(__('enum.offering_frequency.bi_weekly'))
+        ->and(OfferingFrequency::MONTHLY->label())->toBe(__('enum.offering_frequency.monthly'))
+        ->and(OfferingFrequency::BIMONTHLY->label())->toBe(__('enum.offering_frequency.bi_monthly'))
+        ->and(OfferingFrequency::QUARTERLY->label())->toBe(__('enum.offering_frequency.quarterly'))
+        ->and(OfferingFrequency::SEMIANNUALLY->label())->toBe(__('enum.offering_frequency.semi_annually'))
+        ->and(OfferingFrequency::ANNUALLY->label())->toBe(__('enum.offering_frequency.annually'));
 
 });
 
 test('options return an array', function (): void {
 
-    expect(OfferingFrequency::options())->toBeArray();
-    expect(OfferingFrequency::options())->toHaveCount(8);
-    expect(OfferingFrequency::options())->toBe([
-        ['value' => 'one_time', 'label' => __('One time only')],
-        ['value' => 'weekly', 'label' => __('Every week')],
-        ['value' => 'biweekly', 'label' => __('Every two weeks')],
-        ['value' => 'monthly', 'label' => __('Every month')],
-        ['value' => 'bimonthly', 'label' => __('Every two months')],
-        ['value' => 'quarterly', 'label' => __('Every three months')],
-        ['value' => 'semiannually', 'label' => __('Every six months')],
-        ['value' => 'annually', 'label' => __('Every year')],
-
-    ]);
+    expect(OfferingFrequency::options())
+        ->toBe([
+            ['value' => 'one_time', 'label' => __('enum.offering_frequency.one_time')],
+            ['value' => 'weekly', 'label' => __('enum.offering_frequency.weekly')],
+            ['value' => 'bi_weekly', 'label' => __('enum.offering_frequency.bi_weekly')],
+            ['value' => 'monthly', 'label' => __('enum.offering_frequency.monthly')],
+            ['value' => 'bi_monthly', 'label' => __('enum.offering_frequency.bi_monthly')],
+            ['value' => 'quarterly', 'label' => __('enum.offering_frequency.quarterly')],
+            ['value' => 'semi_annually', 'label' => __('enum.offering_frequency.semi_annually')],
+            ['value' => 'annually', 'label' => __('enum.offering_frequency.annually')],
+        ]);
 
 });
 
 test('frequencyInDays return correct days', function (): void {
 
-    expect(OfferingFrequency::ONE_TIME->frequencyInDays())->toBe(0);
+    expect(OfferingFrequency::ONETIME->frequencyInDays())->toBe(0);
     expect(OfferingFrequency::WEEKLY->frequencyInDays())->toBe(7);
     expect(OfferingFrequency::BIWEEKLY->frequencyInDays())->toBe(14);
     expect(OfferingFrequency::MONTHLY->frequencyInDays())->toBe(30);

@@ -85,9 +85,13 @@ export default function Index({ unconfirmedChecks, confirmedChecks, flash, nextC
 
   return (
     <AppLayout title={t('Checks')} breadcrumbs={[{ title: t('Checks'), href: route('checks.index') }]}>
-      <PageTitle>{t('Checks')}</PageTitle>
-
-      <section className="mx-auto mt-4 w-full max-w-5xl space-y-16 pb-8">
+      <header className="space-y-2">
+        <PageTitle>{t('Checks')}</PageTitle>
+        <Button size="sm">
+          <Link href={route('checks.create')}>{t('New :model', { model: t('Check') })}</Link>
+        </Button>
+      </header>
+      <section className="mx-auto mt-4 w-full max-w-5xl space-y-16">
         <div>
           <header className="mt-8 flex items-center justify-between space-y-2">
             <Button size="sm">
@@ -102,7 +106,7 @@ export default function Index({ unconfirmedChecks, confirmedChecks, flash, nextC
                     required
                     disabled={!unconfirmedSelected || processing}
                     errorOnTop
-                    placeholder="Initial check number"
+                    placeholder={t('Initial check number')}
                     value={data.initial_check_number}
                     onChange={(value) => setData('initial_check_number', value)}
                   />

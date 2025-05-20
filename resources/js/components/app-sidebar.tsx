@@ -3,15 +3,15 @@ import { NavUser } from '@/components/nav-user';
 import { SidebarNav } from '@/components/sidebar-nav';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { UserPermission } from '@/enums/user';
+import { useTranslations } from '@/hooks/use-translations';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { BanknoteIcon, CogIcon, CoinsIcon, HandCoinsIcon, LayoutGridIcon, ListIcon, Users2Icon, WalletCardsIcon } from 'lucide-react';
 import { useMemo } from 'react';
 import AppLogo from './app-logo';
 
 export function AppSidebar() {
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations();
   const navs: { heading: string; items: NavItem[] }[] = useMemo(
     () => [
       {

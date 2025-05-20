@@ -9,6 +9,7 @@ import { SelectField } from '@/components/forms/inputs/SelectField';
 import { PageTitle } from '@/components/PageTitle';
 import { Separator } from '@/components/ui/separator';
 import { CivilStatus, Gender } from '@/enums';
+import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import { getMultiselecOptionsLabels } from '@/lib/mutliselect';
 import type { BreadcrumbItem, SelectOption } from '@/types';
@@ -16,7 +17,6 @@ import { type AddressFormData } from '@/types/models/address';
 import { type MemberFormData } from '@/types/models/member';
 import type { Tag } from '@/types/models/tag';
 import { useForm } from '@inertiajs/react';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 type CreateForm = MemberFormData & {
   address: AddressFormData;
@@ -29,7 +29,7 @@ interface CreatePageProps {
   categories: Tag[];
 }
 export default function Create({ genders, civilStatuses, skills, categories }: CreatePageProps) {
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations();
   const { data, setData, post, errors, processing, transform } = useForm<CreateForm>({
     name: '',
     last_name: '',
@@ -66,12 +66,12 @@ export default function Create({ genders, civilStatuses, skills, categories }: C
       href: route('members.index'),
     },
     {
-      title: t('Add Member'),
+      title: t('Add :model', { model: t('Member') }),
     },
   ];
   return (
     <AppLayout breadcrumbs={breadcrumbs} title={t('Members')}>
-      <PageTitle>{t('Add Member')}</PageTitle>
+      <PageTitle>{t('Add :model', { model: t('Member') })}</PageTitle>
       <div className="mt-2 flex items-center justify-center">
         <Form isSubmitting={processing} className="w-full max-w-2xl" onSubmit={handleSubmit}>
           <InputField required label="Name" value={data.name} onChange={(value) => setData('name', value)} error={errors.name} />

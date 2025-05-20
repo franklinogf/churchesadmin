@@ -3,10 +3,10 @@ import { SkillForm } from '@/components/forms/skill-form';
 import { PageTitle } from '@/components/PageTitle';
 import { Button } from '@/components/ui/button';
 import { UserPermission } from '@/enums/user';
+import { useTranslations } from '@/hooks/use-translations';
 import { useUser } from '@/hooks/use-user';
 import AppLayout from '@/layouts/app-layout';
 import { type Tag } from '@/types/models/tag';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { useState } from 'react';
 import { columns } from './includes/columns';
 
@@ -14,7 +14,7 @@ interface IndexPageProps {
   skills: Tag[];
 }
 export default function Index({ skills }: IndexPageProps) {
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations();
   const { can: userCan } = useUser();
   const [open, setOpen] = useState(false);
 
@@ -27,7 +27,7 @@ export default function Index({ skills }: IndexPageProps) {
           headerButton={
             userCan(UserPermission.SKILLS_CREATE) && (
               <Button size="sm" onClick={() => setOpen(true)}>
-                {t('Add skill')}
+                {t('Add :model', { model: t('Skill') })}
               </Button>
             )
           }

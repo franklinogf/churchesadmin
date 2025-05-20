@@ -10,4 +10,9 @@ enum TransactionMetaType: string
     case CHECK = 'check';
     case OFFERING = 'offering';
     case EXPENSE = 'expense';
+
+    public function label(): string
+    {
+        return __("enum.transaction_meta_type.{$this->value}");
+    }
 }

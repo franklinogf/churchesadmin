@@ -8,13 +8,13 @@ import { PageTitle } from '@/components/PageTitle';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { useCurrency } from '@/hooks/use-currency';
+import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem, type SelectOption } from '@/types';
 import type { ExpenseType } from '@/types/models/expense-type';
 import type { Wallet } from '@/types/models/wallet';
 import { useForm } from '@inertiajs/react';
 import { formatDate } from 'date-fns';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { TrashIcon } from 'lucide-react';
 import { useMemo } from 'react';
 
@@ -38,7 +38,7 @@ interface CreateForm {
 }
 
 export default function Create({ wallets, memberOptions, expenseTypes, expenseTypesOptions, walletOptions }: CreatePageProps) {
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations();
   const { formatCurrency } = useCurrency();
 
   const initialExpense: CreateForm['expenses'][number] = {
@@ -119,13 +119,13 @@ export default function Create({ wallets, memberOptions, expenseTypes, expenseTy
       href: route('expenses.index'),
     },
     {
-      title: t('New Expense'),
+      title: t('New :model', { model: t('Expense') }),
     },
   ];
 
   return (
     <AppLayout title={t('Expenses')} breadcrumbs={breadcrumbs}>
-      <PageTitle>{t('New Expense')}</PageTitle>
+      <PageTitle>{t('New :model', { model: t('Expense') })}</PageTitle>
       <div className="mt-2 flex items-center justify-center">
         <Form isSubmitting={processing} className="w-full max-w-2xl" onSubmit={handleSubmit}>
           <div className="space-y-4 py-2">
@@ -212,7 +212,7 @@ export default function Create({ wallets, memberOptions, expenseTypes, expenseTy
           </div>
 
           <Button size="sm" variant="secondary" type="button" onClick={handleAddExpense}>
-            {t('Add expense')}
+            {t('Add :model', { model: 'Expense' })}
           </Button>
           <section className="mt-4">
             {Object.keys(walletExpenses).length > 0 && (

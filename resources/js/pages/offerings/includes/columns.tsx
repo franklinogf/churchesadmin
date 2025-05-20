@@ -5,12 +5,12 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
+import { useTranslations } from '@/hooks/use-translations';
 import { offeringTypeIsMissionary } from '@/lib/utils';
 import useConfirmationStore from '@/stores/confirmationStore';
 import type { Offering } from '@/types/models/offering';
 import { Link, router } from '@inertiajs/react';
 import { type ColumnDef } from '@tanstack/react-table';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { Edit2Icon, Trash2Icon } from 'lucide-react';
 
 export const columns: ColumnDef<Offering>[] = [
@@ -35,7 +35,7 @@ export const columns: ColumnDef<Offering>[] = [
   },
   {
     enableHiding: false,
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Offering Type" />,
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Offering type" />,
     accessorKey: 'offeringType',
     sortingFn: (rowA, rowB) => {
       const offeringTypeA = rowA.original.offeringType;
@@ -70,7 +70,7 @@ export const columns: ColumnDef<Offering>[] = [
     header: ({ column }) => <DataTableColumnHeader column={column} title="Payment method" />,
     accessorKey: 'paymentMethod',
     cell: function CellComponent({ row }) {
-      const { t } = useLaravelReactI18n();
+      const { t } = useTranslations();
       return (
         <DatatableCell justify="center">
           <Badge>{t(`enum.payment_method.${row.original.paymentMethod}`)}</Badge>
@@ -96,7 +96,7 @@ export const columns: ColumnDef<Offering>[] = [
     enableSorting: false,
     size: 0,
     cell: function CellComponent({ row }) {
-      const { t } = useLaravelReactI18n();
+      const { t } = useTranslations();
       const { openConfirmation } = useConfirmationStore();
 
       return (
@@ -111,7 +111,7 @@ export const columns: ColumnDef<Offering>[] = [
             variant="destructive"
             onClick={() => {
               openConfirmation({
-                title: t('Are you sure you want to delete this offering?'),
+                title: t('Are you sure you want to delete this :model?', { model: t('Offering') }),
                 description: t('You can restore it any time.'),
                 actionLabel: t('Delete'),
                 actionVariant: 'destructive',

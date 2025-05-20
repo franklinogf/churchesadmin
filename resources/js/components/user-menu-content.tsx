@@ -1,9 +1,9 @@
 import { DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
 import { UserInfo } from '@/components/user-info';
 import { useMobileNavigation } from '@/hooks/use-mobile-navigation';
+import { useTranslations } from '@/hooks/use-translations';
 import { type AuthenticatedUser } from '@/types/models/user';
 import { Link } from '@inertiajs/react';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { LogOut, Settings } from 'lucide-react';
 
 interface UserMenuContentProps {
@@ -12,7 +12,7 @@ interface UserMenuContentProps {
 
 export function UserMenuContent({ user }: UserMenuContentProps) {
   const cleanup = useMobileNavigation();
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations();
 
   return (
     <>

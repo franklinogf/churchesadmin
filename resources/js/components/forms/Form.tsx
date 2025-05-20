@@ -1,7 +1,7 @@
 import { RequiredFieldIcon } from '@/components/forms/RequiredFieldIcon';
 import { SubmitButton } from '@/components/forms/SubmitButton';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader } from '@/components/ui/card';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { useTranslations } from '@/hooks/use-translations';
 
 interface FormProps {
   children: React.ReactNode;
@@ -13,7 +13,7 @@ interface FormProps {
 }
 
 export function Form({ children, className, isSubmitting, showRequiredHelper = true, submitLabel, onSubmit }: FormProps) {
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations();
   submitLabel = submitLabel || t('Save');
   return (
     <form

@@ -1,9 +1,9 @@
 import { DatatableCell } from '@/components/custom-ui/datatable/DatatableCell';
 import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTableColumnHeader';
 import { Badge } from '@/components/ui/badge';
+import { useTranslations } from '@/hooks/use-translations';
 import type { Transaction } from '@/types/models/transaction';
 import { type ColumnDef } from '@tanstack/react-table';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { CheckIcon, XCircleIcon } from 'lucide-react';
 
 export const transactionColumns: ColumnDef<Transaction>[] = [
@@ -12,7 +12,7 @@ export const transactionColumns: ColumnDef<Transaction>[] = [
     header: ({ column }) => <DataTableColumnHeader column={column} title="Type" />,
     accessorKey: 'type',
     cell: function CellColumn({ row }) {
-      const { t } = useLaravelReactI18n();
+      const { t } = useTranslations();
       return (
         <DatatableCell justify="center">
           <Badge>{t(`enum.transaction_type.${row.original.type}`)}</Badge>
@@ -25,10 +25,11 @@ export const transactionColumns: ColumnDef<Transaction>[] = [
     header: ({ column }) => <DataTableColumnHeader column={column} title="From" />,
     accessorKey: 'meta',
     cell: function CellColumn({ row }) {
-      const { t } = useLaravelReactI18n();
+      const { t } = useTranslations();
+      if (!row.original.meta) return null;
       return (
         <DatatableCell justify="center">
-          <Badge variant="outline">{t(`enum.transaction_meta_type.${row.original.meta?.type}`)}</Badge>
+          <Badge variant="outline">{t(`enum.transaction_meta_type.${row.original.meta.type}`)}</Badge>
         </DatatableCell>
       );
     },

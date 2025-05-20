@@ -8,10 +8,10 @@ import { SelectField } from '@/components/forms/inputs/SelectField';
 import { PageTitle } from '@/components/PageTitle';
 import AppLayout from '@/layouts/app-layout';
 
+import { useTranslations } from '@/hooks/use-translations';
 import type { SelectOption } from '@/types';
 import { useForm } from '@inertiajs/react';
 import { formatDate } from 'date-fns';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 interface CreatePageProps {
   walletOptions: SelectOption[];
@@ -31,7 +31,7 @@ type CreateForm = {
 };
 
 export default function ChecksCreate({ walletOptions, memberOptions, checkTypesOptions, expenseTypesOptions }: CreatePageProps) {
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations();
   const { data, setData, post, errors, processing } = useForm<CreateForm>({
     wallet_id: walletOptions[0]?.value.toString() ?? '',
     member_id: memberOptions[0]?.value.toString() ?? '',
@@ -47,8 +47,11 @@ export default function ChecksCreate({ walletOptions, memberOptions, checkTypesO
   }
 
   return (
-    <AppLayout title={t('Create check')} breadcrumbs={[{ title: t('Checks'), href: route('checks.index') }, { title: t('Create check') }]}>
-      <PageTitle>{t('Create Check')}</PageTitle>
+    <AppLayout
+      title={t('Create :model', { model: t('Check') })}
+      breadcrumbs={[{ title: t('Checks'), href: route('checks.index') }, { title: t('Create :model', { model: t('Check') }) }]}
+    >
+      <PageTitle>{t('Create :model', { model: t('Check') })}</PageTitle>
 
       <div className="mx-auto mt-4 w-full max-w-2xl">
         <Form onSubmit={handleSubmit} isSubmitting={processing}>
@@ -64,7 +67,7 @@ export default function ChecksCreate({ walletOptions, memberOptions, checkTypesO
             <ComboboxField
               required
               value={data.expense_type_id}
-              label={t('Expense Type')}
+              label={t('Expense type')}
               onChange={(value) => setData('expense_type_id', value)}
               options={expenseTypesOptions}
               error={errors.expense_type_id}

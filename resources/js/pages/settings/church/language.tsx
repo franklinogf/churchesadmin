@@ -6,16 +6,16 @@ import { useMemo, type FormEventHandler } from 'react';
 import { SelectField } from '@/components/forms/inputs/SelectField';
 import HeadingSmall from '@/components/heading-small';
 import { Button } from '@/components/ui/button';
+import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/church-layout';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 type LanguageForm = {
   locale: string;
 };
 
 export default function Language({ languages }: { languages: SelectOption[] }) {
-  const { t, setLocale, currentLocale } = useLaravelReactI18n();
+  const { t, setLocale, currentLocale } = useTranslations();
 
   const { data, setData, patch, errors, processing, recentlySuccessful } = useForm<Required<LanguageForm>>({
     locale: currentLocale(),

@@ -1,9 +1,9 @@
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { useTranslations } from '@/hooks/use-translations';
 import { MoreHorizontalIcon } from 'lucide-react';
 export function DatatableActionsDropdown({ children }: { children: React.ReactNode }) {
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

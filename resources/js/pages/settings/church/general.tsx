@@ -7,17 +7,17 @@ import { InputField } from '@/components/forms/inputs/InputField';
 import { SubmitButton } from '@/components/forms/SubmitButton';
 import HeadingSmall from '@/components/heading-small';
 import { Input } from '@/components/ui/input';
+import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/church-layout';
 import type { Church } from '@/types/models/church';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 type GeneralForm = {
   name: string;
 };
 
 export default function Language({ church }: { church: Church }) {
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations();
   const generalForm = useForm<Required<GeneralForm>>('general', {
     name: church.name,
   });

@@ -2,13 +2,13 @@ import { InputField } from '@/components/forms/inputs/InputField';
 import { SwitchField } from '@/components/forms/inputs/SwitchField';
 import { ResponsiveModal, ResponsiveModalFooterSubmit } from '@/components/responsive-modal';
 import { UserPermission } from '@/enums/user';
+import { useTranslations } from '@/hooks/use-translations';
 import { useUser } from '@/hooks/use-user';
 import type { Tag } from '@/types/models/tag';
 import { useForm } from '@inertiajs/react';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export function CategoryForm({ category, open, setOpen }: { category?: Tag; open: boolean; setOpen: (open: boolean) => void }) {
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations();
   const { can: userCan } = useUser();
   const { data, setData, post, put, errors, reset, processing } = useForm({
     name: category?.name ?? '',
@@ -38,8 +38,8 @@ export function CategoryForm({ category, open, setOpen }: { category?: Tag; open
     <ResponsiveModal
       open={open}
       setOpen={setOpen}
-      title={category ? t('Edit Category') : t('Add Category')}
-      description={category ? t('Edit the details of this category') : t('Create a new category')}
+      title={category ? t('Edit :model', { model: t('Category') }) : t('Add :model', { model: t('Category') })}
+      description={category ? t('Edit the details of this :model', { model: t('Category') }) : t('Create a new :model', { model: t('Category') })}
     >
       <form className="space-y-4" onSubmit={handleSubmit}>
         <InputField label={t('Name')} value={data.name} onChange={(value) => setData(`name`, value)} error={errors.name} />

@@ -6,12 +6,12 @@ import { SwitchField } from '@/components/forms/inputs/SwitchField';
 import { PageTitle } from '@/components/PageTitle';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { UserRole } from '@/enums/user';
+import { useTranslations } from '@/hooks/use-translations';
 import { useUser } from '@/hooks/use-user';
 import AppLayout from '@/layouts/app-layout';
 import { convertRolesToMultiselectOptions, getMultiselecOptionsValues } from '@/lib/mutliselect';
 import type { Permission, Role, User } from '@/types/models/user';
 import { useForm } from '@inertiajs/react';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { getUniquePermissions } from './includes/functions';
 
 type EditForm = {
@@ -28,7 +28,7 @@ interface EditPageProps {
 }
 
 export default function Edit({ user, permissions, roles }: EditPageProps) {
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations();
   const { hasRole } = useUser();
 
   const userPermissions = user.permissions?.map((permission) => permission.name);
@@ -52,7 +52,7 @@ export default function Edit({ user, permissions, roles }: EditPageProps) {
 
   return (
     <AppLayout title={t('Users')}>
-      <PageTitle>{t('Edit User')}</PageTitle>
+      <PageTitle>{t('Edit :model', { model: t('User') })}</PageTitle>
       <div className="mt-2 flex w-full items-center justify-center">
         <Form className="w-full max-w-2xl" onSubmit={handleSubmit} isSubmitting={processing}>
           <InputField required label={t('Name')} value={data.name} error={errors.name} onChange={(value) => setData('name', value)} />

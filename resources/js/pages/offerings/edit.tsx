@@ -8,12 +8,12 @@ import { MultipleComboboxField } from '@/components/forms/inputs/MultipleCombobo
 import { SelectField } from '@/components/forms/inputs/SelectField';
 import { PageTitle } from '@/components/PageTitle';
 import { useLocaleDate } from '@/hooks/use-locale-date';
+import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem, type SelectOption, type SelectOptionWithModel } from '@/types';
 import type { Offering } from '@/types/models/offering';
 import { useForm } from '@inertiajs/react';
 import { formatDate, parseISO } from 'date-fns';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 interface EditPageProps {
   walletsOptions: SelectOption[];
@@ -38,7 +38,7 @@ interface CreateForm {
 }
 
 export default function Edit({ walletsOptions, paymentMethods, membersOptions, missionariesOptions, offeringTypesOptions, offering }: EditPageProps) {
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations();
   const { formatLocaleDate } = useLocaleDate();
 
   const { data, setData, put, errors, processing } = useForm<Required<CreateForm>>({
@@ -68,13 +68,13 @@ export default function Edit({ walletsOptions, paymentMethods, membersOptions, m
       href: route('offerings.index', { date: offering.date }),
     },
     {
-      title: t('Edit Offering'),
+      title: t('Edit :model', { model: t('Offering') }),
     },
   ];
 
   return (
     <AppLayout title={t('Offerings')} breadcrumbs={breadcrumbs}>
-      <PageTitle>{t('Edit Offering')}</PageTitle>
+      <PageTitle>{t('Edit :model', { model: t('Offering') })}</PageTitle>
       <div className="mt-2 flex items-center justify-center">
         <Form isSubmitting={processing} className="w-full max-w-2xl" onSubmit={handleSubmit}>
           <ComboboxField

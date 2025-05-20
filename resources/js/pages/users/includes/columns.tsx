@@ -4,12 +4,12 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { UserPermission } from '@/enums/user';
+import { useTranslations } from '@/hooks/use-translations';
 import { useUser } from '@/hooks/use-user';
 import useConfirmationStore from '@/stores/confirmationStore';
 import { type Role, type User } from '@/types/models/user';
 import { Link, router } from '@inertiajs/react';
 import { type ColumnDef } from '@tanstack/react-table';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { Edit2Icon, MoreHorizontalIcon, Trash2Icon } from 'lucide-react';
 
 export const columns: ColumnDef<User>[] = [
@@ -46,7 +46,7 @@ export const columns: ColumnDef<User>[] = [
     enableSorting: false,
     size: 0,
     cell: function CellComponent({ row }) {
-      const { t } = useLaravelReactI18n();
+      const { t } = useTranslations();
       const { openConfirmation } = useConfirmationStore();
       const { can: userCan } = useUser();
       const user = row.original;
@@ -77,7 +77,7 @@ export const columns: ColumnDef<User>[] = [
                 variant="destructive"
                 onClick={() => {
                   openConfirmation({
-                    title: t('Are you sure you want to delete this user?'),
+                    title: t('Are you sure you want to delete this :model?', { model: t('User') }),
                     description: t('You can restore it any time.'),
                     actionLabel: t('Delete'),
                     actionVariant: 'destructive',

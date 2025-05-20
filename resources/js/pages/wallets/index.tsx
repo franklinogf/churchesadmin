@@ -1,8 +1,8 @@
 import { DataTable } from '@/components/custom-ui/datatable/data-table';
 import { PageTitle } from '@/components/PageTitle';
+import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import { type Wallet } from '@/types/models/wallet';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { walletColumns } from './includes/walletColumns';
 
 import { WalletForm } from '@/components/forms/wallet-form';
@@ -14,7 +14,7 @@ interface IndexPageProps {
 }
 
 export default function Index({ wallets }: IndexPageProps) {
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations();
   const [open, setOpen] = useState(false);
 
   return (
@@ -30,7 +30,7 @@ export default function Index({ wallets }: IndexPageProps) {
                 setOpen(true);
               }}
             >
-              {t('Add Wallet')}
+              {t('Add :model', { model: t('Wallet') })}
             </Button>
           }
           data={wallets}

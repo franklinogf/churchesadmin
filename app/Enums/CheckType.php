@@ -15,9 +15,6 @@ enum CheckType: string
 
     public function label(): string
     {
-        return match ($this) {
-            self::PAYMENT => __('enum.check_type.payment'),
-            self::REFUND => __('enum.check_type.refund'),
-        };
+        return __("enum.check_type.{$this->value}");
     }
 }

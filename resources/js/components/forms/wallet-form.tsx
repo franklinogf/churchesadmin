@@ -2,9 +2,9 @@ import { CurrencyField } from '@/components/forms/inputs/CurrencyField';
 import { FieldsGrid } from '@/components/forms/inputs/FieldsGrid';
 import { InputField } from '@/components/forms/inputs/InputField';
 import { ResponsiveModal, ResponsiveModalFooterSubmit } from '@/components/responsive-modal';
+import { useTranslations } from '@/hooks/use-translations';
 import type { Wallet } from '@/types/models/wallet';
 import { useForm } from '@inertiajs/react';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 type WalletForm = {
   name: string;
@@ -16,7 +16,7 @@ type WalletForm = {
 };
 
 export function WalletForm({ wallet, open, setOpen }: { wallet?: Wallet; open: boolean; setOpen: (open: boolean) => void }) {
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations();
 
   const { data, setData, post, put, errors, reset, processing } = useForm<WalletForm>({
     name: wallet?.name ?? '',
@@ -45,13 +45,13 @@ export function WalletForm({ wallet, open, setOpen }: { wallet?: Wallet; open: b
       });
     }
   }
-
+  const MODEL = t('Wallet');
   return (
     <ResponsiveModal
       open={open}
       setOpen={setOpen}
-      title={wallet ? t('Edit Wallet') : t('Add Wallet')}
-      description={wallet ? t('Edit the details of this wallet') : t('Create a new wallet')}
+      title={wallet ? t('Edit :model', { model: MODEL }) : t('Add :model', { model: MODEL })}
+      description={wallet ? t('Edit the details of this :model', { model: MODEL }) : t('Create a new :model', { model: MODEL })}
     >
       <form className="space-y-4" onSubmit={handleSubmit}>
         <InputField required label={t('Name')} value={data.name} onChange={(value) => setData(`name`, value)} error={errors.name} />

@@ -2,11 +2,11 @@ import { Form } from '@/components/forms/Form';
 import { FieldsGrid } from '@/components/forms/inputs/FieldsGrid';
 import { InputField } from '@/components/forms/inputs/InputField';
 import { Input } from '@/components/ui/input';
+import { useTranslations } from '@/hooks/use-translations';
 import { useForm } from '@inertiajs/react';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export function CreateCheckLayoutForm({ walletId }: { walletId?: number }) {
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations();
   const { data, setData, processing, post } = useForm('create-check-layout', {
     wallet_id: walletId?.toString() ?? '',
     name: '',

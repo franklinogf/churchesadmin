@@ -7,24 +7,23 @@ import { InputField } from '@/components/forms/inputs/InputField';
 import { SubmitButton } from '@/components/forms/SubmitButton';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
+import { useTranslations } from '@/hooks/use-translations';
 import { Transition } from '@headlessui/react';
 import { useForm } from '@inertiajs/react';
 import { format } from 'date-fns';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { useState } from 'react';
 import { CheckLayoutDraggableField } from './check-layout-draggable-field';
 import { CheckLayoutDroppableArea } from './check-layout-droppable-area';
 
-const initialFieldsMap: Record<CheckFieldName, string> = {
-  date: format(new Date(), 'yyyy-MM-dd'),
-  amount: '549.00',
-  amount_in_words: 'Five Hundred Forty-Nine and 00/100',
-  payee: 'Name of Payee',
-  memo: 'Memo',
-};
-
 export function CheckLayoutEditor({ checkLayout }: { checkLayout: CheckLayout }) {
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations();
+  const initialFieldsMap: Record<CheckFieldName, string> = {
+    date: format(new Date(), 'yyyy-MM-dd'),
+    amount: '549.00',
+    amount_in_words: t('Five Hundred Forty-Nine and 00/100'),
+    payee: t('Name of Payee'),
+    memo: t('Memo'),
+  };
   const [fieldsMap, setFieldsMap] = useState<Record<CheckFieldName, string>>(initialFieldsMap);
   const { data, setData, put, processing, recentlySuccessful, errors } = useForm('update-check-layout', {
     fields: checkLayout.fields,

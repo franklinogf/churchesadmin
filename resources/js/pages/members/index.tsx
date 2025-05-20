@@ -2,19 +2,19 @@ import { DataTable } from '@/components/custom-ui/datatable/data-table';
 import { PageTitle } from '@/components/PageTitle';
 import { Button } from '@/components/ui/button';
 import { UserPermission } from '@/enums/user';
+import { useTranslations } from '@/hooks/use-translations';
 import { useUser } from '@/hooks/use-user';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem } from '@/types';
 import { type Member } from '@/types/models/member';
 import { Link } from '@inertiajs/react';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { columns } from './includes/columns';
 
 interface IndexProps {
   members: Member[];
 }
 export default function Index({ members }: IndexProps) {
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations();
   const { can: userCan } = useUser();
   const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -28,7 +28,7 @@ export default function Index({ members }: IndexProps) {
         headerButton={
           userCan(UserPermission.MEMBERS_CREATE) && (
             <Button asChild>
-              <Link href={route('members.create')}>{t('Add Member')}</Link>
+              <Link href={route('members.create')}>{t('Add :model', { model: t('Member') })}</Link>
             </Button>
           )
         }

@@ -1,11 +1,11 @@
 import { InputField } from '@/components/forms/inputs/InputField';
 import { ResponsiveModal, ResponsiveModalFooterSubmit } from '@/components/responsive-modal';
+import { useTranslations } from '@/hooks/use-translations';
 import { type OfferingType } from '@/types/models/offering-type';
 import { useForm } from '@inertiajs/react';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export function OfferingTypeForm({ offeringType, open, setOpen }: { offeringType?: OfferingType; open: boolean; setOpen: (open: boolean) => void }) {
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations();
   const { data, setData, post, put, errors, processing, reset } = useForm({
     name: offeringType?.name ?? '',
   });
@@ -29,7 +29,11 @@ export function OfferingTypeForm({ offeringType, open, setOpen }: { offeringType
     }
   }
   return (
-    <ResponsiveModal open={open} setOpen={setOpen} title={offeringType ? t('Edit Offering Type') : t('Add Offering Type')}>
+    <ResponsiveModal
+      open={open}
+      setOpen={setOpen}
+      title={offeringType ? t('Edit :model', { model: t('Offering type') }) : t('Add :model', { model: t('Offering type') })}
+    >
       <form className="space-y-4" onSubmit={handleSubmit}>
         <InputField required label={t('Name')} value={data.name} onChange={(value) => setData('name', value)} error={errors.name} />
 

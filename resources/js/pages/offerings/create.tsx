@@ -8,11 +8,11 @@ import { MultipleComboboxField } from '@/components/forms/inputs/MultipleCombobo
 import { SelectField } from '@/components/forms/inputs/SelectField';
 import { PageTitle } from '@/components/PageTitle';
 import { Button } from '@/components/ui/button';
+import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem, type SelectOption, type SelectOptionWithModel } from '@/types';
 import { useForm } from '@inertiajs/react';
 import { formatDate } from 'date-fns';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { TrashIcon } from 'lucide-react';
 
 interface CreatePageProps {
@@ -39,7 +39,7 @@ interface CreateForm {
 }
 
 export default function Create({ walletsOptions, paymentMethods, membersOptions, missionariesOptions, offeringTypesOptions }: CreatePageProps) {
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations();
   const { data, setData, post, errors, processing } = useForm<Required<CreateForm>>({
     date: formatDate(new Date(), 'yyyy-MM-dd'),
     donor_id: '',
@@ -101,12 +101,12 @@ export default function Create({ walletsOptions, paymentMethods, membersOptions,
       href: route('offerings.index'),
     },
     {
-      title: t('New Offering'),
+      title: t('New :model', { model: t('Offering') }),
     },
   ];
   return (
     <AppLayout title={t('Offerings')} breadcrumbs={breadcrumbs}>
-      <PageTitle>{t('New Offering')}</PageTitle>
+      <PageTitle>{t('New :model', { model: t('Offering') })}</PageTitle>
       <div className="mt-2 flex items-center justify-center">
         <Form isSubmitting={processing} className="w-full max-w-2xl" onSubmit={handleSubmit}>
           <ComboboxField
@@ -122,7 +122,7 @@ export default function Create({ walletsOptions, paymentMethods, membersOptions,
           </FieldsGrid>
 
           <Button size="sm" variant="secondary" type="button" onClick={handleAddOffering}>
-            {t('Add offering')}
+            {t('Add :model', { model: t('Offering') })}
           </Button>
 
           <div className="space-y-4 py-2">

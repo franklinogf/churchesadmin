@@ -18,11 +18,6 @@ enum TenantRole: string
 
     public function label(): string
     {
-        return match ($this) {
-            self::SUPER_ADMIN => __('Super Admin'),
-            self::ADMIN => __('Admin'),
-            self::SECRETARY => __('Secretary'),
-            self::NO_ROLE => __('No Role'),
-        };
+        return __("enum.tenant_role.{$this->value}");
     }
 }

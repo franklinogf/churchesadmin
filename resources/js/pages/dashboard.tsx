@@ -1,9 +1,9 @@
 import { PlaceholderPattern } from '@/components/ui/placeholder-pattern';
+import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export default function Dashboard() {
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations();
   return (
     <AppLayout breadcrumbs={[{ title: t('Dashboard') }]} title="Dashboard">
       <div className="flex h-full flex-1 flex-col gap-4 rounded-xl">

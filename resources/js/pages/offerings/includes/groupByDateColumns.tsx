@@ -3,10 +3,10 @@ import { DatatableCell } from '@/components/custom-ui/datatable/DatatableCell';
 import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTableColumnHeader';
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { useCurrency } from '@/hooks/use-currency';
+import { useTranslations } from '@/hooks/use-translations';
 import type { OfferingGroupedByDate } from '@/types/models/offering';
 import { Link } from '@inertiajs/react';
 import { type ColumnDef } from '@tanstack/react-table';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { FilesIcon } from 'lucide-react';
 
 export const groupByDateColumns: ColumnDef<OfferingGroupedByDate>[] = [
@@ -48,7 +48,7 @@ export const groupByDateColumns: ColumnDef<OfferingGroupedByDate>[] = [
     enableSorting: false,
     size: 0,
     cell: function CellComponent({ row }) {
-      const { t } = useLaravelReactI18n();
+      const { t } = useTranslations();
 
       return (
         <DatatableActionsDropdown>

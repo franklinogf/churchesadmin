@@ -1,8 +1,8 @@
 import { FieldContainer } from '@/components/forms/inputs/FieldContainer';
 import { FieldError } from '@/components/forms/inputs/FieldError';
 import { FieldLabel } from '@/components/forms/inputs/FieldLabel';
+import { useTranslations } from '@/hooks/use-translations';
 import { type SelectOptionWithModel } from '@/types';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { Check, ChevronsUpDown } from 'lucide-react';
 import { useState } from 'react';
 
@@ -36,7 +36,7 @@ export function MultipleComboboxField({
 }: MultipleComboboxFieldProps) {
   const [open, setOpen] = useState(false);
 
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations();
   placeholder = placeholder ?? t('Select an option');
   return (
     <FieldContainer className={className}>

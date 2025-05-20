@@ -4,10 +4,10 @@ import { Button } from '@/components/ui/button';
 import { UserPermission } from '@/enums/user';
 import AppLayout from '@/layouts/app-layout';
 
+import { useTranslations } from '@/hooks/use-translations';
 import { useUser } from '@/hooks/use-user';
 import { type Missionary } from '@/types/models/missionary';
 import { Link } from '@inertiajs/react';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { columns } from './includes/columns';
 
 interface IndexPageProps {
@@ -15,7 +15,7 @@ interface IndexPageProps {
 }
 
 export default function Index({ missionaries }: IndexPageProps) {
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations();
   const { can: userCan } = useUser();
 
   return (
@@ -25,7 +25,7 @@ export default function Index({ missionaries }: IndexPageProps) {
         headerButton={
           userCan(UserPermission.MISSIONARIES_CREATE) && (
             <Button asChild>
-              <Link href={route('missionaries.create')}>{t('Add Missionary')}</Link>
+              <Link href={route('missionaries.create')}>{t('Add :model', { model: t('Missionary') })}</Link>
             </Button>
           )
         }

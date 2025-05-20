@@ -1,6 +1,6 @@
-import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { useTranslations } from '@/hooks/use-translations';
 export function useCurrency() {
-  const { currentLocale } = useLaravelReactI18n();
+  const { currentLocale } = useTranslations();
 
   function formatCurrency(amount: number | string): string {
     const parsedAmount = typeof amount === 'string' ? parseFloat(amount) : amount;

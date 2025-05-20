@@ -1,11 +1,11 @@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useCurrency } from '@/hooks/use-currency';
+import { useTranslations } from '@/hooks/use-translations';
 import type { Expense } from '@/types/models/expense';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export function ViewExpenseModal({ expense, children }: { expense: Expense; children: React.ReactNode }) {
   const { formatCurrency } = useCurrency();
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations();
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
@@ -20,7 +20,7 @@ export function ViewExpenseModal({ expense, children }: { expense: Expense; chil
             <strong>{t('Wallet')}:</strong> {expense.transaction.wallet?.name}
           </p>
           <p>
-            <strong>{t('Expense Type')}:</strong> {expense.expenseType.name}
+            <strong>{t('Expense type')}:</strong> {expense.expenseType.name}
           </p>
           <p>
             <strong>{t('Member')}:</strong> {expense.member ? `${expense.member.name} ${expense.member.lastName}` : 'N/A'}

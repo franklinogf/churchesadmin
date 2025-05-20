@@ -1,9 +1,9 @@
+import { useTranslations } from '@/hooks/use-translations';
 import { intlFormat, parseISO } from 'date-fns';
 import { enUS, es, type Locale } from 'date-fns/locale';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export function useLocaleDate() {
-  const { currentLocale } = useLaravelReactI18n();
+  const { currentLocale } = useTranslations();
 
   function getCurrentDateLocale() {
     const dateLocales: Record<string, Locale> = {
