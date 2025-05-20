@@ -4,6 +4,7 @@ import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMe
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { useTranslations } from '@/hooks/use-translations';
+import type { TranslationKey } from '@/types/lang-keys';
 import {
   type Column,
   type ColumnDef,
@@ -12,6 +13,7 @@ import {
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
+  type HeaderContext,
   type SortingState,
   useReactTable,
   type VisibilityState,
@@ -177,6 +179,15 @@ export function DataTable<TData, TValue>({
   );
 }
 
+function getColumnLabel<TData>(column: Column<TData, unknown>): string {
+  if (typeof column.columnDef.header === 'function') {
+    const headerNode = column.columnDef.header({ column } as HeaderContext<TData, unknown>);
+    return headerNode?.props?.title ?? column.id;
+  }
+
+  return column.id;
+}
+
 function VisibilityDropdownMenu<TData>({ columns }: { columns: Column<TData, unknown>[] }) {
   const { t } = useTranslations();
   if (columns.length === 0) return null;
@@ -190,13 +201,9 @@ function VisibilityDropdownMenu<TData>({ columns }: { columns: Column<TData, unk
       <DropdownMenuContent align="end">
         {columns.map((column) => {
           return (
-            <DropdownMenuCheckboxItem
-              key={column.id}
-              className="capitalize"
-              checked={column.getIsVisible()}
-              onCheckedChange={(value) => column.toggleVisibility(!!value)}
-            >
-              {column.columnDef?.meta?.toString() || column.id.replaceAll('_', ' ')}
+            <DropdownMenuCheckboxItem key={column.id} checked={column.getIsVisible()} onCheckedChange={(value) => column.toggleVisibility(!!value)}>
+              {/* {t(column.columnDef?.meta?.toString() as TranslationKey) || column.id.replaceAll('_', ' ')} */}
+              {t(getColumnLabel(column) as TranslationKey)}
             </DropdownMenuCheckboxItem>
           );
         })}

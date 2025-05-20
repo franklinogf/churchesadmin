@@ -51,7 +51,7 @@ export function DataTableColumnHeader<TData, TValue>({ column, title, className,
           )}
           {column.getCanHide() && (
             <>
-              <DropdownMenuSeparator />
+              {column.getCanSort() && <DropdownMenuSeparator />}
               <DropdownMenuItem onClick={() => column.toggleVisibility(false)}>
                 <EyeOffIcon className="text-muted-foreground/70 size-3.5" />
                 {t('datatable.hide')}
