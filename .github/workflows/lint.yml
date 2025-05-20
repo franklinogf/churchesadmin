@@ -2,7 +2,8 @@ name: linter
 
 on:
   push:
-    branches: [develop, main, feature/*]
+    # Run on all branches for push events
+
   pull_request:
     branches: [develop, main]
 
