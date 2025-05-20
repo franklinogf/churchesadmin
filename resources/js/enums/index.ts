@@ -14,13 +14,13 @@ export enum LanguageCode {
   ES = 'es',
 }
 export enum OfferingFrequency {
-  ONE_TIME = 'one_time',
+  ONETIME = 'one_time',
   WEEKLY = 'weekly',
-  BIWEEKLY = 'biweekly',
+  BIWEEKLY = 'bi_weekly',
   MONTHLY = 'monthly',
-  BIMONTHLY = 'bimonthly',
+  BIMONTHLY = 'bi_monthly',
   QUARTERLY = 'quarterly',
-  SEMIANNUALLY = 'semiannually',
+  SEMIANNUALLY = 'semi_annually',
   ANNUALLY = 'annually',
 }
 
