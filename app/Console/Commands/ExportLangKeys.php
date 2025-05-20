@@ -14,7 +14,7 @@ final class ExportLangKeys extends Command
      *
      * @var string
      */
-    protected $signature = 'app:generate-lang-keys';
+    protected $signature = 'language:generate-keys';
 
     /**
      * The console command description.
