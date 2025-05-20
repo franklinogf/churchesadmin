@@ -13,7 +13,7 @@ interface AddressFormSkeletonProps {
 }
 
 export function AddressFormSkeleton({ data, setData, errors, errorsName, withTitle = true }: AddressFormSkeletonProps) {
-  const { t } = useTranslations<string>();
+  const { t } = useTranslations();
   return (
     <section>
       {withTitle && <h2 className="mb-4 text-lg font-semibold">{t('Address')}</h2>}
@@ -38,19 +38,19 @@ export function AddressFormSkeleton({ data, setData, errors, errorsName, withTit
         />
         <FieldsGrid cols={3}>
           <InputField
-            label="City"
+            label={t('City')}
             value={data.city}
             onChange={(value) => setData({ ...data, city: value })}
             error={errors[`${errorsName ? errorsName + '.' : ''}city`]}
           />
           <InputField
-            label="State"
+            label={t('State')}
             value={data.state}
             onChange={(value) => setData({ ...data, state: value })}
             error={errors[`${errorsName ? errorsName + '.' : ''}state`]}
           />
           <InputField
-            label="Zip Code"
+            label={t('Zip Code')}
             value={data.zip_code}
             onChange={(value) => setData({ ...data, zip_code: value })}
             error={errors[`${errorsName ? errorsName + '.' : ''}zip_code`]}

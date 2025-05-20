@@ -6,7 +6,7 @@ import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/profile-layout';
 
 export default function Appearance() {
-  const { t } = useTranslations<string>();
+  const { t } = useTranslations();
   return (
     <AppLayout title={t('Appearance Settings')} breadcrumbs={[{ title: t('Appearance settings') }]}>
       <SettingsLayout>

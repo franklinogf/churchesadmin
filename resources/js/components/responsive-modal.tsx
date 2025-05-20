@@ -42,7 +42,7 @@ export function ResponsiveModal({ title, description, open, setOpen, children }:
 }
 
 export function ResponsiveModalFooterSubmit({ isSubmitting, label }: { isSubmitting: boolean; label: string }) {
-  const { t } = useTranslations<string>();
+  const { t } = useTranslations();
   return (
     <div className="grid grid-cols-1 gap-2 md:flex md:justify-end md:gap-4">
       <DrawerClose asChild>

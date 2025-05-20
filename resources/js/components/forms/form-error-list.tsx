@@ -3,7 +3,7 @@ import { useTranslations } from '@/hooks/use-translations';
 import { AlertCircleIcon, MinusIcon } from 'lucide-react';
 
 export function FormErrorList({ errors }: { errors?: Record<string, string> }) {
-  const { t } = useTranslations<string>();
+  const { t } = useTranslations();
   if (!errors || Object.keys(errors).length === 0) {
     return null;
   }

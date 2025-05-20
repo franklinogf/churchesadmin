@@ -14,7 +14,7 @@ interface IndexPageProps {
 }
 
 export default function Index({ users }: IndexPageProps) {
-  const { t } = useTranslations<string>();
+  const { t } = useTranslations();
   const { can: userCan } = useUser();
   return (
     <AppLayout title={t('Users')} breadcrumbs={[{ title: t('Users') }]}>

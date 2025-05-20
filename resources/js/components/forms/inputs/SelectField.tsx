@@ -43,7 +43,7 @@ export function SelectField({
   onChange,
   required,
 }: SelectFieldProps) {
-  const { t } = useTranslations<string>();
+  const { t } = useTranslations();
   const id = useId();
   return (
     <FieldContainer className={className}>

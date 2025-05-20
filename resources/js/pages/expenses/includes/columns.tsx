@@ -4,11 +4,11 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { useCurrency } from '@/hooks/use-currency';
+import { useTranslations } from '@/hooks/use-translations';
 import useConfirmationStore from '@/stores/confirmationStore';
 import type { Expense } from '@/types/models/expense';
 import { Link, router } from '@inertiajs/react';
 import { type ColumnDef } from '@tanstack/react-table';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { Edit2Icon, FileIcon, MoreHorizontalIcon, Trash2Icon } from 'lucide-react';
 import { ViewExpenseModal } from '../components/ViewExpenseModal';
 
@@ -64,7 +64,7 @@ export const columns: ColumnDef<Expense>[] = [
     enableSorting: false,
     size: 0,
     cell: function CellComponent({ row }) {
-      const { t } = useLaravelReactI18n();
+      const { t } = useTranslations();
       const { openConfirmation } = useConfirmationStore();
       //   const { can: userCan } = useUser();
       const expense = row.original;

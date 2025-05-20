@@ -6,11 +6,11 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { UserPermission } from '@/enums/user';
 import { useUser } from '@/hooks/use-user';
 
+import { useTranslations } from '@/hooks/use-translations';
 import useConfirmationStore from '@/stores/confirmationStore';
 import { type Missionary } from '@/types/models/missionary';
 import { Link, router } from '@inertiajs/react';
 import { type ColumnDef } from '@tanstack/react-table';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { Edit2Icon, MoreHorizontalIcon, Trash2Icon, User2Icon } from 'lucide-react';
 
 export const columns: ColumnDef<Missionary>[] = [
@@ -36,10 +36,10 @@ export const columns: ColumnDef<Missionary>[] = [
     header: ({ column }) => <DataTableColumnHeader column={column} title="Gender" />,
     accessorKey: 'gender',
     cell: function CellComponent({ row }) {
-      const { t } = useLaravelReactI18n();
+      const { t } = useTranslations();
       return (
         <DatatableCell justify="center">
-          <Badge className="w-24">{t(`enum.gender.${row.getValue('gender')}`)}</Badge>
+          <Badge className="w-24">{t(`enum.gender.${row.original.gender}`)}</Badge>
         </DatatableCell>
       );
     },
@@ -50,7 +50,7 @@ export const columns: ColumnDef<Missionary>[] = [
     enableSorting: false,
     size: 0,
     cell: function CellComponent({ row }) {
-      const { t } = useLaravelReactI18n();
+      const { t } = useTranslations();
       const { openConfirmation } = useConfirmationStore();
       const { can: userCan } = useUser();
       return (

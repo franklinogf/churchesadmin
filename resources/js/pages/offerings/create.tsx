@@ -39,7 +39,7 @@ interface CreateForm {
 }
 
 export default function Create({ walletsOptions, paymentMethods, membersOptions, missionariesOptions, offeringTypesOptions }: CreatePageProps) {
-  const { t } = useTranslations<string>();
+  const { t } = useTranslations();
   const { data, setData, post, errors, processing } = useForm<Required<CreateForm>>({
     date: formatDate(new Date(), 'yyyy-MM-dd'),
     donor_id: '',

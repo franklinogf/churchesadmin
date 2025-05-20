@@ -21,7 +21,7 @@ export interface MultiSelectFieldProps {
 }
 
 export function MultiSelectField({ error, label, disabled, className, placeholder, options, value, onChange, required }: MultiSelectFieldProps) {
-  const { t } = useTranslations<string>();
+  const { t } = useTranslations();
   const selectOptions = convertTagsToMultiselectOptions(options);
   return (
     <FieldContainer className={className}>

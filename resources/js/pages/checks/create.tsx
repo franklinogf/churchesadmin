@@ -8,10 +8,10 @@ import { SelectField } from '@/components/forms/inputs/SelectField';
 import { PageTitle } from '@/components/PageTitle';
 import AppLayout from '@/layouts/app-layout';
 
+import { useTranslations } from '@/hooks/use-translations';
 import type { SelectOption } from '@/types';
 import { useForm } from '@inertiajs/react';
 import { formatDate } from 'date-fns';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 interface CreatePageProps {
   walletOptions: SelectOption[];
@@ -31,7 +31,7 @@ type CreateForm = {
 };
 
 export default function ChecksCreate({ walletOptions, memberOptions, checkTypesOptions, expenseTypesOptions }: CreatePageProps) {
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations();
   const { data, setData, post, errors, processing } = useForm<CreateForm>({
     wallet_id: walletOptions[0]?.value.toString() ?? '',
     member_id: memberOptions[0]?.value.toString() ?? '',

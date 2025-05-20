@@ -4,10 +4,10 @@ import AppLayout from '@/layouts/app-layout';
 
 import { PageTitle } from '@/components/PageTitle';
 import { useLocaleDate } from '@/hooks/use-locale-date';
+import { useTranslations } from '@/hooks/use-translations';
 import type { BreadcrumbItem } from '@/types';
 import { type Offering, type OfferingGroupedByDate } from '@/types/models/offering';
 import { Link } from '@inertiajs/react';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { columns } from './includes/columns';
 import { groupByDateColumns } from './includes/groupByDateColumns';
 
@@ -17,7 +17,7 @@ interface IndexPageProps {
 }
 
 export default function Index({ offerings, date }: IndexPageProps) {
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations();
   const { formatLocaleDate } = useLocaleDate();
 
   const breadcrumbs: BreadcrumbItem[] = [{ title: t('Offerings'), href: route('offerings.index') }];

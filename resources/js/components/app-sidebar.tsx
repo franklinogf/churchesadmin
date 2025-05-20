@@ -11,7 +11,7 @@ import { useMemo } from 'react';
 import AppLogo from './app-logo';
 
 export function AppSidebar() {
-  const { t } = useTranslations<string>();
+  const { t } = useTranslations();
   const navs: { heading: string; items: NavItem[] }[] = useMemo(
     () => [
       {

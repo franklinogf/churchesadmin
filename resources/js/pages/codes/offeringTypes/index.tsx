@@ -2,14 +2,14 @@ import { DataTable } from '@/components/custom-ui/datatable/data-table';
 import { OfferingTypeForm } from '@/components/forms/offering-type-form';
 import { PageTitle } from '@/components/PageTitle';
 import { Button } from '@/components/ui/button';
+import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import { type OfferingType } from '@/types/models/offering-type';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { useState } from 'react';
 import { columns } from './includes/columns';
 
 export default function OfferingTypesIndex({ offeringTypes }: { offeringTypes: OfferingType[] }) {
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations();
   const [open, setOpen] = useState(false);
   return (
     <AppLayout title={t('Offering types')} breadcrumbs={[{ title: t('Offering types') }]}>

@@ -2,11 +2,11 @@ import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTabl
 import { OfferingTypeForm } from '@/components/forms/offering-type-form';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { useTranslations } from '@/hooks/use-translations';
 import useConfirmationStore from '@/stores/confirmationStore';
 import { type OfferingType } from '@/types/models/offering-type';
 import { router } from '@inertiajs/react';
 import { type ColumnDef } from '@tanstack/react-table';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { Edit2Icon, MoreHorizontalIcon, Trash2Icon } from 'lucide-react';
 import { useState } from 'react';
 
@@ -22,7 +22,7 @@ export const columns: ColumnDef<OfferingType>[] = [
     enableSorting: false,
     size: 0,
     cell: function CellComponent({ row }) {
-      const { t } = useLaravelReactI18n();
+      const { t } = useTranslations();
       const { openConfirmation } = useConfirmationStore();
       const [isEditing, setIsEditing] = useState(false);
       const offeringType = row.original;

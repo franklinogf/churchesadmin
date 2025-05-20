@@ -25,7 +25,7 @@ interface ComboboxFieldProps {
 
 export function ComboboxField({ error, label, disabled, className, placeholder, options, value, onChange, required }: ComboboxFieldProps) {
   const [open, setOpen] = useState(false);
-  const { t } = useTranslations<string>();
+  const { t } = useTranslations();
   placeholder = placeholder ?? t('Select an option');
   return (
     <FieldContainer className={className}>

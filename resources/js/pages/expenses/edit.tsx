@@ -6,13 +6,13 @@ import { InputField } from '@/components/forms/inputs/InputField';
 import { SelectField } from '@/components/forms/inputs/SelectField';
 import { PageTitle } from '@/components/PageTitle';
 import { useCurrency } from '@/hooks/use-currency';
+import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem, type SelectOption } from '@/types';
 import type { Expense } from '@/types/models/expense';
 import type { Wallet } from '@/types/models/wallet';
 import { useForm } from '@inertiajs/react';
 import { formatDate, parseISO } from 'date-fns';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 interface CreatePageProps {
   expense: Expense;
@@ -32,7 +32,7 @@ interface CreateForm {
 }
 
 export default function Create({ wallets, memberOptions, expenseTypesOptions, walletOptions, expense }: CreatePageProps) {
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations();
   const { formatCurrency, toPositive } = useCurrency();
 
   const { data, setData, put, errors, processing } = useForm<Required<CreateForm>>({

@@ -4,12 +4,12 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { UserPermission } from '@/enums/user';
+import { useTranslations } from '@/hooks/use-translations';
 import { useUser } from '@/hooks/use-user';
 import useConfirmationStore from '@/stores/confirmationStore';
 import { type Member } from '@/types/models/member';
 import { Link, router } from '@inertiajs/react';
 import { type ColumnDef } from '@tanstack/react-table';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { Edit2Icon, MoreHorizontalIcon, Trash2Icon, User2Icon } from 'lucide-react';
 
 export const columns: ColumnDef<Member>[] = [
@@ -35,22 +35,22 @@ export const columns: ColumnDef<Member>[] = [
     header: ({ column }) => <DataTableColumnHeader column={column} title="Gender" />,
     accessorKey: 'gender',
     cell: function CellComponent({ row }) {
-      const { t } = useLaravelReactI18n();
+      const { t } = useTranslations();
       return (
         <DatatableCell justify="center">
-          <Badge className="w-24">{t(`enum.gender.${row.getValue('gender')}`)}</Badge>
+          <Badge className="w-24">{t(`enum.gender.${row.original.gender}`)}</Badge>
         </DatatableCell>
       );
     },
   },
   {
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Civil Status" />,
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Civil status" />,
     accessorKey: 'civilStatus',
     cell: function CellComponent({ row }) {
-      const { t } = useLaravelReactI18n();
+      const { t } = useTranslations();
       return (
         <DatatableCell justify="center">
-          <Badge className="w-24">{t(`enum.civil_status.${row.getValue('civilStatus')}`)}</Badge>
+          <Badge className="w-24">{t(`enum.civil_status.${row.original.civilStatus}`)}</Badge>
         </DatatableCell>
       );
     },
@@ -61,7 +61,7 @@ export const columns: ColumnDef<Member>[] = [
     enableSorting: false,
     size: 0,
     cell: function CellComponent({ row }) {
-      const { t } = useLaravelReactI18n();
+      const { t } = useTranslations();
       const { openConfirmation } = useConfirmationStore();
       const { can: userCan } = useUser();
       return (

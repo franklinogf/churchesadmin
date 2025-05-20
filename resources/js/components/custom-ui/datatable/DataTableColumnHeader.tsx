@@ -6,15 +6,16 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 
 import { useTranslations } from '@/hooks/use-translations';
 import { cn } from '@/lib/utils';
+import type { TranslationKey } from '@/types/lang-keys';
 
 interface DataTableColumnHeaderProps<TData, TValue> extends React.HTMLAttributes<HTMLDivElement> {
   column: Column<TData, TValue>;
-  title: string;
+  title: TranslationKey;
   center?: boolean;
 }
 
 export function DataTableColumnHeader<TData, TValue>({ column, title, className, center = true }: DataTableColumnHeaderProps<TData, TValue>) {
-  const { t } = useTranslations<string>();
+  const { t } = useTranslations();
   if (!column.getCanSort()) {
     return <div className={cn('text-foreground', { 'text-center': center }, className)}>{t(title)}</div>;
   }

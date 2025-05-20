@@ -14,7 +14,7 @@ interface IndexPageProps {
   skills: Tag[];
 }
 export default function Index({ skills }: IndexPageProps) {
-  const { t } = useTranslations<string>();
+  const { t } = useTranslations();
   const { can: userCan } = useUser();
   const [open, setOpen] = useState(false);
 
@@ -27,7 +27,7 @@ export default function Index({ skills }: IndexPageProps) {
           headerButton={
             userCan(UserPermission.SKILLS_CREATE) && (
               <Button size="sm" onClick={() => setOpen(true)}>
-                {t('Add :model', { model: t('skill') })}
+                {t('Add :model', { model: t('Skill') })}
               </Button>
             )
           }

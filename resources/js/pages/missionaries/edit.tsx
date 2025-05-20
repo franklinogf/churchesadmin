@@ -7,11 +7,11 @@ import { PhoneField } from '@/components/forms/inputs/PhoneField';
 import { SelectField } from '@/components/forms/inputs/SelectField';
 import { PageTitle } from '@/components/PageTitle';
 import { Separator } from '@/components/ui/separator';
+import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem, SelectOption } from '@/types';
 import { type Missionary } from '@/types/models/missionary';
 import { useForm } from '@inertiajs/react';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 type EditForm = {
   name: string;
@@ -38,7 +38,7 @@ interface EditPageProps {
 }
 
 export default function Edit({ genders, missionary, offeringFrequencies }: EditPageProps) {
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations();
   const { data, setData, put, errors, processing } = useForm<EditForm>({
     name: missionary.name,
     last_name: missionary.lastName,

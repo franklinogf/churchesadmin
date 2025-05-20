@@ -491,7 +491,7 @@ return [
              *
              * @var string
              */
-            'name' => env('WALLET_DEFAULT_WALLET_NAME', WalletName::PRIMARY->label()),
+            'name' => env('WALLET_DEFAULT_WALLET_NAME', WalletName::PRIMARY->value),
 
             /**
              * The slug of the default wallet.

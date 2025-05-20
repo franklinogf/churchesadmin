@@ -13,7 +13,7 @@ interface FormProps {
 }
 
 export function Form({ children, className, isSubmitting, showRequiredHelper = true, submitLabel, onSubmit }: FormProps) {
-  const { t } = useTranslations<string>();
+  const { t } = useTranslations();
   submitLabel = submitLabel || t('Save');
   return (
     <form

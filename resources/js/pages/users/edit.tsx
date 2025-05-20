@@ -28,7 +28,7 @@ interface EditPageProps {
 }
 
 export default function Edit({ user, permissions, roles }: EditPageProps) {
-  const { t } = useTranslations<string>();
+  const { t } = useTranslations();
   const { hasRole } = useUser();
 
   const userPermissions = user.permissions?.map((permission) => permission.name);

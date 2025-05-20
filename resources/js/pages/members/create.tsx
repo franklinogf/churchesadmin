@@ -9,6 +9,7 @@ import { SelectField } from '@/components/forms/inputs/SelectField';
 import { PageTitle } from '@/components/PageTitle';
 import { Separator } from '@/components/ui/separator';
 import { CivilStatus, Gender } from '@/enums';
+import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import { getMultiselecOptionsLabels } from '@/lib/mutliselect';
 import type { BreadcrumbItem, SelectOption } from '@/types';
@@ -16,7 +17,6 @@ import { type AddressFormData } from '@/types/models/address';
 import { type MemberFormData } from '@/types/models/member';
 import type { Tag } from '@/types/models/tag';
 import { useForm } from '@inertiajs/react';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 type CreateForm = MemberFormData & {
   address: AddressFormData;
@@ -29,7 +29,7 @@ interface CreatePageProps {
   categories: Tag[];
 }
 export default function Create({ genders, civilStatuses, skills, categories }: CreatePageProps) {
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations();
   const { data, setData, post, errors, processing, transform } = useForm<CreateForm>({
     name: '',
     last_name: '',

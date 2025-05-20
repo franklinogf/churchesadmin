@@ -76,7 +76,7 @@ export const walletColumns: ColumnDef<Wallet>[] = [
     enableSorting: false,
     size: 0,
     cell: function CellComponent({ row }) {
-      const { t } = useTranslations<string>();
+      const { t } = useTranslations();
       const { openConfirmation } = useConfirmationStore();
       const [isEditing, setIsEditing] = useState(false);
       //   const { can: userCan } = useUser();

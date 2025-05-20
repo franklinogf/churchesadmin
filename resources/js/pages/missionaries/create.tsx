@@ -7,10 +7,10 @@ import { PhoneField } from '@/components/forms/inputs/PhoneField';
 import { SelectField } from '@/components/forms/inputs/SelectField';
 import { PageTitle } from '@/components/PageTitle';
 import { Separator } from '@/components/ui/separator';
+import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem, SelectOption } from '@/types';
 import { useForm } from '@inertiajs/react';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 interface CreatePageProps {
   genders: SelectOption[];
@@ -36,7 +36,7 @@ type CreateForm = {
   };
 };
 export default function Create({ genders, offeringFrequencies }: CreatePageProps) {
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations();
 
   const { data, setData, post, errors, processing } = useForm<CreateForm>({
     name: '',

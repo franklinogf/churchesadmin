@@ -23,7 +23,7 @@ interface CheckLayoutProps {
 }
 
 export default function CheckLayout({ checkLayouts, wallet, checkLayout }: CheckLayoutProps) {
-  const { t } = useTranslations<string>();
+  const { t } = useTranslations();
   const isMobile = useIsMobile();
   const [activeLayout, setActiveLayout] = useState(checkLayout?.id.toString() || NEW_LAYOUT);
 
@@ -63,7 +63,7 @@ export default function CheckLayout({ checkLayouts, wallet, checkLayout }: Check
                   label={t('Select the layout you want to use for this wallet or create a new one')}
                   value={activeLayout}
                   onChange={handleChangeActiveLayout}
-                  options={[{ value: NEW_LAYOUT, label: t('Create new layout') }, ...checkLayouts]}
+                  options={[{ value: NEW_LAYOUT, label: t('Create a new :model', { model: t('Check layout') }) }, ...checkLayouts]}
                 />
                 {activeLayout !== NEW_LAYOUT && (
                   <Button disabled={isWalletLayout} variant="outline" className="self-end" asChild>

@@ -29,7 +29,7 @@ interface EditPageProps {
 }
 
 export default function Edit({ permissions, roles }: EditPageProps) {
-  const { t } = useTranslations<string>();
+  const { t } = useTranslations();
 
   // const userPermissions = user.permissions?.map((permission) => permission.name);
   const { data, setData, errors, post, processing, transform } = useForm<CreateForm>({

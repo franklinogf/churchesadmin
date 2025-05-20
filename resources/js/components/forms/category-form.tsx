@@ -8,7 +8,7 @@ import type { Tag } from '@/types/models/tag';
 import { useForm } from '@inertiajs/react';
 
 export function CategoryForm({ category, open, setOpen }: { category?: Tag; open: boolean; setOpen: (open: boolean) => void }) {
-  const { t } = useTranslations<string>();
+  const { t } = useTranslations();
   const { can: userCan } = useUser();
   const { data, setData, post, put, errors, reset, processing } = useForm({
     name: category?.name ?? '',

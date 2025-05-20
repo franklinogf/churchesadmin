@@ -16,7 +16,7 @@ import { CheckLayoutDraggableField } from './check-layout-draggable-field';
 import { CheckLayoutDroppableArea } from './check-layout-droppable-area';
 
 export function CheckLayoutEditor({ checkLayout }: { checkLayout: CheckLayout }) {
-  const { t } = useTranslations<string>();
+  const { t } = useTranslations();
   const initialFieldsMap: Record<CheckFieldName, string> = {
     date: format(new Date(), 'yyyy-MM-dd'),
     amount: '549.00',

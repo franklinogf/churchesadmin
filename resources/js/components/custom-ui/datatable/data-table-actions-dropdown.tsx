@@ -3,7 +3,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@/compon
 import { useTranslations } from '@/hooks/use-translations';
 import { MoreHorizontalIcon } from 'lucide-react';
 export function DatatableActionsDropdown({ children }: { children: React.ReactNode }) {
-  const { t } = useTranslations<string>();
+  const { t } = useTranslations();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

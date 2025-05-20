@@ -6,7 +6,7 @@ import { useForm } from '@inertiajs/react';
 import { CurrencyField } from './inputs/CurrencyField';
 
 export function ExpenseTypeForm({ expenseType, open, setOpen }: { expenseType?: ExpenseType; open: boolean; setOpen: (open: boolean) => void }) {
-  const { t } = useTranslations<string>();
+  const { t } = useTranslations();
   const { data, setData, post, put, errors, processing, reset } = useForm({
     name: expenseType?.name ?? '',
     default_amount: expenseType?.defaultAmount?.toString() ?? '',
@@ -30,12 +30,13 @@ export function ExpenseTypeForm({ expenseType, open, setOpen }: { expenseType?: 
       });
     }
   }
+  const MODEL = t('Expense type');
   return (
     <ResponsiveModal
       open={open}
       setOpen={setOpen}
-      title={expenseType ? t('Edit :model', { model: t('Expense type') }) : t('Add :model', { model: t('Expense type') })}
-      description={expenseType ? t('Edit the details of this expense type') : t('Create a new :model', { model: t('Expense type') })}
+      title={expenseType ? t('Edit :model', { model: MODEL }) : t('Add :model', { model: MODEL })}
+      description={expenseType ? t('Edit the details of this :model', { model: MODEL }) : t('Create a new :model', { model: MODEL })}
     >
       <form className="space-y-4" onSubmit={handleSubmit}>
         <InputField required label={t('Name')} value={data.name} onChange={(value) => setData('name', value)} error={errors.name} />

@@ -8,13 +8,13 @@ import { PageTitle } from '@/components/PageTitle';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { useCurrency } from '@/hooks/use-currency';
+import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem, type SelectOption } from '@/types';
 import type { ExpenseType } from '@/types/models/expense-type';
 import type { Wallet } from '@/types/models/wallet';
 import { useForm } from '@inertiajs/react';
 import { formatDate } from 'date-fns';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { TrashIcon } from 'lucide-react';
 import { useMemo } from 'react';
 
@@ -38,7 +38,7 @@ interface CreateForm {
 }
 
 export default function Create({ wallets, memberOptions, expenseTypes, expenseTypesOptions, walletOptions }: CreatePageProps) {
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations();
   const { formatCurrency } = useCurrency();
 
   const initialExpense: CreateForm['expenses'][number] = {

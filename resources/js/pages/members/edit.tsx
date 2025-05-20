@@ -8,6 +8,7 @@ import { PhoneField } from '@/components/forms/inputs/PhoneField';
 import { SelectField } from '@/components/forms/inputs/SelectField';
 import { PageTitle } from '@/components/PageTitle';
 import { Separator } from '@/components/ui/separator';
+import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import { convertTagsToMultiselectOptions, getMultiselecOptionsLabels } from '@/lib/mutliselect';
 import type { BreadcrumbItem, SelectOption } from '@/types';
@@ -15,7 +16,6 @@ import { type AddressFormData } from '@/types/models/address';
 import { type Member, type MemberFormData } from '@/types/models/member';
 import { type Tag } from '@/types/models/tag';
 import { useForm } from '@inertiajs/react';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 type EditForm = MemberFormData & {
   address: AddressFormData;
@@ -29,7 +29,7 @@ interface EditPageProps {
   member: Member;
 }
 export default function Edit({ member, genders, civilStatuses, skills, categories }: EditPageProps) {
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations();
   const { data, setData, put, errors, processing, transform } = useForm<EditForm>({
     name: member.name,
     last_name: member.lastName,

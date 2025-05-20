@@ -1,11 +1,11 @@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useCurrency } from '@/hooks/use-currency';
+import { useTranslations } from '@/hooks/use-translations';
 import type { Expense } from '@/types/models/expense';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export function ViewExpenseModal({ expense, children }: { expense: Expense; children: React.ReactNode }) {
   const { formatCurrency } = useCurrency();
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations();
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>

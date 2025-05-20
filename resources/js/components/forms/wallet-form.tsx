@@ -16,7 +16,7 @@ type WalletForm = {
 };
 
 export function WalletForm({ wallet, open, setOpen }: { wallet?: Wallet; open: boolean; setOpen: (open: boolean) => void }) {
-  const { t } = useTranslations<string>();
+  const { t } = useTranslations();
 
   const { data, setData, post, put, errors, reset, processing } = useForm<WalletForm>({
     name: wallet?.name ?? '',
@@ -45,13 +45,13 @@ export function WalletForm({ wallet, open, setOpen }: { wallet?: Wallet; open: b
       });
     }
   }
-
+  const MODEL = t('Wallet');
   return (
     <ResponsiveModal
       open={open}
       setOpen={setOpen}
-      title={wallet ? t('Edit :model', { model: t('Wallet') }) : t('Add :model', { model: t('Wallet') })}
-      description={wallet ? t('Edit the details of this :model', { model: t('Wallet') }) : t('Create a new :model?', { model: t('Wallet') })}
+      title={wallet ? t('Edit :model', { model: MODEL }) : t('Add :model', { model: MODEL })}
+      description={wallet ? t('Edit the details of this :model', { model: MODEL }) : t('Create a new :model', { model: MODEL })}
     >
       <form className="space-y-4" onSubmit={handleSubmit}>
         <InputField required label={t('Name')} value={data.name} onChange={(value) => setData(`name`, value)} error={errors.name} />

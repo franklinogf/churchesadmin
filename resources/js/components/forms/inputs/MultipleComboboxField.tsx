@@ -36,7 +36,7 @@ export function MultipleComboboxField({
 }: MultipleComboboxFieldProps) {
   const [open, setOpen] = useState(false);
 
-  const { t } = useTranslations<string>();
+  const { t } = useTranslations();
   placeholder = placeholder ?? t('Select an option');
   return (
     <FieldContainer className={className}>

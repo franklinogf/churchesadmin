@@ -74,7 +74,7 @@ export function DataTable<TData, TValue>({
     onSelectedRowsChange(rowSelection);
   }, [rowSelection, onSelectedRowsChange]);
 
-  const { t } = useTranslations<string>();
+  const { t } = useTranslations();
   const tableColumns = table.getAllColumns();
   const enabledHidingColumns = tableColumns.filter((column) => column.getCanHide());
   const canSelect = tableColumns.some((col) => col.id === 'select');
@@ -178,7 +178,7 @@ export function DataTable<TData, TValue>({
 }
 
 function VisibilityDropdownMenu<TData>({ columns }: { columns: Column<TData, unknown>[] }) {
-  const { t } = useTranslations<string>();
+  const { t } = useTranslations();
   if (columns.length === 0) return null;
   return (
     <DropdownMenu>

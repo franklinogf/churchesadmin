@@ -1,11 +1,11 @@
 import { InputField } from '@/components/forms/inputs/InputField';
 import { ResponsiveModal, ResponsiveModalFooterSubmit } from '@/components/responsive-modal';
+import { useTranslations } from '@/hooks/use-translations';
 import { type OfferingType } from '@/types/models/offering-type';
 import { useForm } from '@inertiajs/react';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 
 export function OfferingTypeForm({ offeringType, open, setOpen }: { offeringType?: OfferingType; open: boolean; setOpen: (open: boolean) => void }) {
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations();
   const { data, setData, post, put, errors, processing, reset } = useForm({
     name: offeringType?.name ?? '',
   });

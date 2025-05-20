@@ -12,7 +12,7 @@ interface UserMenuContentProps {
 
 export function UserMenuContent({ user }: UserMenuContentProps) {
   const cleanup = useMobileNavigation();
-  const { t } = useTranslations<string>();
+  const { t } = useTranslations();
 
   return (
     <>

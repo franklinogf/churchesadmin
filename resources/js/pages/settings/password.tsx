@@ -12,7 +12,7 @@ import { Label } from '@/components/ui/label';
 import { useTranslations } from '@/hooks/use-translations';
 
 export default function Password() {
-  const { t } = useTranslations<string>();
+  const { t } = useTranslations();
   const passwordInput = useRef<HTMLInputElement>(null);
   const currentPasswordInput = useRef<HTMLInputElement>(null);
 
@@ -46,10 +46,7 @@ export default function Password() {
     <AppLayout title={t('Password settings')} breadcrumbs={[{ title: t('Password settings') }]}>
       <SettingsLayout>
         <div className="space-y-6">
-          <HeadingSmall
-            title={t('Update :model', { model: t('password') })}
-            description={t('Ensure your account is using a long, random password to stay secure')}
-          />
+          <HeadingSmall title={t('Update password')} description={t('Ensure your account is using a long, random password to stay secure')} />
 
           <form onSubmit={updatePassword} className="space-y-6">
             <div className="grid gap-2">
@@ -70,7 +67,7 @@ export default function Password() {
             </div>
 
             <div className="grid gap-2">
-              <Label htmlFor="password">{t('New :model', { model: t('password') })}</Label>
+              <Label htmlFor="password">{t('New password')}</Label>
 
               <Input
                 id="password"
@@ -80,7 +77,7 @@ export default function Password() {
                 type="password"
                 className="mt-1 block w-full"
                 autoComplete="new-password"
-                placeholder={t('New :model', { model: t('password') })}
+                placeholder={t('New password')}
               />
 
               <InputError message={errors.password} />

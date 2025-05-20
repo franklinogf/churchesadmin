@@ -16,7 +16,7 @@ type ProfileForm = {
 };
 
 export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: boolean; status?: string }) {
-  const { t } = useTranslations<string>();
+  const { t } = useTranslations();
   const { auth } = usePage<SharedData>().props;
 
   const { data, setData, patch, errors, processing, recentlySuccessful } = useForm<Required<ProfileForm>>({
@@ -44,7 +44,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
     <AppLayout title={t('Profile Settings')} breadcrumbs={breadcrumbs}>
       <SettingsLayout>
         <div className="space-y-6">
-          <HeadingSmall title={t('Profile information')} description={t('Update :model', { model: t('your name and email address') })} />
+          <HeadingSmall title={t('Profile information')} description={t('Update your name and email address')} />
 
           <form onSubmit={submit} className="space-y-6">
             <InputField

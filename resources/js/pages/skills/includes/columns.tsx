@@ -23,7 +23,7 @@ export const columns: ColumnDef<Tag>[] = [
     enableSorting: false,
     size: 0,
     cell: function CellComponent({ row }) {
-      const { t } = useTranslations<string>();
+      const { t } = useTranslations();
       const { openConfirmation } = useConfirmationStore();
       const { can: userCan } = useUser();
       const [isEditing, setIsEditing] = useState(false);
