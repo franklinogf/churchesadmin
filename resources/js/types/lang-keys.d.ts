@@ -22,8 +22,8 @@ export type TranslationKey =
   | 'Are you sure you want to activate this :model?'
   | 'Are you sure you want to deactivate this :model?'
   | 'Are you sure you want to delete this :model?'
-  | 'Arrastra y suelta tu foto aquí o haz <span class=\'filepond--label-action\'>clic</span> para seleccionarla'
-  | 'Arrastra y suelta tus archivos o <span class=\'filepond--label-action\'>Buscar</span>'
+  | "Arrastra y suelta tu foto aquí o haz <span class='filepond--label-action'>clic</span> para seleccionarla"
+  | "Arrastra y suelta tus archivos o <span class='filepond--label-action'>Buscar</span>"
   | 'Asc'
   | 'Assigned permissions'
   | 'Available funds'
@@ -126,7 +126,7 @@ export type TranslationKey =
   | 'Language'
   | 'Last Name'
   | 'Last name'
-  | 'Let us walk you through how ChurchesAdmin can serve your ministry\'s needs.'
+  | "Let us walk you through how ChurchesAdmin can serve your ministry's needs."
   | 'Log Out'
   | 'Logo'
   | 'Main'
@@ -207,14 +207,14 @@ export type TranslationKey =
   | 'This is how the information will look on the check layout'
   | 'This is marked as regular.'
   | 'This wallet will be usable again'
-  | 'This wallet won\'t be usable until it is activated'
+  | "This wallet won't be usable until it is activated"
   | 'Total'
   | 'Track assignments, support levels, communication logs, and prayer requests with ease.'
   | 'Transactions'
   | 'Type'
   | 'Unconfirmed Checks'
   | 'Update :model'
-  | 'Update account\'s appearance settings'
+  | "Update account's appearance settings"
   | 'Update password'
   | 'Update the church information'
   | 'Update the website language'
@@ -323,4 +323,4 @@ export type TranslationKey =
   | 'enum.transaction_type.deposit'
   | 'enum.transaction_type.withdraw'
   | 'enum.wallet_name.primary'
-  | '“I love how we can manage both members and missionaries from the same place. It\'s truly built for the church.”';
+  | "“I love how we can manage both members and missionaries from the same place. It's truly built for the church.”";
