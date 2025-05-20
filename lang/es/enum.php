@@ -60,9 +60,9 @@ return [
         'no_role' => 'Sin Rol',
     ],
     'tenant_permission' => [
-        'regular.tag.update' => 'Actualizar Etiqueta Regular',
-        'regular.tag.delete' => 'Eliminar Etiqueta Regular',
-        'regular.tag.create' => 'Crear Etiqueta Regular',
+        'regular.tags.update' => 'Actualizar Etiquetas Regular',
+        'regular.tags.delete' => 'Eliminar Etiquetas Regular',
+        'regular.tags.create' => 'Crear Etiquetas Regular',
         'users.manage' => 'Gestionar Usuarios',
         'users.create' => 'Crear Usuario',
         'users.update' => 'Actualizar Usuario',

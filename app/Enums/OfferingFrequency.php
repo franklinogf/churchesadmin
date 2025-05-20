@@ -10,13 +10,13 @@ use App\Enums\Traits\HasOptions;
 enum OfferingFrequency: string
 {
     use EnumToArray, HasOptions;
-    case ONE_TIME = 'one_time';
+    case ONETIME = 'one_time';
     case WEEKLY = 'weekly';
-    case BIWEEKLY = 'biweekly';
+    case BIWEEKLY = 'bi_weekly';
     case MONTHLY = 'monthly';
-    case BIMONTHLY = 'bimonthly';
+    case BIMONTHLY = 'bi_monthly';
     case QUARTERLY = 'quarterly';
-    case SEMIANNUALLY = 'semiannually';
+    case SEMIANNUALLY = 'semi_annually';
     case ANNUALLY = 'annually';
 
     /**
@@ -44,7 +44,7 @@ enum OfferingFrequency: string
             self::QUARTERLY => 90,
             self::SEMIANNUALLY => 180,
             self::ANNUALLY => 365,
-            self::ONE_TIME => 0,
+            self::ONETIME => 0,
         };
     }
 }
