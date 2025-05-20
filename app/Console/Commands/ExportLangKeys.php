@@ -165,9 +165,7 @@ final class ExportLangKeys extends Command
      * Recursively flatten the language array.
      *
      * @param  array<mixed, mixed>  $array
-     * @param  string  $prefix
      * @param  array<int, string>  $keys
-     * @param  string  $parent
      */
     private function flattenLang(array $array, string $prefix, array &$keys, string $parent = ''): void
     {
