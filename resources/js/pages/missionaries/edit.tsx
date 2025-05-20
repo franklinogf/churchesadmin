@@ -108,6 +108,7 @@ export default function Edit({ genders, missionary, offeringFrequencies }: EditP
               error={errors.offering}
             />
             <SelectField
+              clearable
               label={t('Offering Frequency')}
               value={data.offering_frequency}
               onChange={(value) => setData('offering_frequency', value)}

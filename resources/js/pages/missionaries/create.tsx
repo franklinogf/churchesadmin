@@ -108,6 +108,7 @@ export default function Create({ genders, offeringFrequencies }: CreatePageProps
               error={errors.offering}
             />
             <SelectField
+              clearable
               label={t('Offering Frequency')}
               value={data.offering_frequency}
               onChange={(value) => setData('offering_frequency', value)}

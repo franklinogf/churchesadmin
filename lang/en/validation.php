@@ -170,17 +170,41 @@ return [
         'old_password' => 'old password',
         'remember' => 'remember',
         'civil_status' => 'civil status',
-        'address1' => 'address 1',
-        'address2' => 'address 2',
+        'address_1' => 'address 1',
+        'address_2' => 'address 2',
         'city' => 'city',
         'state' => 'state',
         'country' => 'country',
-        'zip' => 'zip',
+        'zip_code' => 'zip code',
         'postal_code' => 'postal code',
+        'address' => 'address',
+        'address.address_1' => 'address 1',
+        'address.address_2' => 'address 2',
+        'address.city' => 'city',
+        'address.state' => 'state',
+        'address.country' => 'country',
+        'address.zip_code' => 'zip code',
     ],
     'custom' => [
         'fields' => [
             'required' => 'You need at least one field to print on the check.',
+        ],
+        'address' => [
+            'address_1' => [
+                'required_with' => 'The address field is required when address 1 is present.',
+            ],
+            'city' => [
+                'required_unless' => 'The city field is required unless address 1 is empty.',
+            ],
+            'state' => [
+                'required_unless' => 'The state field is required unless address 1 is empty.',
+            ],
+            'zip_code' => [
+                'required_unless' => 'The zip code field is required unless address 1 is empty.',
+            ],
+            'country' => [
+                'required_unless' => 'The country field is required unless address 1 is empty.',
+            ],
         ],
     ],
 ];

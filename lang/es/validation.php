@@ -170,18 +170,42 @@ return [
         'old_password' => 'contraseña anterior',
         'remember' => 'recordar',
         'civil_status' => 'estado civil',
-        'address1' => 'dirección 1',
-        'address2' => 'dirección 2',
+        'address_1' => 'dirección 1',
+        'address_2' => 'dirección 2',
         'city' => 'ciudad',
         'state' => 'estado',
         'country' => 'país',
-        'zip' => 'código postal',
+        'zip_code' => 'código postal',
         'postal_code' => 'código postal',
+        'address' => 'dirección',
+        'address.address_1' => 'dirección 1',
+        'address.address_2' => 'dirección 2',
+        'address.city' => 'ciudad',
+        'address.state' => 'estado',
+        'address.country' => 'país',
+        'address.zip_code' => 'código postal',
 
     ],
     'custom' => [
         'fields' => [
             'required' => 'Necesitas al menos un campo para imprimir en el cheque.',
+        ],
+        'address' => [
+            'address_1' => [
+                'required_with' => 'El campo de dirección es obligatorio cuando la dirección 1 está presente.',
+            ],
+            'city' => [
+                'required_unless' => 'El campo de ciudad es obligatorio a menos que la dirección 1 esté vacía.',
+            ],
+            'state' => [
+                'required_unless' => 'El campo de estado es obligatorio a menos que la dirección 1 esté vacía.',
+            ],
+            'zip_code' => [
+                'required_unless' => 'El campo de código postal es obligatorio a menos que la dirección 1 esté vacía.',
+            ],
+            'country' => [
+                'required_unless' => 'El campo de país es obligatorio a menos que la dirección 1 esté vacía.',
+            ],
         ],
     ],
 ];
