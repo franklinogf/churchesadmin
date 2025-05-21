@@ -116,9 +116,11 @@ Route::middleware([
             Route::resource('expenseTypes', ExpenseTypeController::class)
                 ->except(['show', 'create', 'edit']);
         });
+
+        require __DIR__.'/tenant/settings.php';
+        // require __DIR__.'/tenant/messages.php';
     });
 
-    require __DIR__.'/settings.php';
-    require __DIR__.'/auth.php';
+    require __DIR__.'/tenant/auth.php';
 
 });

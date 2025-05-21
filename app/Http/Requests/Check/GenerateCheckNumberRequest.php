@@ -29,7 +29,7 @@ final class GenerateCheckNumberRequest extends FormRequest
     {
         return [
             'checks' => ['required', 'array'],
-            'checks.*.id' => ['required', 'exists:checks,id'],
+            'checks.*' => ['required', 'exists:checks,id'],
             'initial_check_number' => ['required', 'numeric', 'min:1',
                 function (string $attribute, string $value, Closure $fail): void {
                     if (Check::confirmed()->where('check_number', $value)->exists()) {

@@ -30,7 +30,7 @@ final class ConfirmMultipleCheckRequest extends FormRequest
     {
         return [
             'checks' => ['required', 'array'],
-            'checks.*.id' => ['required', 'exists:checks,id'],
+            'checks.*' => ['required', 'exists:checks,id'],
         ];
     }
 
@@ -44,19 +44,14 @@ final class ConfirmMultipleCheckRequest extends FormRequest
 
         return [
             function (Validator $validator): void {
-                /** @var string[] */
-                $checkIds = $this->array('checks.*.id');
-                Check::whereIn('id', $checkIds)
-                    ->each(function (Check $check) use ($validator): void {
-                        if ($check->check_number === null) {
-                            $validator->errors()->add(
-                                'checks',
-                                'All checks must have a check number.'
-                            );
+                $checkIds = $this->array('checks');
+                if (Check::whereIn('id', $checkIds)->whereNull('check_number')->exists()) {
 
-                            return;
-                        }
-                    });
+                    $validator->errors()->add(
+                        'checks',
+                        'All checks must have a check number.'
+                    );
+                }
 
             },
         ];

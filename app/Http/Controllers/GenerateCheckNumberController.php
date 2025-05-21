@@ -22,7 +22,7 @@ final class GenerateCheckNumberController extends Controller
         /**
          * @var string[] $checkIds
          */
-        $checkIds = $request->collect('checks')->flatten()->toArray();
+        $checkIds = $request->array('checks');
 
         $existingCheckNumbers = [];
 
