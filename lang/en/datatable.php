@@ -6,6 +6,7 @@ return [
     'select' => ['all' => 'All', 'all_pages' => 'All pages'],
     'actions' => 'Actions',
     'filter' => 'Search',
+    'filter_button' => 'Filters',
     'empty' => 'No data available',
     'no_selected_rows' => 'Please select at least one row',
     'visibility_button' => 'View',
