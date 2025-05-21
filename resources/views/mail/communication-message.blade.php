@@ -1,7 +1,5 @@
 <x-mail::message>
 
-    <x-mail::subcopy>
-        hola
-    </x-mail::subcopy>
+    {!! $body !!}
 
 </x-mail::message>

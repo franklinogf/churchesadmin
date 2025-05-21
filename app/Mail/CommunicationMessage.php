@@ -18,8 +18,9 @@ final class CommunicationMessage extends Mailable implements ShouldQueue
     /**
      * Create a new message instance.
      */
-    public function __construct()
-    {
+    public function __construct(
+        public string $body,
+    ) {
         $this->onQueue('emails');
     }
 

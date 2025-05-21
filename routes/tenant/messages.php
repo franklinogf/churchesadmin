@@ -9,4 +9,5 @@ Route::prefix('messages')->name('messages.')->group(function (): void {
 
     Route::get('members', [MemberMessageController::class, 'index'])->name('members.index');
     Route::get('members/create', [MemberMessageController::class, 'create'])->name('members.create');
+    Route::post('members', [MemberMessageController::class, 'store'])->name('members.store');
 });

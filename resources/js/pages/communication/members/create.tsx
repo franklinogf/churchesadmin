@@ -18,15 +18,16 @@ type EmailForm = {
 };
 
 export default function Create({ membersAmount, membersId }: Props) {
-  const { data, setData, errors, processing } = useForm<EmailForm>({
+  const { data, setData, errors, processing, post } = useForm<EmailForm>({
     subject: '',
     body: '',
     membersId,
   });
   function handleSubmit() {
     // Handle form submission
-    console.log('Form submitted');
+    post(route('messages.members.store'));
   }
+  console.log(errors);
   return (
     <AppLayout
       title="New email"
@@ -38,10 +39,12 @@ export default function Create({ membersAmount, membersId }: Props) {
           <Badge>{membersAmount} members selected</Badge>
         </div>
       </header>
-      <Form onSubmit={handleSubmit} submitLabel="Send email" isSubmitting={processing}>
-        <InputField required label="Subject" value={data.subject} onChange={(value) => setData('subject', value)} error={errors.subject} />
-        <RichTextField required label="Body" value={data.body} onChange={(value) => setData('body', value)} />
-      </Form>
+      <section className="mx-auto max-w-4xl">
+        <Form onSubmit={handleSubmit} submitLabel="Send email" isSubmitting={processing}>
+          <InputField required label="Subject" value={data.subject} onChange={(value) => setData('subject', value)} error={errors.subject} />
+          <RichTextField required label="Body" value={data.body} onChange={(value) => setData('body', value)} />
+        </Form>
+      </section>
     </AppLayout>
   );
 }
