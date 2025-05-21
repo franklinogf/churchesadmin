@@ -8,7 +8,7 @@ return [
     'filter' => 'Search',
     'empty' => 'No data available',
     'no_selected_rows' => 'Please select at least one row',
-    'visibility_button' => 'Columns',
+    'visibility_button' => 'View',
     'hide' => 'Hide',
     'sort' => [
         'ascending' => 'Asc',
