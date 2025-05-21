@@ -45,10 +45,13 @@ export function RichTextEditor({
   value,
   onChange,
   editorClassName,
+  id,
 }: {
   value?: string;
   onChange?: (html: string) => void;
   editorClassName?: string;
+
+  id?: string;
 }) {
   return (
     <div className="rounded border-1 shadow-xs">
@@ -59,8 +62,10 @@ export function RichTextEditor({
         onUpdate={({ editor }) => {
           onChange?.(editor.getHTML());
         }}
+        // element={document.body}
         editorProps={{
           attributes: {
+            id: id ?? 'editor',
             class: cn(
               'border-input field-sizing-content min-h-16 w-full min-w-full px-3 py-2 transition-[color,box-shadow] outline-none focus-visible:ring-0 disabled:cursor-not-allowed disabled:opacity-50',
               'prose prose-sm dark:prose-invert sm:prose-base prose-stone',
@@ -69,7 +74,7 @@ export function RichTextEditor({
           },
         }}
       >
-        <FloatingMenu tippyOptions={{ duration: 500, popperOptions: { placement: 'bottom' } }} editor={null}>
+        <FloatingMenu tippyOptions={{ duration: 500 }} editor={null}>
           <SmallMenuBar />
         </FloatingMenu>
       </EditorProvider>
