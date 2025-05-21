@@ -1,11 +1,14 @@
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
+import { Color } from '@tiptap/extension-color';
 import Highlight from '@tiptap/extension-highlight';
 import Link from '@tiptap/extension-link';
 import TextAlign from '@tiptap/extension-text-align';
+import TextStyle from '@tiptap/extension-text-style';
 import Underline from '@tiptap/extension-underline';
 import { EditorProvider, FloatingMenu, useCurrentEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
@@ -18,7 +21,6 @@ import {
   Heading1Icon,
   Heading2Icon,
   Heading3Icon,
-  Heading4Icon,
   HighlighterIcon,
   ItalicIcon,
   LinkIcon,
@@ -34,27 +36,18 @@ import {
 
 // define your extension array
 const extensions = [
-  StarterKit.configure({ heading: { levels: [1, 2, 3, 4] } }),
+  StarterKit.configure({ heading: { levels: [1, 2, 3] }, codeBlock: false, code: false }),
   TextAlign.configure({ types: ['heading', 'paragraph'], alignments: ['left', 'center', 'right', 'justify'] }),
+  Link.configure({ linkOnPaste: true, openOnClick: false }),
+  TextStyle.configure({ mergeNestedSpanStyles: true }),
+  Color,
   Underline,
   Highlight,
-  Link.configure({ linkOnPaste: true, openOnClick: false }),
 ];
 
-export function RichTextEditor({
-  value,
-  onChange,
-  editorClassName,
-  id,
-}: {
-  value?: string;
-  onChange?: (html: string) => void;
-  editorClassName?: string;
-
-  id?: string;
-}) {
+export function RichTextEditor({ value, onChange, id }: { value?: string; onChange?: (html: string) => void; id?: string }) {
   return (
-    <div className="rounded border-1 shadow-xs">
+    <div className="rounded border shadow-xs">
       <EditorProvider
         extensions={extensions}
         content={value}
@@ -62,15 +55,10 @@ export function RichTextEditor({
         onUpdate={({ editor }) => {
           onChange?.(editor.getHTML());
         }}
-        // element={document.body}
         editorProps={{
           attributes: {
             id: id ?? 'editor',
-            class: cn(
-              'border-input field-sizing-content min-h-16 w-full min-w-full px-3 py-2 transition-[color,box-shadow] outline-none focus-visible:ring-0 disabled:cursor-not-allowed disabled:opacity-50',
-              'prose prose-sm dark:prose-invert sm:prose-base prose-stone',
-              editorClassName,
-            ),
+            class: 'prose prose-sm sm:prose-base m-5 focus:outline-none dark:prose-invert',
           },
         }}
       >
@@ -167,12 +155,6 @@ function HeadingsToolbar() {
         active={editor.isActive('heading', { level: 3 })}
         icon={Heading3Icon}
       />
-      <MenuBarButton
-        onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}
-        disabled={!editor.can().chain().focus().toggleHeading({ level: 4 }).run()}
-        active={editor.isActive('heading', { level: 4 })}
-        icon={Heading4Icon}
-      />
     </>
   );
 }
@@ -217,7 +199,7 @@ function MenuBar() {
     return null;
   }
   return (
-    <ScrollArea className="border-b-1">
+    <ScrollArea className="bg-background/80 border-b-1">
       <div className="flex w-full flex-wrap items-center lg:flex-nowrap">
         <MenuBarButton onClick={() => editor.chain().focus().undo().run()} disabled={!editor.can().chain().focus().undo().run()} icon={UndoIcon} />
         <MenuBarButton onClick={() => editor.chain().focus().redo().run()} disabled={!editor.can().chain().focus().redo().run()} icon={RedoIcon} />
@@ -231,6 +213,13 @@ function MenuBar() {
           active={editor.isActive('highlight')}
           icon={HighlighterIcon}
         />
+        <Button className="size-8 cursor-pointer rounded-none border-0 p-0.5 shadow-none" asChild variant="ghost" size="icon">
+          <Input
+            type="color"
+            value={editor.getAttributes('textStyle').color || '#000000'}
+            onChange={(e) => editor.chain().focus().setColor(e.target.value).run()}
+          />
+        </Button>
         <MenuBarSeparator />
         <HeadingsToolbar />
 
@@ -294,7 +283,7 @@ function MenuBarButton({ onClick, disabled, icon: Icon, active }: { onClick: () 
   return (
     <Button
       type="button"
-      className={cn('size-8 cursor-pointer rounded-none', {
+      className={cn('size-8 cursor-pointer rounded-none first:rounded-tl last:rounded-tr', {
         'bg-accent': active,
       })}
       variant="ghost"
