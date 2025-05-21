@@ -18,9 +18,7 @@ import { confirmedColumns } from './includes/confirmedColumns';
 import { unconfirmedColumns } from './includes/unconfirmedColumns';
 
 type GenerateCheckNumberForm = {
-  checks: {
-    id: string;
-  }[];
+  checks: string[];
   initial_check_number: string;
 };
 
@@ -41,7 +39,7 @@ export default function Index({ unconfirmedChecks, confirmedChecks, flash, nextC
   const [confirmedSelectedRows, setConfirmedSelectedRows] = useState<string[]>([]);
   const [unconfirmedAction, setUnconfirmedAction] = useState<UnconfirmedFormAction | null>(null);
 
-  const { data, setData, errors, patch, processing } = useForm<GenerateCheckNumberForm>({
+  const { data, setData, errors, patch, processing, transform } = useForm<GenerateCheckNumberForm>({
     checks: [],
     initial_check_number: nextCheckNumber.toString(),
   });
@@ -51,30 +49,28 @@ export default function Index({ unconfirmedChecks, confirmedChecks, flash, nextC
 
     setUnconfirmedAction(UnconfirmedFormAction.GENERATE);
 
-    patch(route('checks.generate-check-number'), {
-      onSuccess: () => {
-        setData('initial_check_number', '');
-      },
-    });
+    patch(route('checks.generate-check-number'));
   }
 
   function confirmChecks() {
     setUnconfirmedAction(UnconfirmedFormAction.CONFIRM);
-    patch(route('checks.confirm-multiple'));
+    transform((data) => ({
+      checks: data.checks,
+    }));
+    patch(route('checks.confirm-multiple'), {
+      preserveState: false,
+    });
   }
 
   const handleUnconfirmedSelection = useCallback(
-    (selectedRows: Record<string, boolean>) => {
-      setData(
-        'checks',
-        Object.keys(selectedRows).map((key) => ({ id: key })),
-      );
+    (selectedRows: string[]) => {
+      setData('checks', selectedRows);
     },
     [setData],
   );
 
-  const handleConfirmedSelection = useCallback((selectedRows: Record<string, boolean>) => {
-    setConfirmedSelectedRows(Object.keys(selectedRows));
+  const handleConfirmedSelection = useCallback((selectedRows: string[]) => {
+    setConfirmedSelectedRows(selectedRows);
   }, []);
 
   const handlePrintConfirmedChecks = () => {
@@ -95,6 +91,7 @@ export default function Index({ unconfirmedChecks, confirmedChecks, flash, nextC
 
             <div className="space-y-2">
               {errors.initial_check_number && <FieldError error={errors.initial_check_number} />}
+              {errors.checks && <FieldError error={errors.checks} />}
               <form onSubmit={generateCheckNumbers}>
                 <FieldsGrid>
                   <InputField
@@ -134,11 +131,10 @@ export default function Index({ unconfirmedChecks, confirmedChecks, flash, nextC
                   {t('Confirm checks')}
                 </SubmitButton>
               </div>
-              {errors.checks && <FieldError error={errors.checks} />}
             </div>
           </header>
           <div className="flex flex-col items-start justify-between gap-y-2">
-            <PageTitle className="text-left text-xl font-semibold">{t('Unconfirmed Checks')}</PageTitle>
+            <h2 className="text-left text-lg font-semibold">{t('Unconfirmed Checks')}</h2>
             {flash.message && (
               <Alert className="w-full max-w-fit">
                 <AlertDescription>{flash.message}</AlertDescription>
@@ -156,7 +152,7 @@ export default function Index({ unconfirmedChecks, confirmedChecks, flash, nextC
         </div>
         <div>
           <header className="mt-8 flex items-center justify-between space-y-2">
-            <PageTitle className="text-left text-xl font-semibold">{t('Confirmed Checks')}</PageTitle>
+            <h2 className="text-left text-lg font-semibold">{t('Confirmed Checks')}</h2>
             <div className="space-y-2">
               <div className="flex items-center justify-end gap-2">
                 <Button size="sm" variant="secondary" disabled={confirmedSelectedRows.length === 0} onClick={handlePrintConfirmedChecks}>

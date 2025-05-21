@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 return [
-    'select' => ['all' => 'Todos', 'all_pages' => 'Todas las páginas'],
+    'select' => ['title' => 'Seleccionar', 'all_pages' => 'Todas las páginas', 'current_page' => 'Página actual'],
     'actions' => 'Acciones',
     'filter' => 'Buscar',
     'filter_button' => 'Filtros',
