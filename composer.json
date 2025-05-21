@@ -37,6 +37,7 @@
         "laravel/sail": "^1.43.0",
         "mockery/mockery": "^1.6.12",
         "nunomaduro/collision": "^8.8",
+        "peckphp/peck": "^0.1.3",
         "pestphp/pest": "^3.8.2",
         "pestphp/pest-plugin-laravel": "^3.2",
         "pestphp/pest-plugin-type-coverage": "^3.5.1",
@@ -92,6 +93,7 @@
             "phpstan analyse",
             "pest --type-coverage --compact --colors=always --min=100"
         ],
+        "test:typos": "peck",
         "test:unit": "pest --testsuite=Unit --stop-on-failure",
         "test:feature": "pest --testsuite=Feature --stop-on-failure",
         "test:all": "pest --coverage --compact --colors=always --profile",
