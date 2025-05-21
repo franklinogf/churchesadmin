@@ -6,18 +6,18 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSepara
 
 import { useTranslations } from '@/hooks/use-translations';
 import { cn } from '@/lib/utils';
-import type { TranslationKey } from '@/types/lang-keys';
 
 interface DataTableColumnHeaderProps<TData, TValue> extends React.HTMLAttributes<HTMLDivElement> {
   column: Column<TData, TValue>;
-  title: TranslationKey;
+  title: string;
   center?: boolean;
 }
 
 export function DataTableColumnHeader<TData, TValue>({ column, title, className, center = true }: DataTableColumnHeaderProps<TData, TValue>) {
   const { t } = useTranslations();
+
   if (!column.getCanSort() && !column.getCanHide()) {
-    return <div className={cn('text-foreground', { 'text-center': center }, className)}>{t(title)}</div>;
+    return <div className={cn('text-foreground', { 'text-center': center }, className)}>{title}</div>;
   }
 
   return (
@@ -25,7 +25,7 @@ export function DataTableColumnHeader<TData, TValue>({ column, title, className,
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" size="sm" className="text-foreground data-[state=open]:bg-accent data-[state=open]:text-accent-foreground h-8">
-            <span>{t(title)}</span>
+            <span>{title}</span>
             {column.getCanSort() &&
               (column.getIsSorted() === 'desc' ? (
                 <ArrowDown className="size-4" />
