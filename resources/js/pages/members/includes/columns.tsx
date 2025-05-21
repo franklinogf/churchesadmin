@@ -15,18 +15,21 @@ import { Edit2Icon, Trash2Icon, User2Icon } from 'lucide-react';
 export const columns: ColumnDef<Member>[] = [
   {
     header: ({ column }) => <DataTableColumnHeader column={column} title="Name" />,
-    enableHiding: false,
     accessorKey: 'name',
+    enableHiding: false,
+    enableColumnFilter: false,
   },
   {
     header: ({ column }) => <DataTableColumnHeader column={column} title="Last name" />,
-    enableHiding: false,
     accessorKey: 'lastName',
+    enableHiding: false,
+    enableColumnFilter: false,
   },
   {
     header: ({ column }) => <DataTableColumnHeader column={column} title="Phone" />,
     accessorKey: 'phone',
     enableSorting: false,
+    enableColumnFilter: false,
     cell: ({ row }) => {
       return <DatatableCell justify="center">{row.getValue('phone')}</DatatableCell>;
     },
@@ -34,6 +37,8 @@ export const columns: ColumnDef<Member>[] = [
   {
     header: ({ column }) => <DataTableColumnHeader column={column} title="Gender" />,
     accessorKey: 'gender',
+    filterFn: 'equalsString',
+    meta: { filterVariant: 'select', translationPrefix: 'enum.gender.' },
     cell: function CellComponent({ row }) {
       const { t } = useTranslations();
       return (
@@ -46,6 +51,8 @@ export const columns: ColumnDef<Member>[] = [
   {
     header: ({ column }) => <DataTableColumnHeader column={column} title="Civil status" />,
     accessorKey: 'civilStatus',
+    filterFn: 'equalsString',
+    meta: { filterVariant: 'select', translationPrefix: 'enum.civil_status.' },
     cell: function CellComponent({ row }) {
       const { t } = useTranslations();
       return (
