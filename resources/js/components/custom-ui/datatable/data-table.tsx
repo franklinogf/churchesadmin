@@ -9,7 +9,7 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Separator } from '@/components/ui/separator';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { useTranslations } from '@/hooks/use-translations';
 import type { TranslationKey } from '@/types/lang-keys';
@@ -30,7 +30,7 @@ import {
   useReactTable,
   type VisibilityState,
 } from '@tanstack/react-table';
-import { PlusCircleIcon, Settings2Icon } from 'lucide-react';
+import { FilterIcon, Settings2Icon } from 'lucide-react';
 import { useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 
@@ -93,6 +93,11 @@ export function DataTable<TData, TValue>({
   const enabledHidingColumns = tableColumns.filter((column) => column.getCanHide());
   const canSelect = tableColumns.some((col) => col.id === 'select');
 
+  const tableHeaderGroups = table.getHeaderGroups();
+  const tableSelectFilters = tableHeaderGroups.flatMap((headerGroup) =>
+    headerGroup.headers.filter((h) => h.column.getCanFilter() && h.column.columnDef.meta?.filterVariant === 'select'),
+  );
+
   useEffect(() => {
     if (!onSelectedRowsChange) return;
     onSelectedRowsChange(rowSelection);
@@ -106,16 +111,23 @@ export function DataTable<TData, TValue>({
       <section className="flex items-center justify-between py-2">
         <div className="flex items-center gap-2">
           {headerButton}
-
-          <div className="flex items-center gap-1">
-            {table
-              .getHeaderGroups()
-              .map((headerGroup) =>
-                headerGroup.headers
-                  .filter((header) => header.column.getCanFilter() && header.column.columnDef.meta?.filterVariant === 'select')
-                  .map((header) => <ColumnSelectFilter key={header.id} column={header.column} />),
-              )}
-          </div>
+          {tableSelectFilters.length > 0 && (
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline" size="sm">
+                  <FilterIcon className="size-4" />
+                  {t('datatable.filter_button')}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent>
+                <div className="flex flex-col gap-1">
+                  {tableSelectFilters.map((header) => (
+                    <ColumnSelectFilter key={header.id} column={header.column} />
+                  ))}
+                </div>
+              </PopoverContent>
+            </Popover>
+          )}
         </div>
 
         <div className="ml-auto">
@@ -125,7 +137,7 @@ export function DataTable<TData, TValue>({
       <section className="rounded-md border">
         <Table>
           <TableHeader>
-            {table.getHeaderGroups().map((headerGroup) => (
+            {tableHeaderGroups.map((headerGroup) => (
               <TableRow key={headerGroup.id} className="hover:bg-background">
                 {headerGroup.headers.map((header) => (
                   <TableHead
@@ -235,18 +247,12 @@ function ColumnSelectFilter<TData, TValue>({ column }: { column: Column<TData, T
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="outline" size="sm">
-          <>
-            <PlusCircleIcon className="size-4" />
-            {getColumnLabel(column)}
+          <div className="flex w-full items-center justify-between gap-2">
+            <span>{getColumnLabel(column)}</span>
             {columnFilterValue !== 'all' && (
-              <>
-                <Separator orientation="vertical" />
-                <Badge variant="secondary" className="text-xs">
-                  {t(`${translationPrefix || ''}${columnFilterValue}` as TranslationKey)}
-                </Badge>
-              </>
+              <Badge variant="secondary">{t(`${translationPrefix || ''}${columnFilterValue}` as TranslationKey)}</Badge>
             )}
-          </>
+          </div>
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent>
