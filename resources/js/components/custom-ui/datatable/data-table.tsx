@@ -1,15 +1,27 @@
 import { DataTablePagination } from '@/components/custom-ui/datatable/DataTablePagination';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Input } from '@/components/ui/input';
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Separator } from '@/components/ui/separator';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { useTranslations } from '@/hooks/use-translations';
 import type { TranslationKey } from '@/types/lang-keys';
 import {
   type Column,
   type ColumnDef,
+  type ColumnFiltersState,
   flexRender,
   getCoreRowModel,
+  getFacetedMinMaxValues,
+  getFacetedRowModel,
+  getFacetedUniqueValues,
   getFilteredRowModel,
   getPaginationRowModel,
   getSortedRowModel,
@@ -18,8 +30,8 @@ import {
   useReactTable,
   type VisibilityState,
 } from '@tanstack/react-table';
-import { XSquare } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { PlusCircleIcon, Settings2Icon } from 'lucide-react';
+import { useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
 
 interface DataTableProps<TData, TValue> {
@@ -27,7 +39,6 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
   onButtonClick?: (data: TData[]) => void;
   selectedActionButtonLabel?: string;
-  filter?: boolean;
   selectOne?: boolean;
   rowId?: keyof TData;
   headerButton?: React.ReactNode;
@@ -41,7 +52,6 @@ export function DataTable<TData, TValue>({
   data,
   onButtonClick,
   selectedActionButtonLabel,
-  filter = true,
   selectOne = false,
   rowId,
   headerButton,
@@ -50,10 +60,13 @@ export function DataTable<TData, TValue>({
 
   onSelectedRowsChange,
 }: DataTableProps<TData, TValue>) {
+  const { t } = useTranslations();
   const [sorting, setSorting] = useState<SortingState>(sortingState as SortingState);
   const [globalFilter, setGlobalFilter] = useState<string>('');
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(visibilityState);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+
   const table = useReactTable({
     columns,
     data,
@@ -63,60 +76,53 @@ export function DataTable<TData, TValue>({
     onSortingChange: setSorting,
     onGlobalFilterChange: setGlobalFilter,
     getFilteredRowModel: getFilteredRowModel(),
+    getFacetedRowModel: getFacetedRowModel(),
+    getFacetedUniqueValues: getFacetedUniqueValues(),
+    getFacetedMinMaxValues: getFacetedMinMaxValues(),
     globalFilterFn: 'includesString',
     onRowSelectionChange: setRowSelection,
     enableMultiRowSelection: !selectOne,
     onColumnVisibilityChange: setColumnVisibility,
-    state: { sorting, globalFilter, rowSelection, columnVisibility },
+    onColumnFiltersChange: setColumnFilters,
+    state: { sorting, globalFilter, rowSelection, columnVisibility, columnFilters },
+
     getRowId: rowId ? (row: TData) => row[rowId as keyof TData] as string : undefined,
   });
+
+  const tableColumns = table.getAllColumns();
+  const enabledHidingColumns = tableColumns.filter((column) => column.getCanHide());
+  const canSelect = tableColumns.some((col) => col.id === 'select');
 
   useEffect(() => {
     if (!onSelectedRowsChange) return;
     onSelectedRowsChange(rowSelection);
   }, [rowSelection, onSelectedRowsChange]);
 
-  const { t } = useTranslations();
-  const tableColumns = table.getAllColumns();
-  const enabledHidingColumns = tableColumns.filter((column) => column.getCanHide());
-  const canSelect = tableColumns.some((col) => col.id === 'select');
+  function translateFunction(label: string): string {
+    return t(label as TranslationKey);
+  }
   return (
     <div>
-      <div className="flex items-center justify-between py-2">
+      <section className="flex items-center justify-between py-2">
         <div className="flex items-center gap-2">
           {headerButton}
-          {filter && (
-            <div className="relative mr-auto">
-              <Input
-                name="datatable-filter"
-                placeholder={t('datatable.filter')}
-                value={globalFilter}
-                onChange={(e) => {
-                  table.setGlobalFilter(e.target.value);
-                }}
-              />
-              {globalFilter && (
-                <Button
-                  onClick={() => {
-                    table.setGlobalFilter('');
-                  }}
-                  asChild
-                  className="size-4"
-                  size="icon"
-                  variant="ghost"
-                >
-                  <XSquare className="hover:text-primary absolute top-1/2 right-2 -translate-y-1/2 hover:cursor-pointer" />
-                </Button>
+
+          <div className="flex items-center gap-1">
+            {table
+              .getHeaderGroups()
+              .map((headerGroup) =>
+                headerGroup.headers
+                  .filter((header) => header.column.getCanFilter() && header.column.columnDef.meta?.filterVariant === 'select')
+                  .map((header) => <ColumnSelectFilter key={header.id} column={header.column} />),
               )}
-            </div>
-          )}
+          </div>
         </div>
 
         <div className="ml-auto">
-          <VisibilityDropdownMenu columns={enabledHidingColumns} />
+          <VisibilityDropdownMenu label={t('datatable.visibility_button')} itemLabelFunction={translateFunction} columns={enabledHidingColumns} />
         </div>
-      </div>
-      <div className="rounded-md border">
+      </section>
+      <section className="rounded-md border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -155,12 +161,12 @@ export function DataTable<TData, TValue>({
             )}
           </TableBody>
         </Table>
-      </div>
-      <div className="mt-1">
+      </section>
+      <section className="mt-1">
         <DataTablePagination isSelectable={canSelect} table={table} />
-      </div>
+      </section>
       {canSelect && selectedActionButtonLabel && (
-        <div className="mt-4 flex justify-center">
+        <section className="mt-4 flex justify-center">
           <Button
             className="cursor-pointer"
             onClick={() => {
@@ -173,7 +179,7 @@ export function DataTable<TData, TValue>({
           >
             {selectedActionButtonLabel}
           </Button>
-        </div>
+        </section>
       )}
     </div>
   );
@@ -188,25 +194,70 @@ function getColumnLabel<TData>(column: Column<TData, unknown>): string {
   return column.id;
 }
 
-function VisibilityDropdownMenu<TData>({ columns }: { columns: Column<TData, unknown>[] }) {
-  const { t } = useTranslations();
+function VisibilityDropdownMenu<TData>({
+  columns,
+  label,
+  itemLabelFunction: labelFunction,
+}: {
+  columns: Column<TData, unknown>[];
+  label: string;
+  itemLabelFunction?: (label: string) => string;
+}) {
   if (columns.length === 0) return null;
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="ml-auto">
-          {t('datatable.visibility_button')}
+        <Button variant="outline" size="sm" className="ml-auto">
+          <Settings2Icon className="size-4" />
+          {label}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         {columns.map((column) => {
           return (
             <DropdownMenuCheckboxItem key={column.id} checked={column.getIsVisible()} onCheckedChange={(value) => column.toggleVisibility(!!value)}>
-              {/* {t(column.columnDef?.meta?.toString() as TranslationKey) || column.id.replaceAll('_', ' ')} */}
-              {t(getColumnLabel(column) as TranslationKey)}
+              {labelFunction ? labelFunction(getColumnLabel(column)) : getColumnLabel(column)}
             </DropdownMenuCheckboxItem>
           );
         })}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+}
+
+function ColumnSelectFilter<TData, TValue>({ column }: { column: Column<TData, TValue> }) {
+  const { t } = useTranslations();
+  const columnFilterValue = column.getFilterValue() ?? 'all';
+  const { translationPrefix } = column.columnDef.meta ?? {};
+
+  const sortedUniqueValues = useMemo(() => Array.from(column.getFacetedUniqueValues().keys()).sort().slice(0, 5000), [column]);
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline" size="sm">
+          <>
+            <PlusCircleIcon className="size-4" />
+            {getColumnLabel(column)}
+            {columnFilterValue !== 'all' && (
+              <>
+                <Separator orientation="vertical" />
+                <Badge variant="secondary" className="text-xs">
+                  {t(`${translationPrefix || ''}${columnFilterValue}` as TranslationKey)}
+                </Badge>
+              </>
+            )}
+          </>
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent>
+        <DropdownMenuRadioGroup onValueChange={(value) => column.setFilterValue(value === 'all' ? '' : value)} value={columnFilterValue?.toString()}>
+          <DropdownMenuRadioItem value="all">{t('datatable.select.all')}</DropdownMenuRadioItem>
+          {sortedUniqueValues.map((value) => (
+            <DropdownMenuRadioItem key={value} value={value}>
+              {t(`${translationPrefix || ''}${value}` as TranslationKey)}
+            </DropdownMenuRadioItem>
+          ))}
+        </DropdownMenuRadioGroup>
       </DropdownMenuContent>
     </DropdownMenu>
   );
