@@ -186,4 +186,19 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  ::-webkit-scrollbar {
+    @apply size-1.5;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-border rounded-sm;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-primary;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
 }
