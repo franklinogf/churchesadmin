@@ -62,7 +62,7 @@ export function DataTable<TData, TValue>({
 }: DataTableProps<TData, TValue>) {
   const { t } = useTranslations();
   const [sorting, setSorting] = useState<SortingState>(sortingState as SortingState);
-  const [globalFilter, setGlobalFilter] = useState<string>('');
+
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(visibilityState);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -74,17 +74,15 @@ export function DataTable<TData, TValue>({
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
     onSortingChange: setSorting,
-    onGlobalFilterChange: setGlobalFilter,
     getFilteredRowModel: getFilteredRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
     getFacetedMinMaxValues: getFacetedMinMaxValues(),
-    globalFilterFn: 'includesString',
     onRowSelectionChange: setRowSelection,
     enableMultiRowSelection: !selectOne,
     onColumnVisibilityChange: setColumnVisibility,
     onColumnFiltersChange: setColumnFilters,
-    state: { sorting, globalFilter, rowSelection, columnVisibility, columnFilters },
+    state: { sorting, rowSelection, columnVisibility, columnFilters },
 
     getRowId: rowId ? (row: TData) => row[rowId as keyof TData] as string : undefined,
   });
