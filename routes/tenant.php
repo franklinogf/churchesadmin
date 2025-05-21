@@ -118,7 +118,7 @@ Route::middleware([
         });
 
         require __DIR__.'/tenant/settings.php';
-        // require __DIR__.'/tenant/messages.php';
+        require __DIR__.'/tenant/messages.php';
     });
 
     require __DIR__.'/tenant/auth.php';
