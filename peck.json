@@ -21,7 +21,8 @@
             "draggable",
             "droppable",
             "ssr",
-            "tsconfig"
+            "tsconfig",
+            "subcopy"
         ],
         "paths": [
             "app\/"

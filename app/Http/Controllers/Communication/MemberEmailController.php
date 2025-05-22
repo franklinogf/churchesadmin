@@ -6,10 +6,11 @@ namespace App\Http\Controllers\Communication;
 
 use App\Enums\EmailStatus;
 use App\Enums\FlashMessageKey;
+use App\Enums\MediaCollectionName;
 use App\Enums\SessionName;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Member\MemberResource;
-use App\Mail\CommunicationMessage;
+use App\Jobs\SendEmailJob;
 use App\Models\Member;
 use App\Models\TenantUser;
 use App\Services\Session\SessionService;
@@ -17,8 +18,7 @@ use Illuminate\Container\Attributes\CurrentUser;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Mail\SentMessage;
-use Illuminate\Support\Facades\Mail;
+use Illuminate\Http\UploadedFile;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -58,6 +58,9 @@ final class MemberEmailController extends Controller
             'subject' => 'required|string|max:255',
             'media.*' => 'file|max:10240', // 10MB
         ]);
+        /**
+         * @var array<int, string> $membersId
+         */
         $membersId = $sessionService->get(SessionName::EMAIL_MEMBERS_IDS, []);
 
         if (count($membersId) === 0) {
@@ -76,14 +79,20 @@ final class MemberEmailController extends Controller
             'reply_to' => $user->email,
             'status' => EmailStatus::PENDING,
         ]);
+        /**
+         * @var array<int, UploadedFile> $files
+         */
+        $files = $request->file('media', []);
+        collect($files)
+            ->each(fn (UploadedFile $file) => $email->addMedia($file)
+                ->toMediaCollection(MediaCollectionName::ATTATCHMENT->value)
+            );
 
         $email->members()->attach($members, ['status' => EmailStatus::PENDING->value]);
 
-        // $members->each(fn (Member $member): ?SentMessage => Mail::to($member)
-        //     ->send(new CommunicationMessage($body)
-        //         ->subject($subject)
-        //     ));
         $sessionService->forget(SessionName::EMAIL_MEMBERS_IDS);
+
+        dispatch(new SendEmailJob($email));
 
         return to_route('messages.members.index')->with(FlashMessageKey::SUCCESS->value, 'Messages sent successfully.');
 

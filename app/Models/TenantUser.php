@@ -24,6 +24,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read DateTimeInterface|null $email_verified_at
  * @property-read DateTimeInterface|null $created_at
  * @property-read DateTimeInterface|null $updated_at
+ * @property-read Email[] $emails
  */
 final class TenantUser extends Authenticatable implements MustVerifyEmail
 {

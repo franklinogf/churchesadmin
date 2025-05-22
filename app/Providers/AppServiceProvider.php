@@ -7,6 +7,7 @@ namespace App\Providers;
 use App\Models\CheckLayout;
 use App\Models\Church;
 use App\Models\ChurchWallet;
+use App\Models\Email;
 use App\Models\Member;
 use App\Models\Missionary;
 use App\Models\OfferingType;
@@ -77,6 +78,7 @@ final class AppServiceProvider extends ServiceProvider
             'church_wallet' => ChurchWallet::class,
             'offering_type' => OfferingType::class,
             'check_layout' => CheckLayout::class,
+            'email' => Email::class,
         ]);
     }
 

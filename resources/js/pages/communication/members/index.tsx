@@ -70,7 +70,7 @@ export default function Index({ members }: Props) {
     router.post(route('session', { name: SessionName.EMAIL_MEMBERS_IDS, value: selectedMembers, redirect_to: 'messages.members.create' }));
   }
   return (
-    <AppLayout title={t('Send email to members')} breadcrumbs={[{ title: t('Members'), href: route('members.index') }]}>
+    <AppLayout title={t('Send email to members')} breadcrumbs={[{ title: 'Email' }, { title: t('Members'), href: route('members.index') }]}>
       <PageTitle description={t('Select the members you want to send a message to')}>{t('Send email to members')}</PageTitle>
 
       <div className="mx-auto w-full max-w-2xl">

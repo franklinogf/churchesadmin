@@ -3,6 +3,7 @@ import { InputField } from '@/components/forms/inputs/InputField';
 import { RichTextField } from '@/components/forms/inputs/RichTextField';
 import { PageTitle } from '@/components/PageTitle';
 import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/app-layout';
 import { useForm } from '@inertiajs/react';
 
@@ -14,15 +15,16 @@ interface Props {
 type EmailForm = {
   subject: string;
   body: string;
-  membersId: string[];
+  media: File[];
 };
 
-export default function Create({ membersAmount, membersId }: Props) {
+export default function Create({ membersAmount }: Props) {
   const { data, setData, errors, processing, post } = useForm<EmailForm>({
     subject: '',
     body: '',
-    membersId,
+    media: [],
   });
+
   function handleSubmit() {
     post(route('messages.members.store'));
   }
@@ -42,6 +44,7 @@ export default function Create({ membersAmount, membersId }: Props) {
         <Form onSubmit={handleSubmit} submitLabel="Send email" isSubmitting={processing}>
           <InputField required label="Subject" value={data.subject} onChange={(value) => setData('subject', value)} error={errors.subject} />
           <RichTextField required label="Body" value={data.body} onChange={(value) => setData('body', value)} />
+          <Input type="file" multiple accept="image/*" onChange={(e) => setData('media', Array.from(e.target.files || []))} />
         </Form>
       </section>
     </AppLayout>

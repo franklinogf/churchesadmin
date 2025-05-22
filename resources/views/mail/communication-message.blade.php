@@ -1,5 +1,5 @@
 <x-mail::message>
 
-    {!! $body !!}
+    {!! $email->body !!}
 
 </x-mail::message>
