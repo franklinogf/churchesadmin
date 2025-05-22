@@ -1,9 +1,9 @@
 import { Form } from '@/components/forms/Form';
+import { FileField } from '@/components/forms/inputs/FileField';
 import { InputField } from '@/components/forms/inputs/InputField';
 import { RichTextField } from '@/components/forms/inputs/RichTextField';
 import { PageTitle } from '@/components/PageTitle';
 import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
 import AppLayout from '@/layouts/app-layout';
 import { useForm } from '@inertiajs/react';
 
@@ -19,7 +19,7 @@ type EmailForm = {
 };
 
 export default function Create({ membersAmount }: Props) {
-  const { data, setData, errors, processing, post } = useForm<EmailForm>({
+  const { data, setData, errors, processing, post, progress } = useForm<EmailForm>({
     subject: '',
     body: '',
     media: [],
@@ -28,7 +28,6 @@ export default function Create({ membersAmount }: Props) {
   function handleSubmit() {
     post(route('messages.members.store'));
   }
-
   return (
     <AppLayout
       title="New email"
@@ -41,10 +40,10 @@ export default function Create({ membersAmount }: Props) {
         </div>
       </header>
       <section className="mx-auto max-w-4xl">
-        <Form onSubmit={handleSubmit} submitLabel="Send email" isSubmitting={processing}>
+        <Form progress={progress?.percentage} onSubmit={handleSubmit} submitLabel="Send email" isSubmitting={processing}>
           <InputField required label="Subject" value={data.subject} onChange={(value) => setData('subject', value)} error={errors.subject} />
           <RichTextField required label="Body" value={data.body} onChange={(value) => setData('body', value)} />
-          <Input type="file" multiple accept="image/*" onChange={(e) => setData('media', Array.from(e.target.files || []))} />
+          <FileField label="Attachments" allowMultiple onChange={(files) => setData('media', files)} />
         </Form>
       </section>
     </AppLayout>

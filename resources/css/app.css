@@ -202,4 +202,21 @@
   ::-webkit-scrollbar-track {
     @apply bg-transparent;
   }
+  /* filepond */
+  /* .filepond--item {
+    @apply w-[calc(50%-0.5em)];
+  } */
+
+  .filepond--panel-root {
+    @apply bg-muted!;
+  }
+  .filepond--drop-label {
+    @apply text-muted-foreground!;
+  }
+  .filepond--label-action {
+    @apply decoration-primary!;
+  }
+  .filepond--root {
+    @apply max-h-[calc(100vh-4rem)];
+  }
 }
