@@ -10,7 +10,7 @@ use App\Enums\MediaCollectionName;
 use App\Enums\SessionName;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Member\MemberResource;
-use App\Jobs\SendEmailJob;
+use App\Jobs\Email\SendEmailJob;
 use App\Models\Member;
 use App\Models\TenantUser;
 use App\Services\Session\SessionService;

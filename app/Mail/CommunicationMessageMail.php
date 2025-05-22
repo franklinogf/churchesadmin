@@ -7,7 +7,6 @@ namespace App\Mail;
 use App\Enums\MediaCollectionName;
 use App\Models\Email;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Attachment;
@@ -16,7 +15,7 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
-final class CommunicationMessageMail extends Mailable implements ShouldQueue
+final class CommunicationMessageMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -25,9 +24,7 @@ final class CommunicationMessageMail extends Mailable implements ShouldQueue
      */
     public function __construct(
         public Email $email,
-    ) {
-        $this->onQueue('emails');
-    }
+    ) {}
 
     /**
      * Get the message envelope.

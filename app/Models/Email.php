@@ -25,7 +25,9 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  * @property-read DateTimeInterface $updated_at
  * @property-read TenantUser $sender
  * @property-read Member[] $members
+ * @property-read Member[] $pendingMembers
  * @property-read Missionary[] $missionaries
+ * @property-read Missionary[] $pendingMissionaries
  */
 final class Email extends Model implements HasMedia
 {
@@ -52,6 +54,16 @@ final class Email extends Model implements HasMedia
     }
 
     /**
+     * The members that this email is pending to send.
+     *
+     * @return MorphToMany<Member, $this>
+     */
+    public function pendingMembers(): MorphToMany
+    {
+        return $this->morphedByMany(Member::class, 'recipient', 'emailables')->wherePivot('status', EmailStatus::PENDING);
+    }
+
+    /**
      * The missionaries that this email was sent to.
      *
      * @return MorphToMany<Missionary, $this>
@@ -59,6 +71,16 @@ final class Email extends Model implements HasMedia
     public function missionaries(): MorphToMany
     {
         return $this->morphedByMany(Missionary::class, 'recipient', 'emailables');
+    }
+
+    /**
+     * The missionaries that this email is pending to send.
+     *
+     * @return MorphToMany<Missionary, $this>
+     */
+    public function pendingMissionaries(): MorphToMany
+    {
+        return $this->morphedByMany(Missionary::class, 'recipient', 'emailables')->wherePivot('status', EmailStatus::PENDING);
     }
 
     /**
