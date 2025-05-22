@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Tags\HasTags;
 
@@ -55,6 +56,19 @@ final class Member extends Model
     public function address(): MorphOne
     {
         return $this->morphOne(Address::class, 'owner');
+    }
+
+    /**
+     * The emails that has been sent to this member.
+     *
+     * @return MorphToMany<Email, $this>
+     */
+    public function emails(): MorphToMany
+    {
+        return $this->morphToMany(Email::class, 'recipient', 'emailables')
+            ->as('message')
+            ->withPivot('status', 'sent_at', 'error_message')
+            ->withTimestamps();
     }
 
     /**

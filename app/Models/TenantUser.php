@@ -8,6 +8,7 @@ use DateTimeInterface;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
@@ -45,6 +46,16 @@ final class TenantUser extends Authenticatable implements MustVerifyEmail
         'password',
         'remember_token',
     ];
+
+    /**
+     * The emails that this user has sent.
+     *
+     * @return HasMany<Email, $this>
+     */
+    public function emails(): HasMany
+    {
+        return $this->hasMany(Email::class, 'sender_id');
+    }
 
     /**
      * Get the attributes that should be cast.

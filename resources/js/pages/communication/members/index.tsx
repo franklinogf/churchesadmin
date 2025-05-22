@@ -9,6 +9,7 @@ import { DatatableCell } from '@/components/custom-ui/datatable/DatatableCell';
 import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTableColumnHeader';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { SessionName } from '@/enums';
 import { router } from '@inertiajs/react';
 import { type ColumnDef } from '@tanstack/react-table';
 import { useMemo, useState } from 'react';
@@ -66,9 +67,8 @@ export default function Index({ members }: Props) {
   );
 
   function handleNewEmail() {
-    router.get(route('messages.members.create', { membersId: selectedMembers }));
+    router.post(route('session', { name: SessionName.EMAIL_MEMBERS_IDS, value: selectedMembers, redirect_to: 'messages.members.create' }));
   }
-
   return (
     <AppLayout title={t('Send email to members')} breadcrumbs={[{ title: t('Members'), href: route('members.index') }]}>
       <PageTitle description={t('Select the members you want to send a message to')}>{t('Send email to members')}</PageTitle>

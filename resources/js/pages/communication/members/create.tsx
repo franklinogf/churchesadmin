@@ -24,10 +24,9 @@ export default function Create({ membersAmount, membersId }: Props) {
     membersId,
   });
   function handleSubmit() {
-    // Handle form submission
     post(route('messages.members.store'));
   }
-  console.log(errors);
+
   return (
     <AppLayout
       title="New email"

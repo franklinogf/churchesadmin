@@ -57,3 +57,8 @@ export enum CheckLayoutFieldName {
   DATE = 'date',
   MEMO = 'memo',
 }
+
+export enum SessionName {
+  EMAIL_MEMBERS_IDS = 'email_members_ids',
+  EMAIL_MISSIONARIES_IDS = 'email_missionaries_ids',
+}
