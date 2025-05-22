@@ -1,12 +1,10 @@
 import { useTranslations } from '@/hooks/use-translations';
-import { type FilePondFile, type FilePondInitialFile } from 'filepond';
 import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size';
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation';
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
 import 'filepond/dist/filepond.min.css';
-import { useState } from 'react';
 import { FilePond, registerPlugin } from 'react-filepond';
 
 // Register the plugins
@@ -86,6 +84,9 @@ export interface FileUploaderProps {
   maxTotalFileSize?: string | null;
   disabled?: boolean;
   required?: boolean;
+  className?: string;
+  layout?: 'compact' | 'circle' | 'compact circle' | null;
+  initialFiles?: string[];
 }
 
 export function FileUploader({
@@ -99,18 +100,20 @@ export function FileUploader({
   maxTotalFileSize = null,
   disabled,
   required,
+  className,
+  layout,
+  initialFiles,
 }: FileUploaderProps) {
   const { tChoice } = useTranslations();
-  const [files, setFiles] = useState<FilePondFile[]>([]);
 
   const acceptedFileTypes = acceptedFiles?.flatMap((fileType) => fileTypeMap[fileType as FileTypeName] ?? fileType) ?? undefined;
 
   return (
-    <div>
+    <div className={className}>
       <FilePond
-        files={files as unknown as FilePondInitialFile[]}
+        stylePanelLayout={layout}
+        files={initialFiles}
         onupdatefiles={(fileItems) => {
-          setFiles(fileItems);
           onFileChange?.(fileItems.map((fileItem) => fileItem.file as File));
         }}
         required={required}

@@ -208,15 +208,12 @@
   } */
 
   .filepond--panel-root {
-    @apply bg-muted!;
+    @apply bg-muted! dark:bg-secondary! shadow! dark:shadow-2xl!;
   }
   .filepond--drop-label {
-    @apply text-muted-foreground!;
+    @apply text-muted-foreground! dark:text-secondary-foreground!;
   }
-  .filepond--label-action {
+  .filepond--label-action:hover {
     @apply decoration-primary!;
-  }
-  .filepond--root {
-    @apply max-h-[calc(100vh-4rem)];
   }
 }

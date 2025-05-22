@@ -6,7 +6,6 @@ use App\Http\Controllers\Settings\PasswordController;
 use App\Http\Controllers\Settings\ProfileController;
 use App\Http\Controllers\Settings\TenantGeneralController;
 use App\Http\Controllers\Settings\TenantLanguageController;
-use App\Http\Controllers\Settings\TenantLogoController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -28,8 +27,7 @@ Route::prefix('settings')->group(function (): void {
         Route::patch('language', [TenantLanguageController::class, 'update'])->name('church.language.update');
 
         Route::get('general', [TenantGeneralController::class, 'edit'])->name('church.general.edit');
-        Route::put('general', [TenantGeneralController::class, 'update'])->name('church.general.update');
+        Route::post('general', [TenantGeneralController::class, 'update'])->name('church.general.update');
 
-        Route::post('logo', TenantLogoController::class)->name('church.logo');
     });
 });
