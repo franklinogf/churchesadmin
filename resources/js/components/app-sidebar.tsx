@@ -98,8 +98,8 @@ export function AppSidebar() {
         heading: t('Communication'),
         items: [
           {
-            title: t('Members email'),
-            href: route('messages.members.index'),
+            title: t('Emails'),
+            href: route('communication.emails.index'),
             icon: MailsIcon,
           },
         ],

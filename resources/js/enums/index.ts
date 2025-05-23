@@ -59,6 +59,15 @@ export enum CheckLayoutFieldName {
 }
 
 export enum SessionName {
-  EMAIL_MEMBERS_IDS = 'email_members_ids',
-  EMAIL_MISSIONARIES_IDS = 'email_missionaries_ids',
+  EMAIL_RECIPIENTS = 'email_recipients',
+}
+
+export enum ModelMorphName {
+  MEMBER = 'member',
+  MISSIONARY = 'missionary',
+  OFFERING = 'offering',
+  EXPENSE = 'expense',
+  CHECK = 'check',
+  TRANSACTION = 'transaction',
+  WALLET = 'wallet',
 }

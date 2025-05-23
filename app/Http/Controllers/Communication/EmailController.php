@@ -9,7 +9,6 @@ use App\Enums\FlashMessageKey;
 use App\Enums\MediaCollectionName;
 use App\Enums\SessionName;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Member\MemberResource;
 use App\Jobs\Email\SendEmailJob;
 use App\Models\Member;
 use App\Models\TenantUser;
@@ -22,32 +21,33 @@ use Illuminate\Http\UploadedFile;
 use Inertia\Inertia;
 use Inertia\Response;
 
-final class MemberEmailController extends Controller
+final class EmailController extends Controller
 {
     public function index(): Response
     {
-        $members = Member::all();
-
-        return Inertia::render('communication/members/index', [
-            'members' => MemberResource::collection($members),
-        ]);
+        return Inertia::render('communication/emails/index');
     }
 
     public function create(SessionService $sessionService): Response|RedirectResponse
     {
         /**
-         * @var array<int, string> $membersId
+         * @var array{type:string,ids:array<int,string>}|null $emailRecipients
          */
-        $membersId = $sessionService->get(SessionName::EMAIL_MEMBERS_IDS, []);
+        $emailRecipients = $sessionService->get(SessionName::EMAIL_RECIPIENTS);
 
-        $membersAmount = count($membersId);
-
-        if ($membersAmount === 0) {
-            return to_route('messages.members.index')->with(FlashMessageKey::ERROR->value, 'No members selected.');
+        if ($emailRecipients === null) {
+            return to_route('communication.emails.index')->with(FlashMessageKey::ERROR->value, 'First, select the recipients.');
         }
 
-        return Inertia::render('communication/members/create', [
-            'membersAmount' => $membersAmount,
+        $recipientsAmount = count($emailRecipients['ids']);
+
+        if ($recipientsAmount === 0) {
+            return to_route('communication.emails.index')->with(FlashMessageKey::ERROR->value, 'You must select at least one recipient.');
+        }
+
+        return Inertia::render('communication/emails/create', [
+            'recipientsAmount' => $recipientsAmount,
+            'recipientsType' => $emailRecipients['type'],
         ]);
     }
 
@@ -61,10 +61,10 @@ final class MemberEmailController extends Controller
         /**
          * @var array<int, string> $membersId
          */
-        $membersId = $sessionService->get(SessionName::EMAIL_MEMBERS_IDS, []);
+        $membersId = $sessionService->get(SessionName::EMAIL_RECIPIENTS, []);
 
         if (count($membersId) === 0) {
-            return to_route('messages.members.index')->with(FlashMessageKey::ERROR->value, 'No members selected.');
+            return to_route('communication.emails.index')->with(FlashMessageKey::ERROR->value, 'You must select at least one recipient.');
         }
 
         $body = $request->string('body')->value();
@@ -90,7 +90,7 @@ final class MemberEmailController extends Controller
 
         $email->members()->attach($members, ['status' => EmailStatus::PENDING->value]);
 
-        $sessionService->forget(SessionName::EMAIL_MEMBERS_IDS);
+        $sessionService->forget(SessionName::EMAIL_RECIPIENTS);
 
         dispatch(new SendEmailJob($email));
 
