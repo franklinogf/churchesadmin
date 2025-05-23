@@ -87,6 +87,7 @@ export interface FileUploaderProps {
   className?: string;
   layout?: 'compact' | 'circle' | 'compact circle' | null;
   initialFiles?: string[];
+  allowImagePreview?: boolean;
 }
 
 export function FileUploader({
@@ -103,6 +104,7 @@ export function FileUploader({
   className,
   layout,
   initialFiles,
+  allowImagePreview = false,
 }: FileUploaderProps) {
   const { tChoice } = useTranslations();
 
@@ -116,6 +118,7 @@ export function FileUploader({
         onupdatefiles={(fileItems) => {
           onFileChange?.(fileItems.map((fileItem) => fileItem.file as File));
         }}
+        allowImagePreview={allowImagePreview}
         required={required}
         disabled={disabled}
         maxFileSize={maxFileSize}

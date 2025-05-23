@@ -60,6 +60,7 @@ export default function Language({ church }: { church: Church }) {
               className="max-w-xs"
               labelIdle="Drag & Drop"
               acceptedFiles={['images']}
+              maxFileSize="2MB"
               onChange={(files) => generalForm.setData('logo', files[0] ?? null)}
               error={generalForm.errors.logo}
             />
