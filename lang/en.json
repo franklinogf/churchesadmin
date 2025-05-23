@@ -231,5 +231,15 @@
     "Generate check numbers": "Generate check numbers",
     "Confirm checks and print": "Confirm checks and print",
     "Confirm checks": "Confirm checks",
-    "Print checks": "Print checks"
+    "Print checks": "Print checks",
+    "Communication": "Communication",
+    "Members email": "Members email",
+    "Send email to members": "Send email to members",
+    "Select the members you want to send a message to": "Select the members you want to send a message to",
+    "Send a new email to the members you selected": "Send a new email to the members you selected",
+    ":amount member selected|:amount members selected": ":amount member selected|:amount members selected",
+    "Send email": "Send email",
+    "Subject": "Subject",
+    "Message": "Message",
+    "Attachments": "Attachments"
 }

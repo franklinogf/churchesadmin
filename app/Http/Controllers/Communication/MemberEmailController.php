@@ -85,7 +85,7 @@ final class MemberEmailController extends Controller
         $files = $request->file('media', []);
         collect($files)
             ->each(fn (UploadedFile $file) => $email->addMedia($file)
-                ->toMediaCollection(MediaCollectionName::ATTATCHMENT->value)
+                ->toMediaCollection(MediaCollectionName::ATTACHMENT->value)
             );
 
         $email->members()->attach($members, ['status' => EmailStatus::PENDING->value]);

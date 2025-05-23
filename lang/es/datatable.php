@@ -6,6 +6,7 @@ return [
     'select' => ['title' => 'Seleccionar', 'all_pages' => 'Todas las páginas', 'current_page' => 'Página actual'],
     'actions' => 'Acciones',
     'filter' => 'Buscar',
+    'unselect_filter' => 'Todos',
     'filter_button' => 'Filtros',
     'empty' => 'No hay datos disponibles',
     'no_selected_rows' => 'Por favor seleccione al menos una fila',

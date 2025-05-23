@@ -59,7 +59,7 @@ final class CommunicationMessageMail extends Mailable
         /**
          * @var array<int, Attachment> $attachments
          */
-        $attachments = $this->email->getMedia(MediaCollectionName::ATTATCHMENT->value)
+        $attachments = $this->email->getMedia(MediaCollectionName::ATTACHMENT->value)
             ->map(
                 fn (Media $media): Attachment => Attachment::fromPath($media->getPath())
                     ->as($media->file_name)

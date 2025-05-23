@@ -250,7 +250,7 @@ function ColumnSelectFilter<TData, TValue>({ column }: { column: Column<TData, T
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuRadioGroup onValueChange={(value) => column.setFilterValue(value === 'all' ? '' : value)} value={columnFilterValue?.toString()}>
-          <DropdownMenuRadioItem value="all">{t('datatable.select.all')}</DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value="all">{t('datatable.unselect_filter')}</DropdownMenuRadioItem>
           {sortedUniqueValues.map((value) => (
             <DropdownMenuRadioItem key={value} value={value}>
               {t(`${translationPrefix || ''}${value}` as TranslationKey)}

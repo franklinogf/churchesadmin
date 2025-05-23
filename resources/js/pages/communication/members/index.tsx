@@ -70,14 +70,17 @@ export default function Index({ members }: Props) {
     router.post(route('session', { name: SessionName.EMAIL_MEMBERS_IDS, value: selectedMembers, redirect_to: 'messages.members.create' }));
   }
   return (
-    <AppLayout title={t('Send email to members')} breadcrumbs={[{ title: 'Email' }, { title: t('Members'), href: route('members.index') }]}>
+    <AppLayout
+      title={t('Send email to members')}
+      breadcrumbs={[{ title: t('Communication') }, { title: t('Members'), href: route('members.index') }]}
+    >
       <PageTitle description={t('Select the members you want to send a message to')}>{t('Send email to members')}</PageTitle>
 
       <div className="mx-auto w-full max-w-2xl">
         <DataTable
           headerButton={
             <Button disabled={selectedMembers.length === 0} size="sm" onClick={handleNewEmail}>
-              {t('New email')}
+              {t('New :model', { model: t('Email') })}
             </Button>
           }
           onSelectedRowsChange={setSelectedMembers}

@@ -231,5 +231,15 @@
     "Generate check numbers": "Generar números de cheque",
     "Confirm checks and print": "Confirmar cheques e imprimir",
     "Confirm checks": "Confirmar cheques",
-    "Print checks": "Imprimir cheques"
+    "Print checks": "Imprimir cheques",
+    "Communication": "Comunicación",
+    "Members email": "Correo electrónico de miembros",
+    "Send email to members": "Enviar correo electrónico a miembros",
+    "Select the members you want to send a message to": "Selecciona los miembros a los que deseas enviar un mensaje",
+    "Send a new email to the members you selected": "Enviar un nuevo correo electrónico a los miembros seleccionados",
+    ":amount member selected|:amount members selected": ":amount miembro seleccionado|:amount miembros seleccionados",
+    "Send email": "Enviar correo electrónico",
+    "Subject": "Asunto",
+    "Message": "Mensaje",
+    "Attachments": "Adjuntos"
 }

@@ -22,7 +22,8 @@
             "droppable",
             "ssr",
             "tsconfig",
-            "subcopy"
+            "subcopy",
+            "uploader"
         ],
         "paths": [
             "app\/"
