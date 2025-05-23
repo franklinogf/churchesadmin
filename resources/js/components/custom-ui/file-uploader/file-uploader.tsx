@@ -106,7 +106,7 @@ export function FileUploader({
   initialFiles,
   allowImagePreview = false,
 }: FileUploaderProps) {
-  const { tChoice } = useTranslations();
+  const { tChoice, t } = useTranslations();
 
   const acceptedFileTypes = acceptedFiles?.flatMap((fileType) => fileTypeMap[fileType as FileTypeName] ?? fileType) ?? undefined;
 
@@ -127,13 +127,13 @@ export function FileUploader({
         allowMultiple={allowMultiple}
         maxFiles={maxFiles}
         name={name}
-        labelIdle={labelIdle ?? `Drag & Drop your files or <span class="filepond--label-action">Browse</span>`}
-        labelMaxFileSizeExceeded={'File is too large'}
-        labelMaxFileSize={'Maximum file size is {filesize}'}
-        labelMaxTotalFileSizeExceeded={'Maximum total size exceeded'}
-        labelMaxTotalFileSize={'Maximum total file size is {filesize}'}
-        labelFileTypeNotAllowed={'File type is not allowed'}
-        fileValidateTypeLabelExpectedTypes={tChoice('Expected type: {lastType}|Expected types: {allButLastType} or {lastType}', 1)}
+        labelIdle={labelIdle ?? tChoice('file_uploader.idle', allowMultiple ? maxFiles : 1)}
+        labelMaxFileSize={t('file_uploader.file_size.title')}
+        labelMaxFileSizeExceeded={t('file_uploader.file_size.exceeded')}
+        labelMaxTotalFileSize={t('file_uploader.file_size.total.title')}
+        labelMaxTotalFileSizeExceeded={t('file_uploader.file_size.total.exceeded')}
+        labelFileTypeNotAllowed={t('file_uploader.file_type.not_allowed')}
+        fileValidateTypeLabelExpectedTypes={tChoice('file_uploader.file_type.allowed', acceptedFileTypes?.length ?? 1)}
         fileValidateTypeLabelExpectedTypesMap={fileExpectedTypesMap}
         credits={false}
       />

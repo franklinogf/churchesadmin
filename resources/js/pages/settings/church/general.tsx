@@ -54,11 +54,12 @@ export default function Language({ church }: { church: Church }) {
             />
 
             <FileField
+              allowImagePreview
               layout="compact"
               initialFileUrls={church.logo}
               label="Logo"
               className="max-w-xs"
-              labelIdle="Drag & Drop"
+              labelIdle="Drop your logo here"
               acceptedFiles={['images']}
               maxFileSize="2MB"
               onChange={(files) => generalForm.setData('logo', files[0] ?? null)}
