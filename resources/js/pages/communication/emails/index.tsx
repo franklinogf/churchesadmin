@@ -8,10 +8,18 @@ import { DataTable } from '@/components/custom-ui/datatable/data-table';
 import { DatatableCell } from '@/components/custom-ui/datatable/DatatableCell';
 import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTableColumnHeader';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import type { SharedData } from '@/types';
 import { useEcho } from '@laravel/echo-react';
 import { type ColumnDef } from '@tanstack/react-table';
+import { UsersIcon } from 'lucide-react';
 import { useMemo, useState } from 'react';
+
+const recipientTypes = [
+  { label: 'Members', route: 'communication.emails.members' },
+  { label: 'Missionaries', route: 'communication.emails.missionaries' },
+];
 
 interface EmailsPageProps extends SharedData {
   emails: Email[]; // Adjust type as needed
@@ -97,8 +105,23 @@ export default function EmailsPage({ emails: initialEmails, auth: { user } }: Em
   return (
     <AppLayout title="Emails" breadcrumbs={[{ title: t('Communication') }, { title: t('Emails') }]}>
       <PageTitle description="Manage your emails here.">Emails</PageTitle>
-      <Link href={route('communication.emails.members')}>Email members</Link>
-      <Link href={route('communication.emails.missionaries')}>Email Missionaries</Link>
+      <Card className="mx-auto mb-2 max-w-lg">
+        <CardHeader>
+          <CardTitle>Send a message</CardTitle>
+          <CardDescription>Select a group below to compose a new message.</CardDescription>
+        </CardHeader>
+
+        <CardContent className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
+          {recipientTypes.map(({ label, route: url }) => (
+            <Button key={label} variant="outline" className="capitalize" asChild>
+              <Link href={route(url)}>
+                <UsersIcon className="size-4" />
+                {label}
+              </Link>
+            </Button>
+          ))}
+        </CardContent>
+      </Card>
 
       <DataTable data={emails} columns={columns} visibilityState={{ attachmentsCount: false }} />
     </AppLayout>

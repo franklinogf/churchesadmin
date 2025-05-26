@@ -14,10 +14,8 @@ Route::prefix('communication')->name('communication.')->group(function (): void 
         Route::get('create', [EmailController::class, 'create'])->name('create');
         Route::post('store', [EmailController::class, 'store'])->name('store');
 
-        Route::get('members-list', EmailListMemberController::class)->name('members');
-        Route::get('missionaries-list', EmailListMissionaryController::class)->name('missionaries');
-        // Route::get('members/create', [EmailMemberController::class, 'create'])->name('members.create');
-        // Route::post('members', [EmailMemberController::class, 'store'])->name('members.store');
+        Route::get('members', EmailListMemberController::class)->name('members');
+        Route::get('missionaries', EmailListMissionaryController::class)->name('missionaries');
     });
 
 });
