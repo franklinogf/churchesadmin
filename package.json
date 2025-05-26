@@ -14,13 +14,11 @@
     },
     "devDependencies": {
         "@eslint/js": "^9.19.0",
-        "@laravel/echo-react": "^2.1.4",
         "@types/node": "^22.13.5",
         "eslint": "^9.17.0",
         "eslint-config-prettier": "^10.0.1",
         "eslint-plugin-react": "^7.37.3",
         "eslint-plugin-react-hooks": "^5.2.0",
-        "laravel-echo": "^2.1.4",
         "prettier": "^3.4.2",
         "prettier-plugin-organize-imports": "^4.1.0",
         "prettier-plugin-tailwindcss": "^0.6.11",
@@ -28,6 +26,8 @@
         "typescript-eslint": "^8.23.0"
     },
     "dependencies": {
+        "@laravel/echo-react": "^2.1.4",
+        "laravel-echo": "^2.1.4",
         "@dnd-kit/dom": "^0.1.12",
         "@dnd-kit/helpers": "^0.1.12",
         "@dnd-kit/react": "^0.1.12",
