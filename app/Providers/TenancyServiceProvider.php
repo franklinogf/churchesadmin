@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route as RouteFacade;
 use Illuminate\Support\ServiceProvider;
 use Stancl\JobPipeline\JobPipeline;
+use Stancl\Tenancy\Bootstrappers\BroadcastChannelPrefixBootstrapper;
 use Stancl\Tenancy\Controllers\TenantAssetController;
 use Stancl\Tenancy\Events;
 use Stancl\Tenancy\Jobs;
@@ -154,6 +155,7 @@ final class TenancyServiceProvider extends ServiceProvider
         $this->overrideUrlInTenantContext();
 
         TenantAssetController::$headers = ['cache-control' => 'public, max-age=3600'];
+        BroadcastChannelPrefixBootstrapper::reverb();
 
         // // Include soft deleted resources in synced resource queries.
         // ResourceSyncing\Listeners\UpdateOrCreateSyncedResource::$scopeGetModelQuery = function (Builder $query) {

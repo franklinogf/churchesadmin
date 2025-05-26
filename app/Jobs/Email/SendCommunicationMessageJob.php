@@ -41,6 +41,7 @@ final class SendCommunicationMessageJob implements ShouldQueue
             'error_message' => null,
             'sent_at' => now(),
         ]);
+
     }
 
     /**

@@ -9,14 +9,31 @@ import { DatatableCell } from '@/components/custom-ui/datatable/DatatableCell';
 import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTableColumnHeader';
 import { Badge } from '@/components/ui/badge';
 import type { SharedData } from '@/types';
+import { useEcho } from '@laravel/echo-react';
 import { type ColumnDef } from '@tanstack/react-table';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 
 interface EmailsPageProps extends SharedData {
   emails: Email[]; // Adjust type as needed
 }
-export default function EmailsPage({ emails, auth: { user } }: EmailsPageProps) {
+export default function EmailsPage({ emails: initialEmails, auth: { user } }: EmailsPageProps) {
   const { t } = useTranslations();
+  const [emails, setEmails] = useState<Email[]>(initialEmails);
+  useEcho<{ email: Email }>('test-church.emails', 'EmailStatusUpdatedEvent', (e) => {
+    setEmails((prevEmails) => {
+      const updatedEmails = prevEmails.map((email) => {
+        if (email.id === e.email.id) {
+          return { ...email, ...e.email };
+        }
+        return email;
+      });
+      // If the email is not found, add it in front of the list
+      if (!updatedEmails.some((email) => email.id === e.email.id)) {
+        updatedEmails.unshift(e.email);
+      }
+      return updatedEmails;
+    });
+  });
   const columns: ColumnDef<Email>[] = useMemo(
     () => [
       {
