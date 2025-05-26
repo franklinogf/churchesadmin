@@ -3,6 +3,21 @@
 declare(strict_types=1);
 
 return [
+    'email_status' => [
+        'pending' => 'Pendiente',
+        'sent' => 'Enviado',
+        'failed' => 'Fallido',
+    ],
+    'model_morph_name' => [
+        'member' => 'Miembro',
+        'missionary' => 'Misionero',
+        'user' => 'Usuario',
+        'church' => 'Iglesia',
+        'church_wallet' => 'Billetera',
+        'offering_type' => 'Tipo de Ofrenda',
+        'check_layout' => 'Diseño de Cheque',
+        'email' => 'Email',
+    ],
     'wallet_name' => [
         'primary' => 'Principal',
     ],

@@ -13,7 +13,7 @@ return [
         'missionary' => 'Missionary',
         'user' => 'User',
         'church' => 'Church',
-        'church_wallet' => 'Church Wallet',
+        'church_wallet' => 'Wallet',
         'offering_type' => 'Offering Type',
         'check_layout' => 'Check Layout',
         'email' => 'Email',
