@@ -19,11 +19,10 @@ final class ConfirmMultipleCheckController extends Controller
      */
     public function __invoke(ConfirmMultipleCheckRequest $request, ConfirmCheckAction $action): RedirectResponse
     {
-
         /**
          * @var string[] $checkIds
          */
-        $checkIds = $request->collect('checks')->flatten()->toArray();
+        $checkIds = $request->array('checks');
 
         try {
             DB::transaction(function () use ($checkIds, $action): void {

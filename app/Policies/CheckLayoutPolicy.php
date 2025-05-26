@@ -32,7 +32,7 @@ final class CheckLayoutPolicy
             return Response::allow();
         }
 
-        return Response::deny(__('permission.view', ['label' => __('Check layout')]));
+        return Response::deny(__('permission.view', ['label' => __('Check layouts')]));
     }
 
     /**
@@ -44,7 +44,7 @@ final class CheckLayoutPolicy
             return Response::allow();
         }
 
-        return Response::deny(__('permission.create', ['label' => __('Check layout')]));
+        return Response::deny(__('permission.create', ['label' => __('Check layouts')]));
     }
 
     /**
@@ -56,7 +56,7 @@ final class CheckLayoutPolicy
             return Response::allow();
         }
 
-        return Response::deny(__('permission.update', ['label' => __('Check layout')]));
+        return Response::deny(__('permission.update', ['label' => __('Check layouts')]));
     }
 
     /**
@@ -68,6 +68,6 @@ final class CheckLayoutPolicy
             return Response::allow();
         }
 
-        return Response::deny(__('permission.delete', ['label' => __('Check layout')]));
+        return Response::deny(__('permission.delete', ['label' => __('Check layouts')]));
     }
 }

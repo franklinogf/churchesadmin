@@ -52,6 +52,13 @@ export enum UserPermission {
   CHECKS_DELETE = 'checks.delete',
   CHECKS_CONFIRM = 'checks.confirm',
   CHECKS_PRINT = 'checks.print',
+  EMAILS_MANAGE = 'emails.manage',
+  EMAILS_CREATE = 'emails.create',
+  EMAILS_UPDATE = 'emails.update',
+  EMAILS_DELETE = 'emails.delete',
+  EMAILS_SEND = 'emails.send',
+  EMAILS_SEND_TO_MEMBERS = 'emails.send_to.members',
+  EMAILS_SEND_TO_MISSIONARIES = 'emails.send_to.missionaries',
 }
 
 export enum UserRole {

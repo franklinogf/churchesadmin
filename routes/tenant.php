@@ -16,6 +16,7 @@ use App\Http\Controllers\OfferingController;
 use App\Http\Controllers\OfferingTypeController;
 use App\Http\Controllers\Pdf\CheckPdfController;
 use App\Http\Controllers\Pdf\ChecksPdfController;
+use App\Http\Controllers\SessionController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WalletCheckLayoutController;
@@ -52,6 +53,9 @@ Route::middleware([
     Route::redirect('/', 'dashboard')->name('home');
 
     Route::middleware('auth:tenant')->group(function (): void {
+        // This route is used to set session variables for the application
+        Route::post('session', SessionController::class)->name('session');
+
         Route::get('dashboard', fn () => inertia('dashboard'))->name('dashboard');
 
         Route::resource('users', UserController::class)
@@ -116,9 +120,11 @@ Route::middleware([
             Route::resource('expenseTypes', ExpenseTypeController::class)
                 ->except(['show', 'create', 'edit']);
         });
+
+        require __DIR__.'/tenant/settings.php';
+        require __DIR__.'/tenant/communication.php';
     });
 
-    require __DIR__.'/settings.php';
-    require __DIR__.'/auth.php';
+    require __DIR__.'/tenant/auth.php';
 
 });

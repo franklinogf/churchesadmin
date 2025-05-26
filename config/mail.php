@@ -74,7 +74,7 @@ return [
 
         'log' => [
             'transport' => 'log',
-            'channel' => env('MAIL_LOG_CHANNEL'),
+            'channel' => env('MAIL_LOG_CHANNEL', 'emails'),
         ],
 
         'array' => [
@@ -84,6 +84,7 @@ return [
         'failover' => [
             'transport' => 'failover',
             'mailers' => [
+                'resend',
                 'smtp',
                 'log',
             ],

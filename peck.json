@@ -1,0 +1,32 @@
+{
+    "preset": "laravel",
+    "ignore": {
+        "words": [
+            "php",
+            "dompdf",
+            "filesystems",
+            "eslint",
+            "datatable",
+            "favicon",
+            "js",
+            "textarea",
+            "dropdown",
+            "fallbacks",
+            "combobox",
+            "nav",
+            "sonner",
+            "tooltip",
+            "mutliselect",
+            "utils",
+            "draggable",
+            "droppable",
+            "ssr",
+            "tsconfig",
+            "subcopy",
+            "uploader"
+        ],
+        "paths": [
+            "app\/"
+        ]
+    }
+}

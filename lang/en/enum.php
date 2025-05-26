@@ -3,6 +3,21 @@
 declare(strict_types=1);
 
 return [
+    'email_status' => [
+        'pending' => 'Pending',
+        'sent' => 'Sent',
+        'failed' => 'Failed',
+    ],
+    'model_morph_name' => [
+        'member' => 'Member',
+        'missionary' => 'Missionary',
+        'user' => 'User',
+        'church' => 'Church',
+        'church_wallet' => 'Wallet',
+        'offering_type' => 'Offering Type',
+        'check_layout' => 'Check Layout',
+        'email' => 'Email',
+    ],
     'wallet_name' => [
         'primary' => 'Primary',
     ],
@@ -114,5 +129,12 @@ return [
         'checks.delete' => 'Delete Check',
         'checks.confirm' => 'Confirm Check',
         'checks.print' => 'Print Check',
+        'emails.manage' => 'Manage Emails',
+        'emails.create' => 'Create Email',
+        'emails.update' => 'Update Email',
+        'emails.delete' => 'Delete Email',
+        'emails.send' => 'Send Email',
+        'emails.send_to.members' => 'Send Email to Members',
+        'emails.send_to.missionaries' => 'Send Email to Missionaries',
     ],
 ];

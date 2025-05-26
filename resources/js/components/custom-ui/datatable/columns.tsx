@@ -1,33 +1,22 @@
+import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Label } from '@/components/ui/label';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { useTranslations } from '@/hooks/use-translations';
+import { cn } from '@/lib/utils';
 import type { ColumnDef, RowData } from '@tanstack/react-table';
+import { CheckIcon, CheckSquareIcon, SquareIcon } from 'lucide-react';
 
 export const selectionHeader: ColumnDef<RowData> = {
   id: 'select',
   header: function HeaderComponent({ table }) {
-    const { t } = useTranslations();
     return (
-      <div className="flex flex-col gap-y-2">
-        <Label className="flex items-center gap-x-1.5">
-          <Checkbox
-            className="border-foreground/40 bg-primary-foreground data-[state=checked]:bg-primary-foreground data-[state=checked]:text-brand"
-            checked={table.getIsAllRowsSelected() || (table.getIsSomeRowsSelected() && 'indeterminate')}
-            onCheckedChange={(value) => table.toggleAllRowsSelected(!!value)}
-            aria-label="Select all"
-          />
-          <span>{t('datatable.select.all')}</span>
-        </Label>
-        <Label className="flex items-center gap-x-1.5">
-          <Checkbox
-            className="border-foreground/40 bg-primary-foreground data-[state=checked]:bg-primary-foreground data-[state=checked]:text-brand"
-            checked={table.getIsAllPageRowsSelected() || (table.getIsSomePageRowsSelected() && 'indeterminate')}
-            onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-            aria-label="Select all in page"
-          />
-          <span>{t('datatable.select.all_pages')}</span>
-        </Label>
-      </div>
+      <TableSelectionToggle
+        amountOfPages={table.getPageCount()}
+        allPageSelected={table.getIsAllRowsSelected()}
+        onSelectAllPages={() => table.toggleAllRowsSelected(!table.getIsAllRowsSelected())}
+        currentPageSelected={table.getIsAllPageRowsSelected()}
+        onSelectCurrentPage={() => table.toggleAllRowsSelected(!table.getIsAllPageRowsSelected())}
+      />
     );
   },
 
@@ -41,4 +30,46 @@ export const selectionHeader: ColumnDef<RowData> = {
   ),
   enableSorting: false,
   enableHiding: false,
+  enableColumnFilter: false,
 };
+
+export function TableSelectionToggle({
+  allPageSelected,
+  currentPageSelected,
+  onSelectCurrentPage,
+  onSelectAllPages,
+  amountOfPages,
+}: {
+  allPageSelected: boolean;
+  currentPageSelected: boolean;
+  onSelectCurrentPage: () => void;
+  onSelectAllPages: () => void;
+  amountOfPages: number;
+}) {
+  const { t } = useTranslations();
+  if (amountOfPages <= 1) {
+    return <Checkbox className="border-foreground/40" checked={allPageSelected} onCheckedChange={onSelectCurrentPage} aria-label="Select all rows" />;
+  }
+  return (
+    <div className="flex items-center gap-2">
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost" size="icon" className={cn('-ml-1 size-6', allPageSelected && 'bg-accent text-accent-foreground')}>
+            {allPageSelected ? <CheckSquareIcon className="size-4" /> : <SquareIcon className="size-4" />}
+            <span className="sr-only">{t('datatable.select.title')}</span>
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent>
+          <DropdownMenuItem onClick={onSelectCurrentPage}>
+            {currentPageSelected && <CheckIcon className="size-4" />}
+            {t('datatable.select.current_page')}
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={onSelectAllPages}>
+            {allPageSelected && <CheckIcon className="size-4" />}
+            {t('datatable.select.all_pages')}
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
+  );
+}

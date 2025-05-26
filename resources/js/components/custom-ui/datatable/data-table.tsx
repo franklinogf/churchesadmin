@@ -44,7 +44,7 @@ interface DataTableProps<TData, TValue> {
   headerButton?: React.ReactNode;
   visibilityState?: Record<keyof TData, boolean> | VisibilityState;
   sortingState?: { id: keyof TData; desc: boolean }[];
-  onSelectedRowsChange?: (selectedRows: Record<string, boolean>) => void;
+  onSelectedRowsChange?: (selectedRows: string[]) => void;
 }
 
 export function DataTable<TData, TValue>({
@@ -57,7 +57,6 @@ export function DataTable<TData, TValue>({
   headerButton,
   visibilityState = {},
   sortingState = [],
-
   onSelectedRowsChange,
 }: DataTableProps<TData, TValue>) {
   const { t } = useTranslations();
@@ -98,12 +97,9 @@ export function DataTable<TData, TValue>({
 
   useEffect(() => {
     if (!onSelectedRowsChange) return;
-    onSelectedRowsChange(rowSelection);
+    onSelectedRowsChange(Object.keys(rowSelection));
   }, [rowSelection, onSelectedRowsChange]);
 
-  function translateFunction(label: string): string {
-    return t(label as TranslationKey);
-  }
   return (
     <div>
       <section className="flex items-center justify-between py-2">
@@ -129,7 +125,7 @@ export function DataTable<TData, TValue>({
         </div>
 
         <div className="ml-auto">
-          <VisibilityDropdownMenu label={t('datatable.visibility_button')} itemLabelFunction={translateFunction} columns={enabledHidingColumns} />
+          <VisibilityDropdownMenu label={t('datatable.visibility_button')} columns={enabledHidingColumns} />
         </div>
       </section>
       <section className="rounded-md border">
@@ -207,7 +203,6 @@ function getColumnLabel<TData>(column: Column<TData, unknown>): string {
 function VisibilityDropdownMenu<TData>({
   columns,
   label,
-  itemLabelFunction: labelFunction,
 }: {
   columns: Column<TData, unknown>[];
   label: string;
@@ -226,7 +221,7 @@ function VisibilityDropdownMenu<TData>({
         {columns.map((column) => {
           return (
             <DropdownMenuCheckboxItem key={column.id} checked={column.getIsVisible()} onCheckedChange={(value) => column.toggleVisibility(!!value)}>
-              {labelFunction ? labelFunction(getColumnLabel(column)) : getColumnLabel(column)}
+              {getColumnLabel(column)}
             </DropdownMenuCheckboxItem>
           );
         })}
@@ -255,7 +250,7 @@ function ColumnSelectFilter<TData, TValue>({ column }: { column: Column<TData, T
       </DropdownMenuTrigger>
       <DropdownMenuContent>
         <DropdownMenuRadioGroup onValueChange={(value) => column.setFilterValue(value === 'all' ? '' : value)} value={columnFilterValue?.toString()}>
-          <DropdownMenuRadioItem value="all">{t('datatable.select.all')}</DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value="all">{t('datatable.unselect_filter')}</DropdownMenuRadioItem>
           {sortedUniqueValues.map((value) => (
             <DropdownMenuRadioItem key={value} value={value}>
               {t(`${translationPrefix || ''}${value}` as TranslationKey)}

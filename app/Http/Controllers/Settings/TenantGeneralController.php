@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Settings;
 
+use App\Enums\MediaCollectionName;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Tenant\UpdateGeneralRequest;
 use App\Http\Resources\ChurchResource;
@@ -21,6 +22,9 @@ final class TenantGeneralController extends Controller
     {
         $church = Church::currentOrFail();
 
+        // dd($church->getFirstMedia(MediaCollectionName::LOGO->value)
+        //     ->getPathRelativeToRoot());
+
         return Inertia::render('settings/church/general', [
             'church' => new ChurchResource($church),
         ]);
@@ -28,8 +32,12 @@ final class TenantGeneralController extends Controller
 
     public function update(UpdateGeneralRequest $request): RedirectResponse
     {
+        $church = Church::currentOrFail();
+        $church->update($request->validated());
 
-        Church::currentOrFail()->update($request->validated());
+        if ($request->hasFile('logo')) {
+            $church->addMediaFromRequest('logo')->toMediaCollection(MediaCollectionName::LOGO->value);
+        }
 
         return to_route('church.general.edit');
     }

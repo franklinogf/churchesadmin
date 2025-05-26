@@ -34,5 +34,11 @@ return [
             'number_exists' => 'El siguiente número de cheque ya existe: :numbers|Los siguientes números de cheque ya existen: :numbers',
             'confirmed' => 'Cheques confirmados correctamente.',
         ],
+        'email' => [
+            'invalid_recipient_type' => 'Tipo de destinatario inválido seleccionado.',
+            'no_recipients_selected' => 'No se seleccionaron destinatarios para el correo electrónico.',
+            'unknown_error' => 'Ocurrió un error desconocido al enviar el correo electrónico. Por favor, inténtelo de nuevo más tarde.',
+            'will_be_sent' => 'El correo electrónico se enviará pronto.',
+        ],
     ],
 ];

@@ -6,7 +6,7 @@ import { UserPermission } from '@/enums/user';
 import { useTranslations } from '@/hooks/use-translations';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BanknoteIcon, CogIcon, CoinsIcon, HandCoinsIcon, LayoutGridIcon, ListIcon, Users2Icon, WalletCardsIcon } from 'lucide-react';
+import { BanknoteIcon, CogIcon, CoinsIcon, HandCoinsIcon, LayoutGridIcon, ListIcon, MailsIcon, Users2Icon, WalletCardsIcon } from 'lucide-react';
 import { useMemo } from 'react';
 import AppLogo from './app-logo';
 
@@ -91,6 +91,17 @@ export function AppSidebar() {
             title: t('Expense types'),
             href: route('codes.expenseTypes.index'),
             icon: ListIcon,
+          },
+        ],
+      },
+      {
+        heading: t('Communication'),
+        items: [
+          {
+            title: t('Emails'),
+            href: route('communication.emails.index'),
+            icon: MailsIcon,
+            permissionNeeded: UserPermission.EMAILS_MANAGE,
           },
         ],
       },

@@ -25,6 +25,7 @@ final class UpdateGeneralRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'min:3', 'max:255'],
+            'logo' => ['nullable', 'image', 'mimes:jpeg,png,svg', 'max:2048'], // 2MB max
         ];
     }
 }

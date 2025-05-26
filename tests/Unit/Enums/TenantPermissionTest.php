@@ -61,6 +61,13 @@ it('has needed enums', function (): void {
         'CHECKS_DELETE',
         'CHECKS_CONFIRM',
         'CHECKS_PRINT',
+        'EMAILS_MANAGE',
+        'EMAILS_CREATE',
+        'EMAILS_UPDATE',
+        'EMAILS_DELETE',
+        'EMAILS_SEND',
+        'EMAILS_SEND_TO_MEMBERS',
+        'EMAILS_SEND_TO_MISSIONARIES',
 
     ]);
 

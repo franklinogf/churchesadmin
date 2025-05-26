@@ -3,6 +3,21 @@
 declare(strict_types=1);
 
 return [
+    'email_status' => [
+        'pending' => 'Pendiente',
+        'sent' => 'Enviado',
+        'failed' => 'Fallido',
+    ],
+    'model_morph_name' => [
+        'member' => 'Miembro',
+        'missionary' => 'Misionero',
+        'user' => 'Usuario',
+        'church' => 'Iglesia',
+        'church_wallet' => 'Billetera',
+        'offering_type' => 'Tipo de Ofrenda',
+        'check_layout' => 'Diseño de Cheque',
+        'email' => 'Email',
+    ],
     'wallet_name' => [
         'primary' => 'Principal',
     ],
@@ -114,5 +129,12 @@ return [
         'checks.delete' => 'Eliminar Cheque',
         'checks.confirm' => 'Confirmar Cheque',
         'checks.print' => 'Imprimir Cheque',
+        'emails.manage' => 'Gestionar Correos Electrónicos',
+        'emails.create' => 'Crear Correo Electrónico',
+        'emails.update' => 'Actualizar Correo Electrónico',
+        'emails.delete' => 'Eliminar Correo Electrónico',
+        'emails.send' => 'Enviar Correo Electrónico',
+        'emails.send_to.members' => 'Enviar Correo Electrónico a Miembros',
+        'emails.send_to.missionaries' => 'Enviar Correo Electrónico a Misioneros',
     ],
 ];

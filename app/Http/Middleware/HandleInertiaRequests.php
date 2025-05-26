@@ -52,7 +52,7 @@ final class HandleInertiaRequests extends Middleware
             ...$parentShare,
             'auth' => [
                 'user' => $request->user()
-                    ? AuthUserResource::make($request->user())
+                    ? new AuthUserResource($request->user())
                     : null,
             ],
             'ziggy' => fn (): array => [

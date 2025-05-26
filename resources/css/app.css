@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 
 @plugin 'tailwindcss-animate';
+@plugin '@tailwindcss/typography';
 
 @source '../views';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
@@ -200,5 +201,19 @@
 
   ::-webkit-scrollbar-track {
     @apply bg-transparent;
+  }
+  /* filepond */
+  /* .filepond--item {
+    @apply w-[calc(50%-0.5em)];
+  } */
+
+  .filepond--panel-root {
+    @apply bg-muted! dark:bg-secondary! shadow! dark:shadow-2xl!;
+  }
+  .filepond--drop-label {
+    @apply text-muted-foreground! dark:text-secondary-foreground!;
+  }
+  .filepond--label-action:hover {
+    @apply decoration-primary!;
   }
 }

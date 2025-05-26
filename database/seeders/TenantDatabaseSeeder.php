@@ -20,7 +20,7 @@ use Illuminate\Database\Seeder;
 final class TenantDatabaseSeeder extends Seeder
 {
     /**
-     * Seed the tenants's database.
+     * Seed the tenants database.
      */
     public function run(): void
     {

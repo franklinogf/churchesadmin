@@ -8,10 +8,13 @@ use App\Casts\AsUcWords;
 use App\Enums\Gender;
 use App\Enums\OfferingFrequency;
 use DateTimeInterface;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\Relations\MorphPivot;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -31,6 +34,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read DateTimeInterface $updated_at
  * @property-read Address|null $address
  * @property-read Offering[] $offerings
+ * @property-read Email[] $emails
  */
 final class Missionary extends Model
 {
@@ -55,6 +59,29 @@ final class Missionary extends Model
     public function offerings(): MorphMany
     {
         return $this->morphMany(Offering::class, 'offering_type');
+    }
+
+    /**
+     * The emails that has been sent to this missionary.
+     *
+     * @return MorphToMany<Email, $this, MorphPivot, 'message'>
+     */
+    public function emails(): MorphToMany
+    {
+        return $this->morphToMany(Email::class, 'recipient', 'emailables')
+            ->as('message')
+            ->withPivot('status', 'sent_at', 'error_message')
+            ->withTimestamps();
+    }
+
+    /**
+     * Scope a query to only include missionaries with an email.
+     *
+     * @param  Builder<$this>  $query
+     */
+    protected function scopeWithEmail(Builder $query): void
+    {
+        $query->whereNotNull('email');
     }
 
     /**

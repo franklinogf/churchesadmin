@@ -57,3 +57,23 @@ export enum CheckLayoutFieldName {
   DATE = 'date',
   MEMO = 'memo',
 }
+
+export enum SessionName {
+  EMAIL_RECIPIENTS = 'email_recipients',
+}
+
+export enum ModelMorphName {
+  MEMBER = 'member',
+  MISSIONARY = 'missionary',
+  OFFERING = 'offering',
+  EXPENSE = 'expense',
+  CHECK = 'check',
+  TRANSACTION = 'transaction',
+  WALLET = 'wallet',
+}
+
+export enum EmailStatus {
+  SENT = 'sent',
+  FAILED = 'failed',
+  PENDING = 'pending',
+}

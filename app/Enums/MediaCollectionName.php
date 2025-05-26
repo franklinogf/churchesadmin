@@ -8,4 +8,5 @@ enum MediaCollectionName: string
 {
     case LOGO = 'logo';
     case DEFAULT = 'default';
+    case ATTACHMENT = 'attachment';
 }

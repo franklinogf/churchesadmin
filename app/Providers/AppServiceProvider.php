@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Enums\ModelMorphName;
 use App\Models\CheckLayout;
 use App\Models\Church;
 use App\Models\ChurchWallet;
+use App\Models\Email;
 use App\Models\Member;
 use App\Models\Missionary;
 use App\Models\OfferingType;
@@ -70,13 +72,14 @@ final class AppServiceProvider extends ServiceProvider
         Model::shouldBeStrict(! app()->isProduction());
         Model::automaticallyEagerLoadRelationships();
         Relation::enforceMorphMap([
-            'member' => Member::class,
-            'missionary' => Missionary::class,
-            'user' => TenantUser::class,
-            'church' => Church::class,
-            'church_wallet' => ChurchWallet::class,
-            'offering_type' => OfferingType::class,
-            'check_layout' => CheckLayout::class,
+            ModelMorphName::MEMBER->value => Member::class,
+            ModelMorphName::MISSIONARY->value => Missionary::class,
+            ModelMorphName::USER->value => TenantUser::class,
+            ModelMorphName::CHURCH->value => Church::class,
+            ModelMorphName::CHURCH_WALLET->value => ChurchWallet::class,
+            ModelMorphName::OFFERING_TYPE->value => OfferingType::class,
+            ModelMorphName::CHECK_LAYOUT->value => CheckLayout::class,
+            ModelMorphName::EMAIL->value => Email::class,
         ]);
     }
 

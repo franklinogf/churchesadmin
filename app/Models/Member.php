@@ -12,6 +12,8 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\Relations\MorphPivot;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Tags\HasTags;
 
@@ -31,6 +33,7 @@ use Spatie\Tags\HasTags;
  * @property-read DateTimeInterface $updated_at
  * @property-read Address|null $address
  * @property-read Collection<int,Tag> $tags
+ * @property-read Email[] $emails
  */
 final class Member extends Model
 {
@@ -55,6 +58,19 @@ final class Member extends Model
     public function address(): MorphOne
     {
         return $this->morphOne(Address::class, 'owner');
+    }
+
+    /**
+     * The emails that has been sent to this member.
+     *
+     * @return MorphToMany<Email, $this, MorphPivot, 'message'>
+     */
+    public function emails(): MorphToMany
+    {
+        return $this->morphToMany(Email::class, 'recipient', 'emailables')
+            ->as('message')
+            ->withPivot('status', 'sent_at', 'error_message')
+            ->withTimestamps();
     }
 
     /**
