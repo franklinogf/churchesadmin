@@ -34,5 +34,11 @@ return [
             'number_exists' => 'The following check number already exist: :numbers|The following check numbers already exist: :numbers',
             'confirmed' => 'Checks confirmed successfully.',
         ],
+        'email' => [
+            'invalid_recipient_type' => 'Invalid recipient type selected.',
+            'no_recipients_selected' => 'No recipients selected for the email.',
+            'unknown_error' => 'An unknown error occurred while sending the email. Please try again later.',
+            'will_be_sent' => 'The email will be sent shortly',
+        ],
     ],
 ];

@@ -21,6 +21,7 @@ final class ChurchResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'name' => $this->name,
             'locale' => $this->locale,
             'createdAt' => $this->created_at->format('Y-m-d H:i:s'),

@@ -1,4 +1,5 @@
 export interface Church {
+  id: string;
   name: string;
   locale: string;
   active: boolean;

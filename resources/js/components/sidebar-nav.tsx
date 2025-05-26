@@ -11,14 +11,14 @@ export function SidebarNav({ label, items = [] }: { label?: string; items: NavIt
     },
   } = usePage<SharedData>();
   const { can: userCan } = useUser();
+  const filteredItems = items.filter((item) => (item.permissionNeeded !== undefined ? userCan(item.permissionNeeded) : true));
+  if (filteredItems.length === 0) return null;
   return (
     <SidebarGroup className="px-2 py-0">
       {label && <SidebarGroupLabel>{label}</SidebarGroupLabel>}
       <SidebarGroupContent>
         <SidebarMenu>
-          {items.map((item) => {
-            if (item.permissionNeeded !== undefined && !userCan(item.permissionNeeded)) return null;
-
+          {filteredItems.map((item) => {
             return (
               <SidebarMenuItem key={item.title}>
                 <SidebarMenuButton asChild isActive={location.includes(item.href)} tooltip={{ children: item.title }}>

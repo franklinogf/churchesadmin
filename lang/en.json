@@ -251,5 +251,7 @@
     "Recipients type": "Recipients type",
     "Select the missionaries you want to send a message to": "Select the missionaries you want to send a message to",
     "Send email to missionaries": "Send email to missionaries",
-    "Only missionaries with an email address will be shown in the list.": "Only missionaries with an email address will be shown in the list."
+    "Only missionaries with an email address will be shown in the list.": "Only missionaries with an email address will be shown in the list.",
+    "Send a message": "Send a message",
+    "Select a group below to compose a new message.": "Select a group below to compose a new message."
 }

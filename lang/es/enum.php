@@ -129,5 +129,12 @@ return [
         'checks.delete' => 'Eliminar Cheque',
         'checks.confirm' => 'Confirmar Cheque',
         'checks.print' => 'Imprimir Cheque',
+        'emails.manage' => 'Gestionar Correos Electrónicos',
+        'emails.create' => 'Crear Correo Electrónico',
+        'emails.update' => 'Actualizar Correo Electrónico',
+        'emails.delete' => 'Eliminar Correo Electrónico',
+        'emails.send' => 'Enviar Correo Electrónico',
+        'emails.send_to.members' => 'Enviar Correo Electrónico a Miembros',
+        'emails.send_to.missionaries' => 'Enviar Correo Electrónico a Misioneros',
     ],
 ];

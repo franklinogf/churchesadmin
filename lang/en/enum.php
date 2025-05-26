@@ -129,5 +129,12 @@ return [
         'checks.delete' => 'Delete Check',
         'checks.confirm' => 'Confirm Check',
         'checks.print' => 'Print Check',
+        'emails.manage' => 'Manage Emails',
+        'emails.create' => 'Create Email',
+        'emails.update' => 'Update Email',
+        'emails.delete' => 'Delete Email',
+        'emails.send' => 'Send Email',
+        'emails.send_to.members' => 'Send Email to Members',
+        'emails.send_to.missionaries' => 'Send Email to Missionaries',
     ],
 ];

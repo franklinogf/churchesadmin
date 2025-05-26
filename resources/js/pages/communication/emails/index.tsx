@@ -10,6 +10,8 @@ import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTabl
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { UserPermission } from '@/enums/user';
+import { useUser } from '@/hooks/use-user';
 import type { SharedData } from '@/types';
 import { useEcho } from '@laravel/echo-react';
 import { type ColumnDef } from '@tanstack/react-table';
@@ -17,17 +19,19 @@ import { UsersIcon } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
 const recipientTypes = [
-  { label: 'Members', route: 'communication.emails.members' },
-  { label: 'Missionaries', route: 'communication.emails.missionaries' },
+  { label: 'Members', route: 'communication.emails.members', permissionNeeded: UserPermission.EMAILS_SEND_TO_MEMBERS },
+  { label: 'Missionaries', route: 'communication.emails.missionaries', permissionNeeded: UserPermission.EMAILS_SEND_TO_MISSIONARIES },
 ];
 
 interface EmailsPageProps extends SharedData {
   emails: Email[]; // Adjust type as needed
 }
-export default function EmailsPage({ emails: initialEmails, auth: { user } }: EmailsPageProps) {
+export default function EmailsPage({ emails: initialEmails, auth: { user }, church }: EmailsPageProps) {
   const { t } = useTranslations();
   const [emails, setEmails] = useState<Email[]>(initialEmails);
-  useEcho<{ email: Email }>('test-church.emails', 'EmailStatusUpdatedEvent', (e) => {
+  const { can: userCan } = useUser();
+
+  useEcho<{ email: Email }>(`${church?.id}.emails`, 'EmailStatusUpdatedEvent', (e) => {
     setEmails((prevEmails) => {
       const updatedEmails = prevEmails.map((email) => {
         if (email.id === e.email.id) {
@@ -42,6 +46,7 @@ export default function EmailsPage({ emails: initialEmails, auth: { user } }: Em
       return updatedEmails;
     });
   });
+
   const columns: ColumnDef<Email>[] = useMemo(
     () => [
       {
@@ -102,18 +107,23 @@ export default function EmailsPage({ emails: initialEmails, auth: { user } }: Em
 
     [t, user.id],
   );
+
+  const filteredRecipientTypes = recipientTypes.filter((type) => {
+    return !type.permissionNeeded || userCan(type.permissionNeeded);
+  });
+
   return (
-    <AppLayout title="Emails" breadcrumbs={[{ title: t('Communication') }, { title: t('Emails') }]}>
-      <PageTitle description="Manage your emails here.">Emails</PageTitle>
+    <AppLayout title={t('Emails')} breadcrumbs={[{ title: t('Communication') }, { title: t('Emails') }]}>
+      <PageTitle description="Manage your emails here.">{t('Emails')}</PageTitle>
       <Card className="mx-auto mb-2 max-w-lg">
         <CardHeader>
-          <CardTitle>Send a message</CardTitle>
-          <CardDescription>Select a group below to compose a new message.</CardDescription>
+          <CardTitle>{t('Send a message')}</CardTitle>
+          <CardDescription>{t('Select a group below to compose a new message.')}</CardDescription>
         </CardHeader>
 
         <CardContent className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
-          {recipientTypes.map(({ label, route: url }) => (
-            <Button key={label} variant="outline" className="capitalize" asChild>
+          {filteredRecipientTypes.map(({ label, route: url }) => (
+            <Button key={label} variant="outline" asChild>
               <Link href={route(url)}>
                 <UsersIcon className="size-4" />
                 {label}

@@ -65,6 +65,13 @@ enum TenantPermission: string
     case CHECKS_DELETE = 'checks.delete';
     case CHECKS_CONFIRM = 'checks.confirm';
     case CHECKS_PRINT = 'checks.print';
+    case EMAILS_MANAGE = 'emails.manage';
+    case EMAILS_CREATE = 'emails.create';
+    case EMAILS_UPDATE = 'emails.update';
+    case EMAILS_DELETE = 'emails.delete';
+    case EMAILS_SEND = 'emails.send';
+    case EMAILS_SEND_TO_MEMBERS = 'emails.send_to.members';
+    case EMAILS_SEND_TO_MISSIONARIES = 'emails.send_to.missionaries';
 
     public function label(): string
     {

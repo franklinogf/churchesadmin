@@ -101,6 +101,7 @@ export function AppSidebar() {
             title: t('Emails'),
             href: route('communication.emails.index'),
             icon: MailsIcon,
+            permissionNeeded: UserPermission.EMAILS_MANAGE,
           },
         ],
       },
