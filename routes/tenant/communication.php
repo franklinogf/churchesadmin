@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Communication\EmailController;
 use App\Http\Controllers\Communication\EmailListMemberController;
+use App\Http\Controllers\Communication\EmailListMissionaryController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('communication')->name('communication.')->group(function (): void {
@@ -14,6 +15,7 @@ Route::prefix('communication')->name('communication.')->group(function (): void 
         Route::post('store', [EmailController::class, 'store'])->name('store');
 
         Route::get('members-list', EmailListMemberController::class)->name('members');
+        Route::get('missionaries-list', EmailListMissionaryController::class)->name('missionaries');
         // Route::get('members/create', [EmailMemberController::class, 'create'])->name('members.create');
         // Route::post('members', [EmailMemberController::class, 'store'])->name('members.store');
     });

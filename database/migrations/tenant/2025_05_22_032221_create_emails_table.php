@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('subject');
             $table->text('body');
             $table->foreignUuid('sender_id')->nullable()->constrained('users')->nullOnDelete();
-            $table->string('recipient_type');
+            $table->string('recipients_type');
             $table->string('reply_to')->nullable();
             $table->string('status');
             $table->timestamp('sent_at')->nullable();

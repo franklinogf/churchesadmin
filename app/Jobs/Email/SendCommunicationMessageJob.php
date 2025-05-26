@@ -38,6 +38,7 @@ final class SendCommunicationMessageJob implements ShouldQueue
 
         $this->recipient->emails()->updateExistingPivot($this->email->id, [
             'status' => EmailStatus::SENT,
+            'error_message' => null,
             'sent_at' => now(),
         ]);
     }

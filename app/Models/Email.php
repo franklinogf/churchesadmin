@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\EmailStatus;
+use App\Enums\ModelMorphName;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -17,7 +18,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  * @property-read string $subject
  * @property-read string $body
  * @property-read string $sender_id
- * @property-read string $recipient_type
+ * @property-read ModelMorphName $recipients_type
  * @property-read string|null $reply_to
  * @property-read EmailStatus $status
  * @property-read DateTimeInterface|null $sent_at
@@ -92,6 +93,8 @@ final class Email extends Model implements HasMedia
     {
         return [
             'status' => EmailStatus::class,
+            'recipients_type' => ModelMorphName::class,
+            'sent_at' => 'datetime',
         ];
     }
 }

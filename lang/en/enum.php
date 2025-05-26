@@ -3,6 +3,21 @@
 declare(strict_types=1);
 
 return [
+    'email_status' => [
+        'pending' => 'Pending',
+        'sent' => 'Sent',
+        'failed' => 'Failed',
+    ],
+    'model_morph_name' => [
+        'member' => 'Member',
+        'missionary' => 'Missionary',
+        'user' => 'User',
+        'church' => 'Church',
+        'church_wallet' => 'Church Wallet',
+        'offering_type' => 'Offering Type',
+        'check_layout' => 'Check Layout',
+        'email' => 'Email',
+    ],
     'wallet_name' => [
         'primary' => 'Primary',
     ],

@@ -71,3 +71,9 @@ export enum ModelMorphName {
   TRANSACTION = 'transaction',
   WALLET = 'wallet',
 }
+
+export enum EmailStatus {
+  SENT = 'sent',
+  FAILED = 'failed',
+  PENDING = 'pending',
+}
