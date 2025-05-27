@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace App\Jobs\Email;
 
 use App\Enums\EmailStatus;
+use App\Jobs\Middleware\EmailRateLimiter;
 use App\Mail\CommunicationMessageMail;
 use App\Models\Email;
 use App\Models\Member;
 use App\Models\Missionary;
+use Carbon\CarbonImmutable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
-use Illuminate\Queue\Middleware\RateLimited;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Throwable;
@@ -68,6 +69,14 @@ final class SendCommunicationMessageJob implements ShouldQueue
     public function middleware(): array
     {
 
-        return [new RateLimited('emails')->releaseAfter(60)];
+        return [new EmailRateLimiter];
+    }
+
+    /**
+     * Determine the time at which the job should timeout.
+     */
+    public function retryUntil(): CarbonImmutable
+    {
+        return CarbonImmutable::now()->addMinutes(5);
     }
 }

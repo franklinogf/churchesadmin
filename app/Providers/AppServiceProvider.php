@@ -15,14 +15,12 @@ use App\Models\OfferingType;
 use App\Models\TenantUser;
 use Bavix\Wallet\WalletConfigure;
 use Carbon\CarbonImmutable;
-use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
@@ -49,7 +47,6 @@ final class AppServiceProvider extends ServiceProvider
         $this->configureValidations();
         $this->configureJsonResources();
         $this->configureMail();
-        $this->configureRateLimiting();
 
         Translatable::fallback(
             fallbackAny: true
@@ -107,10 +104,5 @@ final class AppServiceProvider extends ServiceProvider
     private function configureMail(): void
     {
         Mail::alwaysTo('franklinomarflores@gmail.com', 'Franklin Gonzalez');
-    }
-
-    private function configureRateLimiting(): void
-    {
-        RateLimiter::for('emails', fn (): Limit => Limit::perSecond(2));
     }
 }
