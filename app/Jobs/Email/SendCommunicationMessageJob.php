@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Jobs\Email;
 
 use App\Enums\EmailStatus;
+use App\Jobs\Middleware\EmailRateLimiter;
 use App\Mail\CommunicationMessageMail;
 use App\Models\Email;
 use App\Models\Member;
@@ -57,5 +58,15 @@ final class SendCommunicationMessageJob implements ShouldQueue
             'status' => EmailStatus::FAILED,
             'error_message' => $exception?->getMessage(),
         ]);
+    }
+
+    /**
+     * Get the middleware the job should pass through.
+     *
+     * @return array<int, object>
+     */
+    public function middleware(): array
+    {
+        return [new EmailRateLimiter];
     }
 }

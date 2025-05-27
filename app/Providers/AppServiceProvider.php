@@ -46,6 +46,7 @@ final class AppServiceProvider extends ServiceProvider
         $this->configureModels();
         $this->configureValidations();
         $this->configureJsonResources();
+        $this->configureMail();
 
         Translatable::fallback(
             fallbackAny: true
@@ -55,9 +56,6 @@ final class AppServiceProvider extends ServiceProvider
 
         URL::forceScheme('https');
 
-        if (! app()->isProduction()) {
-            Mail::alwaysTo('franklinomarflores@gmail.com', 'Franklin Omar Flores');
-        }
     }
 
     private function configureCommands(): void
@@ -101,5 +99,10 @@ final class AppServiceProvider extends ServiceProvider
     private function configureJsonResources(): void
     {
         JsonResource::withoutWrapping();
+    }
+
+    private function configureMail(): void
+    {
+        Mail::alwaysTo('franklinomarflores@gmail.com', 'Franklin Gonzalez');
     }
 }
