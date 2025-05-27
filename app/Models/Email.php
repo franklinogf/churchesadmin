@@ -29,6 +29,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  * @property-read Member[] $pendingMembers
  * @property-read Missionary[] $missionaries
  * @property-read Missionary[] $pendingMissionaries
+ * @property-read Emailable $message
  */
 final class Email extends Model implements HasMedia
 {
@@ -51,7 +52,11 @@ final class Email extends Model implements HasMedia
      */
     public function members(): MorphToMany
     {
-        return $this->morphedByMany(Member::class, 'recipient', 'emailables');
+        return $this->morphedByMany(Member::class, 'recipient', 'emailables')
+            ->using(Emailable::class)
+            ->as('emailMessage')
+            ->withPivot('status', 'sent_at', 'error_message', 'id')
+            ->withTimestamps();
     }
 
     /**
@@ -61,7 +66,12 @@ final class Email extends Model implements HasMedia
      */
     public function pendingMembers(): MorphToMany
     {
-        return $this->morphedByMany(Member::class, 'recipient', 'emailables')->wherePivot('status', EmailStatus::PENDING);
+        return $this->morphedByMany(Member::class, 'recipient', 'emailables')
+            ->using(Emailable::class)
+            ->as('emailMessage')
+            ->withPivot('status', 'sent_at', 'error_message', 'id')
+            ->withTimestamps()
+            ->wherePivot('status', EmailStatus::PENDING);
     }
 
     /**
@@ -71,7 +81,11 @@ final class Email extends Model implements HasMedia
      */
     public function missionaries(): MorphToMany
     {
-        return $this->morphedByMany(Missionary::class, 'recipient', 'emailables');
+        return $this->morphedByMany(Missionary::class, 'recipient', 'emailables')
+            ->using(Emailable::class)
+            ->as('emailMessage')
+            ->withPivot('status', 'sent_at', 'error_message', 'id')
+            ->withTimestamps();
     }
 
     /**
@@ -81,7 +95,12 @@ final class Email extends Model implements HasMedia
      */
     public function pendingMissionaries(): MorphToMany
     {
-        return $this->morphedByMany(Missionary::class, 'recipient', 'emailables')->wherePivot('status', EmailStatus::PENDING);
+        return $this->morphedByMany(Missionary::class, 'recipient', 'emailables')
+            ->using(Emailable::class)
+            ->as('emailMessage')
+            ->withPivot('status', 'sent_at', 'error_message', 'id')
+            ->withTimestamps()
+            ->wherePivot('status', EmailStatus::PENDING);
     }
 
     /**

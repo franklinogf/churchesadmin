@@ -2,6 +2,7 @@ import { type Option } from '@/components/custom-ui/MultiSelect';
 import { type CivilStatus, type Gender } from '@/enums';
 import { type AddressRelationship } from '@/types/models/address';
 import { type TagRelationship } from '@/types/models/tag';
+import type { Email, EmailPivot } from './email';
 
 export type MemberMorphClass = 'member';
 export interface Member {
@@ -21,6 +22,8 @@ export interface Member {
   createdAt: string;
   updatedAt: string;
   deletedAt: string | null;
+  emailMessage?: EmailPivot;
+  emails?: Email[];
 }
 
 export type MemberFormData = {

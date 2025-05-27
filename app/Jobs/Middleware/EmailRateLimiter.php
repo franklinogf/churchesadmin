@@ -20,7 +20,7 @@ final class EmailRateLimiter
 
         // Only allow 2 hits per second
         if (RateLimiter::tooManyAttempts($key, 2)) {
-            $job->release(rand(2, 5)); // Retry after 2 to 5 seconds
+            $job->release(random_int(2, 5)); // Retry after 2 to 5 seconds
 
             return;
         }

@@ -5,17 +5,19 @@ import type { Email } from '@/types/models/email';
 import { Link } from '@inertiajs/react';
 
 import { DataTable } from '@/components/custom-ui/datatable/data-table';
+import { DatatableActionsDropdown } from '@/components/custom-ui/datatable/data-table-actions-dropdown';
 import { DatatableCell } from '@/components/custom-ui/datatable/DatatableCell';
 import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTableColumnHeader';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { UserPermission } from '@/enums/user';
 import { useUser } from '@/hooks/use-user';
 import type { SharedData } from '@/types';
 import { useEcho } from '@laravel/echo-react';
 import { type ColumnDef } from '@tanstack/react-table';
-import { UsersIcon } from 'lucide-react';
+import { Users2Icon, UsersIcon } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
 const recipientTypes = [
@@ -103,6 +105,22 @@ export default function EmailsPage({ emails: initialEmails, auth: { user }, chur
           </DatatableCell>
         ),
       },
+      {
+        id: 'actions',
+        enableHiding: false,
+        enableSorting: false,
+        size: 0,
+        cell: ({ row }) => (
+          <DatatableActionsDropdown>
+            <DropdownMenuItem asChild>
+              <Link href={route('communication.emails.show', row.original.id)}>
+                <Users2Icon className="size-4" />
+                <span>{t('View recipients')}</span>
+              </Link>
+            </DropdownMenuItem>
+          </DatatableActionsDropdown>
+        ),
+      },
     ],
 
     [t, user.id],
@@ -114,7 +132,7 @@ export default function EmailsPage({ emails: initialEmails, auth: { user }, chur
 
   return (
     <AppLayout title={t('Emails')} breadcrumbs={[{ title: t('Communication') }, { title: t('Emails') }]}>
-      <PageTitle description="Manage your emails here.">{t('Emails')}</PageTitle>
+      <PageTitle description={t('Manage your emails here')}>{t('Emails')}</PageTitle>
       <Card className="mx-auto mb-2 max-w-lg">
         <CardHeader>
           <CardTitle>{t('Send a message')}</CardTitle>

@@ -253,5 +253,13 @@
     "Send email to missionaries": "Enviar correo electrónico a misioneros",
     "Only missionaries with an email address will be shown in the list.": "Solo se mostrarán en la lista los misioneros con dirección de correo electrónico.",
     "Send a message": "Enviar un mensaje",
-    "Select a group below to compose a new message.": "Selecciona un grupo a continuación para redactar un nuevo mensaje."
+    "Manage your emails here": "Gestiona tus correos electrónicos aquí",
+    "View recipients": "Ver destinatarios",
+    "Recipient": "Destinatario",
+    "Select a group below to compose a new message.": "Selecciona un grupo a continuación para redactar un nuevo mensaje.",
+    "Sent by :name on :date": "Enviado por :name el :date",
+    "Unknown sender": "Remitente desconocido",
+    "View email": "Ver correo electrónico",
+    "This email has no attachments": "Este correo electrónico no tiene archivos adjuntos",
+    "Close": "Cerrar"
 }

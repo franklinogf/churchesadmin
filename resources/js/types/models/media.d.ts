@@ -1,4 +1,4 @@
-interface Media {
+export interface Media {
   id: number;
   uuid: string;
   name: string;

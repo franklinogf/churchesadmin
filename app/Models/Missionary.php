@@ -35,6 +35,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read Address|null $address
  * @property-read Offering[] $offerings
  * @property-read Email[] $emails
+ * @property-read Emailable $emailMessage
  */
 final class Missionary extends Model
 {
@@ -69,8 +70,9 @@ final class Missionary extends Model
     public function emails(): MorphToMany
     {
         return $this->morphToMany(Email::class, 'recipient', 'emailables')
+            ->using(Emailable::class)
             ->as('message')
-            ->withPivot('status', 'sent_at', 'error_message')
+            ->withPivot('status', 'sent_at', 'error_message', 'id')
             ->withTimestamps();
     }
 

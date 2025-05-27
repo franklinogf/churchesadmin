@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Jobs\Email;
 
 use App\Enums\EmailStatus;
+use App\Events\EmailableStatusUpdatedEvent;
 use App\Jobs\Middleware\EmailRateLimiter;
 use App\Mail\CommunicationMessageMail;
 use App\Models\Email;
@@ -43,6 +44,7 @@ final class SendCommunicationMessageJob implements ShouldQueue
             'error_message' => null,
             'sent_at' => now(),
         ]);
+        event(new EmailableStatusUpdatedEvent($this->recipient->emails()->where('email_id', $this->email->id)->first()->message));
 
     }
 
@@ -59,6 +61,7 @@ final class SendCommunicationMessageJob implements ShouldQueue
             'status' => EmailStatus::FAILED,
             'error_message' => $exception?->getMessage(),
         ]);
+
     }
 
     /**

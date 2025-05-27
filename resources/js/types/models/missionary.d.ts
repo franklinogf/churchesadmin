@@ -1,5 +1,6 @@
 import { type Gender, type OfferingFrequency } from '@/enums';
 import { type AddressRelationship } from './address';
+import type { Email, EmailPivot } from './email';
 
 export interface Missionary {
   id: number;
@@ -15,6 +16,8 @@ export interface Missionary {
   createdAt: string;
   updatedAt: string;
   deletedAt: string | null;
+  emailMessage?: EmailPivot;
+  emails?: Email[];
 }
 
 export type MissionaryMorphClass = 'missionary';
