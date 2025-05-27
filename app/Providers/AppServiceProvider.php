@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
@@ -53,6 +54,10 @@ final class AppServiceProvider extends ServiceProvider
         WalletConfigure::ignoreMigrations();
 
         URL::forceScheme('https');
+
+        if (! app()->isProduction()) {
+            Mail::alwaysTo('franklinomarflores@gmail.com', 'Franklin Omar Flores');
+        }
     }
 
     private function configureCommands(): void
