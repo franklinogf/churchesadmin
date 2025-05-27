@@ -77,6 +77,6 @@ final class SendCommunicationMessageJob implements ShouldQueue
      */
     public function retryUntil(): CarbonImmutable
     {
-        return CarbonImmutable::now()->addMinutes(5);
+        return CarbonImmutable::now()->addDays(7);
     }
 }
