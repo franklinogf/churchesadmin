@@ -17,6 +17,13 @@ final class SendEmailJob implements ShouldQueue
     use Queueable;
 
     /**
+     * Delete the job if its models no longer exist.
+     *
+     * @var bool
+     */
+    public $deleteWhenMissingModels = true;
+
+    /**
      * Create a new job instance.
      */
     public function __construct(public Email $email)
