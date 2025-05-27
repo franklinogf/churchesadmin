@@ -68,6 +68,6 @@ final class SendCommunicationMessageJob implements ShouldQueue
     public function middleware(): array
     {
 
-        return [new RateLimited('emails')];
+        return [new RateLimited('emails')->releaseAfter(60)];
     }
 }
