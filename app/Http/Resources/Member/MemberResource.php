@@ -9,7 +9,6 @@ use App\Http\Resources\Address\AddressRelationshipResource;
 use App\Http\Resources\Communication\Email\EmailableResource;
 use App\Http\Resources\Communication\Email\EmailResource;
 use App\Http\Resources\Tag\TagRelationshipResource;
-use App\Models\Emailable;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -43,7 +42,7 @@ final class MemberResource extends JsonResource
             'updatedAt' => $this->updated_at->format('Y-m-d H:i:s'),
             'deletedAt' => $this->deleted_at?->format('Y-m-d H:i:s'),
             'emails' => EmailResource::collection($this->whenLoaded('emails')),
-            'emailMessage' => $this->whenPivotLoadedAs('emailMessage', new Emailable, fn (): EmailableResource => new EmailableResource($this->emailMessage)),
+            'emailMessage' => $this->whenPivotLoadedAs('emailMessage', 'emailables', fn (): EmailableResource => new EmailableResource($this->emailMessage)),
         ];
     }
 }

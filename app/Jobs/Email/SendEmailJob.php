@@ -18,10 +18,8 @@ final class SendEmailJob implements ShouldQueue
 
     /**
      * Delete the job if its models no longer exist.
-     *
-     * @var bool
      */
-    public $deleteWhenMissingModels = true;
+    public bool $deleteWhenMissingModels = true;
 
     /**
      * Create a new job instance.

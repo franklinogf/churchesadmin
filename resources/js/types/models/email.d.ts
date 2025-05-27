@@ -16,7 +16,6 @@ export interface Email {
   missionaries?: Missionary[];
   status: `${EmailStatus}`;
   sentAt: string | null;
-  sentAtDiffForHumans: string | null;
   errorMessage: string | null;
   createdAt: string;
   updatedAt: string;
@@ -27,7 +26,6 @@ export interface Email {
 export interface EmailPivot {
   id: number;
   sentAt: string | null;
-  sentAtDiffForHumans: string | null;
   status: `${EmailStatus}`;
   errorMessage: string | null;
   createdAt: string;

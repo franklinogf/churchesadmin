@@ -48,7 +48,7 @@ final class Email extends Model implements HasMedia
     /**
      * The members that this email was sent to.
      *
-     * @return MorphToMany<Member, $this>
+     * @return MorphToMany<Member,$this,Emailable,'emailMessage'>
      */
     public function members(): MorphToMany
     {
@@ -62,7 +62,7 @@ final class Email extends Model implements HasMedia
     /**
      * The members that this email is pending to send.
      *
-     * @return MorphToMany<Member, $this>
+     * @return MorphToMany<Member,$this,Emailable,'emailMessage'>
      */
     public function pendingMembers(): MorphToMany
     {
@@ -77,7 +77,7 @@ final class Email extends Model implements HasMedia
     /**
      * The missionaries that this email was sent to.
      *
-     * @return MorphToMany<Missionary, $this>
+     * @return MorphToMany<Missionary,$this,Emailable,'emailMessage'>
      */
     public function missionaries(): MorphToMany
     {
@@ -91,7 +91,7 @@ final class Email extends Model implements HasMedia
     /**
      * The missionaries that this email is pending to send.
      *
-     * @return MorphToMany<Missionary, $this>
+     * @return MorphToMany<Missionary,$this,Emailable,'emailMessage'>
      */
     public function pendingMissionaries(): MorphToMany
     {

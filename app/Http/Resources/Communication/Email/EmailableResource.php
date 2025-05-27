@@ -23,11 +23,10 @@ final class EmailableResource extends JsonResource
         return [
             'id' => $this->id,
             'sentAt' => $this->sent_at?->format('Y-m-d H:i:s'),
-            'sentAtDiffForHumans' => $this->sent_at?->diffForHumans(),
             'status' => $this->status->value,
             'errorMessage' => $this->error_message,
-            'createdAt' => $this->created_at?->format('Y-m-d H:i:s'),
-            'updatedAt' => $this->updated_at?->format('Y-m-d H:i:s'),
+            'createdAt' => $this->created_at->format('Y-m-d H:i:s'),
+            'updatedAt' => $this->updated_at->format('Y-m-d H:i:s'),
         ];
     }
 }

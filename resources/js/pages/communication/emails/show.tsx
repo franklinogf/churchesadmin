@@ -43,7 +43,6 @@ export default function EmailsPage({ email: initialEmail, church }: EmailsPagePr
       ...email,
       status: e.email.status,
       sentAt: e.email.sentAt,
-      sentAtDiffForHumans: e.email.sentAtDiffForHumans,
       errorMessage: e.email.errorMessage,
     });
   });

@@ -44,7 +44,19 @@ final class SendCommunicationMessageJob implements ShouldQueue
             'error_message' => null,
             'sent_at' => now(),
         ]);
-        event(new EmailableStatusUpdatedEvent($this->recipient->emails()->where('email_id', $this->email->id)->first()->message));
+        /**
+         * @var Email|null $emailable
+         */
+        $emailable = $this->recipient->emails()->where('email_id', $this->email->id)->first();
+        if ($emailable === null) {
+            Log::driver('emails')->error('Email not found in recipient emails', [
+                'email_id' => $this->email->id,
+                'recipient_id' => $this->recipient->id,
+            ]);
+
+            return;
+        }
+        event(new EmailableStatusUpdatedEvent($emailable->message));
 
     }
 

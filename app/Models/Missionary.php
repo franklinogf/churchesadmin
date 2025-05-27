@@ -13,7 +13,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
-use Illuminate\Database\Eloquent\Relations\MorphPivot;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -65,7 +64,7 @@ final class Missionary extends Model
     /**
      * The emails that has been sent to this missionary.
      *
-     * @return MorphToMany<Email, $this, MorphPivot, 'message'>
+     * @return MorphToMany<Email, $this, Emailable, 'message'>
      */
     public function emails(): MorphToMany
     {

@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
-use Illuminate\Database\Eloquent\Relations\MorphPivot;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Tags\HasTags;
@@ -64,7 +63,7 @@ final class Member extends Model
     /**
      * The emails that has been sent to this member.
      *
-     * @return MorphToMany<Email, $this, MorphPivot, 'message'>
+     * @return MorphToMany<Email, $this, Emailable, 'message'>
      */
     public function emails(): MorphToMany
     {
