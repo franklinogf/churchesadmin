@@ -7,6 +7,7 @@ return [
         'pending' => 'Pending',
         'sent' => 'Sent',
         'failed' => 'Failed',
+        'sending' => 'Sending',
     ],
     'model_morph_name' => [
         'member' => 'Member',

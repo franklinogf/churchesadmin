@@ -296,6 +296,7 @@ export type TranslationKey =
   | 'enum.civil_status.widowed'
   | 'enum.email_status.failed'
   | 'enum.email_status.pending'
+  | 'enum.email_status.sending'
   | 'enum.email_status.sent'
   | 'enum.gender.female'
   | 'enum.gender.male'

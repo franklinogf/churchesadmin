@@ -202,15 +202,15 @@ function ErrorMessageDialog({ recipient, open, setOpen }: { recipient: Member | 
   const { t } = useTranslations();
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent>
+      <DialogContent className="sm:max-w-[600px]">
         <DialogHeader>
           <DialogTitle>{t('Error message')}</DialogTitle>
           <DialogDescription>{t('Email error if any')}</DialogDescription>
         </DialogHeader>
         <div className="flex flex-col gap-4">
-          <ScrollArea className="max-h-[400px]">
+          <ScrollArea className="max-h-[400px] overflow-hidden">
             <div className="prose dark:prose-invert">
-              <pre className="w-full max-w-full text-wrap">{recipient.emailMessage?.errorMessage ?? t('No error message available')}</pre>
+              <pre className="max-w-full text-balance">{recipient.emailMessage?.errorMessage ?? t('No error message available')}</pre>
             </div>
           </ScrollArea>
           <div>

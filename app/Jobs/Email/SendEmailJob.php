@@ -7,8 +7,10 @@ namespace App\Jobs\Email;
 use App\Enums\EmailStatus;
 use App\Events\EmailStatusUpdatedEvent;
 use App\Models\Email;
+use Illuminate\Bus\Batch;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
@@ -34,25 +36,38 @@ final class SendEmailJob implements ShouldQueue
      */
     public function handle(): void
     {
+        $batch = [];
         foreach ($this->email->pendingMembers as $member) {
-
-            dispatch(new SendCommunicationMessageJob($member->emailMessage));
-
+            $batch[] = new SendCommunicationMessageJob($member->emailMessage);
         }
 
         foreach ($this->email->pendingMissionaries as $missionary) {
-
-            dispatch(new SendCommunicationMessageJob($missionary->emailMessage));
-
+            $batch[] = new SendCommunicationMessageJob($missionary->emailMessage);
         }
 
-        $this->email->update([
-            'status' => EmailStatus::SENT,
-            'error_message' => null,
-            'sent_at' => now(),
-        ]);
+        $email = $this->email;
 
-        event(new EmailStatusUpdatedEvent($this->email));
+        Bus::batch($batch)
+            ->before(function (Batch $batch) use ($email): void {
+                $email->update([
+                    'status' => EmailStatus::SENDING,
+                    'error_message' => null,
+                ]);
+                event(new EmailStatusUpdatedEvent($email));
+            })
+            ->finally(function (Batch $batch) use ($email): void {
+                $email->update([
+                    'status' => EmailStatus::SENT,
+                    'error_message' => null,
+                    'sent_at' => now(),
+                ]);
+                event(new EmailStatusUpdatedEvent($email));
+            })
+            ->name('Send Email: '.$email->subject.' id: '.$email->id)
+            ->allowFailures()
+            ->onQueue('emails')
+            ->dispatch();
+
     }
 
     /**
