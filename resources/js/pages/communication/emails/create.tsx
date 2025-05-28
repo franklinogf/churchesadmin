@@ -24,33 +24,7 @@ export default function Create({ recipientsAmount, recipientsType }: Props) {
   const { t, tChoice } = useTranslations();
   const { data, setData, errors, processing, post, progress } = useForm<EmailForm>({
     subject: '',
-    body: `<h1>Welcome to ChurchFlow!</h1>
-
-  <p>Hi members,</p>
-
-  <p>
-    We're excited to have you onboard. ChurchFlow is designed to help churches like yours manage finances, check printing, and more — all in one place.
-  </p>
-
-  <p>
-    To get started, click the button below and complete your setup:
-  </p>
-
-
-  <h2>Need help?</h2>
-
-  <p>
-    Our team is here for you. You can reach out to us at
-    <a href="mailto:support@churchflow.app">support@churchflow.app</a> any time.
-  </p>
-
-  <p>Grace and peace, <br> The ChurchFlow Team</p>
-
-  <hr>
-
-  <p class="text-sm text-gray-500">
-    You're receiving this email because you signed up for ChurchFlow. If this wasn't you, please disregard this message or contact support.
-  </p>`,
+    body: ``,
     media: [],
   });
 

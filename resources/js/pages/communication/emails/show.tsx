@@ -133,7 +133,7 @@ function EmailDetailButton({ email }: { email: Email }) {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{email.subject}</DialogTitle>
-          <DialogDescription className="text-sm text-gray-500">
+          <DialogDescription>
             {t('Sent by :name on :date', {
               name: email.sender?.name ?? t('Unknown sender'),
               date: email.sentAt ?? t('Not sent yet'),
@@ -142,7 +142,7 @@ function EmailDetailButton({ email }: { email: Email }) {
         </DialogHeader>
         <section className="flex flex-col gap-4">
           <ScrollArea className="max-h-[400px]">
-            <div className="prose" dangerouslySetInnerHTML={{ __html: email.body }}></div>
+            <div className="prose dark:prose-invert" dangerouslySetInnerHTML={{ __html: email.body }}></div>
           </ScrollArea>
           {email.attachments && email.attachments.length > 0 ? (
             <div>
@@ -158,7 +158,7 @@ function EmailDetailButton({ email }: { email: Email }) {
               </ul>
             </div>
           ) : (
-            <p className="text-gray-500">{t('This email has no attachments')}</p>
+            <p className="text-muted-foreground">{t('This email has no attachments')}</p>
           )}
         </section>
         <DialogFooter>
