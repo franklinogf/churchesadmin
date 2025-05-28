@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Enums\EmailStatus;
 use App\Enums\ModelMorphName;
 use DateTimeInterface;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
@@ -25,10 +26,8 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  * @property-read DateTimeInterface $created_at
  * @property-read DateTimeInterface $updated_at
  * @property-read TenantUser $sender
- * @property-read Member[] $members
- * @property-read Member[] $pendingMembers
- * @property-read Missionary[] $missionaries
- * @property-read Missionary[] $pendingMissionaries
+ * @property-read Collection<Member> $members
+ * @property-read Collection<Missionary> $missionaries
  * @property-read Emailable $message
  */
 final class Email extends Model implements HasMedia
@@ -60,22 +59,6 @@ final class Email extends Model implements HasMedia
     }
 
     /**
-     * The members that this email is pending to send.
-     *
-     * @return MorphToMany<Member,$this,Emailable,'emailMessage'>
-     */
-    public function pendingMembers(): MorphToMany
-    {
-        return $this->morphedByMany(Member::class, 'recipient', 'emailables')
-            ->using(Emailable::class)
-            ->as('emailMessage')
-            ->withPivot('status', 'sent_at', 'error_message', 'id')
-            ->withTimestamps()
-            ->wherePivot('status', EmailStatus::PENDING)
-            ->orWherePivot('status', EmailStatus::FAILED);
-    }
-
-    /**
      * The missionaries that this email was sent to.
      *
      * @return MorphToMany<Missionary,$this,Emailable,'emailMessage'>
@@ -87,22 +70,6 @@ final class Email extends Model implements HasMedia
             ->as('emailMessage')
             ->withPivot('status', 'sent_at', 'error_message', 'id')
             ->withTimestamps();
-    }
-
-    /**
-     * The missionaries that this email is pending to send.
-     *
-     * @return MorphToMany<Missionary,$this,Emailable,'emailMessage'>
-     */
-    public function pendingMissionaries(): MorphToMany
-    {
-        return $this->morphedByMany(Missionary::class, 'recipient', 'emailables')
-            ->using(Emailable::class)
-            ->as('emailMessage')
-            ->withPivot('status', 'sent_at', 'error_message', 'id')
-            ->withTimestamps()
-            ->wherePivot('status', EmailStatus::PENDING)
-            ->orWherePivot('status', EmailStatus::FAILED);
     }
 
     /**

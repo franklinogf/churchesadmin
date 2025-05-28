@@ -6,9 +6,11 @@ namespace App\Jobs\Email;
 
 use App\Enums\EmailStatus;
 use App\Events\EmailStatusUpdatedEvent;
+use App\Exceptions\EmailException;
 use App\Models\Email;
 use Illuminate\Bus\Batch;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Log;
@@ -37,15 +39,41 @@ final class SendEmailJob implements ShouldQueue
     public function handle(): void
     {
         $batch = [];
-        foreach ($this->email->pendingMembers as $member) {
-            $batch[] = new SendCommunicationMessageJob($member->emailMessage);
-        }
-
-        foreach ($this->email->pendingMissionaries as $missionary) {
-            $batch[] = new SendCommunicationMessageJob($missionary->emailMessage);
-        }
 
         $email = $this->email;
+
+        $pendingMembers = $email
+            ->members()
+            ->where(function (Builder $query): Builder {
+                return $query->where('status', EmailStatus::PENDING)
+                    ->orWhere('status', EmailStatus::FAILED);
+            })
+            ->get();
+
+        $pendingMissionaries = $email
+            ->missionaries()
+            ->where(function (Builder $query): Builder {
+                return $query->where('status', EmailStatus::PENDING)
+                    ->orWhere('status', EmailStatus::FAILED);
+            })
+            ->get();
+
+        $pendingMembers->each(function ($member) use (&$batch) {
+            $batch[] = new SendCommunicationMessageJob($member->emailMessage);
+        });
+        $pendingMissionaries->each(function ($missionary) use (&$batch) {
+            $batch[] = new SendCommunicationMessageJob($missionary->emailMessage);
+        });
+
+        if (empty($batch)) {
+            throw EmailException::noRecipientsSelected();
+        }
+        info('Sending email to '.count($batch).' recipients', [
+            'email_id' => $email->id,
+            'subject' => $email->subject,
+            'members' => $pendingMembers->toArray(),
+            'missionaries' => $pendingMissionaries->toArray(),
+        ]);
 
         Bus::batch($batch)
             ->before(function (Batch $batch) use ($email): void {

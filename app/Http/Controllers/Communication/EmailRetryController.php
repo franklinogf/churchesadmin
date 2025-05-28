@@ -11,6 +11,7 @@ use App\Events\EmailStatusUpdatedEvent;
 use App\Http\Controllers\Controller;
 use App\Jobs\Email\SendEmailJob;
 use App\Models\Email;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -21,13 +22,28 @@ final class EmailRetryController extends Controller
      */
     public function __invoke(Email $email): RedirectResponse
     {
+
         $recipients = collect();
         if ($email->recipients_type === ModelMorphName::MEMBER) {
             $email->load('members');
-            $recipients = $recipients->merge($email->pendingMembers);
+            $pendingMembers = $email
+                ->members()
+                ->where(function (Builder $query): Builder {
+                    return $query->where('status', EmailStatus::PENDING)
+                        ->orWhere('status', EmailStatus::FAILED);
+                })
+                ->get();
+            $recipients = $recipients->merge($pendingMembers);
         } elseif ($email->recipients_type === ModelMorphName::MISSIONARY) {
             $email->load('missionaries');
-            $recipients = $recipients->merge($email->pendingMissionaries);
+            $pendingMissionaries = $email
+                ->missionaries()
+                ->where(function (Builder $query): Builder {
+                    return $query->where('status', EmailStatus::PENDING)
+                        ->orWhere('status', EmailStatus::FAILED);
+                })
+                ->get();
+            $recipients = $recipients->merge($pendingMissionaries);
         }
 
         if ($recipients->isEmpty()) {
