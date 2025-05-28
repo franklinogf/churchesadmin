@@ -36,13 +36,13 @@ final class SendEmailJob implements ShouldQueue
     {
         foreach ($this->email->pendingMembers as $member) {
 
-            dispatch(new SendCommunicationMessageJob($this->email, $member));
+            dispatch(new SendCommunicationMessageJob($member->emailMessage));
 
         }
 
         foreach ($this->email->pendingMissionaries as $missionary) {
 
-            dispatch(new SendCommunicationMessageJob($this->email, $missionary));
+            dispatch(new SendCommunicationMessageJob($missionary->emailMessage));
 
         }
 

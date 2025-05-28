@@ -24,6 +24,7 @@ final class EmailController extends Controller
 {
     public function index(): Response
     {
+
         Gate::authorize('viewAny', Email::class);
 
         $emails = Email::query()
@@ -39,7 +40,7 @@ final class EmailController extends Controller
 
     public function show(Email $email): Response
     {
-        // Gate::authorize('view', $email);
+        Gate::authorize('viewAny', Email::class);
         $email->load(['media', 'sender']);
         if ($email->recipients_type === ModelMorphName::MEMBER) {
             $email->load('members');
@@ -77,7 +78,7 @@ final class EmailController extends Controller
          */
         $files = $request->file('media');
         try {
-            $emailService->send(
+            $email = $emailService->send(
                 $user,
                 [
                     'subject' => $request->string('subject')->value(),
@@ -90,7 +91,7 @@ final class EmailController extends Controller
             return to_route('communication.emails.index')->with(FlashMessageKey::ERROR->value, $e->getMessage());
         }
 
-        return to_route('communication.emails.index')->with(FlashMessageKey::SUCCESS->value, __('flash.message.email.will_be_sent'));
+        return to_route('communication.emails.show', $email)->with(FlashMessageKey::SUCCESS->value, __('flash.message.email.will_be_sent'));
 
     }
 }

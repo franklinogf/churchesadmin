@@ -9,6 +9,7 @@ use App\Enums\ModelMorphName;
 use App\Enums\SessionName;
 use App\Exceptions\EmailException;
 use App\Jobs\Email\SendEmailJob;
+use App\Models\Email;
 use App\Models\TenantUser;
 use App\Services\Session\SessionService;
 use Exception;
@@ -36,7 +37,7 @@ final readonly class EmailService
      *
      * @throws EmailException
      */
-    public function send(TenantUser $user, array $data, ?array $files = null): void
+    public function send(TenantUser $user, array $data, ?array $files = null): Email
     {
         try {
             $emailRecipients = $this->getEmailRecipients();
@@ -54,6 +55,8 @@ final readonly class EmailService
             $this->sessionService->forget(SessionName::EMAIL_RECIPIENTS);
 
             dispatch(new SendEmailJob($email));
+
+            return $email;
         } catch (Exception $e) {
             Log::driver('emails')->error('Failed to send email', [
                 'error' => $e->getMessage(),

@@ -22,4 +22,9 @@ final class EmailException extends Exception
     {
         return new self(__('flash.message.email.unknown_error'), 500);
     }
+
+    public static function emailNotFound(): self
+    {
+        return new self(__('flash.message.email.not_found'), 404);
+    }
 }

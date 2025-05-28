@@ -25,6 +25,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { EmailStatus } from '@/enums';
 import type { Member } from '@/types/models/member';
 import type { Missionary } from '@/types/models/missionary';
 
@@ -82,7 +83,15 @@ export default function EmailsPage({ email: initialEmail, church }: EmailsPagePr
         meta: { filterVariant: 'select', translationPrefix: 'enum.email_status.' },
         cell: ({ row }) => (
           <DatatableCell justify="center">
-            <Badge variant={row.original.emailMessage?.status === 'sent' ? 'success' : 'secondary'}>
+            <Badge
+              variant={
+                row.original.emailMessage?.status === EmailStatus.SENT
+                  ? 'success'
+                  : row.original.emailMessage?.status === EmailStatus.FAILED
+                    ? 'destructive'
+                    : 'secondary'
+              }
+            >
               {t(`enum.email_status.${row.original.emailMessage?.status ?? 'pending'}`)}
             </Badge>
           </DatatableCell>

@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('reply_to')->nullable();
             $table->string('status');
             $table->timestamp('sent_at')->nullable();
-            $table->string('error_message')->nullable();
+            $table->text('error_message')->nullable();
             $table->timestamps();
         });
 
@@ -32,7 +32,7 @@ return new class extends Migration
             $table->morphs('recipient');
             $table->string('status');
             $table->timestamp('sent_at')->nullable();
-            $table->string('error_message')->nullable();
+            $table->text('error_message')->nullable();
             $table->timestamps();
         });
     }
