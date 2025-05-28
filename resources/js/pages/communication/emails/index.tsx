@@ -11,7 +11,9 @@ import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTabl
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { UserPermission } from '@/enums/user';
 import { useUser } from '@/hooks/use-user';
 import type { SharedData } from '@/types';
@@ -110,16 +112,23 @@ export default function EmailsPage({ emails: initialEmails, auth: { user }, chur
         enableHiding: false,
         enableSorting: false,
         size: 0,
-        cell: ({ row }) => (
-          <DatatableActionsDropdown>
-            <DropdownMenuItem asChild>
-              <Link href={route('communication.emails.show', row.original.id)}>
-                <Users2Icon className="size-4" />
-                <span>{t('View recipients')}</span>
-              </Link>
-            </DropdownMenuItem>
-          </DatatableActionsDropdown>
-        ),
+        cell: function CellComponent({ row }) {
+          const [open, setOpen] = useState(false);
+          return (
+            <>
+              <ErrorMessageDialog email={row.original} open={open} setOpen={setOpen} />
+              <DatatableActionsDropdown>
+                <DropdownMenuItem asChild>
+                  <Link href={route('communication.emails.show', row.original.id)}>
+                    <Users2Icon className="size-4" />
+                    <span>{t('View recipients')}</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => setOpen(true)}>{t('View error')}</DropdownMenuItem>
+              </DatatableActionsDropdown>
+            </>
+          );
+        },
       },
     ],
 
@@ -153,5 +162,31 @@ export default function EmailsPage({ emails: initialEmails, auth: { user }, chur
 
       <DataTable data={emails} columns={columns} visibilityState={{ attachmentsCount: false }} />
     </AppLayout>
+  );
+}
+
+function ErrorMessageDialog({ email, open, setOpen }: { email: Email; open: boolean; setOpen: (open: boolean) => void }) {
+  const { t } = useTranslations();
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{t('Error message')}</DialogTitle>
+          <DialogDescription>{t('Email error if any')}</DialogDescription>
+        </DialogHeader>
+        <div className="flex flex-col gap-4">
+          <ScrollArea className="max-h-[400px]">
+            <div className="prose dark:prose-invert">
+              <pre className="w-full max-w-full text-wrap">{email.errorMessage ?? t('No error message available')}</pre>
+            </div>
+          </ScrollArea>
+        </div>
+        <DialogFooter>
+          <DialogClose asChild>
+            <Button variant="outline">{t('Close')}</Button>
+          </DialogClose>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 }

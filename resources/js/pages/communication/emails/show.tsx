@@ -13,6 +13,7 @@ import { useEcho } from '@laravel/echo-react';
 import { type ColumnDef } from '@tanstack/react-table';
 import { useMemo, useState } from 'react';
 
+import { DatatableActionsDropdown } from '@/components/custom-ui/datatable/data-table-actions-dropdown';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -24,6 +25,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { EmailStatus } from '@/enums';
 import type { Member } from '@/types/models/member';
@@ -38,7 +40,6 @@ export default function EmailsPage({ email: initialEmail, church }: EmailsPagePr
   const [datatableData, setDatatableData] = useState<(Member | Missionary)[]>(
     email.recipientsType === 'member' ? email.members! : email.missionaries!,
   );
-
   useEcho<{ email: Email }>(`${church?.id}.emails.${email.id}`, 'EmailStatusUpdatedEvent', (e) => {
     setEmail({
       ...email,
@@ -103,6 +104,23 @@ export default function EmailsPage({ email: initialEmail, church }: EmailsPagePr
         enableHiding: false,
         enableColumnFilter: false,
         cell: ({ row }) => <DatatableCell justify="center">{row.original.emailMessage?.sentAt ?? t('Not sent yet')}</DatatableCell>,
+      },
+      {
+        id: 'actions',
+        enableHiding: false,
+        enableSorting: false,
+        size: 0,
+        cell: function CellComponent({ row }) {
+          const [open, setOpen] = useState(false);
+          return (
+            <>
+              <ErrorMessageDialog recipient={row.original} open={open} setOpen={setOpen} />
+              <DatatableActionsDropdown>
+                <DropdownMenuItem onSelect={() => setOpen(true)}>{t('View error')}</DropdownMenuItem>
+              </DatatableActionsDropdown>
+            </>
+          );
+        },
       },
     ],
 
@@ -170,6 +188,35 @@ function EmailDetailButton({ email }: { email: Email }) {
             <p className="text-muted-foreground">{t('This email has no attachments')}</p>
           )}
         </section>
+        <DialogFooter>
+          <DialogClose asChild>
+            <Button variant="outline">{t('Close')}</Button>
+          </DialogClose>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+function ErrorMessageDialog({ recipient, open, setOpen }: { recipient: Member | Missionary; open: boolean; setOpen: (open: boolean) => void }) {
+  const { t } = useTranslations();
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{t('Error message')}</DialogTitle>
+          <DialogDescription>{t('Email error if any')}</DialogDescription>
+        </DialogHeader>
+        <div className="flex flex-col gap-4">
+          <ScrollArea className="max-h-[400px]">
+            <div className="prose dark:prose-invert">
+              <pre className="w-full max-w-full text-wrap">{recipient.emailMessage?.errorMessage ?? t('No error message available')}</pre>
+            </div>
+          </ScrollArea>
+          <div>
+            <p className="text-muted-foreground text-sm">{t('Sent to :name', { name: recipient.email ?? t('No data') })}</p>
+          </div>
+        </div>
         <DialogFooter>
           <DialogClose asChild>
             <Button variant="outline">{t('Close')}</Button>

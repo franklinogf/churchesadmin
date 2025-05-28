@@ -24,6 +24,7 @@ final class EmailableResource extends JsonResource
             'id' => $this->id,
             'sentAt' => $this->sent_at?->format('Y-m-d H:i:s'),
             'status' => $this->status->value,
+            'replyTo' => $this->email->reply_to,
             'errorMessage' => $this->error_message,
             'createdAt' => $this->created_at->format('Y-m-d H:i:s'),
             'updatedAt' => $this->updated_at->format('Y-m-d H:i:s'),

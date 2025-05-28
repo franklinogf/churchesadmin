@@ -261,5 +261,10 @@
     "Unknown sender": "Unknown sender",
     "View email": "View email",
     "This email has no attachments": "This email has no attachments",
-    "Close": "Close"
+    "Close": "Close",
+    "View error": "View error",
+    "Error message": "Error message",
+    "Email error if any": "Email error if any",
+    "No error message available": "No error message available",
+    "Sent to :name": "Sent to :name"
 }

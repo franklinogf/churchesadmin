@@ -261,5 +261,10 @@
     "Unknown sender": "Remitente desconocido",
     "View email": "Ver correo electrónico",
     "This email has no attachments": "Este correo electrónico no tiene archivos adjuntos",
-    "Close": "Cerrar"
+    "Close": "Cerrar",
+    "View error": "Ver error",
+    "Error message": "Mensaje de error",
+    "Email error if any": "Error de correo electrónico si lo hay",
+    "No error message available": "No hay mensaje de error disponible",
+    "Sent to :name": "Enviado a :name"
 }
