@@ -14,6 +14,7 @@ import { type ColumnDef } from '@tanstack/react-table';
 import { useMemo, useState } from 'react';
 
 import { DatatableActionsDropdown } from '@/components/custom-ui/datatable/data-table-actions-dropdown';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -30,6 +31,8 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { EmailStatus } from '@/enums';
 import type { Member } from '@/types/models/member';
 import type { Missionary } from '@/types/models/missionary';
+import { Link } from '@inertiajs/react';
+import { AlertCircleIcon } from 'lucide-react';
 
 interface EmailsPageProps extends SharedData {
   email: Email;
@@ -126,6 +129,8 @@ export default function EmailsPage({ email: initialEmail, church }: EmailsPagePr
 
     [t],
   );
+
+  const existsFailingEmails = datatableData.some((recipient) => recipient.emailMessage?.status === EmailStatus.FAILED);
   return (
     <AppLayout
       title={t('Emails')}
@@ -142,6 +147,22 @@ export default function EmailsPage({ email: initialEmail, church }: EmailsPagePr
         </PageTitle>
         <EmailDetailButton email={email} />
       </header>
+
+      {existsFailingEmails && (
+        <Alert variant="destructive" className="mx-auto mb-6 max-w-xl">
+          <AlertCircleIcon className="size-4" />
+          <AlertTitle>{t('Some emails failed to send')}</AlertTitle>
+          <AlertDescription>{t('Some recipients have failed to receive the email. Please check their error messages.')}</AlertDescription>
+
+          <div className="col-span-full flex justify-end">
+            <Button asChild variant="secondary" size="sm" className="mt-2 ml-auto">
+              <Link method="post" href={route('communication.emails.retry', { email: email.id })}>
+                {t('Retry sending failed emails')}
+              </Link>
+            </Button>
+          </div>
+        </Alert>
+      )}
 
       <DataTable data={datatableData} columns={columns} visibilityState={{ attachmentsCount: false }} />
     </AppLayout>

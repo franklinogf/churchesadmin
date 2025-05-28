@@ -71,7 +71,8 @@ final class Email extends Model implements HasMedia
             ->as('emailMessage')
             ->withPivot('status', 'sent_at', 'error_message', 'id')
             ->withTimestamps()
-            ->wherePivot('status', EmailStatus::PENDING);
+            ->wherePivot('status', EmailStatus::PENDING)
+            ->orWherePivot('status', EmailStatus::FAILED);
     }
 
     /**
@@ -100,7 +101,8 @@ final class Email extends Model implements HasMedia
             ->as('emailMessage')
             ->withPivot('status', 'sent_at', 'error_message', 'id')
             ->withTimestamps()
-            ->wherePivot('status', EmailStatus::PENDING);
+            ->wherePivot('status', EmailStatus::PENDING)
+            ->orWherePivot('status', EmailStatus::FAILED);
     }
 
     /**

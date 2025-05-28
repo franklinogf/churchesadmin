@@ -39,6 +39,8 @@ return [
             'no_recipients_selected' => 'No recipients selected for the email.',
             'unknown_error' => 'An unknown error occurred while sending the email. Please try again later.',
             'will_be_sent' => 'The email will be sent shortly',
+            'retry_empty_recipients' => 'Failed to retry sending the email, not failed recipients found.',
+            'retry_success' => 'Email retry successful. :count recipient(s) will receive the email.',
         ],
     ],
 ];

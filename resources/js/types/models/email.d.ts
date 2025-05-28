@@ -26,7 +26,7 @@ export interface Email {
 export interface EmailPivot {
   id: number;
   sentAt: string | null;
-  status: `${EmailStatus}`;
+  status: EmailStatus;
   errorMessage: string | null;
   createdAt: string;
   updatedAt: string;

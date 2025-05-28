@@ -23,7 +23,7 @@ final readonly class EmailService
      */
     public function __construct(
         private SessionService $sessionService,
-        private CreateEmailAction $action,
+        private CreateEmailAction $createEmailAction,
     ) {
         //
     }
@@ -42,7 +42,7 @@ final readonly class EmailService
         try {
             $emailRecipients = $this->getEmailRecipients();
 
-            $email = $this->action->handle(
+            $email = $this->createEmailAction->handle(
                 $user,
                 [
                     'subject' => $data['subject'],
@@ -65,10 +65,10 @@ final readonly class EmailService
                 'email_recipients' => $emailRecipients ?? null,
             ]);
             if ($e instanceof EmailException) {
-                throw $e; // Re-throw the custom exception
+                throw $e;
             }
 
-            throw EmailException::unknownError(); // Handle any other exceptions as unknown error
+            throw EmailException::unknownError();
         }
     }
 
