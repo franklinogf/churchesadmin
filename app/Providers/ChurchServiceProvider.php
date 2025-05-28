@@ -25,6 +25,7 @@ final class ChurchServiceProvider extends ServiceProvider
     {
         TenantConfig::$storageToConfigMap = [
             'locale' => 'app.locale',
+            'name' => 'mail.from.name',
         ];
         InitializeTenancyBySubdomain::$onFail = fn () => abort(404);
 

@@ -104,7 +104,7 @@ final class AppServiceProvider extends ServiceProvider
     private function configureMail(): void
     {
         if (! app()->isProduction()) {
-            Mail::alwaysTo('franklinomarflores@gmail.com', 'Franklin Gonzalez');
+            Mail::alwaysTo('franklinomarflores@gmail.com');
         }
     }
 }

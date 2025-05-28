@@ -11,6 +11,7 @@ use App\Events\EmailStatusUpdatedEvent;
 use App\Http\Controllers\Controller;
 use App\Jobs\Email\SendEmailJob;
 use App\Models\Email;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 final class EmailRetryController extends Controller
@@ -18,7 +19,7 @@ final class EmailRetryController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Email $email)
+    public function __invoke(Email $email): RedirectResponse
     {
         $recipients = collect();
         if ($email->recipients_type === ModelMorphName::MEMBER) {
