@@ -1,5 +1,9 @@
 # Churches Administration
 
+[![Laravel Forge Site Deployment Status](https://img.shields.io/endpoint?url=https%3A%2F%2Fforge.laravel.com%2Fsite-badges%2F5129b258-7cf5-4173-8aef-861ede4b0c1a%3Flabel%3D1&style=flat)](https://forge.laravel.com/servers/910633/sites/2692376)
+[![tests](https://github.com/franklinogf/churchesadmin/actions/workflows/tests.yml/badge.svg)](https://github.com/franklinogf/churchesadmin/actions/workflows/tests.yml)
+[![linter](https://github.com/franklinogf/churchesadmin/actions/workflows/lint.yml/badge.svg)](https://github.com/franklinogf/churchesadmin/actions/workflows/lint.yml)
+
 ChurchesAdmin is a comprehensive church management system. This multi-tenant application helps churches manage their finances, members, missionaries, offerings, and other administrative tasks.
 
 ## Features
@@ -110,15 +114,8 @@ npm run build
 Run the development server:
 
 ```bash
-# Run server, queue worker, and Vite in parallel
+# Run server, queue worker, reverb, and Vite in parallel
 composer run dev
-```
-
-For SSR (Server-Side Rendering) development:
-
-```bash
-# Build SSR bundle and run servers
-composer run dev:ssr
 ```
 
 ## Testing
