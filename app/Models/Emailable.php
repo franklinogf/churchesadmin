@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Enums\EmailStatus;
 use DateTimeInterface;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphPivot;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -49,7 +50,7 @@ final class Emailable extends MorphPivot
     /**
      * Get the recipient of the emailable.
      *
-     * @return BelongsTo<Member|Missionary, $this>
+     * @return MorphTo<Model, $this>
      */
     public function recipient(): MorphTo
     {
