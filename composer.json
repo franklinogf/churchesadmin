@@ -1,11 +1,17 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "laravel/react-starter-kit",
+    "name": "franklinogf/churchesadmin",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
+    "description": "A admin panel for managing churches",
     "keywords": [
-        "laravel",
-        "framework"
+        "members",
+        "missioaries",
+        "churches",
+        "church",
+        "church-management",
+        "church-admin-dashboard",
+        "admin-panel",
+        "church-management"
     ],
     "license": "MIT",
     "require": {
