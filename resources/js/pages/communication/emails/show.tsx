@@ -131,6 +131,26 @@ export default function EmailsPage({ email: initialEmail, church }: EmailsPagePr
   );
 
   const existsFailingEmails = datatableData.some((recipient) => recipient.emailMessage?.status === EmailStatus.FAILED);
+
+  function handleRetryEmail() {
+    // the failed email changes to pending, so we can retry sending it
+    setDatatableData((prevData) =>
+      prevData.map((recipient) => {
+        if (recipient.emailMessage?.status === EmailStatus.FAILED) {
+          return {
+            ...recipient,
+            emailMessage: {
+              ...recipient.emailMessage,
+              status: EmailStatus.PENDING,
+              sentAt: null,
+              errorMessage: null,
+            },
+          };
+        }
+        return recipient;
+      }),
+    );
+  }
   return (
     <AppLayout
       title={t('Emails')}
@@ -156,7 +176,7 @@ export default function EmailsPage({ email: initialEmail, church }: EmailsPagePr
 
           <div className="col-span-full flex justify-end">
             <Button asChild variant="secondary" size="sm" className="mt-2 ml-auto">
-              <Link method="post" href={route('communication.emails.retry', { email: email.id })}>
+              <Link onClick={handleRetryEmail} method="post" href={route('communication.emails.retry', { email: email.id })}>
                 {t('Retry sending failed emails')}
               </Link>
             </Button>

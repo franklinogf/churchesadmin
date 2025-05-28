@@ -266,5 +266,8 @@
     "Error message": "Error message",
     "Email error if any": "Email error if any",
     "No error message available": "No error message available",
-    "Sent to :name": "Sent to :name"
+    "Sent to :name": "Sent to :name",
+    "Some emails failed to send": "Some emails failed to send",
+    "Some recipients have failed to receive the email. Please check their error messages.": "Some recipients have failed to receive the email. Please check their error messages.",
+    "Retry sending failed emails": "Retry sending failed emails"
 }
