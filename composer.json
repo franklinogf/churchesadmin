@@ -92,8 +92,8 @@
         "lint": "pint -v",
         "refactor": "rector",
         "format": [
-            "@lint",
-            "@refactor"
+            "@refactor",
+            "@lint"
         ],
         "test:refactor": "rector --dry-run",
         "test:lint": "pint --test",
