@@ -26,8 +26,8 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  * @property-read DateTimeInterface $created_at
  * @property-read DateTimeInterface $updated_at
  * @property-read TenantUser $sender
- * @property-read Collection<Member> $members
- * @property-read Collection<Missionary> $missionaries
+ * @property-read Collection<int,Member> $members
+ * @property-read Collection<int,Missionary> $missionaries
  * @property-read Emailable $message
  */
 final class Email extends Model implements HasMedia
