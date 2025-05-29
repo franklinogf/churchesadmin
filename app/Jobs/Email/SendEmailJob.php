@@ -66,12 +66,6 @@ final class SendEmailJob implements ShouldQueue
         if ($batch === []) {
             throw EmailException::noRecipientsSelected();
         }
-        info('Sending email to '.count($batch).' recipients', [
-            'email_id' => $email->id,
-            'subject' => $email->subject,
-            'members' => $pendingMembers->toArray(),
-            'missionaries' => $pendingMissionaries->toArray(),
-        ]);
 
         Bus::batch($batch)
             ->before(function (Batch $batch) use ($email): void {

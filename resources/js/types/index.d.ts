@@ -38,10 +38,6 @@ export interface SharedData {
     error: string | null;
     message: string | null;
   };
-  availableLocales: {
-    label: Locale;
-    value: string;
-  }[];
   appName: string;
   environment: 'production' | 'local' | 'staging';
   church: Church | null;
