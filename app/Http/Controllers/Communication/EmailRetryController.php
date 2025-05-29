@@ -28,7 +28,7 @@ final class EmailRetryController extends Controller
             $email->load('members');
             $pendingMembers = $email
                 ->members()
-                ->where(fn(Builder $query): Builder => $query->where('status', EmailStatus::PENDING)
+                ->where(fn (Builder $query): Builder => $query->where('status', EmailStatus::PENDING)
                     ->orWhere('status', EmailStatus::FAILED))
                 ->get();
             $recipients = $recipients->merge($pendingMembers);
@@ -36,7 +36,7 @@ final class EmailRetryController extends Controller
             $email->load('missionaries');
             $pendingMissionaries = $email
                 ->missionaries()
-                ->where(fn(Builder $query): Builder => $query->where('status', EmailStatus::PENDING)
+                ->where(fn (Builder $query): Builder => $query->where('status', EmailStatus::PENDING)
                     ->orWhere('status', EmailStatus::FAILED))
                 ->get();
             $recipients = $recipients->merge($pendingMissionaries);
