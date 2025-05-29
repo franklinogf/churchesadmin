@@ -44,28 +44,24 @@ final class SendEmailJob implements ShouldQueue
 
         $pendingMembers = $email
             ->members()
-            ->where(function (Builder $query): Builder {
-                return $query->where('status', EmailStatus::PENDING)
-                    ->orWhere('status', EmailStatus::FAILED);
-            })
+            ->where(fn(Builder $query): Builder => $query->where('status', EmailStatus::PENDING)
+                ->orWhere('status', EmailStatus::FAILED))
             ->get();
 
         $pendingMissionaries = $email
             ->missionaries()
-            ->where(function (Builder $query): Builder {
-                return $query->where('status', EmailStatus::PENDING)
-                    ->orWhere('status', EmailStatus::FAILED);
-            })
+            ->where(fn(Builder $query): Builder => $query->where('status', EmailStatus::PENDING)
+                ->orWhere('status', EmailStatus::FAILED))
             ->get();
 
-        $pendingMembers->each(function ($member) use (&$batch) {
+        $pendingMembers->each(function ($member) use (&$batch): void {
             $batch[] = new SendCommunicationMessageJob($member->emailMessage);
         });
-        $pendingMissionaries->each(function ($missionary) use (&$batch) {
+        $pendingMissionaries->each(function ($missionary) use (&$batch): void {
             $batch[] = new SendCommunicationMessageJob($missionary->emailMessage);
         });
 
-        if (empty($batch)) {
+        if ($batch === []) {
             throw EmailException::noRecipientsSelected();
         }
         info('Sending email to '.count($batch).' recipients', [
