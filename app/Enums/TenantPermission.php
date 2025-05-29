@@ -30,13 +30,13 @@ enum TenantPermission: string
     case MEMBERS_CREATE = 'members.create';
     case MEMBERS_UPDATE = 'members.update';
     case MEMBERS_DELETE = 'members.delete';
-    case MEMBERS_FORCE_DELETE = 'members.force.delete';
+    case MEMBERS_FORCE_DELETE = 'members.force_delete';
     case MEMBERS_RESTORE = 'members.restore';
     case MISSIONARIES_MANAGE = 'missionaries.manage';
     case MISSIONARIES_CREATE = 'missionaries.create';
     case MISSIONARIES_UPDATE = 'missionaries.update';
     case MISSIONARIES_DELETE = 'missionaries.delete';
-    case MISSIONARIES_FORCE_DELETE = 'missionaries.force.delete';
+    case MISSIONARIES_FORCE_DELETE = 'missionaries.force_delete';
     case MISSIONARIES_RESTORE = 'missionaries.restore';
     case OFFERINGS_MANAGE = 'offerings.manage';
     case OFFERINGS_CREATE = 'offerings.create';
@@ -72,6 +72,12 @@ enum TenantPermission: string
     case EMAILS_SEND = 'emails.send';
     case EMAILS_SEND_TO_MEMBERS = 'emails.send_to.members';
     case EMAILS_SEND_TO_MISSIONARIES = 'emails.send_to.missionaries';
+    case VISITS_MANAGE = 'visits.manage';
+    case VISITS_CREATE = 'visits.create';
+    case VISITS_UPDATE = 'visits.update';
+    case VISITS_DELETE = 'visits.delete';
+    case VISITS_FORCE_DELETE = 'visits.force_delete';
+    case VISITS_RESTORE = 'visits.restore';
 
     public function label(): string
     {

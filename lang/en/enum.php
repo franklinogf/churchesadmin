@@ -3,6 +3,12 @@
 declare(strict_types=1);
 
 return [
+    'follow_up_type' => [
+        'call' => 'Call',
+        'email' => 'Email',
+        'in_person' => 'In Person',
+        'letter' => 'Letter',
+    ],
     'email_status' => [
         'pending' => 'Pending',
         'sent' => 'Sent',
@@ -18,6 +24,7 @@ return [
         'offering_type' => 'Offering Type',
         'check_layout' => 'Check Layout',
         'email' => 'Email',
+        'visit' => 'Visit',
     ],
     'wallet_name' => [
         'primary' => 'Primary',
@@ -95,13 +102,13 @@ return [
         'members.create' => 'Create Member',
         'members.update' => 'Update Member',
         'members.delete' => 'Delete Member',
-        'members.force.delete' => 'Force Delete Member',
+        'members.force_delete' => 'Force Delete Member',
         'members.restore' => 'Restore Member',
         'missionaries.manage' => 'Manage Missionaries',
         'missionaries.create' => 'Create Missionary',
         'missionaries.update' => 'Update Missionary',
         'missionaries.delete' => 'Delete Missionary',
-        'missionaries.force.delete' => 'Force Delete Missionary',
+        'missionaries.force_delete' => 'Force Delete Missionary',
         'missionaries.restore' => 'Restore Missionary',
         'offerings.manage' => 'Manage Offerings',
         'offerings.create' => 'Create Offering',
@@ -137,5 +144,11 @@ return [
         'emails.send' => 'Send Email',
         'emails.send_to.members' => 'Send Email to Members',
         'emails.send_to.missionaries' => 'Send Email to Missionaries',
+        'visits.manage' => 'Manage Visits',
+        'visits.create' => 'Create Visit',
+        'visits.update' => 'Update Visit',
+        'visits.delete' => 'Delete Visit',
+        'visits.force_delete' => 'Force Delete Visit',
+        'visits.restore' => 'Restore Visit',
     ],
 ];

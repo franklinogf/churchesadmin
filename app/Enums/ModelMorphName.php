@@ -14,6 +14,7 @@ enum ModelMorphName: string
     case OFFERING_TYPE = 'offering_type';
     case CHECK_LAYOUT = 'check_layout';
     case EMAIL = 'email';
+    case VISIT = 'visit';
 
     public function label(): string
     {
@@ -26,6 +27,7 @@ enum ModelMorphName: string
             self::OFFERING_TYPE => __('enum.model_morph_name.offering_type'),
             self::CHECK_LAYOUT => __('enum.model_morph_name.check_layout'),
             self::EMAIL => __('enum.model_morph_name.email'),
+            self::VISIT => __('enum.model_morph_name.visit'),
         };
     }
 }

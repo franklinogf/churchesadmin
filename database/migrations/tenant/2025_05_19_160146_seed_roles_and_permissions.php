@@ -21,7 +21,7 @@ return new class extends Migration
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
         $permissions = collect(TenantPermission::values())
-            ->map(fn ($permission) => ['name' => $permission, 'guard_name' => $guardName]);
+            ->map(fn ($permission): array => ['name' => $permission, 'guard_name' => $guardName]);
 
         Permission::insert($permissions->toArray());
 
@@ -35,13 +35,13 @@ return new class extends Migration
         Role::create(['name' => TenantRole::ADMIN, 'guard_name' => $guardName])
             ->givePermissionTo(
                 collect(TenantPermission::values())
-                    ->filter(fn (string $permission) => ! str($permission)->startsWith('users'))
+                    ->filter(fn (string $permission): bool => ! str($permission)->startsWith('users'))
                     ->toArray()
             );
 
         Role::create(['name' => TenantRole::SECRETARY, 'guard_name' => $guardName])
             ->givePermissionTo(collect(TenantPermission::values())
-                ->filter(fn (string $permission) => ! str($permission)->endsWith('delete') && ! str($permission)->startsWith('users'))
+                ->filter(fn (string $permission): bool => ! str($permission)->endsWith('delete') && ! str($permission)->startsWith('users'))
                 ->toArray()
             );
 

@@ -10,3 +10,5 @@ export type OneOf<TypesArray extends any[], Res = never, AllProperties = MergeTy
   : Res;
 
 export type AutoComplete<T> = T | (string & {});
+
+export type MakeRequired<T, K extends keyof T> = T & Required<Pick<T, K>>;
