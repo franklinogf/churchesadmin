@@ -104,7 +104,8 @@
         "test:typos": "peck",
         "test:unit": "pest --testsuite=Unit --stop-on-failure",
         "test:feature": "pest --testsuite=Feature --stop-on-failure",
-        "test:all": "pest --parallel --coverage --compact --colors=always --profile --stop-on-failure && php artisan test:cleanup",
+        "test:all": "pest --parallel --coverage --compact --colors=always --profile --stop-on-failure",
+        "test:cleanup": "php artisan test:cleanup",
         "test:migrate": "php artisan migrate --database=testing",
         "test": [
             "@test:refactor",
