@@ -1,7 +1,8 @@
-import { type Member, type MemberMorphClass } from '@/types/models/member';
-import { type Missionary, type MissionaryMorphClass } from './missionary';
+import type { ModelMorphName } from '@/enums';
+import { type Member } from '@/types/models/member';
+import { type Missionary } from './missionary';
 
-type MorphClasses = MemberMorphClass | MissionaryMorphClass;
+type MorphClasses = ModelMorphName.MEMBER | ModelMorphName.MISSIONARY;
 type AddressOwner = Member | Missionary;
 
 export interface Address {

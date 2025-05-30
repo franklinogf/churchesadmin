@@ -269,5 +269,18 @@
     "Sent to :name": "Sent to :name",
     "Some emails failed to send": "Some emails failed to send",
     "Some recipients have failed to receive the email. Please check their error messages.": "Some recipients have failed to receive the email. Please check their error messages.",
-    "Retry sending failed emails": "Retry sending failed emails"
+    "Retry sending failed emails": "Retry sending failed emails",
+    "Visit": "Visit",
+    "First visit date": "First visit date",
+    "Visits": "Visits",
+    "Notes": "Notes",
+    "Follow Up": "Follow Up",
+    "Follow Ups": "Follow Ups",
+    "Follow Up Notes": "Follow Up Notes",
+    "No notes": "No notes",
+    ":name follow ups": ":name follow ups",
+    "Follow up type": "Follow up type",
+    "Follow up date": "Follow up date",
+    "First visit": "First visit",
+    "Manage the visits that comes to the church": "Manage the visits that comes to the church"
 }

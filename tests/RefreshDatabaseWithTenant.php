@@ -60,7 +60,7 @@ trait RefreshDatabaseWithTenant
              * This is necessary to avoid database collisions when running tests in parallel.
              */
             $token = ParallelTesting::token();
-            $tenantId = $tenantId.($token ? "_{$token}" : '');
+            $tenantId .= $token ? "_{$token}" : '';
 
             config([
                 'tenancy.database.suffix' => config('tenancy.database.suffix').($token ? "_{$token}" : ''),

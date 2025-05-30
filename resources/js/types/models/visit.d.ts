@@ -1,5 +1,5 @@
 import type { FollowUpType } from '@/enums';
-import type { Address } from './address';
+import type { AddressRelationship } from './address';
 import type { Member } from './member';
 
 export interface Visit {
@@ -8,10 +8,11 @@ export interface Visit {
   lastName: string;
   email: string | null;
   phone: string;
+  firstVisitDate: string | null;
   createdAt: string;
   updatedAt: string;
   deletedAt: string | null;
-  address?: Address | null;
+  address?: AddressRelationship | null;
   followUps?: VisitFollowUp[];
   lastFollowUp?: VisitFollowUp | null;
 }
@@ -23,8 +24,8 @@ export interface VisitFollowUp {
   memberId: number;
   member?: Member;
   type: FollowUpType;
-  followUpDate: string;
-  note: string | null;
+  followUpAt: string;
+  notes: string | null;
   createdAt: string;
   updatedAt: string;
   deletedAt: string | null;

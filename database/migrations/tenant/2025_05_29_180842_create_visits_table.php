@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('last_name');
             $table->string('email')->nullable()->unique();
             $table->string('phone')->unique();
+            $table->date('first_visit_date')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

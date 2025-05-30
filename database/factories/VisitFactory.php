@@ -23,6 +23,7 @@ final class VisitFactory extends Factory
             'last_name' => fake()->lastName(),
             'phone' => fake()->unique()->e164PhoneNumber(),
             'email' => fake()->optional()->unique()?->safeEmail(),
+            'first_visit_date' => fake()->optional()->dateTimeBetween('-1 month', 'now'),
         ];
     }
 }

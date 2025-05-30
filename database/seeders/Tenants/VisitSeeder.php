@@ -1,17 +1,21 @@
 <?php
 
-namespace Database\Seeders;
+declare(strict_types=1);
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+namespace Database\Seeders\Tenants;
+
+use App\Models\Visit;
 use Illuminate\Database\Seeder;
 
-class VisitSeeder extends Seeder
+final class VisitSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        //
+        Visit::factory()
+            ->count(10)
+            ->create();
     }
 }

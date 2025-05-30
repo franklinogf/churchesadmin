@@ -40,7 +40,7 @@ Route::delete('missionaries/{missionary}/force-delete', [MissionaryController::c
 Route::resource('users', UserController::class)
     ->except(['show']);
 
-Route::resource('visits', VisitController::class);
+Route::resource('visits', VisitController::class)->except(['show']);
 Route::resource('visits.follow-ups', VisitFollowUpController::class)->except(['edit', 'create', 'show'])->shallow();
 Route::put('visits/{visit}/restore', [VisitController::class, 'restore'])
     ->withTrashed()

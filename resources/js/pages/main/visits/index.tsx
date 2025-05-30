@@ -1,7 +1,9 @@
 import { DataTable } from '@/components/custom-ui/datatable/data-table';
 import { DatatableActionsDropdown } from '@/components/custom-ui/datatable/data-table-actions-dropdown';
+import { DatatableCell } from '@/components/custom-ui/datatable/DatatableCell';
 import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTableColumnHeader';
 import { PageTitle } from '@/components/PageTitle';
+import { Button } from '@/components/ui/button';
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
@@ -34,13 +36,19 @@ export default function VisitsIndex({ visits }: VisitsIndexProps) {
         enableHiding: false,
         header: ({ column }) => <DataTableColumnHeader column={column} title={t('Phone')} />,
         accessorKey: 'phone',
-        cell: ({ row }) => <span>{row.original.phone}</span>,
+        cell: ({ row }) => <DatatableCell justify="center">{row.original.phone}</DatatableCell>,
       },
       {
         enableHiding: false,
         header: ({ column }) => <DataTableColumnHeader column={column} title={t('Email')} />,
         accessorKey: 'email',
-        cell: ({ row }) => <span>{row.original.email}</span>,
+        cell: ({ row }) => <DatatableCell justify="center">{row.original.email}</DatatableCell>,
+      },
+      {
+        enableHiding: false,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={t('First visit')} />,
+        accessorKey: 'firstVisitDate',
+        cell: ({ row }) => <DatatableCell justify="center">{row.original.firstVisitDate}</DatatableCell>,
       },
       {
         id: 'actions',
@@ -58,7 +66,7 @@ export default function VisitsIndex({ visits }: VisitsIndexProps) {
               <DropdownMenuItem asChild>
                 <Link href={route('visits.follow-ups.index', row.original.id)} className="w-full">
                   <FileEditIcon className="size-4" />
-                  {t('Follow ups')}
+                  {t('Follow Ups')}
                 </Link>
               </DropdownMenuItem>
             </DatatableActionsDropdown>
@@ -73,7 +81,15 @@ export default function VisitsIndex({ visits }: VisitsIndexProps) {
     <AppLayout title={t('Visits')} breadcrumbs={[{ title: t('Visits') }]}>
       <PageTitle description={t('Manage the visits that comes to the church')}>{t('Visits')}</PageTitle>
 
-      <DataTable data={visits} columns={columns} />
+      <DataTable
+        headerButton={
+          <Button asChild size="sm">
+            <Link href={route('visits.create')}>{t('Add :model', { model: t('Visit') })}</Link>
+          </Button>
+        }
+        data={visits}
+        columns={columns}
+      />
     </AppLayout>
   );
 }

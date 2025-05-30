@@ -18,8 +18,8 @@ return new class extends Migration
             $table->foreignId('visit_id')->constrained('visits')->cascadeOnDelete();
             $table->foreignId('member_id')->constrained('members');
             $table->string('type'); // e.g., 'call', 'email', 'in-person'
-            $table->timestamp('follow_up_date');
-            $table->text('note')->nullable();
+            $table->timestamp('follow_up_at');
+            $table->text('notes')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

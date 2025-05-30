@@ -18,8 +18,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read int $member_id
  * @property-read Member $member
  * @property-read FollowUpType $type
- * @property-read CarbonImmutable $follow_up_date
- * @property-read string|null $note
+ * @property-read CarbonImmutable $follow_up_at
+ * @property-read string|null $notes
  * @property-read CarbonImmutable $created_at
  * @property-read CarbonImmutable $updated_at
  * @property-read CarbonImmutable|null $deleted_at
@@ -58,7 +58,7 @@ final class FollowUp extends Model
     {
         return [
             'type' => FollowUpType::class,
-            'follow_up_date' => 'immutable_datetime',
+            'follow_up_at' => 'immutable_datetime:Y-m-d H:i',
         ];
     }
 }

@@ -29,7 +29,7 @@ final class CleanTestDatabases extends Command implements Isolatable
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): ?int
     {
         if (app()->isProduction()) {
             $this->error('This command should not be run in production.');
@@ -37,12 +37,18 @@ final class CleanTestDatabases extends Command implements Isolatable
             return 1;
         }
 
+        /**
+         * @var string $dbPrefix
+         */
         $dbPrefix = $this->argument('db-prefix');
 
         // Find all SQLite database files in the database directory
         // and delete those that start with 'test_churchesadmin'.
 
         $this->info('Cleaning up test databases...');
+        /**
+         * @var array<int,string> $files
+         */
         $files = File::glob(database_path("{$dbPrefix}*"));
 
         foreach ($files as $file) {
@@ -56,6 +62,9 @@ final class CleanTestDatabases extends Command implements Isolatable
         // Find all MySQL databases that start with the given prefix
         $databases = DB::select("SHOW DATABASES LIKE '{$dbPrefix}%'");
         foreach ($databases as $db) {
+            /**
+             * @var string $dbName
+             */
             $dbName = $db->{"Database ({$dbPrefix}%)"};
             if ($dbName === $dbPrefix) {
                 continue;
@@ -66,11 +75,17 @@ final class CleanTestDatabases extends Command implements Isolatable
 
         $this->info("Deleting storage folders for databases with prefix: $dbPrefix");
         // delete storage folder for the tenant
+        /**
+         * @var array<int,string> $storageFolders
+         */
         $storageFolders = File::glob(pattern: storage_path("{$dbPrefix}*"));
 
         foreach ($storageFolders as $folder) {
             File::deleteDirectory($folder);
         }
+        /**
+         * @var array<int,string> $publicFolders
+         */
         $publicFolders = File::glob(pattern: public_path('public-test_*'));
 
         foreach ($publicFolders as $folder) {
@@ -80,5 +95,7 @@ final class CleanTestDatabases extends Command implements Isolatable
         }
 
         $this->info('Cleanup complete.');
+
+        return null;
     }
 }

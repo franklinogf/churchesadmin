@@ -1,25 +1,31 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Policies;
 
+use App\Enums\TenantPermission;
 use App\Models\TenantUser;
-use App\Models\Visit;
 use Illuminate\Auth\Access\Response;
 
-class VisitPolicy
+final class VisitPolicy
 {
     /**
      * Determine whether the user can view any models.
      */
-    public function viewAny(TenantUser $tenantUser): bool
+    public function viewAny(TenantUser $tenantUser): Response
     {
-        return false;
+        if ($tenantUser->can(TenantPermission::VISITS_MANAGE)) {
+            return Response::allow();
+        }
+
+        return Response::deny(__('permission.view_any', ['label' => __('Visit')]));
     }
 
     /**
      * Determine whether the user can view the model.
      */
-    public function view(TenantUser $tenantUser, Visit $visit): bool
+    public function view(): bool
     {
         return false;
     }
@@ -27,23 +33,31 @@ class VisitPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(TenantUser $tenantUser): bool
+    public function create(TenantUser $tenantUser): Response
     {
-        return false;
+        if ($tenantUser->can(TenantPermission::VISITS_CREATE)) {
+            return Response::allow();
+        }
+
+        return Response::deny(__('permission.create', ['label' => __('Visit')]));
     }
 
     /**
      * Determine whether the user can update the model.
      */
-    public function update(TenantUser $tenantUser, Visit $visit): bool
+    public function update(TenantUser $tenantUser): Response
     {
-        return false;
+        if ($tenantUser->can(TenantPermission::VISITS_UPDATE)) {
+            return Response::allow();
+        }
+
+        return Response::deny(__('permission.update', ['label' => __('Visit')]));
     }
 
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(TenantUser $tenantUser, Visit $visit): bool
+    public function delete(): bool
     {
         return false;
     }
@@ -51,7 +65,7 @@ class VisitPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(TenantUser $tenantUser, Visit $visit): bool
+    public function restore(): bool
     {
         return false;
     }
@@ -59,7 +73,7 @@ class VisitPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(TenantUser $tenantUser, Visit $visit): bool
+    public function forceDelete(): bool
     {
         return false;
     }
