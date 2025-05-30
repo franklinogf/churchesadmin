@@ -25,8 +25,8 @@ final class FollowUpFactory extends Factory
             'visit_id' => Visit::factory(),
             'member_id' => Member::factory(),
             'type' => fake()->randomElement(FollowUpType::cases()),
-            'follow_up_date' => fake()->dateTimeBetween('-1 month', '+1 month'),
-            'note' => fake()->optional(0.8)->text(200),
+            'follow_up_at' => fake()->dateTimeBetween('-1 month', '+1 month'),
+            'notes' => fake()->optional(0.8)->text(200),
         ];
     }
 }
