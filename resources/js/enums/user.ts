@@ -18,13 +18,13 @@ export enum UserPermission {
   MEMBERS_CREATE = 'members.create',
   MEMBERS_UPDATE = 'members.update',
   MEMBERS_DELETE = 'members.delete',
-  MEMBERS_FORCE_DELETE = 'members.force.delete',
+  MEMBERS_FORCE_DELETE = 'members.force_delete',
   MEMBERS_RESTORE = 'members.restore',
   MISSIONARIES_MANAGE = 'missionaries.manage',
   MISSIONARIES_CREATE = 'missionaries.create',
   MISSIONARIES_UPDATE = 'missionaries.update',
   MISSIONARIES_DELETE = 'missionaries.delete',
-  MISSIONARIES_FORCE_DELETE = 'missionaries.force.delete',
+  MISSIONARIES_FORCE_DELETE = 'missionaries.force_delete',
   MISSIONARIES_RESTORE = 'missionaries.restore',
   OFFERINGS_MANAGE = 'offerings.manage',
   OFFERINGS_CREATE = 'offerings.create',
@@ -59,6 +59,12 @@ export enum UserPermission {
   EMAILS_SEND = 'emails.send',
   EMAILS_SEND_TO_MEMBERS = 'emails.send_to.members',
   EMAILS_SEND_TO_MISSIONARIES = 'emails.send_to.missionaries',
+  VISITS_MANAGE = 'visits.manage',
+  VISITS_CREATE = 'visits.create',
+  VISITS_UPDATE = 'visits.update',
+  VISITS_DELETE = 'visits.delete',
+  VISITS_FORCE_DELETE = 'visits.force_delete',
+  VISITS_RESTORE = 'visits.restore',
 }
 
 export enum UserRole {

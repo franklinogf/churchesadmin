@@ -32,7 +32,7 @@ use Spatie\Tags\HasTags;
  * @property-read DateTimeInterface $updated_at
  * @property-read Address|null $address
  * @property-read Collection<int,Tag> $tags
- * @property-read Email[] $emails
+ * @property-read Collection<int,Email> $emails
  * @property-read Emailable $emailMessage
  */
 final class Member extends Model
@@ -51,7 +51,7 @@ final class Member extends Model
     }
 
     /**
-     * The address that has the member.
+     * The address of the member.
      *
      * @return MorphOne<Address, $this>
      */

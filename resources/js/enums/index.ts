@@ -78,3 +78,10 @@ export enum EmailStatus {
   PENDING = 'pending',
   SENDING = 'sending',
 }
+
+export enum FollowUpType {
+  CALL = 'call',
+  IN_PERSON = 'in_person',
+  EMAIL = 'email',
+  LETTER = 'letter',
+}

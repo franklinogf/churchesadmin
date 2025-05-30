@@ -21,7 +21,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property-read string $city
  * @property-read string $state
  * @property-read string $country
- * @property-read string $postal_code
+ * @property-read string $zip_code
  * @property-read DateTimeInterface $created_at
  * @property-read DateTimeInterface $updated_at
  */

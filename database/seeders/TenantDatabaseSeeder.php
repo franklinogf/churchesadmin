@@ -47,6 +47,9 @@ final class TenantDatabaseSeeder extends Seeder
             OfferingType::factory(5)->create();
             Tag::factory(3)->skill()->create();
             Tag::factory(3)->category()->create();
+            $this->call([
+                Tenants\VisitSeeder::class,
+            ]);
         }
 
     }

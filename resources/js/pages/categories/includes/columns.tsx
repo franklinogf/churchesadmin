@@ -51,7 +51,7 @@ export const columns: ColumnDef<Tag>[] = [
             {userCan(UserPermission.CATEGORIES_DELETE) && (
               <DropdownMenuItem
                 variant="destructive"
-                onClick={() => {
+                onSelect={() => {
                   openConfirmation({
                     title: t('Are you sure you want to delete this :model?', { model: t('Category') }),
                     description: (category.isRegular ? t('This is marked as regular.') + '\n' : '') + t('This action cannot be undone.'),

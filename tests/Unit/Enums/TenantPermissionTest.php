@@ -68,6 +68,12 @@ it('has needed enums', function (): void {
         'EMAILS_SEND',
         'EMAILS_SEND_TO_MEMBERS',
         'EMAILS_SEND_TO_MISSIONARIES',
+        'VISITS_MANAGE',
+        'VISITS_CREATE',
+        'VISITS_UPDATE',
+        'VISITS_DELETE',
+        'VISITS_FORCE_DELETE',
+        'VISITS_RESTORE',
 
     ]);
 

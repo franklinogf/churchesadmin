@@ -3,6 +3,12 @@
 declare(strict_types=1);
 
 return [
+    'follow_up_type' => [
+        'call' => 'Llamada',
+        'email' => 'Correo Electrónico',
+        'in_person' => 'En Persona',
+        'letter' => 'Carta',
+    ],
     'email_status' => [
         'pending' => 'Pendiente',
         'sent' => 'Enviado',
@@ -18,6 +24,7 @@ return [
         'offering_type' => 'Tipo de Ofrenda',
         'check_layout' => 'Diseño de Cheque',
         'email' => 'Email',
+        'visit' => 'Visita',
     ],
     'wallet_name' => [
         'primary' => 'Principal',

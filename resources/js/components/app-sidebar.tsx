@@ -52,6 +52,12 @@ export function AppSidebar() {
             icon: Users2Icon,
             permissionNeeded: UserPermission.USERS_MANAGE,
           },
+          {
+            title: t('Visits'),
+            href: route('visits.index'),
+            icon: Users2Icon,
+            permissionNeeded: UserPermission.VISITS_MANAGE,
+          },
         ],
       },
       {

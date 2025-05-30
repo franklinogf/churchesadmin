@@ -13,6 +13,7 @@ use App\Models\Member;
 use App\Models\Missionary;
 use App\Models\OfferingType;
 use App\Models\TenantUser;
+use App\Models\Visit;
 use Bavix\Wallet\WalletConfigure;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Model;
@@ -54,7 +55,7 @@ final class AppServiceProvider extends ServiceProvider
 
         WalletConfigure::ignoreMigrations();
 
-        URL::forceScheme('https');
+        URL::forceHttps(app()->isProduction());
 
     }
 
@@ -83,6 +84,7 @@ final class AppServiceProvider extends ServiceProvider
             ModelMorphName::OFFERING_TYPE->value => OfferingType::class,
             ModelMorphName::CHECK_LAYOUT->value => CheckLayout::class,
             ModelMorphName::EMAIL->value => Email::class,
+            ModelMorphName::VISIT->value => Visit::class,
         ]);
     }
 
