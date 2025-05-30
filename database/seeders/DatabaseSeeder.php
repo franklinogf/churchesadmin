@@ -26,7 +26,7 @@ final class DatabaseSeeder extends Seeder
 
         if (! app()->isProduction()) {
             Church::create([
-                'id' => 'test-church',
+                'id' => 'demo-church',
                 'name' => 'Test Church',
                 'locale' => LanguageCode::ENGLISH->value,
                 'active' => true,
