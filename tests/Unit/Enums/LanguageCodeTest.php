@@ -37,3 +37,23 @@ test('options return an array', function (): void {
         ]);
 
 });
+
+test('label for filament returns correct label', function (): void {
+
+    expect(LanguageCode::ENGLISH->getLabel())
+        ->toBe(__('enum.language_code.en'))
+        ->toBeString()
+        ->and(LanguageCode::SPANISH->getLabel())
+        ->toBe(__('enum.language_code.es'))
+        ->toBeString();
+
+});
+
+test('color for filament returns correct color', function (): void {
+
+    expect(LanguageCode::ENGLISH->getColor())
+        ->toBeArray()
+        ->and(LanguageCode::SPANISH->getColor())
+        ->toBeArray();
+
+});
