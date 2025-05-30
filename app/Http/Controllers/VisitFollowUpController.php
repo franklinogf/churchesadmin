@@ -16,6 +16,7 @@ use App\Models\FollowUp;
 use App\Models\Member;
 use App\Models\Visit;
 use App\Support\SelectOption;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
@@ -30,7 +31,10 @@ final class VisitFollowUpController extends Controller
     {
         Gate::authorize('viewAny', $visit);
 
-        $visit->load('followUps.member');
+        $visit->load(['followUps' => function (HasMany $query): void {
+            $query->with('member')->latest();
+        }]);
+
         $memberOptions = SelectOption::create(Member::all(), labels: ['name', 'last_name']);
         $followUpTypeOptions = FollowUpType::options();
 
