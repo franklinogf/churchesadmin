@@ -55,7 +55,7 @@ final class AppServiceProvider extends ServiceProvider
 
         WalletConfigure::ignoreMigrations();
 
-        URL::forceScheme('https');
+        URL::forceHttps(app()->isProduction());
 
     }
 
