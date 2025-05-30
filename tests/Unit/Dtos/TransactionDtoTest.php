@@ -6,8 +6,8 @@ use App\Dtos\TransactionDto;
 use App\Dtos\TransactionMetaDto;
 use App\Enums\TransactionMetaType;
 
-describe('TransactionDto', function () {
-    it('can be instantiated', function () {
+describe('TransactionDto', function (): void {
+    it('can be instantiated', function (): void {
         $amount = '100.00';
         $meta = new TransactionMetaDto(TransactionMetaType::CHECK);
         $confirmed = true;
@@ -24,7 +24,7 @@ describe('TransactionDto', function () {
             ->and($dto->confirmed)->toBe($confirmed);
     });
 
-    it('can be instantiated with default confirmed value', function () {
+    it('can be instantiated with default confirmed value', function (): void {
         $amount = '100.00';
         $meta = new TransactionMetaDto(TransactionMetaType::CHECK);
 
@@ -39,7 +39,7 @@ describe('TransactionDto', function () {
             ->and($dto->confirmed)->toBeTrue();
     });
 
-    it('can be converted to array', function () {
+    it('can be converted to array', function (): void {
         $amount = '100.00';
         $meta = new TransactionMetaDto(TransactionMetaType::OFFERING);
         $confirmed = false;
@@ -59,7 +59,7 @@ describe('TransactionDto', function () {
         ]);
     });
 
-    it('can be serialized to JSON', function () {
+    it('can be serialized to JSON', function (): void {
         $amount = '100.00';
         $meta = new TransactionMetaDto(TransactionMetaType::EXPENSE);
         $confirmed = false;

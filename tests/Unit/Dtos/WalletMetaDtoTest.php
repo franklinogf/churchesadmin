@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 use App\Dtos\WalletMetaDto;
 
-describe('WalletMetaDto', function () {
-    it('can be instantiated', function () {
+describe('WalletMetaDto', function (): void {
+    it('can be instantiated', function (): void {
         $bankName = 'Test Bank';
         $bankRoutingNumber = '123456789';
         $bankAccountNumber = '987654321';
@@ -22,7 +22,7 @@ describe('WalletMetaDto', function () {
             ->and($dto->bankAccountNumber)->toBe($bankAccountNumber);
     });
 
-    it('can be converted to array', function () {
+    it('can be converted to array', function (): void {
         $bankName = 'Test Bank';
         $bankRoutingNumber = '123456789';
         $bankAccountNumber = '987654321';
@@ -42,7 +42,7 @@ describe('WalletMetaDto', function () {
         ]);
     });
 
-    it('can be serialized to JSON', function () {
+    it('can be serialized to JSON', function (): void {
         $bankName = 'Test Bank';
         $bankRoutingNumber = '123456789';
         $bankAccountNumber = '987654321';

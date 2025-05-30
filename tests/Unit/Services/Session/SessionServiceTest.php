@@ -8,12 +8,12 @@ use App\Enums\SessionName;
 use App\Services\Session\SessionService;
 use Illuminate\Support\Facades\Session;
 
-describe('SessionService', function () {
-    beforeEach(function () {
+describe('SessionService', function (): void {
+    beforeEach(function (): void {
         Session::shouldReceive('driver')->andReturnSelf();
     });
 
-    it('can create a session value', function () {
+    it('can create a session value', function (): void {
         // Arrange
         $name = SessionName::EMAIL_RECIPIENTS;
         $value = ['test@example.com', 'another@example.com'];
@@ -27,7 +27,7 @@ describe('SessionService', function () {
         SessionService::create($name, $value);
     });
 
-    it('can get a session value', function () {
+    it('can get a session value', function (): void {
         // Arrange
         $name = SessionName::EMAIL_RECIPIENTS;
         $value = ['test@example.com', 'another@example.com'];
@@ -45,7 +45,7 @@ describe('SessionService', function () {
         expect($result)->toBe($value);
     });
 
-    it('can get a session value with a default', function () {
+    it('can get a session value with a default', function (): void {
         // Arrange
         $name = SessionName::EMAIL_RECIPIENTS;
         $default = ['default@example.com'];
@@ -63,7 +63,7 @@ describe('SessionService', function () {
         expect($result)->toBe($default);
     });
 
-    it('can forget a session value', function () {
+    it('can forget a session value', function (): void {
         // Arrange
         $name = SessionName::EMAIL_RECIPIENTS;
 
@@ -76,7 +76,7 @@ describe('SessionService', function () {
         SessionService::forget($name);
     });
 
-    it('can get and forget a session value', function () {
+    it('can get and forget a session value', function (): void {
         // Arrange
         $name = SessionName::EMAIL_RECIPIENTS;
         $value = ['test@example.com'];
@@ -98,7 +98,7 @@ describe('SessionService', function () {
         expect($result)->toBe($value);
     });
 
-    it('can get and forget a session value with default', function () {
+    it('can get and forget a session value with default', function (): void {
         // Arrange
         $name = SessionName::EMAIL_RECIPIENTS;
         $default = ['default@example.com'];

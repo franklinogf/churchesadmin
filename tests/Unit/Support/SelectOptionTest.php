@@ -16,14 +16,14 @@ final class TestModel extends Model
     }
 }
 
-describe('SelectOption class', function () {
-    it('returns an empty array if items is not a collection', function () {
+describe('SelectOption class', function (): void {
+    it('returns an empty array if items is not a collection', function (): void {
         $result = SelectOption::create(null);
 
         expect($result)->toBe([]);
     });
 
-    it('creates select options with default parameters', function () {
+    it('creates select options with default parameters', function (): void {
         $items = new Collection([
             new TestModel(['id' => 1, 'name' => 'Item 1']),
             new TestModel(['id' => 2, 'name' => 'Item 2']),
@@ -37,7 +37,7 @@ describe('SelectOption class', function () {
         ]);
     });
 
-    it('creates select options with custom value and label fields', function () {
+    it('creates select options with custom value and label fields', function (): void {
         $items = new Collection([
             new TestModel(['id' => 1, 'title' => 'Title 1']),
             new TestModel(['id' => 2, 'title' => 'Title 2']),
@@ -51,7 +51,7 @@ describe('SelectOption class', function () {
         ]);
     });
 
-    it('creates select options with multiple label fields', function () {
+    it('creates select options with multiple label fields', function (): void {
         $items = new Collection([
             new TestModel(['id' => 1, 'name' => 'Name 1', 'title' => 'Title 1']),
             new TestModel(['id' => 2, 'name' => 'Name 2', 'title' => 'Title 2']),
@@ -66,14 +66,14 @@ describe('SelectOption class', function () {
     });
 });
 
-describe('SelectOption createForMultiple', function () {
-    it('returns an empty array if items is not a collection', function () {
+describe('SelectOption createForMultiple', function (): void {
+    it('returns an empty array if items is not a collection', function (): void {
         $result = SelectOption::createForMultiple('Test Heading', null);
 
         expect($result)->toBe([]);
     });
 
-    it('creates multiple select options with default parameters', function () {
+    it('creates multiple select options with default parameters', function (): void {
         $items = new Collection([
             new TestModel(['id' => 1, 'name' => 'Item 1']),
             new TestModel(['id' => 2, 'name' => 'Item 2']),
@@ -91,7 +91,7 @@ describe('SelectOption createForMultiple', function () {
         ]);
     });
 
-    it('creates multiple select options with custom value and label fields', function () {
+    it('creates multiple select options with custom value and label fields', function (): void {
         $items = new Collection([
             new TestModel(['id' => 1, 'title' => 'Title 1']),
             new TestModel(['id' => 2, 'title' => 'Title 2']),
@@ -109,7 +109,7 @@ describe('SelectOption createForMultiple', function () {
         ]);
     });
 
-    it('creates multiple select options with multiple label fields', function () {
+    it('creates multiple select options with multiple label fields', function (): void {
         $items = new Collection([
             new TestModel(['id' => 1, 'name' => 'Name 1', 'description' => 'Desc 1']),
             new TestModel(['id' => 2, 'name' => 'Name 2', 'description' => 'Desc 2']),

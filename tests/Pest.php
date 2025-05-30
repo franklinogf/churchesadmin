@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Enums\TenantPermission;
 use App\Models\TenantUser;
+use Illuminate\Foundation\Testing\TestCase as TestingTestCase;
 use Illuminate\Support\Facades\Auth;
 use Tests\RefreshDatabaseWithTenant;
 use Tests\TestCase;
@@ -19,10 +20,15 @@ use Tests\TestCase;
 |
 */
 
-pest()->extend(TestCase::class)->in('Feature', 'Unit');
-pest()->use(RefreshDatabaseWithTenant::class)->in('Feature/**/Tenant', 'Unit/**/Tenant')->beforeEach(function (): void {
-    Auth::shouldUse('tenant');
-});
+pest()->extend(TestCase::class)
+    ->in('Feature', 'Unit');
+
+pest()->extend(TestCase::class)->use(RefreshDatabaseWithTenant::class)
+    ->in('Tenant')
+    ->beforeEach(function (): void {
+        Auth::shouldUse('tenant');
+    });
+
 /*
 |--------------------------------------------------------------------------
 | Expectations
@@ -47,7 +53,7 @@ expect()->extend('toBeOne', fn () => $this->toBe(1));
 |
 */
 
-function asUserWithPermission(TenantPermission ...$permissions): TestCase
+function asUserWithPermission(TenantPermission ...$permissions): TestingTestCase
 {
     $user = TenantUser::factory()->create();
     $user->syncPermissions(...$permissions);
@@ -55,7 +61,7 @@ function asUserWithPermission(TenantPermission ...$permissions): TestCase
     return test()->actingAs($user);
 }
 
-function asUserWithoutPermission(): TestCase
+function asUserWithoutPermission(): TestingTestCase
 {
     $user = TenantUser::factory()->create();
 

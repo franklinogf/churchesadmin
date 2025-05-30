@@ -5,8 +5,8 @@ declare(strict_types=1);
 use App\Dtos\CheckLayoutFieldsDto;
 use Bavix\Wallet\Services\FormatterService;
 
-describe('CheckLayoutFieldsDto', function () {
-    it('can be instantiated', function () {
+describe('CheckLayoutFieldsDto', function (): void {
+    it('can be instantiated', function (): void {
         $date = '2025-05-30';
         $amount = '100.00';
         $payee = 'John Doe';
@@ -29,7 +29,7 @@ describe('CheckLayoutFieldsDto', function () {
             ->and($dto->amount_in_words)->toBe($amountInWords);
     });
 
-    it('can be instantiated without memo', function () {
+    it('can be instantiated without memo', function (): void {
         $date = '2025-05-30';
         $amount = '100.00';
         $payee = 'John Doe';
@@ -51,7 +51,7 @@ describe('CheckLayoutFieldsDto', function () {
     });
 
     // Mock FormatterService's intValue method by creating a stub
-    it('can be created from array', function () {
+    it('can be created from array', function (): void {
         $data = [
             'date' => '2025-05-30',
             'amount' => '100.00',
@@ -70,7 +70,7 @@ describe('CheckLayoutFieldsDto', function () {
         // We can't easily test amount_in_words due to mocking challenges with internal static methods
     });
 
-    it('can be created from array without memo', function () {
+    it('can be created from array without memo', function (): void {
 
         $data = [
             'date' => '2025-05-30',
@@ -87,7 +87,7 @@ describe('CheckLayoutFieldsDto', function () {
             ->and($dto->memo)->toBeNull();
     });
 
-    it('properly formats negative amounts', function () {
+    it('properly formats negative amounts', function (): void {
 
         $data = [
             'date' => '2025-05-30',
@@ -101,7 +101,7 @@ describe('CheckLayoutFieldsDto', function () {
         expect($dto->amount)->toBe('100.00'); // Should be positive
     });
 
-    it('can be converted to array', function () {
+    it('can be converted to array', function (): void {
         $date = '2025-05-30';
         $amount = '100.00';
         $payee = 'John Doe';
@@ -127,7 +127,7 @@ describe('CheckLayoutFieldsDto', function () {
         ]);
     });
 
-    it('can be serialized to JSON', function () {
+    it('can be serialized to JSON', function (): void {
         $date = '2025-05-30';
         $amount = '100.00';
         $payee = 'John Doe';

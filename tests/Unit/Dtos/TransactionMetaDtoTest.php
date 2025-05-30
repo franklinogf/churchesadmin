@@ -5,8 +5,8 @@ declare(strict_types=1);
 use App\Dtos\TransactionMetaDto;
 use App\Enums\TransactionMetaType;
 
-describe('TransactionMetaDto', function () {
-    it('can be instantiated', function () {
+describe('TransactionMetaDto', function (): void {
+    it('can be instantiated', function (): void {
         $type = TransactionMetaType::CHECK;
         $dto = new TransactionMetaDto($type);
 
@@ -14,7 +14,7 @@ describe('TransactionMetaDto', function () {
             ->and($dto->type)->toBe($type);
     });
 
-    it('can be converted to array', function () {
+    it('can be converted to array', function (): void {
         $type = TransactionMetaType::OFFERING;
         $dto = new TransactionMetaDto($type);
 
@@ -25,7 +25,7 @@ describe('TransactionMetaDto', function () {
         ]);
     });
 
-    it('can be serialized to JSON', function () {
+    it('can be serialized to JSON', function (): void {
         $type = TransactionMetaType::EXPENSE;
         $dto = new TransactionMetaDto($type);
 
