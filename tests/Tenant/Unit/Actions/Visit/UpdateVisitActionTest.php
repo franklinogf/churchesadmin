@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Feature\HTTP\Tenant\Visit\Actions;
 
 use App\Actions\Visit\UpdateVisitAction;
-use App\Enums\TenantPermission;
 use App\Models\Visit;
 
 beforeEach(function (): void {
@@ -19,7 +18,6 @@ beforeEach(function (): void {
 });
 
 it('can update a visit without changing address', function (): void {
-    asUserWithPermission(TenantPermission::VISITS_UPDATE);
 
     $visitData = [
         'name' => 'Updated',
@@ -38,7 +36,43 @@ it('can update a visit without changing address', function (): void {
 });
 
 it('can update a visit with a new address', function (): void {
-    asUserWithPermission(TenantPermission::VISITS_UPDATE);
+
+    $visitData = [
+        'name' => 'Address',
+        'last_name' => 'Updated',
+    ];
+
+    $addressData = [
+        'address_1' => '456 New Ave',
+        'address_2' => 'Unit 7C',
+        'city' => 'New City',
+        'state' => 'NY',
+        'zip_code' => '54321',
+        'country' => 'US',
+    ];
+
+    $action = new UpdateVisitAction();
+    $updatedVisit = $action->handle($this->visit, $visitData, $addressData);
+
+    expect($updatedVisit)->toBeInstanceOf(Visit::class)
+        ->and($updatedVisit->name)->toBe('Address')
+        ->and($updatedVisit->last_name)->toBe('Updated');
+
+    $updatedVisit->refresh();
+    expect($updatedVisit->address)->not->toBeNull()
+        ->and($updatedVisit->address->address_1)->toBe('456 New Ave')
+        ->and($updatedVisit->address->address_2)->toBe('Unit 7C')
+        ->and($updatedVisit->address->city)->toBe('New City');
+});
+it('can update a visit with a new address if it already has an address', function (): void {
+
+    $this->visit->address()->create([
+        'address_1' => 'Initial Address',
+        'city' => 'Initial City',
+        'state' => 'CA',
+        'zip_code' => '12345',
+        'country' => 'US',
+    ]);
 
     $visitData = [
         'name' => 'Address',
@@ -69,7 +103,6 @@ it('can update a visit with a new address', function (): void {
 });
 
 it('can set address to null', function (): void {
-    asUserWithPermission(TenantPermission::VISITS_UPDATE);
 
     // First create an address for the visit
     $this->visit->address()->create([
