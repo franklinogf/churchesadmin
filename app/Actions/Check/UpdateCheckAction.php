@@ -13,9 +13,7 @@ use App\Exceptions\WalletException;
 use App\Models\Check;
 use App\Models\ChurchWallet;
 use App\Support\ArrayFallback;
-use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 final readonly class UpdateCheckAction
 {
@@ -38,40 +36,31 @@ final readonly class UpdateCheckAction
             throw WalletException::notFound();
         }
 
-        try {
-            DB::transaction(function () use ($check, $data, $wallet): void {
+        DB::transaction(function () use ($check, $data, $wallet): void {
 
-                $transaction = $this->updateTransactionAction
-                    ->handle($check->transaction, new TransactionDto(
-                        amount: $data['amount'] ?? $check->transaction->amountFloat,
-                        meta: new TransactionMetaDto(
-                            type: TransactionMetaType::CHECK,
-                        ),
-                        confirmed: $data['confirmed'] ?? $check->transaction->confirmed,
+            $transaction = $this->updateTransactionAction
+                ->handle($check->transaction, new TransactionDto(
+                    amount: $data['amount'] ?? $check->transaction->amountFloat,
+                    meta: new TransactionMetaDto(
+                        type: TransactionMetaType::CHECK,
                     ),
-                        TransactionType::WITHDRAW,
-                        $wallet);
+                    confirmed: $data['confirmed'] ?? $check->transaction->confirmed,
+                ),
+                    TransactionType::WITHDRAW,
+                    $wallet);
 
-                $check->update([
-                    'transaction_id' => $transaction->id,
-                    'member_id' => $data['member_id'] ?? $check->member_id,
-                    'date' => $data['date'] ?? $check->date,
-                    'type' => $data['type'] ?? $check->type,
-                    'expense_type_id' => $data['expense_type_id'] ?? $check->expense_type_id,
-                    'check_number' => ArrayFallback::inputOrFallback($data, 'check_number', $check->check_number),
-                    'note' => ArrayFallback::inputOrFallback($data, 'note', $check->note),
-                ]);
-            });
-
-            return $check->refresh();
-        } catch (QueryException $e) {
-            Log::error('Error updating check: '.$e->getMessage(), [
-                'check_id' => $check->id,
-                'data' => $data,
+            $check->update([
+                'transaction_id' => $transaction->id,
+                'member_id' => $data['member_id'] ?? $check->member_id,
+                'date' => $data['date'] ?? $check->date,
+                'type' => $data['type'] ?? $check->type,
+                'expense_type_id' => $data['expense_type_id'] ?? $check->expense_type_id,
+                'check_number' => ArrayFallback::inputOrFallback($data, 'check_number', $check->check_number),
+                'note' => ArrayFallback::inputOrFallback($data, 'note', $check->note),
             ]);
+        });
 
-            throw new WalletException('An error occurred while updating the check', $e->getCode(), $e);
-        }
+        return $check->refresh();
 
     }
 }

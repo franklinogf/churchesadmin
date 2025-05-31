@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Actions\Check\UpdateCheckAction;
 use App\Enums\CheckType;
+use App\Exceptions\WalletException;
 use App\Models\Check;
 use App\Models\ChurchWallet;
 use App\Models\ExpenseType;
@@ -134,4 +135,47 @@ test('updates a check with minimal fields', function () {
     expect($updatedTransaction->amountFloat)->toBe('-100.00'); // Unchanged, negative for withdrawal
     expect($updatedTransaction->confirmed)->toBeFalse(); // Unchanged
     expect($updatedTransaction->wallet->holder_id)->toBe($wallet->id); // Unchanged
+});
+
+test('throws exception when wallet is not found', function () {
+    $wallet = ChurchWallet::factory()->create();
+    $wallet->depositFloat('100.00');
+    $member = Member::factory()->create();
+    $expenseType = ExpenseType::factory()->create();
+
+    $transaction = $wallet->withdrawFloat(
+        '100.00',
+        ['type' => 'check'],
+        false // Not confirmed
+    );
+
+    // Create a check
+    $check = Check::create([
+        'transaction_id' => $transaction->id,
+        'member_id' => $member->id,
+        'date' => '2023-01-01',
+        'type' => CheckType::PAYMENT->value,
+        'expense_type_id' => $expenseType->id,
+        'check_number' => '12345',
+        'note' => 'Original note',
+    ]);
+
+    $transaction->wallet->delete(); // Delete the wallet to simulate non-existence
+
+    // Prepare check data with non-existent wallet ID
+    $checkData = [
+        'amount' => '50.00',
+        'member_id' => $member->id,
+        'date' => '2023-01-01',
+        'type' => CheckType::PAYMENT->value,
+        'wallet_id' => '999999',
+        'expense_type_id' => $expenseType->id,
+    ];
+
+    // Create the action
+    $action = app(UpdateCheckAction::class);
+
+    // Execute and expect exception
+    expect(fn () => $action->handle($check, $checkData))
+        ->toThrow(WalletException::class);
 });

@@ -8,11 +8,13 @@ use App\Actions\Email\CreateEmailAction;
 use App\Enums\EmailStatus;
 use App\Enums\MediaCollectionName;
 use App\Enums\ModelMorphName;
+use App\Exceptions\EmailException;
 use App\Models\Email;
 use App\Models\Member;
 use App\Models\Missionary;
 use App\Models\TenantUser;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 beforeEach(function () {
@@ -106,3 +108,21 @@ it('creates an email with attachments', function () {
     $this->assertEquals(MediaCollectionName::ATTACHMENT->value, $email->getMedia(MediaCollectionName::ATTACHMENT->value)->first()->collection_name);
     $this->assertEquals('document.pdf', $email->getMedia(MediaCollectionName::ATTACHMENT->value)->first()->file_name);
 });
+
+test('throws exception for invalid recipient type', function () {
+    Log::shouldReceive('error')->once();
+    $user = TenantUser::factory()->create();
+    $data = [
+        'subject' => 'Invalid Recipient Test',
+        'body' => 'This should fail',
+    ];
+    $action = new CreateEmailAction();
+
+    $action->handle(
+        $user,
+        $data,
+        ['1', '2', '3'], // Dummy IDs
+        ModelMorphName::OFFERING_TYPE // Invalid recipient type
+    );
+
+})->throws(EmailException::class);

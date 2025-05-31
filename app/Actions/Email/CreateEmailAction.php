@@ -12,7 +12,6 @@ use App\Models\Email;
 use App\Models\Member;
 use App\Models\Missionary;
 use App\Models\TenantUser;
-use Exception;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -69,15 +68,6 @@ final class CreateEmailAction
                 'recipients_count' => count($recipientIds),
             ]);
             throw $e;
-        } catch (Exception $e) {
-            Log::error('Error creating email', [
-                'error' => $e->getMessage(),
-                'user_id' => $user->id,
-                'subject' => $data['subject'],
-                'recipients_type' => $recipientType->value,
-                'recipients_count' => count($recipientIds),
-            ]);
-            throw EmailException::unknownError();
         }
     }
 
