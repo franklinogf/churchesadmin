@@ -19,6 +19,7 @@ you can read the laravel 12 documentation for more information in `https://larav
 
 # testing
 - Use Pest for testing.
+- Do your best to not use mocks.
 - inside the `tests/Pest.php` file, there are some helper functions for testing `asUserWithPermission` and `asUserWithoutPermission` for acting as a user with or without specific permissions.
     - the permissions are defined in the `app/Enums/TenantPermission.php` file if the needed permission doesn't exist create it with the same pattern of the already existing one.
     - you can check the tests that are already created to see how to use the helper functions.
@@ -29,8 +30,8 @@ you can read the laravel 12 documentation for more information in `https://larav
                 // test cases here
             });
             ```
-- tenant-specific functionality should be tested within a `/Tenant` folder.
-    - for example, if a controller is used in `routes/tenant.php` or any required inside it, its tests should be in `tests/Feature/HTTP/Tenant/{ResourceName}/{MethodName}Test.php`.
+- tenant-specific functionality should be tested within the `tests/Tenant` folder.
+    - for example, if a controller is used in `routes/tenant.php` or any required inside it, its tests should be in `tests/Tenant/Feature/HTTP/{ResourceName}/{MethodName}Test.php`.
     - only add the tests for the methods that are used in the controller. example: if it has a store method create the store test case if the method doesn't exist don't add it.
         - for store use `CreateTest` as the file name.
         - for update use `UpdateTest` as the file name.
@@ -45,4 +46,4 @@ you can read the laravel 12 documentation for more information in `https://larav
 - run the tests and make sure they pass.
  - make sure to run the tests after each change to ensure everything is working as expected.
  - use `./vendor/bin/pest {folderPath}` to run the tests.
-   - for example, to run the tests for the OfferingType resource, you can use `./vendor/bin/pest tests/Feature/HTTP/Tenant/OfferingType`.
+   - for example, to run the tests for the OfferingType resource, you can use `./vendor/bin/pest tests/Tenant/Feature/HTTP/OfferingType`.
