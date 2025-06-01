@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Casts\AsUcWords;
 use App\Enums\CivilStatus;
 use App\Enums\Gender;
+use App\Models\Traits\HasTags;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,7 +15,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Spatie\Tags\HasTags;
 
 /**
  * Member model.
