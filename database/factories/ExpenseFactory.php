@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Enums\TransactionMetaType;
+use App\Models\ChurchWallet;
 use App\Models\ExpenseType;
 use App\Models\Member;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -20,8 +22,12 @@ final class ExpenseFactory extends Factory
      */
     public function definition(): array
     {
+        $wallet = ChurchWallet::factory()->withBalance()->create();
+        $amount = fake()->randomFloat(2, 1, 100);
+        $transaction = $wallet->withdrawFloat($amount, ['type' => TransactionMetaType::EXPENSE->value]);
+
         return [
-            'transaction_id' => null,
+            'transaction_id' => $transaction->id,
             'expense_type_id' => ExpenseType::factory(),
             'member_id' => Member::factory(),
             'date' => fake()->dateTime(),

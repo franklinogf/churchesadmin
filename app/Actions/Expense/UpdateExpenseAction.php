@@ -42,7 +42,7 @@ final readonly class UpdateExpenseAction
                 $transaction = $this->updateTransactionAction->handle(
                     $expense->transaction,
                     new TransactionDto(
-                        amount: $data['amount'] ?? $expense->transaction->amount,
+                        amount: $data['amount'] ?? (string) abs((float) $expense->transaction->amountFloat),
                         meta: new TransactionMetaDto(
                             type: TransactionMetaType::EXPENSE,
                         )

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Models\ChurchWallet;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -29,5 +30,12 @@ final class ChurchWalletFactory extends Factory
             'bank_account_number' => fake()->randomNumber(9),
             'check_layout_id' => null,
         ];
+    }
+
+    public function withBalance(string $amount = '100.00'): Factory
+    {
+        return $this->afterCreating(function (ChurchWallet $wallet) use ($amount): void {
+            $wallet->depositFloat($amount);
+        });
     }
 }
