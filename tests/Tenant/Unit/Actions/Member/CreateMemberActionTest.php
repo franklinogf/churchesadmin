@@ -5,7 +5,6 @@ declare(strict_types=1);
 use App\Actions\Member\CreateMemberAction;
 use App\Enums\TagType;
 use App\Models\Member;
-use App\Models\Tag;
 
 it('can create a member with basic data', function (): void {
     $memberData = [
@@ -31,8 +30,6 @@ it('can create a member with basic data', function (): void {
         ->and($member->dob->toDateString())->toBe('1990-01-01');
 });
 it('can create a member with skills', function (): void {
-    $skillTag1 = Tag::factory()->create(['type' => TagType::SKILL->value, 'name' => 'Programming', 'is_regular' => true]);
-    $skillTag2 = Tag::factory()->create(['type' => TagType::SKILL->value, 'name' => 'Music', 'is_regular' => true]);
 
     $memberData = [
         'name' => 'Jane',
@@ -41,14 +38,13 @@ it('can create a member with skills', function (): void {
         'phone' => '+123456790',
         'gender' => 'female',
         'civil_status' => 'married',
+        'skills' => ['Programming', 'Music'],
     ];
 
-    $skills = [$skillTag1->name, $skillTag2->name];
-
     $action = new CreateMemberAction();
-    $action->handle($memberData, $skills);
+    $action->handle($memberData);
 
-    $member = Member::where('email', 'jane.smith@example.com')->first();
+    $member = Member::latest()->first();
 
     expect($member)->not->toBeNull();
 
@@ -57,8 +53,6 @@ it('can create a member with skills', function (): void {
         ->and($memberSkills)->toContain('Music');
 });
 it('can create a member with categories', function (): void {
-    $categoryTag1 = Tag::factory()->create(['type' => TagType::CATEGORY->value, 'name' => 'Youth', 'is_regular' => true]);
-    $categoryTag2 = Tag::factory()->create(['type' => TagType::CATEGORY->value, 'name' => 'Worship', 'is_regular' => true]);
 
     $memberData = [
         'name' => 'Bob',
@@ -67,14 +61,13 @@ it('can create a member with categories', function (): void {
         'phone' => '+123456791',
         'gender' => 'male',
         'civil_status' => 'single',
+        'categories' => ['Youth', 'Worship'],
     ];
 
-    $categories = [$categoryTag1->name, $categoryTag2->name];
-
     $action = new CreateMemberAction();
-    $action->handle($memberData, null, $categories);
+    $action->handle($memberData);
 
-    $member = Member::where('email', 'bob.johnson@example.com')->first();
+    $member = Member::latest()->first();
 
     expect($member)->not->toBeNull();
 
@@ -102,9 +95,9 @@ it('can create a member with address', function (): void {
     ];
 
     $action = new CreateMemberAction();
-    $action->handle($memberData, null, null, $addressData);
+    $action->handle($memberData, $addressData);
 
-    $member = Member::where('email', 'alice.williams@example.com')->first();
+    $member = Member::latest()->first();
 
     expect($member)->not->toBeNull()
         ->and($member->address)->not->toBeNull()
@@ -116,8 +109,6 @@ it('can create a member with address', function (): void {
         ->and($member->address->country)->toBe('US');
 });
 it('can create a member with all optional data', function (): void {
-    $skillTag = Tag::factory()->create(['type' => TagType::SKILL->value, 'name' => 'Teaching', 'is_regular' => true]);
-    $categoryTag = Tag::factory()->create(['type' => TagType::CATEGORY->value, 'name' => 'Adult', 'is_regular' => true]);
 
     $memberData = [
         'name' => 'Complete',
@@ -126,10 +117,10 @@ it('can create a member with all optional data', function (): void {
         'phone' => '+555-0123',
         'gender' => 'male',
         'civil_status' => 'widowed',
+        'skills' => ['Teaching'],
+        'categories' => ['Adult'],
     ];
 
-    $skills = [$skillTag->name];
-    $categories = [$categoryTag->name];
     $addressData = [
         'address_1' => '456 Oak Ave',
         'city' => 'Springfield',
@@ -139,9 +130,9 @@ it('can create a member with all optional data', function (): void {
     ];
 
     $action = new CreateMemberAction();
-    $action->handle($memberData, $skills, $categories, $addressData);
+    $action->handle($memberData, $addressData);
 
-    $member = Member::where('email', 'complete.member@example.com')->first();
+    $member = Member::latest()->first();
 
     expect($member)->not->toBeNull()
         ->and($member->name)->toBe('Complete')

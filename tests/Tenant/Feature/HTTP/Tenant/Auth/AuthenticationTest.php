@@ -32,7 +32,7 @@ test('users can authenticate using the login screen', function (): void {
 
 });
 
-test('users can not authenticate with invalid password', function (): void {
+test('users cannot authenticate with invalid password', function (): void {
     $user = TenantUser::factory()->create();
 
     post(route('login.store'), [

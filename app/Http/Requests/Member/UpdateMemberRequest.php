@@ -56,9 +56,9 @@ final class UpdateMemberRequest extends FormRequest
     /**
      * Get the validated address data from the request.
      *
-     * @return array{address_1: string, address_2: string, city: string, state: string, zip_code: string, country: string}|array{}
+     * @return array{address_1: string, address_2: string, city: string, state: string, zip_code: string, country: string}|null
      */
-    public function getAddressData(): array
+    public function getAddressData(): ?array
     {
         /**
          * @var array{
@@ -70,9 +70,11 @@ final class UpdateMemberRequest extends FormRequest
          *     country: string
          * }|array{} $data
          */
-        $data = $this->array('address');
+        $data = $this->safe()->array('address');
+        if ($data !== []) {
+            return $data;
+        }
 
-        return $data;
-
+        return null;
     }
 }

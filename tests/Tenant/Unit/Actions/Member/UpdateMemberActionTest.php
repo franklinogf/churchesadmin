@@ -5,7 +5,6 @@ declare(strict_types=1);
 use App\Actions\Member\UpdateMemberAction;
 use App\Enums\TagType;
 use App\Models\Member;
-use App\Models\Tag;
 
 it('can update member basic data', function (): void {
     $member = Member::factory()->create([
@@ -33,18 +32,15 @@ it('can update member basic data', function (): void {
 it('can update member skills', function (): void {
     $member = Member::factory()->create();
 
-    $oldSkill = Tag::factory()->create(['type' => TagType::SKILL->value, 'name' => 'Old Skill']);
-    $newSkill1 = Tag::factory()->create(['type' => TagType::SKILL->value, 'name' => 'New Skill 1']);
-    $newSkill2 = Tag::factory()->create(['type' => TagType::SKILL->value, 'name' => 'New Skill 2']);
-
     // Attach old skill
-    $member->attachTags([$oldSkill->name], TagType::SKILL->value);
+    $member->attachTags(['Old Skill'], TagType::SKILL->value);
 
-    $updateData = [];
-    $skills = [$newSkill1->name, $newSkill2->name];
+    $updateData = [
+        'skills' => ['New Skill 1', 'New Skill 2'],
+    ];
 
     $action = new UpdateMemberAction();
-    $action->handle($member, $updateData, $skills);
+    $action->handle($member, $updateData);
 
     $memberSkills = $member->fresh()->tags()->where('type', TagType::SKILL->value)->pluck('name')->toArray();
 
@@ -56,17 +52,15 @@ it('can update member skills', function (): void {
 it('can update member categories', function (): void {
     $member = Member::factory()->create();
 
-    $oldCategory = Tag::factory()->create(['type' => TagType::CATEGORY->value, 'name' => 'Old Category']);
-    $newCategory = Tag::factory()->create(['type' => TagType::CATEGORY->value, 'name' => 'New Category']);
-
     // Attach old category
-    $member->attachTags([$oldCategory->name], TagType::CATEGORY->value);
+    $member->attachTags(['Old Category'], TagType::CATEGORY->value);
 
-    $updateData = [];
-    $categories = [$newCategory->name];
+    $updateData = [
+        'categories' => ['New Category'],
+    ];
 
     $action = new UpdateMemberAction();
-    $action->handle($member, $updateData, null, $categories);
+    $action->handle($member, $updateData);
 
     $memberCategories = $member->fresh()->tags()->where('type', TagType::CATEGORY->value)->pluck('name')->toArray();
 
@@ -87,7 +81,7 @@ it('can create address when member has none', function (): void {
     ];
 
     $action = new UpdateMemberAction();
-    $action->handle($member, $updateData, null, null, $addressData);
+    $action->handle($member, $updateData, $addressData);
 
     $member->refresh();
 
@@ -107,7 +101,7 @@ it('can update existing address', function (): void {
     ];
 
     $action = new UpdateMemberAction();
-    $action->handle($member, $updateData, null, null, $addressData);
+    $action->handle($member, $updateData, $addressData);
 
     $member->refresh();
 
@@ -124,7 +118,7 @@ it('can delete address when set to null', function (): void {
     $updateData = [];
 
     $action = new UpdateMemberAction();
-    $action->handle($member, $updateData, null, null, null);
+    $action->handle($member, $updateData, null);
 
     $member->refresh();
 
@@ -136,22 +130,20 @@ it('can update all data at once', function (): void {
         'name' => 'Old Name',
     ]);
 
-    $skill = Tag::factory()->create(['type' => TagType::SKILL->value, 'name' => 'Updated Skill']);
-    $category = Tag::factory()->create(['type' => TagType::CATEGORY->value, 'name' => 'Updated Category']);
-
     $updateData = [
         'name' => 'Updated Name',
         'phone' => '+555-9999',
+        'skills' => ['Updated Skill'],
+        'categories' => ['Updated Category'],
     ];
-    $skills = [$skill->name];
-    $categories = [$category->name];
+
     $addressData = [
         'address_1' => '789 Complete St',
         'city' => 'Complete City',
     ];
 
     $action = new UpdateMemberAction();
-    $action->handle($member, $updateData, $skills, $categories, $addressData);
+    $action->handle($member, $updateData, $addressData);
 
     $member->refresh();
 
