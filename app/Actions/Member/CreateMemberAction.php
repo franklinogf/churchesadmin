@@ -21,7 +21,7 @@ final class CreateMemberAction
      * email:string,
      * phone:string,
      * gender:Gender,
-     * dob:string,
+     * dob?:string|null,
      * civil_status:CivilStatus,
      * skills?:array<int,string>|null|array{},
      * categories?:array<int,string>|null|array{}

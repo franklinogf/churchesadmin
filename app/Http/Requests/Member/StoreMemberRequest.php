@@ -60,18 +60,18 @@ final class StoreMemberRequest extends FormRequest
     public function getAddressData(): ?array
     {
         /**
-         * @var array<string|null, array{
+         * @var array{
          *     address_1: string,
          *     address_2: string,
          *     city: string,
          *     state: string,
          *     zip_code: string,
          *     country: string
-         * }> $data
+         * }|array{} $data
          */
-        $data = $this->safe()->only(['address']);
-        if (array_key_exists('address', $data)) {
-            return $data['address'];
+        $data = $this->safe()->array('address');
+        if ($data !== []) {
+            return $data;
         }
 
         return null;
