@@ -53,63 +53,20 @@ final class StoreMemberRequest extends FormRequest
     }
 
     /**
-     * Get the validated member data from the request.
-     *
-     * @return array<string,mixed>
-     */
-    public function getMemberData(): array
-    {
-        /** @var array<string, mixed> $data */
-        $data = $this->safe()->except(['skills', 'categories', 'address', 'visit_id']);
-
-        return $data;
-    }
-
-    /**
-     * Get the validated skills data from the request.
-     *
-     * @return array<int,string>
-     */
-    public function getSkillData(): array
-    {
-        /**
-         * @var array<int,string> $data
-         */
-        $data = collect($this->safe()->only('skills'))->flatten()->toArray();
-
-        return $data;
-    }
-
-    /**
-     * Get the validated category data from the request.
-     *
-     * @return array<int,string>
-     */
-    public function getCategoryData(): array
-    {
-        /**
-         * @var array<int,string> $data
-         */
-        $data = collect($this->safe()->only('categories'))->flatten()->toArray();
-
-        return $data;
-    }
-
-    /**
      * Get the validated address data from the request.
      *
-     * @return array{address_1?: string, address_2?: string, city?: string, state?: string, zip_code?: string, country?: string}|null
+     * @return array{address_1: string, address_2: string, city: string, state: string, zip_code: string, country: string}|null
      */
     public function getAddressData(): ?array
     {
         /**
          * @var array<string|null, array{
-         *     address_1?: string,
-         *     address_2?: string,
-         *     city?: string,
-         *     state?: string,
-         *     zip_code?: string,
-         *     country?: string
+         *     address_1: string,
+         *     address_2: string,
+         *     city: string,
+         *     state: string,
+         *     zip_code: string,
+         *     country: string
          * }> $data
          */
         $data = $this->safe()->only(['address']);

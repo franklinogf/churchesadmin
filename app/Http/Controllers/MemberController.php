@@ -76,7 +76,27 @@ final class MemberController extends Controller
     {
         Gate::authorize('create', Member::class);
         DB::transaction(function () use ($request, $action, $transferVisitToMemberAction): void {
-            $member = $action->handle($request->getMemberData(), $request->getSkillData(), $request->getCategoryData(), $request->getAddressData());
+            /**
+             * @var array<int, string>|array{} $skills
+             */
+            $skills = $request->array('skills');
+            /**
+             * @var array<int, string>|array{} $categories
+             */
+            $categories = $request->array('categories');
+
+            $member = $action->handle([
+                'name' => $request->string('name')->value(),
+                'last_name' => $request->string('last_name')->value(),
+                'email' => $request->string('email')->value(),
+                'phone' => $request->string('phone')->value(),
+                'gender' => Gender::from($request->string('gender')->value()),
+                'dob' => $request->string('dob')->value(),
+                'civil_status' => CivilStatus::from($request->string('civil_status')->value()),
+                'skills' => $skills,
+                'categories' => $categories,
+
+            ], $request->getAddressData());
             $visitId = $request->string('visit_id')->value();
             if ($visitId) {
                 $visit = Visit::findOrFail($visitId);
