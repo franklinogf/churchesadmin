@@ -5,7 +5,7 @@ declare(strict_types=1);
 use App\Actions\Wallet\RestoreWalletAction;
 use App\Models\ChurchWallet;
 
-it('can restore a deleted wallet', function () {
+it('can restore a deleted wallet', function (): void {
     $wallet = ChurchWallet::factory()->create();
     $wallet->delete();
 

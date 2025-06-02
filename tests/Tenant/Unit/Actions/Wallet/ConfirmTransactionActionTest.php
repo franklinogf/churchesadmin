@@ -7,7 +7,7 @@ use App\Enums\TransactionMetaType;
 use App\Exceptions\WalletException;
 use App\Models\ChurchWallet;
 
-it('can confirm an unconfirmed deposit transaction', function () {
+it('can confirm an unconfirmed deposit transaction', function (): void {
     $wallet = ChurchWallet::factory()->create();
 
     // Create an unconfirmed deposit
@@ -26,7 +26,7 @@ it('can confirm an unconfirmed deposit transaction', function () {
     expect($wallet->balanceFloat)->toBe('100.00'); // Now affects balance
 });
 
-it('can confirm an unconfirmed withdrawal transaction', function () {
+it('can confirm an unconfirmed withdrawal transaction', function (): void {
     $wallet = ChurchWallet::factory()->create();
 
     // First add confirmed money
@@ -48,7 +48,7 @@ it('can confirm an unconfirmed withdrawal transaction', function () {
     expect($wallet->balanceFloat)->toBe('124.50'); // 200 - 75.50
 });
 
-it('throws exception when confirming already confirmed transaction', function () {
+it('throws exception when confirming already confirmed transaction', function (): void {
     $wallet = ChurchWallet::factory()->create();
 
     // Create a confirmed transaction
@@ -58,11 +58,11 @@ it('throws exception when confirming already confirmed transaction', function ()
 
     $action = new ConfirmTransactionAction();
 
-    expect(fn () => $action->handle($transaction))
+    expect(fn (): bool => $action->handle($transaction))
         ->toThrow(WalletException::class);
 });
 
-it('throws exception when wallet not found', function () {
+it('throws exception when wallet not found', function (): void {
     $wallet = ChurchWallet::factory()->create();
     $transaction = $wallet->depositFloat('100.00', ['type' => TransactionMetaType::OFFERING->value], false);
 
@@ -71,11 +71,11 @@ it('throws exception when wallet not found', function () {
 
     $action = new ConfirmTransactionAction();
 
-    expect(fn () => $action->handle($transaction))
+    expect(fn (): bool => $action->handle($transaction))
         ->toThrow(WalletException::class);
 });
 
-it('throws exception for insufficient funds when confirming withdrawal', function () {
+it('throws exception for insufficient funds when confirming withdrawal', function (): void {
     $wallet = ChurchWallet::factory()->withBalance()->create();
 
     // Create unconfirmed withdrawal for more than available
@@ -91,7 +91,7 @@ it('throws exception for insufficient funds when confirming withdrawal', functio
 
 })->throws(WalletException::class);
 
-it('throws exception for empty balance when confirming withdrawal', function () {
+it('throws exception for empty balance when confirming withdrawal', function (): void {
     $wallet = ChurchWallet::factory()->withBalance('30.00')->create();
 
     // Create unconfirmed withdrawal on empty wallet

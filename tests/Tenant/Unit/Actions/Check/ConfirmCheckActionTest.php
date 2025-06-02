@@ -12,7 +12,7 @@ use Tests\RefreshDatabaseWithTenant;
 
 uses(RefreshDatabaseWithTenant::class);
 
-test('confirms a check successfully', function () {
+test('confirms a check successfully', function (): void {
     // Create dependencies
     $wallet = ChurchWallet::factory()->create();
     $member = Member::factory()->create();
@@ -49,7 +49,7 @@ test('confirms a check successfully', function () {
     expect($transaction->confirmed)->toBeTrue();
 });
 
-test('ConfirmCheckAction handles failed confirmation for already confirmed transaction', function () {
+test('ConfirmCheckAction handles failed confirmation for already confirmed transaction', function (): void {
     // Create dependencies
     $wallet = ChurchWallet::factory()->create();
     $member = Member::factory()->create();

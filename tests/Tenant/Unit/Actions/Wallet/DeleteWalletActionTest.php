@@ -5,7 +5,7 @@ declare(strict_types=1);
 use App\Actions\Wallet\DeleteWalletAction;
 use App\Models\ChurchWallet;
 
-it('can delete a wallet', function () {
+it('can delete a wallet', function (): void {
     $wallet = ChurchWallet::factory()->create();
 
     $action = new DeleteWalletAction();
@@ -16,7 +16,7 @@ it('can delete a wallet', function () {
     ]);
 });
 
-it('can delete wallet with transactions', function () {
+it('can delete wallet with transactions', function (): void {
     $wallet = ChurchWallet::factory()->create();
 
     // Add some transactions to the wallet

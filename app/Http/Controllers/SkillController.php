@@ -61,7 +61,10 @@ final class SkillController extends Controller
     {
         Gate::authorize('update', $tag);
 
-        $action->handle($tag, $request->validated());
+        $action->handle($tag, [
+            'name' => $request->string('name')->value(),
+            'is_regular' => $request->boolean('is_regular'),
+        ]);
 
         return to_route('skills.index')->with(
             FlashMessageKey::SUCCESS->value,

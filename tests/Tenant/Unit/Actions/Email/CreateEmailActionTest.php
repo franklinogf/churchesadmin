@@ -15,13 +15,8 @@ use App\Models\Missionary;
 use App\Models\TenantUser;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
 
-beforeEach(function () {
-    Storage::fake('public');
-});
-
-it('creates an email successfully with member recipients', function () {
+it('creates an email successfully with member recipients', function (): void {
     $user = TenantUser::factory()->create(['email' => 'test@example.com']);
 
     $members = Member::factory()->count(3)->create();
@@ -54,7 +49,7 @@ it('creates an email successfully with member recipients', function () {
 
 });
 
-it('creates an email successfully with missionary recipients', function () {
+it('creates an email successfully with missionary recipients', function (): void {
     $user = TenantUser::factory()->create(['email' => 'test@example.com']);
     $missionaries = Missionary::factory()->count(2)->create();
     $missionaryIds = $missionaries->pluck('id')->toArray();
@@ -84,7 +79,7 @@ it('creates an email successfully with missionary recipients', function () {
     expect($email->missionaries)->toHaveCount(2);
 });
 
-it('creates an email with attachments', function () {
+it('creates an email with attachments', function (): void {
     $user = TenantUser::factory()->create();
     $member = Member::factory()->create();
     $data = [
@@ -109,7 +104,7 @@ it('creates an email with attachments', function () {
     $this->assertEquals('document.pdf', $email->getMedia(MediaCollectionName::ATTACHMENT->value)->first()->file_name);
 });
 
-test('throws exception for invalid recipient type', function () {
+test('throws exception for invalid recipient type', function (): void {
     Log::shouldReceive('error')->once();
     $user = TenantUser::factory()->create();
     $data = [

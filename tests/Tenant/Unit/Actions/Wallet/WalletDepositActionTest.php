@@ -11,7 +11,7 @@ use App\Exceptions\WalletException;
 use App\Models\ChurchWallet;
 use Bavix\Wallet\Models\Transaction;
 
-it('can create a deposit transaction', function () {
+it('can create a deposit transaction', function (): void {
     $wallet = ChurchWallet::factory()->create();
     $transactionDto = new TransactionDto(
         amount: '100.50',
@@ -29,7 +29,7 @@ it('can create a deposit transaction', function () {
     expect($wallet->balanceFloat)->toBe('100.50');
 });
 
-it('can create unconfirmed deposit transaction', function () {
+it('can create unconfirmed deposit transaction', function (): void {
     $wallet = ChurchWallet::factory()->create();
     $transactionDto = new TransactionDto(
         amount: '75.25',
@@ -47,7 +47,7 @@ it('can create unconfirmed deposit transaction', function () {
     expect($wallet->balanceFloat)->toBe('0.00');
 });
 
-it('can handle multiple deposits', function () {
+it('can handle multiple deposits', function (): void {
     $wallet = ChurchWallet::factory()->create();
     $action = new WalletDepositAction();
 
@@ -68,7 +68,7 @@ it('can handle multiple deposits', function () {
     expect($wallet->balanceFloat)->toBe('75.75');
 });
 
-it('can handle different transaction meta types', function () {
+it('can handle different transaction meta types', function (): void {
     $wallet = ChurchWallet::factory()->create();
     $action = new WalletDepositAction();
 
@@ -89,7 +89,7 @@ it('can handle different transaction meta types', function () {
     expect($wallet->balanceFloat)->toBe('300.00');
 });
 
-it('throws exception for invalid amount', function () {
+it('throws exception for invalid amount', function (): void {
     $wallet = ChurchWallet::factory()->create();
     $transactionDto = new TransactionDto(
         amount: '-50.00', // Invalid negative amount
@@ -99,11 +99,11 @@ it('throws exception for invalid amount', function () {
 
     $action = new WalletDepositAction();
 
-    expect(fn () => $action->handle($wallet, $transactionDto))
+    expect(fn (): Transaction => $action->handle($wallet, $transactionDto))
         ->toThrow(WalletException::class);
 });
 
-it('handles zero amount deposits', function () {
+it('handles zero amount deposits', function (): void {
     $wallet = ChurchWallet::factory()->create();
     $transactionDto = new TransactionDto(
         amount: '0.00',
@@ -118,7 +118,7 @@ it('handles zero amount deposits', function () {
     expect($wallet->balanceFloat)->toBe('0.00');
 });
 
-it('handles decimal amounts correctly', function () {
+it('handles decimal amounts correctly', function (): void {
     $wallet = ChurchWallet::factory()->create();
     $transactionDto = new TransactionDto(
         amount: '123.45',
@@ -133,7 +133,7 @@ it('handles decimal amounts correctly', function () {
     expect($wallet->balanceFloat)->toBe('123.45');
 });
 
-it('creates transaction with correct wallet relationship', function () {
+it('creates transaction with correct wallet relationship', function (): void {
     $wallet = ChurchWallet::factory()->create();
     $transactionDto = new TransactionDto(
         amount: '50.00',

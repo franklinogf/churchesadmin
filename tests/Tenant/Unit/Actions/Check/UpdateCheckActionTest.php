@@ -13,7 +13,7 @@ use Tests\RefreshDatabaseWithTenant;
 
 uses(RefreshDatabaseWithTenant::class);
 
-test('updates a check with all fields', function () {
+test('updates a check with all fields', function (): void {
     // Create dependencies with sufficient balance
     $wallet = ChurchWallet::factory()->create();
     $wallet->depositFloat('100.00'); // Ensure wallet has enough balance
@@ -83,7 +83,7 @@ test('updates a check with all fields', function () {
     expect($updatedTransaction->wallet->holder_id)->toBe($newWallet->id);
 });
 
-test('updates a check with minimal fields', function () {
+test('updates a check with minimal fields', function (): void {
     // Create dependencies with sufficient balance
     $wallet = ChurchWallet::factory()->create();
     $wallet->depositFloat('100.00'); // Ensure wallet has enough balance
@@ -137,7 +137,7 @@ test('updates a check with minimal fields', function () {
     expect($updatedTransaction->wallet->holder_id)->toBe($wallet->id); // Unchanged
 });
 
-test('throws exception when wallet is not found', function () {
+test('throws exception when wallet is not found', function (): void {
     $wallet = ChurchWallet::factory()->create();
     $wallet->depositFloat('100.00');
     $member = Member::factory()->create();

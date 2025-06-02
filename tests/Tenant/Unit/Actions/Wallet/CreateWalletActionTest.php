@@ -6,7 +6,7 @@ use App\Actions\Wallet\CreateWalletAction;
 use App\Enums\TransactionMetaType;
 use App\Models\ChurchWallet;
 
-it('can create a wallet without balance', function () {
+it('can create a wallet without balance', function (): void {
     $data = [
         'name' => 'Test Wallet',
         'description' => 'Test Description',
@@ -32,7 +32,7 @@ it('can create a wallet without balance', function () {
     expect($wallet->balanceFloat)->toBe('0.00');
 });
 
-it('can create a wallet with initial balance', function () {
+it('can create a wallet with initial balance', function (): void {
     $data = [
         'name' => 'Test Wallet with Balance',
         'description' => 'Test Description',
@@ -60,7 +60,7 @@ it('can create a wallet with initial balance', function () {
     expect($initialTransaction->amountFloat)->toBe('100.50');
 });
 
-it('handles null description correctly', function () {
+it('handles null description correctly', function (): void {
     $data = [
         'name' => 'Test Wallet',
         'bank_name' => 'Test Bank',
@@ -75,7 +75,7 @@ it('handles null description correctly', function () {
     expect($wallet->description)->toBeNull();
 });
 
-it('handles zero balance correctly', function () {
+it('handles zero balance correctly', function (): void {
     $data = [
         'name' => 'Test Wallet',
         'bank_name' => 'Test Bank',
@@ -95,7 +95,7 @@ it('handles zero balance correctly', function () {
     expect($initialTransaction->amountFloat)->toBe('0.00');
 });
 
-it('generates correct slug from name', function () {
+it('generates correct slug from name', function (): void {
     $data = [
         'name' => 'My Special Wallet Name',
         'bank_name' => 'Test Bank',

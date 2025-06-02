@@ -119,7 +119,7 @@ final class OfferingController extends Controller
                         'donor_id' => $request->string('donor_id')->value() ?: null,
                         'date' => $request->string('date')->value(),
                         'wallet_id' => $offering['wallet_id'],
-                        'payment_method' => $offering['payment_method'],
+                        'payment_method' => PaymentMethod::from($offering['payment_method']),
                         'offering_type' => $offering['offering_type'],
                         'amount' => $offering['amount'],
                         'note' => $offering['note'],

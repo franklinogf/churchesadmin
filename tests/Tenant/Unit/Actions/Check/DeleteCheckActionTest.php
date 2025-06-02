@@ -13,7 +13,7 @@ use Tests\RefreshDatabaseWithTenant;
 
 uses(RefreshDatabaseWithTenant::class);
 
-test('deletes a check and its transaction', function () {
+test('deletes a check and its transaction', function (): void {
     // Create dependencies
     $wallet = ChurchWallet::factory()->create(); // Ensure zero initial balance
     $member = Member::factory()->create();

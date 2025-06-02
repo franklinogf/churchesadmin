@@ -14,11 +14,13 @@ trait HasTags
     public static function bootHasTags(): void
     {
         static::deleted(function (Model $deletedModel): void {
+            // @phpstan-ignore-next-line
             if (method_exists($deletedModel, 'isForceDeleting') && ! $deletedModel->isForceDeleting()) {
                 return;
             }
-
+            // @phpstan-ignore-next-line
             $tags = $deletedModel->tags()->get();
+            // @phpstan-ignore-next-line
             $deletedModel->detachTags($tags);
         });
     }
