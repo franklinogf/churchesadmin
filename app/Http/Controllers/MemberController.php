@@ -9,6 +9,7 @@ use App\Actions\Member\DeleteMemberAction;
 use App\Actions\Member\ForceDeleteMemberAction;
 use App\Actions\Member\RestoreMemberAction;
 use App\Actions\Member\UpdateMemberAction;
+use App\Actions\Visit\TransferVisitToMemberAction;
 use App\Enums\CivilStatus;
 use App\Enums\FlashMessageKey;
 use App\Enums\Gender;
@@ -17,9 +18,13 @@ use App\Http\Requests\Member\StoreMemberRequest;
 use App\Http\Requests\Member\UpdateMemberRequest;
 use App\Http\Resources\Member\MemberResource;
 use App\Http\Resources\Tag\TagResource;
+use App\Http\Resources\Visit\VisitResource;
 use App\Models\Member;
 use App\Models\Tag;
+use App\Models\Visit;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -41,9 +46,14 @@ final class MemberController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(): Response
+    public function create(Request $request): Response
     {
+
         Gate::authorize('create', Member::class);
+
+        $visitId = $request->string('visit')->value();
+
+        $visit = $visitId ? Visit::findOrFail($visitId) : null;
 
         $genders = Gender::options();
         $civilStatuses = CivilStatus::options();
@@ -55,17 +65,25 @@ final class MemberController extends Controller
             'civilStatuses' => $civilStatuses,
             'skills' => TagResource::collection($skills),
             'categories' => TagResource::collection($categories),
+            'visit' => $visit ? new VisitResource($visit) : null,
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreMemberRequest $request, CreateMemberAction $action): RedirectResponse
+    public function store(StoreMemberRequest $request, CreateMemberAction $action, TransferVisitToMemberAction $transferVisitToMemberAction): RedirectResponse
     {
         Gate::authorize('create', Member::class);
+        DB::transaction(function () use ($request, $action, $transferVisitToMemberAction): void {
+            $member = $action->handle($request->getMemberData(), $request->getSkillData(), $request->getCategoryData(), $request->getAddressData());
+            $visitId = $request->string('visit_id')->value();
+            if ($visitId) {
+                $visit = Visit::findOrFail($visitId);
+                $transferVisitToMemberAction->handle($visit, $member);
 
-        $action->handle($request->getMemberData(), $request->getSkillData(), $request->getCategoryData(), $request->getAddressData());
+            }
+        });
 
         return to_route('members.index')->with(
             FlashMessageKey::SUCCESS->value,

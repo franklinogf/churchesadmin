@@ -17,7 +17,7 @@ final class CreateMemberAction
      * @param  array<int,string>|null  $categories
      * @param  array<string,mixed>|null  $address
      */
-    public function handle(array $data, ?array $skills = null, ?array $categories = null, ?array $address = null): void
+    public function handle(array $data, ?array $skills = null, ?array $categories = null, ?array $address = null): Member
     {
         $member = Member::create($data);
 
@@ -31,5 +31,7 @@ final class CreateMemberAction
         if ($address !== null) {
             $member->address()->create($address);
         }
+
+        return $member;
     }
 }

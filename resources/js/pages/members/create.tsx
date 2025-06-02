@@ -1,6 +1,7 @@
 import { AddressFormSkeleton } from '@/components/forms/AddressFormSkeleton';
 import { Form } from '@/components/forms/Form';
 import { DateField } from '@/components/forms/inputs/DateField';
+import { FieldError } from '@/components/forms/inputs/FieldError';
 import { FieldsGrid } from '@/components/forms/inputs/FieldsGrid';
 import { InputField } from '@/components/forms/inputs/InputField';
 import { MultiSelectField } from '@/components/forms/inputs/MultiSelectField';
@@ -16,10 +17,13 @@ import type { BreadcrumbItem, SelectOption } from '@/types';
 import { type AddressFormData } from '@/types/models/address';
 import { type MemberFormData } from '@/types/models/member';
 import type { Tag } from '@/types/models/tag';
+import type { Visit } from '@/types/models/visit';
 import { useForm } from '@inertiajs/react';
+import { useMemo } from 'react';
 
 type CreateForm = MemberFormData & {
   address: AddressFormData;
+  visit_id: string | null;
 };
 
 interface CreatePageProps {
@@ -27,26 +31,28 @@ interface CreatePageProps {
   civilStatuses: SelectOption[];
   skills: Tag[];
   categories: Tag[];
+  visit: Visit | null;
 }
-export default function Create({ genders, civilStatuses, skills, categories }: CreatePageProps) {
+export default function Create({ genders, civilStatuses, skills, categories, visit }: CreatePageProps) {
   const { t } = useTranslations();
   const { data, setData, post, errors, processing, transform } = useForm<CreateForm>({
-    name: '',
-    last_name: '',
-    email: '',
-    phone: '',
+    visit_id: visit?.id.toString() || null,
+    name: visit?.name || '',
+    last_name: visit?.lastName || '',
+    email: visit?.email || '',
+    phone: visit?.phone || '',
     dob: '',
     gender: Gender.MALE,
     civil_status: CivilStatus.SINGLE,
     skills: [],
     categories: [],
     address: {
-      address_1: '',
-      address_2: '',
-      city: '',
-      state: '',
-      country: '',
-      zip_code: '',
+      address_1: visit?.address?.address1 || '',
+      address_2: visit?.address?.address2 || '',
+      city: visit?.address?.city || '',
+      state: visit?.address?.state || '',
+      country: visit?.address?.country || '',
+      zip_code: visit?.address?.zipCode || '',
     },
   });
 
@@ -60,20 +66,35 @@ export default function Create({ genders, civilStatuses, skills, categories }: C
     post(route('members.store'), { preserveScroll: true });
   };
 
-  const breadcrumbs: BreadcrumbItem[] = [
-    {
-      title: t('Members'),
-      href: route('members.index'),
-    },
-    {
-      title: t('Add :model', { model: t('Member') }),
-    },
-  ];
+  const breadcrumbs: BreadcrumbItem[] = useMemo(
+    () =>
+      visit
+        ? [
+            {
+              title: t('Visits'),
+              href: route('visits.index'),
+            },
+            { title: visit.name, href: route('visits.follow-ups.index', visit.id) },
+            { title: t('Transfer to member') },
+          ]
+        : [
+            {
+              title: t('Members'),
+              href: route('members.index'),
+            },
+            {
+              title: t('Add :model', { model: t('Member') }),
+            },
+          ],
+    [t, visit],
+  );
+
   return (
     <AppLayout breadcrumbs={breadcrumbs} title={t('Members')}>
       <PageTitle>{t('Add :model', { model: t('Member') })}</PageTitle>
       <div className="mt-2 flex items-center justify-center">
         <Form isSubmitting={processing} className="w-full max-w-2xl" onSubmit={handleSubmit}>
+          <FieldError error={errors.visit_id} />
           <InputField required label="Name" value={data.name} onChange={(value) => setData('name', value)} error={errors.name} />
           <InputField required label="Last Name" value={data.last_name} onChange={(value) => setData('last_name', value)} error={errors.last_name} />
           <FieldsGrid>

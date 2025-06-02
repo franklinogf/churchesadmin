@@ -30,6 +30,7 @@ final class StoreMemberRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'visit_id' => ['nullable', 'exists:visits,id'],
             'name' => ['required', 'string', 'min:2', 'max:255'],
             'last_name' => ['required', 'string', 'min:2', 'max:255'],
             'email' => ['required', 'email', Rule::unique('members')],
@@ -59,7 +60,7 @@ final class StoreMemberRequest extends FormRequest
     public function getMemberData(): array
     {
         /** @var array<string, mixed> $data */
-        $data = $this->safe()->except(['skills', 'categories', 'address']);
+        $data = $this->safe()->except(['skills', 'categories', 'address', 'visit_id']);
 
         return $data;
     }

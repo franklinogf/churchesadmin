@@ -250,6 +250,7 @@ export type TranslationKey =
   | 'Total'
   | 'Track assignments, support levels, communication logs, and prayer requests with ease.'
   | 'Transactions'
+  | 'Transfer to member'
   | 'Type'
   | 'Unconfirmed Checks'
   | 'Unknown sender'

@@ -10,7 +10,7 @@ import AppLayout from '@/layouts/app-layout';
 import type { Visit } from '@/types/models/visit';
 import { Link } from '@inertiajs/react';
 import type { ColumnDef } from '@tanstack/react-table';
-import { Edit2Icon, FileEditIcon } from 'lucide-react';
+import { Edit2Icon, FileEditIcon, UserPlusIcon } from 'lucide-react';
 import { useMemo } from 'react';
 
 interface VisitsIndexProps {
@@ -67,6 +67,12 @@ export default function VisitsIndex({ visits }: VisitsIndexProps) {
                 <Link href={route('visits.follow-ups.index', row.original.id)} className="w-full">
                   <FileEditIcon className="size-4" />
                   {t('Follow Ups')}
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <Link href={route('members.create', { visit: row.original.id })} className="w-full">
+                  <UserPlusIcon className="size-4" />
+                  {t('Transfer to member')}
                 </Link>
               </DropdownMenuItem>
             </DatatableActionsDropdown>

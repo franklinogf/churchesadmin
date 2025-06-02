@@ -269,5 +269,6 @@
     "Sent to :name": "Enviado a :name",
     "Some emails failed to send": "Algunos correos electrónicos no se enviaron",
     "Some recipients have failed to receive the email. Please check their error messages.": "Algunos destinatarios no han recibido el correo electrónico. Por favor, verifica sus mensajes de error.",
-    "Retry sending failed emails": "Reintentar enviar correos electrónicos fallidos"
+    "Retry sending failed emails": "Reintentar enviar correos electrónicos fallidos",
+    "Transfer to member": "Transferir a miembro"
 }
