@@ -8,6 +8,7 @@ use App\Enums\CheckLayoutField;
 use App\Enums\MediaCollectionName;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\MediaLibrary\HasMedia;
@@ -27,7 +28,8 @@ use Spatie\MediaLibrary\MediaCollections\File;
  */
 final class CheckLayout extends Model implements HasMedia
 {
-    use InteractsWithMedia;
+    /** @use HasFactory<\Database\Factories\CheckLayoutFactory> */
+    use HasFactory,InteractsWithMedia;
 
     /**
      * Checks that use this layout.

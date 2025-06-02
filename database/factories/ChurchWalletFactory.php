@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Enums\TransactionMetaType;
 use App\Models\ChurchWallet;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -35,7 +36,7 @@ final class ChurchWalletFactory extends Factory
     public function withBalance(string $amount = '100.00'): Factory
     {
         return $this->afterCreating(function (ChurchWallet $wallet) use ($amount): void {
-            $wallet->depositFloat($amount);
+            $wallet->depositFloat($amount, ['type' => TransactionMetaType::INITIAL->value]);
         });
     }
 }
