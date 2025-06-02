@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 
 /**
- * @property-read FollowUp $followUp
+ * @property-read FollowUp $follow_up
  */
 final class UpdateVisitFollowUpRequest extends FormRequest
 {
@@ -21,7 +21,7 @@ final class UpdateVisitFollowUpRequest extends FormRequest
      */
     public function authorize(): Response
     {
-        return Gate::authorize('update', $this->followUp->visit);
+        return Gate::authorize('update', $this->follow_up->visit);
     }
 
     /**
@@ -34,7 +34,7 @@ final class UpdateVisitFollowUpRequest extends FormRequest
         return [
             'member_id' => ['required', 'exists:members,id'],
             'type' => ['required', 'string', Rule::enum(FollowUpType::class)],
-            'follow_up_at' => ['required',  Rule::date()->format('Y-m-d H:i:s')->todayOrBefore()],
+            'follow_up_at' => ['required',  Rule::date()->todayOrBefore()],
             'notes' => ['nullable', 'string', 'max:1000'],
         ];
     }
