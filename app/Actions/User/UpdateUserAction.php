@@ -12,14 +12,16 @@ final class UpdateUserAction
     /**
      * Handle the action.
      *
-     * @param  array<string,mixed>  $data
+     * @param  array<string,mixed>|array{}  $data
      * @param  array<int,string>|null  $roles
      * @param  array<int,string>|null  $permissions
      */
-    public function handle(TenantUser $user, array $data, ?array $roles = null, ?array $permissions = null): void
+    public function handle(TenantUser $user, array $data = [], ?array $roles = null, ?array $permissions = null): void
     {
         DB::transaction(function () use ($user, $data, $roles, $permissions): void {
-            $user->update($data);
+            if ($data !== []) {
+                $user->update($data);
+            }
 
             if ($roles !== null) {
                 $user->syncRoles($roles);
