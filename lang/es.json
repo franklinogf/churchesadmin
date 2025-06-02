@@ -270,5 +270,18 @@
     "Some emails failed to send": "Algunos correos electrónicos no se enviaron",
     "Some recipients have failed to receive the email. Please check their error messages.": "Algunos destinatarios no han recibido el correo electrónico. Por favor, verifica sus mensajes de error.",
     "Retry sending failed emails": "Reintentar enviar correos electrónicos fallidos",
+    "Visit": "Visita",
+    "First visit date": "Fecha de primera visita",
+    "Visits": "Visitas",
+    "Notes": "Notas",
+    "Follow Up": "Seguimiento",
+    "Follow Ups": "Seguimientos",
+    "Follow Up Notes": "Notas de seguimiento",
+    "No notes": "Sin notas",
+    ":name follow ups": "Seguimientos de :name",
+    "Follow up type": "Tipo de seguimiento",
+    "Follow up date": "Fecha de seguimiento",
+    "First visit": "Primera visita",
+    "Manage the visits that comes to the church": "Gestionar las visitas que llegan a la iglesia",
     "Transfer to member": "Transferir a miembro"
 }
