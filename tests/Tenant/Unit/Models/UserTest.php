@@ -12,6 +12,7 @@ test('to array', function (): void {
         'name',
         'email',
         'email_verified_at',
+        'timezone',
         'created_at',
         'updated_at',
     ]);
