@@ -7,6 +7,7 @@ namespace App\Actions\Offering;
 use App\Actions\Wallet\WalletDepositAction;
 use App\Dtos\TransactionDto;
 use App\Dtos\TransactionMetaDto;
+use App\Enums\PaymentMethod;
 use App\Enums\TransactionMetaType;
 use App\Exceptions\WalletException;
 use App\Models\ChurchWallet;
@@ -24,7 +25,7 @@ final readonly class CreateOfferingAction
     /**
      * Handle the creation of an offering.
      *
-     * @param  array{wallet_id:string,note?:string|null, date:string, donor_id?:string|null, amount:string, payment_method:string, offering_type:array{id:string, model:string}}  $data
+     * @param  array{wallet_id:string,note?:string|null, date:string, donor_id?:string|null, amount:string, payment_method:PaymentMethod, offering_type:array{id:string, model:string}}  $data
      */
     public function handle(array $data): Offering
     {

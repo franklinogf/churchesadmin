@@ -21,6 +21,8 @@ return new class extends Migration
             $table->string('payment_method');
             $table->morphs('offering_type');
             $table->string('note')->nullable();
+            $table->timestamps();
+
         });
     }
 

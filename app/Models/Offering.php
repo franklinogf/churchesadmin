@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Enums\PaymentMethod;
 use Bavix\Wallet\Models\Transaction;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -18,7 +19,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @property-read int $offering_type_id
  * @property-read string $offering_type_type
  * @property-read int|null $donor_id
- * @property-read string $payment_method
+ * @property-read PaymentMethod $payment_method
  * @property-read string|null $note
  * @property-read DateTimeInterface $date
  * @property-read DateTimeInterface $created_at
@@ -31,8 +32,6 @@ final class Offering extends Pivot
 {
     /** @use HasFactory<\Database\Factories\OfferingFactory> */
     use HasFactory;
-
-    public $timestamps = false;
 
     protected $table = 'offerings';
 
@@ -75,6 +74,7 @@ final class Offering extends Pivot
     {
         return [
             'date' => 'date:Y-m-d',
+            'payment_method' => PaymentMethod::class,
         ];
     }
 }
