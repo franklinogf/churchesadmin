@@ -108,6 +108,7 @@ export default function Profile({ mustVerifyEmail, status, timezones, country }:
                   setData('timezone_country', country);
                 }}
                 error={errors.timezone_country}
+                required
               />
               <ComboboxField
                 label={t('Timezone')}
