@@ -6,6 +6,7 @@
         "build:ssr": "vite build && vite build --ssr",
         "dev": "vite",
         "format": "prettier --write resources/",
+        "format:lang": "prettier --write resources/js/types/lang-keys.d.ts",
         "lint": "eslint . --fix",
         "test:lint": "eslint .",
         "test:format": "prettier --check resources/",

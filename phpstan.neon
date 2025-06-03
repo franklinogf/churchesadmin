@@ -5,6 +5,7 @@ includes:
 parameters:
     stubFiles:
         - stubs/vendor/laravel-wallet.stub
+        - stubs/carbon-macros.stub
 
     paths:
         - app/
