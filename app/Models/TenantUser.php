@@ -26,6 +26,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read CarbonImmutable $updated_at
  * @property-read Email[] $emails
  * @property-read string $timezone
+ * @property-read string $timezone_country
  */
 final class TenantUser extends Authenticatable implements MustVerifyEmail
 {

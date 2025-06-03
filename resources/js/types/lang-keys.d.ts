@@ -247,6 +247,7 @@ export type TranslationKey =
   | 'This is marked as regular.'
   | 'This wallet will be usable again'
   | "This wallet won't be usable until it is activated"
+  | 'Timezone'
   | 'Total'
   | 'Track assignments, support levels, communication logs, and prayer requests with ease.'
   | 'Transactions'

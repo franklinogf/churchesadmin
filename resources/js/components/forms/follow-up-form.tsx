@@ -1,4 +1,3 @@
-import { DatetimeField } from '@/components/forms/inputs/DatetimeField';
 import { SelectField } from '@/components/forms/inputs/SelectField';
 import { TextareaField } from '@/components/forms/inputs/TextareaField';
 import { ResponsiveModal, ResponsiveModalFooterSubmit } from '@/components/responsive-modal';
@@ -6,6 +5,7 @@ import { useTranslations } from '@/hooks/use-translations';
 import type { SelectOption } from '@/types';
 import type { Visit, VisitFollowUp } from '@/types/models/visit';
 import { useForm } from '@inertiajs/react';
+import { DatetimeField } from './inputs/DatetimeField';
 
 type FollowUpForm = {
   member_id: string;
@@ -50,7 +50,6 @@ export function FollowUpForm({ membersOptions, followUpTypeOptions, visit, follo
       });
     }
   }
-
   return (
     <ResponsiveModal
       open={open}

@@ -36,7 +36,9 @@ export function ComboboxField({ error, label, disabled, className, placeholder, 
             variant="outline"
             role="combobox"
             aria-expanded={open}
-            className={cn('w-full justify-between', { 'border-destructive ring-offset-destructive focus-visible:ring-destructive': error })}
+            className={cn('bg-input/20 w-full justify-between', {
+              'border-destructive ring-offset-destructive focus-visible:ring-destructive': error,
+            })}
             disabled={disabled}
           >
             {value ? options.find((option) => option.value.toString() === value)?.label : placeholder}

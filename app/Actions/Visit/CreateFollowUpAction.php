@@ -20,7 +20,7 @@ final class CreateFollowUpAction
         return $visit->followUps()->create([
             'member_id' => $data['member_id'],
             'type' => $data['type'],
-            'follow_up_at' => $data['follow_up_at'],
+            'follow_up_at' => serverDate($data['follow_up_at']),
             'notes' => $data['notes'] ?? null,
         ]);
     }
