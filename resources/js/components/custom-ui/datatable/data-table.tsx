@@ -82,7 +82,6 @@ export function DataTable<TData, TValue>({
     onColumnVisibilityChange: setColumnVisibility,
     onColumnFiltersChange: setColumnFilters,
     state: { sorting, rowSelection, columnVisibility, columnFilters },
-
     getRowId: rowId ? (row: TData) => row[rowId as keyof TData] as string : undefined,
   });
 

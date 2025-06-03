@@ -2,6 +2,7 @@ import { DataTable } from '@/components/custom-ui/datatable/data-table';
 import { DatatableActionsDropdown } from '@/components/custom-ui/datatable/data-table-actions-dropdown';
 import { DatatableCell } from '@/components/custom-ui/datatable/DatatableCell';
 import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTableColumnHeader';
+import { sortDate } from '@/components/custom-ui/datatable/sorting-functions';
 import { PageTitle } from '@/components/PageTitle';
 import { Button } from '@/components/ui/button';
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
@@ -20,7 +21,7 @@ interface VisitsIndexProps {
 export default function VisitsIndex({ visits }: VisitsIndexProps) {
   const { t } = useTranslations();
 
-  const columns: ColumnDef<Visit>[] = useMemo(
+  const columns = useMemo<ColumnDef<Visit>[]>(
     () => [
       {
         enableHiding: false,
@@ -45,6 +46,7 @@ export default function VisitsIndex({ visits }: VisitsIndexProps) {
         cell: ({ row }) => <DatatableCell justify="center">{row.original.email}</DatatableCell>,
       },
       {
+        sortingFn: sortDate,
         enableHiding: false,
         header: ({ column }) => <DataTableColumnHeader column={column} title={t('First visit')} />,
         accessorKey: 'firstVisitDate',

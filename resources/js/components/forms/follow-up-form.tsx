@@ -5,6 +5,7 @@ import { useTranslations } from '@/hooks/use-translations';
 import type { SelectOption } from '@/types';
 import type { Visit, VisitFollowUp } from '@/types/models/visit';
 import { useForm } from '@inertiajs/react';
+import { format } from 'date-fns';
 import { DatetimeField } from './inputs/DatetimeField';
 
 type FollowUpForm = {
@@ -27,7 +28,7 @@ export function FollowUpForm({ membersOptions, followUpTypeOptions, visit, follo
   const { t } = useTranslations();
   const { data, setData, post, put, errors, reset, processing } = useForm<FollowUpForm>({
     member_id: followUp?.memberId.toString() ?? '',
-    follow_up_at: followUp?.followUpAt ?? '',
+    follow_up_at: followUp?.followUpAt ?? format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
     notes: followUp?.notes ?? '',
     type: followUp?.type ?? '',
   });
