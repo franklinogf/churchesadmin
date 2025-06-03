@@ -6,7 +6,7 @@ namespace App\Models;
 
 use App\Enums\PaymentMethod;
 use Bavix\Wallet\Models\Transaction;
-use DateTimeInterface;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -21,9 +21,9 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @property-read int|null $donor_id
  * @property-read PaymentMethod $payment_method
  * @property-read string|null $note
- * @property-read DateTimeInterface $date
- * @property-read DateTimeInterface $created_at
- * @property-read DateTimeInterface $updated_at
+ * @property-read CarbonImmutable $date
+ * @property-read CarbonImmutable $created_at
+ * @property-read CarbonImmutable $updated_at
  * @property-read Transaction $transaction
  * @property-read OfferingType|Missionary $offering_type
  * @property-read Member $donor

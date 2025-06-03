@@ -7,7 +7,7 @@ namespace App\Models;
 use App\Casts\AsUcWords;
 use App\Enums\Gender;
 use App\Enums\OfferingFrequency;
-use DateTimeInterface;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -28,9 +28,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read string|null $church
  * @property-read float|null $offering
  * @property-read OfferingFrequency|null $offering_frequency
- * @property-read DateTimeInterface|null $deleted_at
- * @property-read DateTimeInterface $created_at
- * @property-read DateTimeInterface $updated_at
+ * @property-read CarbonImmutable|null $deleted_at
+ * @property-read CarbonImmutable $created_at
+ * @property-read CarbonImmutable $updated_at
  * @property-read Address|null $address
  * @property-read Offering[] $offerings
  * @property-read Email[] $emails

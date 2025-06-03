@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\EmailStatus;
-use DateTimeInterface;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphPivot;
@@ -20,11 +20,11 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property-read string $recipient_type
  * @property-read Member|Missionary $recipient
  * @property-read Email $email
- * @property-read DateTimeInterface|null $sent_at
+ * @property-read CarbonImmutable|null $sent_at
  * @property-read EmailStatus $status
  * @property-read string|null $error_message
- * @property-read DateTimeInterface $created_at
- * @property-read DateTimeInterface $updated_at
+ * @property-read CarbonImmutable $created_at
+ * @property-read CarbonImmutable $updated_at
  */
 final class Emailable extends MorphPivot
 {

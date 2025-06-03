@@ -31,8 +31,8 @@ final class StoreVisitFollowUpRequest extends FormRequest
         return [
             'member_id' => ['required', 'exists:members,id'],
             'type' => ['required', 'string', Rule::enum(FollowUpType::class)],
-            'follow_up_at' => ['required',  Rule::date()->format('Y-m-d H:i:s')->todayOrBefore()],
-            'notes' => ['nullable', 'string', 'max:1000'],
+            'follow_up_at' => ['required',  Rule::date()->format('Y-m-d H:i:s')->beforeOrEqual(now())],
+            'notes' => ['nullable', 'string', 'max:500'],
         ];
     }
 }

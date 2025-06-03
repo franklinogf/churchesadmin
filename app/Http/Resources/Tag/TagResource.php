@@ -24,8 +24,8 @@ final class TagResource extends JsonResource
             'type' => $this->type,
             'orderColumn' => $this->order_column,
             'isRegular' => $this->is_regular,
-            'createdAt' => $this->created_at->format('Y-m-d H:i:s'),
-            'updatedAt' => $this->updated_at->format('Y-m-d H:i:s'),
+            'createdAt' => $this->created_at->inUserTimezone()->formatAsDatetime(),
+            'updatedAt' => $this->updated_at->inUserTimezone()->formatAsDatetime(),
         ];
     }
 }

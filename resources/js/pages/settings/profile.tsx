@@ -1,8 +1,11 @@
-import { type BreadcrumbItem, type SharedData } from '@/types';
+import { type BreadcrumbItem, type SelectOption, type SharedData } from '@/types';
 import { Transition } from '@headlessui/react';
-import { Link, useForm, usePage } from '@inertiajs/react';
+import { Link, router, useForm, usePage } from '@inertiajs/react';
 import { useMemo, type FormEventHandler } from 'react';
 
+import { ComboboxField } from '@/components/forms/inputs/ComboboxField';
+import { CountryField } from '@/components/forms/inputs/CountryField';
+import { FieldsGrid } from '@/components/forms/inputs/FieldsGrid';
 import { InputField } from '@/components/forms/inputs/InputField';
 import HeadingSmall from '@/components/heading-small';
 import { Button } from '@/components/ui/button';
@@ -13,15 +16,24 @@ import SettingsLayout from '@/layouts/settings/profile-layout';
 type ProfileForm = {
   name: string;
   email: string;
+  timezone: string;
+  timezone_country: string;
 };
-
-export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: boolean; status?: string }) {
+interface ProfileProps {
+  mustVerifyEmail: boolean;
+  status?: string;
+  timezones: SelectOption[];
+  country: string;
+}
+export default function Profile({ mustVerifyEmail, status, timezones, country }: ProfileProps) {
   const { t } = useTranslations();
   const { auth } = usePage<SharedData>().props;
 
   const { data, setData, patch, errors, processing, recentlySuccessful } = useForm<Required<ProfileForm>>({
     name: auth.user.name,
     email: auth.user.email,
+    timezone: auth.user.timezone ?? 'America/Puerto_Rico',
+    timezone_country: country,
   });
 
   const submit: FormEventHandler = (e) => {
@@ -40,6 +52,7 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
     ],
     [t],
   );
+
   return (
     <AppLayout title={t('Profile Settings')} breadcrumbs={breadcrumbs}>
       <SettingsLayout>
@@ -66,11 +79,10 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
               placeholder={t('Email address')}
               error={errors.email}
             />
-
             {mustVerifyEmail && auth.user.emailVerifiedAt === null && (
               <div>
                 <p className="text-muted-foreground -mt-4 text-sm">
-                  {t('Your email address is unverified.')}
+                  {t('Your email address is unverified.')}{' '}
                   <Link
                     href={route('verification.send')}
                     method="post"
@@ -86,6 +98,26 @@ export default function Profile({ mustVerifyEmail, status }: { mustVerifyEmail: 
                 )}
               </div>
             )}
+
+            <FieldsGrid>
+              <CountryField
+                label={t('Country')}
+                value={data.timezone_country}
+                onChange={(country) => {
+                  router.get(route('profile.edit'), { country }, { preserveScroll: true, only: ['timezones', 'country'] });
+                  setData('timezone_country', country);
+                }}
+                error={errors.timezone_country}
+              />
+              <ComboboxField
+                label={t('Timezone')}
+                value={data.timezone}
+                onChange={(value) => setData('timezone', value)}
+                required
+                error={errors.timezone}
+                options={timezones}
+              />
+            </FieldsGrid>
 
             <div className="flex items-center gap-4">
               <Button disabled={processing}>{t('Save')}</Button>

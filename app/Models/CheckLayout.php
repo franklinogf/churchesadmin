@@ -6,7 +6,7 @@ namespace App\Models;
 
 use App\Enums\CheckLayoutField;
 use App\Enums\MediaCollectionName;
-use DateTimeInterface;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -21,9 +21,9 @@ use Spatie\MediaLibrary\MediaCollections\File;
  * @property-read array<CheckLayoutField,array{position:array{x:float,y:float}}> $fields
  * @property-read int $width
  * @property-read int $height
- * @property-read DateTimeInterface $created_at
- * @property-read DateTimeInterface $updated_at
- * @property-read DateTimeInterface|null $deleted_at
+ * @property-read CarbonImmutable $created_at
+ * @property-read CarbonImmutable $updated_at
+ * @property-read CarbonImmutable|null $deleted_at
  * @property-read string $imageUrl
  */
 final class CheckLayout extends Model implements HasMedia

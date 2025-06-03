@@ -20,7 +20,7 @@ final class UpdateFollowUpAction
         $followUp->update([
             'member_id' => $data['member_id'] ?? $followUp->member_id,
             'type' => $data['type'] ?? $followUp->type,
-            'follow_up_at' => $data['follow_up_at'] ?? $followUp->follow_up_at,
+            'follow_up_at' => isset($data['follow_up_at']) ? serverDate($data['follow_up_at']) : $followUp->follow_up_at,
             'notes' => ArrayFallback::inputOrFallback(
                 $data,
                 'notes',

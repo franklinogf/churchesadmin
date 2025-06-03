@@ -19,6 +19,8 @@ export interface AuthenticatedUser {
   roles: UserRole[];
   permissions: UserPermission[];
   emailVerifiedAt: string | null;
+  timezone: string;
+  timezoneCountry: string;
 }
 
 export interface Role {

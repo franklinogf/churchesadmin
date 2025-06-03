@@ -29,8 +29,8 @@ final class ExpenseResource extends JsonResource
             'member' => $this->member ? new MemberResource($this->member) : null,
             'expenseType' => new ExpenseTypeResource($this->expenseType),
             'note' => $this->note,
-            'createdAt' => $this->created_at->format('Y-m-d H:i:s'),
-            'updatedAt' => $this->updated_at->format('Y-m-d H:i:s'),
+            'createdAt' => $this->created_at->inUserTimezone()->formatAsDatetime(),
+            'updatedAt' => $this->updated_at->inUserTimezone()->formatAsDatetime(),
         ];
     }
 }

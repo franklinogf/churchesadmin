@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use DateTimeInterface;
+use Carbon\CarbonImmutable;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -21,9 +21,9 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @property-read string $email
  * @property-read string $password
  * @property-read string $remember_token
- * @property-read DateTimeInterface|null $email_verified_at
- * @property-read DateTimeInterface|null $created_at
- * @property-read DateTimeInterface|null $updated_at
+ * @property-read CarbonImmutable|null $email_verified_at
+ * @property-read CarbonImmutable|null $created_at
+ * @property-read CarbonImmutable|null $updated_at
  */
 final class User extends Authenticatable implements FilamentUser
 {

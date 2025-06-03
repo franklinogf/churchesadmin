@@ -6,6 +6,9 @@ namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Settings\ProfileUpdateRequest;
+use App\Models\TenantUser;
+use DateTimeZone;
+use Illuminate\Container\Attributes\CurrentUser;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,11 +20,24 @@ final class ProfileController extends Controller
     /**
      * Show the user's profile settings page.
      */
-    public function edit(Request $request): Response
+    public function edit(Request $request, #[CurrentUser] TenantUser $currentUser): Response
     {
+        $country = $request->query('country', $currentUser->timezone_country);
+
+        if ($country === '') {
+            $country = $currentUser->timezone_country;
+        }
+
+        $timezones = collect(DateTimeZone::listIdentifiers(DateTimeZone::PER_COUNTRY, $country))
+            ->map(fn (string $timezone): array => ['label' => $timezone, 'value' => $timezone])
+            ->sort()
+            ->toArray();
+
         return Inertia::render('settings/profile', [
             'mustVerifyEmail' => true,
             'status' => $request->session()->get('status'),
+            'timezones' => $timezones,
+            'country' => $country,
         ]);
     }
 
@@ -30,7 +46,7 @@ final class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        /** @var \App\Models\TenantUser $user */
+        /** @var TenantUser $user */
         $user = $request->user();
         $user->fill($request->validated());
 
@@ -51,7 +67,7 @@ final class ProfileController extends Controller
         $request->validate([
             'password' => ['required', 'current_password'],
         ]);
-        /** @var \App\Models\TenantUser $user */
+        /** @var TenantUser $user */
         $user = $request->user();
 
         Auth::logout();

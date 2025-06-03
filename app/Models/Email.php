@@ -6,7 +6,7 @@ namespace App\Models;
 
 use App\Enums\EmailStatus;
 use App\Enums\ModelMorphName;
-use DateTimeInterface;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -22,9 +22,9 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  * @property-read ModelMorphName $recipients_type
  * @property-read string|null $reply_to
  * @property-read EmailStatus $status
- * @property-read DateTimeInterface|null $sent_at
- * @property-read DateTimeInterface $created_at
- * @property-read DateTimeInterface $updated_at
+ * @property-read CarbonImmutable|null $sent_at
+ * @property-read CarbonImmutable $created_at
+ * @property-read CarbonImmutable $updated_at
  * @property-read TenantUser $sender
  * @property-read Collection<int,Member> $members
  * @property-read Collection<int,Missionary> $missionaries

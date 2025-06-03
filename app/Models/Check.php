@@ -7,7 +7,7 @@ namespace App\Models;
 use App\Dtos\CheckLayoutFieldsDto;
 use App\Enums\CheckType;
 use Bavix\Wallet\Models\Transaction;
-use DateTimeInterface;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -22,9 +22,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property-read string|null $check_number
  * @property-read string|null $note
  * @property-read CheckType $type
- * @property-read DateTimeInterface $date
- * @property-read DateTimeInterface $created_at
- * @property-read DateTimeInterface $updated_at
+ * @property-read CarbonImmutable $date
+ * @property-read CarbonImmutable $created_at
+ * @property-read CarbonImmutable $updated_at
  * @property-read Transaction $transaction
  * @property-read Member $member
  * @property-read ExpenseType $expenseType

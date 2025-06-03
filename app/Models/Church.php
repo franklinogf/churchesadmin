@@ -10,7 +10,7 @@ use Bavix\Wallet\Interfaces\Wallet;
 use Bavix\Wallet\Interfaces\WalletFloat;
 use Bavix\Wallet\Traits\HasWalletFloat;
 use Bavix\Wallet\Traits\HasWallets;
-use DateTimeInterface;
+use Carbon\CarbonImmutable;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Stancl\Tenancy\Database\Concerns\HasDatabase;
@@ -27,8 +27,8 @@ use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
  * @property-read string $locale
  * @property-read bool $active
  * @property-read array<string,mixed>|null $data
- * @property-read DateTimeInterface $created_at
- * @property-read DateTimeInterface $updated_at
+ * @property-read CarbonImmutable $created_at
+ * @property-read CarbonImmutable $updated_at
  */
 final class Church extends BaseTenant implements HasMedia, TenantWithDatabase, Wallet, WalletFloat
 {

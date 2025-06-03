@@ -30,8 +30,8 @@ final class AddressResource extends JsonResource
             'state' => $this->state,
             'country' => $this->country,
             'zipCode' => $this->zip_code,
-            'createdAt' => $this->created_at->format('Y-m-d H:i:s'),
-            'updatedAt' => $this->updated_at->format('Y-m-d H:i:s'),
+            'createdAt' => $this->created_at->inUserTimezone()->formatAsDatetime(),
+            'updatedAt' => $this->updated_at->inUserTimezone()->formatAsDatetime(),
         ];
     }
 }

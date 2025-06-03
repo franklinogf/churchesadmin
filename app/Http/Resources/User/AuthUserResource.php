@@ -23,7 +23,9 @@ final class AuthUserResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
-            'emailVerifiedAt' => $this->email_verified_at,
+            'emailVerifiedAt' => $this->email_verified_at?->inUserTimezone()->formatAsDatetime(),
+            'timezone' => $this->timezone,
+            'timezoneCountry' => $this->timezone_country,
             'roles' => $this->getRoleNames(),
             'permissions' => $this->getAllPermissions()->pluck('name')->toArray(),
         ];
