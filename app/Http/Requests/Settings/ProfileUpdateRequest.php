@@ -9,9 +9,6 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-/**
- * @property-read TenantUser $user
- */
 final class ProfileUpdateRequest extends FormRequest
 {
     /**
@@ -29,7 +26,7 @@ final class ProfileUpdateRequest extends FormRequest
                 'lowercase',
                 'email',
                 'max:255',
-                Rule::unique(TenantUser::class)->ignore($this->user->id),
+                Rule::unique(TenantUser::class)->ignore($this->user()?->id),
             ],
             'timezone' => [
                 'required',
