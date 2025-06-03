@@ -79,6 +79,25 @@ export default function Profile({ mustVerifyEmail, status, timezones, country }:
               placeholder={t('Email address')}
               error={errors.email}
             />
+            {mustVerifyEmail && auth.user.emailVerifiedAt === null && (
+              <div>
+                <p className="text-muted-foreground -mt-4 text-sm">
+                  {t('Your email address is unverified.')}{' '}
+                  <Link
+                    href={route('verification.send')}
+                    method="post"
+                    as="button"
+                    className="text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current! dark:decoration-neutral-500"
+                  >
+                    {t('Click here to resend the verification email.')}
+                  </Link>
+                </p>
+
+                {status === 'verification-link-sent' && (
+                  <div className="mt-2 text-sm font-medium text-green-600">{t('A new verification link has been sent to your email address.')}</div>
+                )}
+              </div>
+            )}
 
             <FieldsGrid>
               <CountryField
@@ -99,26 +118,6 @@ export default function Profile({ mustVerifyEmail, status, timezones, country }:
                 options={timezones}
               />
             </FieldsGrid>
-
-            {mustVerifyEmail && auth.user.emailVerifiedAt === null && (
-              <div>
-                <p className="text-muted-foreground -mt-4 text-sm">
-                  {t('Your email address is unverified.')}
-                  <Link
-                    href={route('verification.send')}
-                    method="post"
-                    as="button"
-                    className="text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current! dark:decoration-neutral-500"
-                  >
-                    {t('Click here to resend the verification email.')}
-                  </Link>
-                </p>
-
-                {status === 'verification-link-sent' && (
-                  <div className="mt-2 text-sm font-medium text-green-600">{t('A new verification link has been sent to your email address.')}</div>
-                )}
-              </div>
-            )}
 
             <div className="flex items-center gap-4">
               <Button disabled={processing}>{t('Save')}</Button>
