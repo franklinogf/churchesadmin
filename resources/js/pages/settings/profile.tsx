@@ -85,7 +85,7 @@ export default function Profile({ mustVerifyEmail, status, timezones, country }:
                 label={t('Country')}
                 value={data.timezone_country}
                 onChange={(country) => {
-                  router.get(route('profile.edit'), { country }, { preserveScroll: true });
+                  router.get(route('profile.edit'), { country }, { preserveScroll: true, only: ['timezones', 'country'] });
                   setData('timezone_country', country);
                 }}
                 error={errors.timezone_country}
