@@ -25,8 +25,8 @@ final class UserResource extends JsonResource
             'email' => $this->email,
             'roles' => RoleResource::collection($this->whenLoaded('roles')),
             'permissions' => PermissionResource::collection($this->whenLoaded('permissions')),
-            'createdAt' => $this->created_at->format('Y-m-d H:i:s'),
-            'updatedAt' => $this->updated_at->format('Y-m-d H:i:s'),
+            'createdAt' => $this->created_at->inUserTimezone()->formatAsDatetime(),
+            'updatedAt' => $this->updated_at->inUserTimezone()->formatAsDatetime(),
         ];
     }
 }

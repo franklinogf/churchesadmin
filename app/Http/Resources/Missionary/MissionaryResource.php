@@ -33,9 +33,9 @@ final class MissionaryResource extends JsonResource
             'offering' => $this->offering,
             'offeringFrequency' => $this->offering_frequency?->value,
             'address' => new AddressRelationshipResource($this->whenLoaded('address')),
-            'createdAt' => $this->created_at->format('Y-m-d H:i:s'),
-            'updatedAt' => $this->updated_at->format('Y-m-d H:i:s'),
-            'deletedAt' => $this->deleted_at?->format('Y-m-d H:i:s'),
+            'createdAt' => $this->created_at->inUserTimezone()->formatAsDatetime(),
+            'updatedAt' => $this->updated_at->inUserTimezone()->formatAsDatetime(),
+            'deletedAt' => $this->deleted_at?->inUserTimezone()->formatAsDatetime(),
             'emails' => EmailResource::collection($this->whenLoaded('emails')),
             'emailMessage' => $this->whenPivotLoadedAs('emailMessage', 'emailables', fn (): EmailableResource => new EmailableResource($this->emailMessage)),
         ];

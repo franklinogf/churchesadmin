@@ -30,9 +30,9 @@ final class TransactionResource extends JsonResource
             'confirmed' => $this->confirmed,
             'wallet' => new ChurchWalletResource($this->whenLoaded('wallet', fn () => $this->wallet->holder)),
             'meta' => $this->meta,
-            'createdAt' => $this->created_at->format('Y-m-d H:i:s'),
-            'updatedAt' => $this->updated_at->format('Y-m-d H:i:s'),
-            'deletedAt' => $this->deleted_at?->format('Y-m-d H:i:s'),
+            'createdAt' => $this->created_at->inUserTimezone()->formatAsDatetime(),
+            'updatedAt' => $this->updated_at->inUserTimezone()->formatAsDatetime(),
+            'deletedAt' => $this->deleted_at?->inUserTimezone()->formatAsDatetime(),
         ];
     }
 }

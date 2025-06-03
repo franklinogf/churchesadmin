@@ -24,8 +24,8 @@ final class ChurchResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'locale' => $this->locale,
-            'createdAt' => $this->created_at->format('Y-m-d H:i:s'),
-            'updatedAt' => $this->updated_at->format('Y-m-d H:i:s'),
+            'createdAt' => $this->created_at->inUserTimezone()->formatAsDatetime(),
+            'updatedAt' => $this->updated_at->inUserTimezone()->formatAsDatetime(),
             'logo' => ($logo = $this->getFirstMediaUrl(MediaCollectionName::LOGO->value)) === '' ? null : $logo,
             'active' => $this->active,
         ];
