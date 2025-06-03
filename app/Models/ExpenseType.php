@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Casts\AsUcWords;
-use DateTimeInterface;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,8 +13,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read int $id
  * @property-read string $name
  * @property float|null $default_amount
- * @property-read DateTimeInterface $created_at
- * @property-read DateTimeInterface $updated_at
+ * @property-read CarbonImmutable $created_at
+ * @property-read CarbonImmutable $updated_at
  */
 final class ExpenseType extends Model
 {

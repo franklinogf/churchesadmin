@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use DateTimeInterface;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
@@ -20,8 +20,8 @@ use Spatie\Tags\Tag as SpatieTag;
  * @property-read int|null $order_column
  * @property-read bool $is_regular
  * @property-read Collection<int,Member> $members
- * @property-read DateTimeInterface $created_at
- * @property-read DateTimeInterface $updated_at
+ * @property-read CarbonImmutable $created_at
+ * @property-read CarbonImmutable $updated_at
  */
 final class Tag extends SpatieTag
 {

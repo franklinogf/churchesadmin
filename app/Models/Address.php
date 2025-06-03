@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use DateTimeInterface;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -22,8 +22,8 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property-read string $state
  * @property-read string $country
  * @property-read string $zip_code
- * @property-read DateTimeInterface $created_at
- * @property-read DateTimeInterface $updated_at
+ * @property-read CarbonImmutable $created_at
+ * @property-read CarbonImmutable $updated_at
  */
 final class Address extends Model
 {

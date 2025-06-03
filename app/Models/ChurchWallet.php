@@ -11,7 +11,7 @@ use Bavix\Wallet\Interfaces\WalletFloat;
 use Bavix\Wallet\Models\Transaction;
 use Bavix\Wallet\Traits\CanConfirm;
 use Bavix\Wallet\Traits\HasWalletFloat;
-use DateTimeInterface;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -28,9 +28,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read string $bank_account_number
  * @property-read string|null $note
  * @property-read string|null $check_number
- * @property-read DateTimeInterface $created_at
- * @property-read DateTimeInterface $updated_at
- * @property-read DateTimeInterface|null $deleted_at
+ * @property-read CarbonImmutable $created_at
+ * @property-read CarbonImmutable $updated_at
+ * @property-read CarbonImmutable|null $deleted_at
  * @property-read int|null $check_layout_id
  * @property-read CheckLayout|null $checkLayout
  * @property-read Transaction|null $initialTransaction

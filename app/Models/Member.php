@@ -8,7 +8,7 @@ use App\Casts\AsUcWords;
 use App\Enums\CivilStatus;
 use App\Enums\Gender;
 use App\Models\Traits\HasTags;
-use DateTimeInterface;
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -25,11 +25,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read string $email
  * @property-read string $phone
  * @property-read Gender $gender
- * @property-read DateTimeInterface|null $dob
+ * @property-read CarbonImmutable|null $dob
  * @property-read CivilStatus $civil_status
- * @property-read DateTimeInterface|null $deleted_at
- * @property-read DateTimeInterface $created_at
- * @property-read DateTimeInterface $updated_at
+ * @property-read CarbonImmutable|null $deleted_at
+ * @property-read CarbonImmutable $created_at
+ * @property-read CarbonImmutable $updated_at
  * @property-read Address|null $address
  * @property-read Collection<int,Tag> $tags
  * @property-read Collection<int,Email> $emails
