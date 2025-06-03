@@ -3,7 +3,8 @@
 declare(strict_types=1);
 
 namespace Bavix\Wallet\Models;
-use DateTimeInterface;
+
+use Carbon\CarbonImmutable;
 
 
 /**
@@ -21,9 +22,9 @@ use DateTimeInterface;
  * @property array<mixed> $meta
  * @property WalletInterface $payable
  * @property Wallet $wallet
- * @property DateTimeInterface $created_at
- * @property DateTimeInterface $updated_at
- * @property DateTimeInterface|null $deleted_at
+ * @property CarbonImmutable $created_at
+ * @property CarbonImmutable $updated_at
+ * @property CarbonImmutable|null $deleted_at
  *
  * @method int getKey()
  */
