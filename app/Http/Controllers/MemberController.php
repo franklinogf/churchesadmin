@@ -53,7 +53,7 @@ final class MemberController extends Controller
 
         $visitId = $request->string('visit')->value();
 
-        $visit = $visitId ? Visit::findOrFail($visitId) : null;
+        $visit = $visitId ? Visit::with('address')->findOrFail($visitId) : null;
 
         $genders = Gender::options();
         $civilStatuses = CivilStatus::options();
