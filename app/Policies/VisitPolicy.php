@@ -57,24 +57,36 @@ final class VisitPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(): bool
+    public function delete(TenantUser $tenantUser): Response
     {
-        return false;
+        if ($tenantUser->can(TenantPermission::VISITS_DELETE)) {
+            return Response::allow();
+        }
+
+        return Response::deny(__('permission.delete', ['label' => __('Visit')]));
     }
 
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(): bool
+    public function restore(TenantUser $tenantUser): Response
     {
-        return false;
+        if ($tenantUser->can(TenantPermission::VISITS_RESTORE)) {
+            return Response::allow();
+        }
+
+        return Response::deny(__('permission.restore', ['label' => __('Visit')]));
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(): bool
+    public function forceDelete(TenantUser $tenantUser): Response
     {
-        return false;
+        if ($tenantUser->can(TenantPermission::VISITS_FORCE_DELETE)) {
+            return Response::allow();
+        }
+
+        return Response::deny(__('permission.force_delete', ['label' => __('Visit')]));
     }
 }

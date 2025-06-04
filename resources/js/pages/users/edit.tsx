@@ -51,7 +51,10 @@ export default function Edit({ user, permissions, roles }: EditPageProps) {
   const selectedRolesPermissions = getUniquePermissions(roles, selectedRoles);
 
   return (
-    <AppLayout title={t('Users')}>
+    <AppLayout
+      title={t('Users')}
+      breadcrumbs={[{ title: t('Users'), href: route('users.index') }, { title: t('Edit :model', { model: t('User') }) }]}
+    >
       <PageTitle>{t('Edit :model', { model: t('User') })}</PageTitle>
       <div className="mt-2 flex w-full items-center justify-center">
         <Form className="w-full max-w-2xl" onSubmit={handleSubmit} isSubmitting={processing}>
@@ -82,7 +85,7 @@ export default function Edit({ user, permissions, roles }: EditPageProps) {
             <div className="space-y-4">
               <p className="text-lg font-medium">{t('Assigned permissions')}</p>
               <ScrollArea className="h-60 w-full">
-                <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-4">
+                <div className="flex flex-col flex-wrap gap-2">
                   {permissions.map((permission) => {
                     const existsOnRoles = selectedRolesPermissions.some((p) => p.name === permission.name);
                     const value = data.additional_permissions.includes(permission.name) || existsOnRoles;
