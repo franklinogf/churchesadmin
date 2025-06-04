@@ -75,7 +75,15 @@ export function FollowUpForm({ membersOptions, followUpTypeOptions, visit, follo
           error={errors.type}
           options={followUpTypeOptions}
         />
-        <DatetimeField required label={t('Follow up date')} value={data.follow_up_at} onChange={(value) => setData('follow_up_at', value)} />
+        <DatetimeField
+          modal
+          max={new Date()}
+          required
+          label={t('Follow up date')}
+          value={data.follow_up_at}
+          onChange={(value) => setData('follow_up_at', value)}
+        />
+
         <TextareaField label={t('Notes')} value={data.notes} onChange={(value) => setData('notes', value)} error={errors.notes} />
         <ResponsiveModalFooterSubmit isSubmitting={processing} label={t('Save')} />
       </form>
