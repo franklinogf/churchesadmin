@@ -45,7 +45,7 @@ export function ComboboxField({ error, label, disabled, className, placeholder, 
             <ChevronsUpDown className="ml-auto shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-fit max-w-[300px] p-0">
+        <PopoverContent className="w-full max-w-fit p-0">
           <Command
             filter={(value, search, keywords) => {
               const extendedValue = value + ' ' + keywords?.join(' ');

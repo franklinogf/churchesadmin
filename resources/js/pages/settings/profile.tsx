@@ -5,7 +5,6 @@ import { useMemo, type FormEventHandler } from 'react';
 
 import { ComboboxField } from '@/components/forms/inputs/ComboboxField';
 import { CountryField } from '@/components/forms/inputs/CountryField';
-import { FieldsGrid } from '@/components/forms/inputs/FieldsGrid';
 import { InputField } from '@/components/forms/inputs/InputField';
 import HeadingSmall from '@/components/heading-small';
 import { Button } from '@/components/ui/button';
@@ -32,7 +31,7 @@ export default function Profile({ mustVerifyEmail, status, timezones, country }:
   const { data, setData, patch, errors, processing, recentlySuccessful } = useForm<Required<ProfileForm>>({
     name: auth.user.name,
     email: auth.user.email,
-    timezone: auth.user.timezone ?? 'America/Puerto_Rico',
+    timezone: country === auth.user.timezoneCountry ? auth.user.timezone : '',
     timezone_country: country,
   });
 
@@ -99,26 +98,25 @@ export default function Profile({ mustVerifyEmail, status, timezones, country }:
               </div>
             )}
 
-            <FieldsGrid>
-              <CountryField
-                label={t('Country')}
-                value={data.timezone_country}
-                onChange={(country) => {
-                  router.get(route('profile.edit'), { country }, { preserveScroll: true, only: ['timezones', 'country'] });
-                  setData('timezone_country', country);
-                }}
-                error={errors.timezone_country}
-                required
-              />
-              <ComboboxField
-                label={t('Timezone')}
-                value={data.timezone}
-                onChange={(value) => setData('timezone', value)}
-                required
-                error={errors.timezone}
-                options={timezones}
-              />
-            </FieldsGrid>
+            <CountryField
+              label={t('Country')}
+              value={data.timezone_country}
+              onChange={(country) => {
+                router.get(route('profile.edit'), { country }, { preserveScroll: true, only: ['timezones', 'country'] });
+                setData('timezone_country', country);
+                setData('timezone', ''); // Reset timezone when country changes
+              }}
+              error={errors.timezone_country}
+              required
+            />
+            <ComboboxField
+              label={t('Timezone')}
+              value={data.timezone}
+              onChange={(value) => setData('timezone', value)}
+              required
+              error={errors.timezone}
+              options={timezones}
+            />
 
             <div className="flex items-center gap-4">
               <Button disabled={processing}>{t('Save')}</Button>
