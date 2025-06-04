@@ -72,7 +72,7 @@ final class AppServiceProvider extends ServiceProvider
 
         CarbonImmutable::macro('inAppTimezone', function (): CarbonImmutable {
             /** @var CarbonImmutable $this */
-            return $this->tz(config()->string('app.timezone_display')); /** @phpstan-ignore-line */
+            return $this->setTimezone(config()->string('app.timezone_display'));
         });
 
         CarbonImmutable::macro('inUserTimezone', function (): CarbonImmutable {
@@ -80,11 +80,11 @@ final class AppServiceProvider extends ServiceProvider
             $currentUser = Auth::user();
             if ($currentUser instanceof User) {
                 /** @var CarbonImmutable $this */
-                return $this->tz(config()->string('app.timezone_display')); /** @phpstan-ignore-line */
+                return $this->setTimezone(config()->string('app.timezone_display'));
             }
 
             /** @var CarbonImmutable $this */
-            return $this->tz($currentUser->timezone ?? config()->string('app.timezone_display')); /** @phpstan-ignore-line */
+            return $this->setTimezone($currentUser->timezone ?? config()->string('app.timezone_display'));
         });
 
         CarbonImmutable::macro('formatAsDatetime', function (): string {
