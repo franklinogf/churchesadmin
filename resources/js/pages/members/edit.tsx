@@ -1,6 +1,6 @@
 import { AddressFormSkeleton } from '@/components/forms/AddressFormSkeleton';
 import { Form } from '@/components/forms/Form';
-import { DateField } from '@/components/forms/inputs/DateField';
+import { DatetimeField } from '@/components/forms/inputs/DatetimeField';
 import { FieldsGrid } from '@/components/forms/inputs/FieldsGrid';
 import { InputField } from '@/components/forms/inputs/InputField';
 import { MultiSelectField } from '@/components/forms/inputs/MultiSelectField';
@@ -80,7 +80,14 @@ export default function Edit({ member, genders, civilStatuses, skills, categorie
             <PhoneField required label="Phone" value={data.phone} onChange={(value) => setData('phone', value)} error={errors.phone} />
           </FieldsGrid>
 
-          <DateField label="Date of Birth" value={data.dob} onChange={(value) => setData('dob', value)} error={errors.dob} />
+          <DatetimeField
+            hideTime
+            max={new Date()}
+            label="Date of Birth"
+            value={data.dob}
+            onChange={(value) => setData('dob', value)}
+            error={errors.dob}
+          />
 
           <FieldsGrid>
             <SelectField

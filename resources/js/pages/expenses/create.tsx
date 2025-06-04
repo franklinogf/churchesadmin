@@ -1,6 +1,6 @@
 import { Form } from '@/components/forms/Form';
 import { CurrencyField } from '@/components/forms/inputs/CurrencyField';
-import { DateField } from '@/components/forms/inputs/DateField';
+import { DatetimeField } from '@/components/forms/inputs/DatetimeField';
 import { FieldsGrid } from '@/components/forms/inputs/FieldsGrid';
 import { InputField } from '@/components/forms/inputs/InputField';
 import { SelectField } from '@/components/forms/inputs/SelectField';
@@ -142,7 +142,8 @@ export default function Create({ wallets, memberOptions, expenseTypes, expenseTy
                     </legend>
                   )}
                   <FieldsGrid className="grow">
-                    <DateField
+                    <DatetimeField
+                      hideTime
                       required
                       label={t('Date of Expense')}
                       value={expense.date}

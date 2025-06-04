@@ -1,13 +1,13 @@
 import { Form } from '@/components/forms/Form';
 import { ComboboxField } from '@/components/forms/inputs/ComboboxField';
 import { CurrencyField } from '@/components/forms/inputs/CurrencyField';
-import { DateField } from '@/components/forms/inputs/DateField';
 import { FieldsGrid } from '@/components/forms/inputs/FieldsGrid';
 import { InputField } from '@/components/forms/inputs/InputField';
 import { SelectField } from '@/components/forms/inputs/SelectField';
 import { PageTitle } from '@/components/PageTitle';
 import AppLayout from '@/layouts/app-layout';
 
+import { DatetimeField } from '@/components/forms/inputs/DatetimeField';
 import { useTranslations } from '@/hooks/use-translations';
 import type { SelectOption } from '@/types';
 import { useForm } from '@inertiajs/react';
@@ -93,7 +93,7 @@ export default function ChecksCreate({ walletOptions, memberOptions, checkTypesO
           </FieldsGrid>
           <CurrencyField label={t('Amount')} required value={data.amount} onChange={(value) => setData('amount', value)} error={errors.amount} />
 
-          <DateField required label={t('Date')} value={data.date} onChange={(value) => setData('date', value)} error={errors.date} />
+          <DatetimeField hideTime required label={t('Date')} value={data.date} onChange={(value) => setData('date', value)} error={errors.date} />
 
           <InputField label={t('Note')} value={data.note} onChange={(value) => setData('note', value)} error={errors.note} />
         </Form>

@@ -1,7 +1,7 @@
 import { Form } from '@/components/forms/Form';
 import { ComboboxField } from '@/components/forms/inputs/ComboboxField';
 import { CurrencyField } from '@/components/forms/inputs/CurrencyField';
-import { DateField } from '@/components/forms/inputs/DateField';
+import { DatetimeField } from '@/components/forms/inputs/DatetimeField';
 import { FieldsGrid } from '@/components/forms/inputs/FieldsGrid';
 import { InputField } from '@/components/forms/inputs/InputField';
 import { MultipleComboboxField } from '@/components/forms/inputs/MultipleComboboxField';
@@ -118,7 +118,15 @@ export default function Create({ walletsOptions, paymentMethods, membersOptions,
             options={membersOptions}
           />
           <FieldsGrid>
-            <DateField required label={t('Date of Offering')} value={data.date} onChange={(value) => setData('date', value)} error={errors.date} />
+            <DatetimeField
+              hideTime
+              max={new Date()}
+              required
+              label={t('Date of Offering')}
+              value={data.date}
+              onChange={(value) => setData('date', value)}
+              error={errors.date}
+            />
           </FieldsGrid>
 
           <Button size="sm" variant="secondary" type="button" onClick={handleAddOffering}>

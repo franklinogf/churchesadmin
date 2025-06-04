@@ -1,7 +1,7 @@
 import { Form } from '@/components/forms/Form';
 import { ComboboxField } from '@/components/forms/inputs/ComboboxField';
 import { CurrencyField } from '@/components/forms/inputs/CurrencyField';
-import { DateField } from '@/components/forms/inputs/DateField';
+import { DatetimeField } from '@/components/forms/inputs/DatetimeField';
 import { FieldsGrid } from '@/components/forms/inputs/FieldsGrid';
 import { InputField } from '@/components/forms/inputs/InputField';
 import { MultipleComboboxField } from '@/components/forms/inputs/MultipleComboboxField';
@@ -86,7 +86,14 @@ export default function Edit({ walletsOptions, paymentMethods, membersOptions, m
             options={membersOptions}
           />
           <FieldsGrid>
-            <DateField required label={t('Date of Offering')} value={data.date} onChange={(value) => setData('date', value)} error={errors.date} />
+            <DatetimeField
+              hideTime
+              required
+              label={t('Date of Offering')}
+              value={data.date}
+              onChange={(value) => setData('date', value)}
+              error={errors.date}
+            />
           </FieldsGrid>
 
           <div className="space-y-4 py-2">
