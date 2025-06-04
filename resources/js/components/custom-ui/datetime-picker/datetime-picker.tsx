@@ -40,6 +40,7 @@ import { DayPicker, type Matcher, TZDate } from 'react-day-picker';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { useTranslations } from '@/hooks/use-translations';
 import { cn } from '@/lib/utils';
 
 export type CalendarProps = Omit<React.ComponentProps<typeof DayPicker>, 'mode'>;
@@ -143,6 +144,7 @@ export function DateTimePicker({
   modal = false,
   ...props
 }: DateTimePickerProps & CalendarProps) {
+  const { t } = useTranslations();
   const [open, setOpen] = useState(false);
   const [monthYearPicker, setMonthYearPicker] = useState<'month' | 'year' | false>(false);
   const initDate = useMemo(() => new TZDate(value || new Date(), timezone), [value, timezone]);
@@ -325,7 +327,7 @@ export function DateTimePicker({
           )}
           <div className="flex flex-row-reverse items-center justify-between">
             <Button className="ms-2 h-7 px-2" onClick={onSubmit}>
-              Done
+              {t('Accept')}
             </Button>
             {timezone && (
               <div className="text-sm">
