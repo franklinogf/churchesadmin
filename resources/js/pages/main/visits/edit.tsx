@@ -1,6 +1,6 @@
 import { AddressFormSkeleton } from '@/components/forms/AddressFormSkeleton';
 import { Form } from '@/components/forms/Form';
-import { DateField } from '@/components/forms/inputs/DateField';
+import { DatetimeField } from '@/components/forms/inputs/DatetimeField';
 import { FieldsGrid } from '@/components/forms/inputs/FieldsGrid';
 import { InputField } from '@/components/forms/inputs/InputField';
 import { PhoneField } from '@/components/forms/inputs/PhoneField';
@@ -64,7 +64,9 @@ export default function VisitsEdit({ visit }: { visit: Visit }) {
           <InputField label={t('Email')} type="email" value={data.email} onChange={(value) => setData('email', value)} error={errors.email} />
         </FieldsGrid>
 
-        <DateField
+        <DatetimeField
+          hideTime
+          max={new Date()}
           label={t('First visit date')}
           value={data.first_visit_date}
           onChange={(value) => setData('first_visit_date', value)}

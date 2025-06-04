@@ -9,6 +9,7 @@ use App\Actions\Visit\DeleteVisitAction;
 use App\Actions\Visit\ForceDeleteVisitAction;
 use App\Actions\Visit\RestoreVisitAction;
 use App\Actions\Visit\UpdateVisitAction;
+use App\Enums\FlashMessageKey;
 use App\Http\Requests\Visit\StoreVisitRequest;
 use App\Http\Requests\Visit\UpdateVisitRequest;
 use App\Http\Resources\Visit\VisitResource;
@@ -53,7 +54,7 @@ final class VisitController extends Controller
 
         $action->handle($data, $address);
 
-        return to_route('visits.index');
+        return to_route('visits.index')->with(FlashMessageKey::SUCCESS->value, __('flash.message.created', ['model' => __('Visit')]));
     }
 
     /**
@@ -82,7 +83,7 @@ final class VisitController extends Controller
 
         $action->handle($visit, $data, $address);
 
-        return to_route('visits.index');
+        return to_route('visits.index')->with(FlashMessageKey::SUCCESS->value, __('flash.message.updated', ['model' => __('Visit')]));
     }
 
     /**
@@ -94,7 +95,7 @@ final class VisitController extends Controller
 
         $action->handle($visit);
 
-        return to_route('visits.index');
+        return to_route('visits.index')->with(FlashMessageKey::SUCCESS->value, __('flash.message.deleted', ['model' => __('Visit')]));
     }
 
     /**
@@ -106,7 +107,7 @@ final class VisitController extends Controller
 
         $action->handle($visit);
 
-        return to_route('visits.index');
+        return to_route('visits.index')->with(FlashMessageKey::SUCCESS->value, __('flash.message.force_deleted', ['model' => __('Visit')]));
     }
 
     /**
@@ -118,6 +119,6 @@ final class VisitController extends Controller
 
         $action->handle($visit);
 
-        return to_route('visits.index');
+        return to_route('visits.index')->with(FlashMessageKey::SUCCESS->value, __('flash.message.restored', ['model' => __('Visit')]));
     }
 }
