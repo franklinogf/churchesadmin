@@ -52,3 +52,94 @@ test('users can logout', function (): void {
     assertGuest();
 
 });
+
+describe('guest middleware protection', function () {
+    test('authenticated users cannot access login page', function (): void {
+        $user = TenantUser::factory()->create();
+
+        actingAs($user, 'tenant')
+            ->get(route('login'))
+            ->assertRedirect(route('dashboard', absolute: false));
+    });
+
+    test('authenticated users cannot submit login form', function (): void {
+        $user = TenantUser::factory()->create();
+
+        actingAs($user, 'tenant')
+            ->post(route('login.store'), [
+                'email' => $user->email,
+                'password' => 'password',
+            ])
+            ->assertRedirect(route('dashboard', absolute: false));
+    });
+});
+
+describe('session management', function () {
+    test('session is regenerated on successful login', function (): void {
+        $user = TenantUser::factory()->create();
+
+        $response = post(route('login.store'), [
+            'email' => $user->email,
+            'password' => 'password',
+        ]);
+
+        $response->assertRedirect(route('dashboard', absolute: false));
+        assertAuthenticated('tenant');
+    });
+
+    test('session is invalidated on logout', function (): void {
+        $user = TenantUser::factory()->create();
+
+        $response = actingAs($user, 'tenant')->post(route('logout'));
+
+        $response->assertRedirect(route('login'));
+        assertGuest();
+    });
+});
+
+describe('intended redirect functionality', function () {
+    test('users are redirected to intended route after login', function (): void {
+        $user = TenantUser::factory()->create();
+
+        // Simulate trying to access a protected route
+        session(['url.intended' => route('dashboard')]);
+
+        post(route('login.store'), [
+            'email' => $user->email,
+            'password' => 'password',
+        ])
+            ->assertRedirect(route('dashboard', absolute: false));
+
+        assertAuthenticated('tenant');
+    });
+});
+
+describe('validation errors', function () {
+    test('login requires email', function (): void {
+        post(route('login.store'), [
+            'password' => 'password',
+        ])
+            ->assertSessionHasErrors(['email']);
+
+        assertGuest();
+    });
+
+    test('login requires password', function (): void {
+        post(route('login.store'), [
+            'email' => 'test@example.com',
+        ])
+            ->assertSessionHasErrors(['password']);
+
+        assertGuest();
+    });
+
+    test('login requires valid email format', function (): void {
+        post(route('login.store'), [
+            'email' => 'invalid-email',
+            'password' => 'password',
+        ])
+            ->assertSessionHasErrors(['email']);
+
+        assertGuest();
+    });
+});

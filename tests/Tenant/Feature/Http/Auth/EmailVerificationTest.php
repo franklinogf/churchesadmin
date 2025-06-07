@@ -7,6 +7,8 @@ use Illuminate\Auth\Events\Verified;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\URL;
 
+use function Pest\Laravel\get;
+
 test('email verification screen can be rendered', function (): void {
     $user = TenantUser::factory()->unverified()->create();
 
@@ -45,4 +47,66 @@ test('email is not verified with invalid hash', function (): void {
     $this->actingAs($user)->get($verificationUrl);
 
     expect($user->fresh()->hasVerifiedEmail())->toBeFalse();
+});
+
+describe('email verification prompt controller', function () {
+    test('verified user is redirected to dashboard', function (): void {
+        $user = TenantUser::factory()->create([
+            'email_verified_at' => now(),
+        ]);
+
+        $response = $this->actingAs($user)->get(route('verification.notice'));
+
+        $response->assertRedirect(route('dashboard', absolute: false));
+    });
+
+    test('guest cannot access verification prompt', function (): void {
+        get(route('verification.notice'))
+            ->assertRedirect(route('login'));
+    });
+});
+
+describe('verify email controller', function () {
+    test('already verified user is redirected to dashboard', function (): void {
+        $user = TenantUser::factory()->create([
+            'email_verified_at' => now(),
+        ]);
+
+        $verificationUrl = URL::temporarySignedRoute(
+            'verification.verify',
+            now()->addMinutes(60),
+            ['id' => $user->id, 'hash' => sha1((string) $user->email)]
+        );
+
+        $response = $this->actingAs($user)->get($verificationUrl);
+
+        $response->assertRedirect(route('dashboard', absolute: false).'?verified=1');
+    });
+
+    test('guest cannot verify email', function (): void {
+        $user = TenantUser::factory()->unverified()->create();
+
+        $verificationUrl = URL::temporarySignedRoute(
+            'verification.verify',
+            now()->addMinutes(60),
+            ['id' => $user->id, 'hash' => sha1((string) $user->email)]
+        );
+
+        get($verificationUrl)
+            ->assertRedirect(route('login'));
+    });
+
+    test('expired verification link does not verify email', function (): void {
+        $user = TenantUser::factory()->unverified()->create();
+
+        $verificationUrl = URL::temporarySignedRoute(
+            'verification.verify',
+            now()->subMinutes(60), // Expired link
+            ['id' => $user->id, 'hash' => sha1((string) $user->email)]
+        );
+
+        $this->actingAs($user)->get($verificationUrl);
+
+        expect($user->fresh()->hasVerifiedEmail())->toBeFalse();
+    });
 });
