@@ -6,7 +6,9 @@ namespace App\Http\Controllers\Settings;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Settings\ProfileUpdateRequest;
+use App\Models\CurrentYear;
 use App\Models\TenantUser;
+use App\Support\SelectOption;
 use DateTimeZone;
 use Illuminate\Container\Attributes\CurrentUser;
 use Illuminate\Http\RedirectResponse;
@@ -28,6 +30,10 @@ final class ProfileController extends Controller
             $country = $currentUser->timezone_country;
         }
 
+        $workingYears = SelectOption::create(CurrentYear::query()
+            ->orderBy('year', 'desc')
+            ->get(), labels: 'year');
+
         $timezones = collect(DateTimeZone::listIdentifiers(DateTimeZone::PER_COUNTRY, $country))
             ->map(fn (string $timezone): array => ['label' => $timezone.' ('.now()->setTimezone($timezone)->format('Y-m-d H:i:s').')', 'value' => $timezone])
             ->sort()
@@ -38,6 +44,7 @@ final class ProfileController extends Controller
             'status' => $request->session()->get('status'),
             'timezones' => $timezones,
             'country' => $country,
+            'workingYears' => $workingYears,
         ]);
     }
 

@@ -8,6 +8,7 @@ import { MultipleComboboxField } from '@/components/forms/inputs/MultipleCombobo
 import { SelectField } from '@/components/forms/inputs/SelectField';
 import { PageTitle } from '@/components/PageTitle';
 import { Button } from '@/components/ui/button';
+import { useLocaleDate } from '@/hooks/use-locale-date';
 import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem, type SelectOption, type SelectOptionWithModel } from '@/types';
@@ -40,6 +41,7 @@ interface CreateForm {
 
 export default function Create({ walletsOptions, paymentMethods, membersOptions, missionariesOptions, offeringTypesOptions }: CreatePageProps) {
   const { t } = useTranslations();
+  const { maxDate } = useLocaleDate();
   const { data, setData, post, errors, processing } = useForm<Required<CreateForm>>({
     date: formatDate(new Date(), 'yyyy-MM-dd'),
     donor_id: '',
@@ -120,7 +122,7 @@ export default function Create({ walletsOptions, paymentMethods, membersOptions,
           <FieldsGrid>
             <DatetimeField
               hideTime
-              max={new Date()}
+              max={maxDate()}
               required
               label={t('Date of Offering')}
               value={data.date}

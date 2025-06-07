@@ -6,9 +6,12 @@ import { useMemo, type FormEventHandler } from 'react';
 import { ComboboxField } from '@/components/forms/inputs/ComboboxField';
 import { CountryField } from '@/components/forms/inputs/CountryField';
 import { InputField } from '@/components/forms/inputs/InputField';
+import { SelectField } from '@/components/forms/inputs/SelectField';
 import HeadingSmall from '@/components/heading-small';
 import { Button } from '@/components/ui/button';
+import { UserRole } from '@/enums/user';
 import { useTranslations } from '@/hooks/use-translations';
+import { useUser } from '@/hooks/use-user';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/profile-layout';
 
@@ -17,15 +20,18 @@ type ProfileForm = {
   email: string;
   timezone: string;
   timezone_country: string;
+  current_year_id: string;
 };
 interface ProfileProps {
   mustVerifyEmail: boolean;
   status?: string;
   timezones: SelectOption[];
   country: string;
+  workingYears: SelectOption[];
 }
-export default function Profile({ mustVerifyEmail, status, timezones, country }: ProfileProps) {
+export default function Profile({ mustVerifyEmail, status, timezones, country, workingYears }: ProfileProps) {
   const { t } = useTranslations();
+  const { hasRole } = useUser();
   const { auth } = usePage<SharedData>().props;
 
   const { data, setData, patch, errors, processing, recentlySuccessful } = useForm<Required<ProfileForm>>({
@@ -33,8 +39,8 @@ export default function Profile({ mustVerifyEmail, status, timezones, country }:
     email: auth.user.email,
     timezone: country === auth.user.timezoneCountry ? auth.user.timezone : '',
     timezone_country: country,
+    current_year_id: auth.user.currentYearId.toString(),
   });
-
   const submit: FormEventHandler = (e) => {
     e.preventDefault();
 
@@ -51,7 +57,6 @@ export default function Profile({ mustVerifyEmail, status, timezones, country }:
     ],
     [t],
   );
-
   return (
     <AppLayout title={t('Profile Settings')} breadcrumbs={breadcrumbs}>
       <SettingsLayout>
@@ -117,6 +122,24 @@ export default function Profile({ mustVerifyEmail, status, timezones, country }:
               error={errors.timezone}
               options={timezones}
             />
+
+            {hasRole(UserRole.SUPER_ADMIN) && (
+              <div>
+                <SelectField
+                  label={t('Current year')}
+                  value={data.current_year_id}
+                  onChange={(value) => setData('current_year_id', value)}
+                  required
+                  error={errors.current_year_id}
+                  options={workingYears}
+                />
+                <small className="text-muted-foreground text-sm">
+                  {t('This setting is only available for Super Admins.')}
+                  <br />
+                  {t('It allows you to set the current year for the application for you to work in.')}
+                </small>
+              </div>
+            )}
 
             <div className="flex items-center gap-4">
               <Button disabled={processing}>{t('Save')}</Button>

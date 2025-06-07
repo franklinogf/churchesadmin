@@ -15,7 +15,7 @@ use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 
 /**
- *  @property-read int $id
+ * @property-read int $id
  * @property-read string $subject
  * @property-read string $body
  * @property-read string $sender_id

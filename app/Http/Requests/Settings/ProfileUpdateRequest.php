@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Settings;
 
+use App\Enums\TenantRole;
 use App\Models\TenantUser;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -18,6 +19,11 @@ final class ProfileUpdateRequest extends FormRequest
      */
     public function rules(): array
     {
+        /**
+         * @var TenantUser $user
+         */
+        $user = $this->user();
+
         return [
             'name' => ['required', 'string', 'max:255'],
             'email' => [
@@ -26,7 +32,7 @@ final class ProfileUpdateRequest extends FormRequest
                 'lowercase',
                 'email',
                 'max:255',
-                Rule::unique(TenantUser::class)->ignore($this->user()?->id),
+                Rule::unique(TenantUser::class)->ignore($user->id),
             ],
             'timezone' => [
                 'required',
@@ -39,6 +45,13 @@ final class ProfileUpdateRequest extends FormRequest
                 'min:2',
                 'uppercase',
                 'max:2',
+            ],
+            'current_year_id' => [
+                'required',
+                Rule::excludeIf(
+                    ! $user->hasRole(TenantRole::SUPER_ADMIN->value)
+                ),
+                'exists:current_years,id',
             ],
         ];
     }

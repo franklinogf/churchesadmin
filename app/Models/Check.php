@@ -6,8 +6,12 @@ namespace App\Models;
 
 use App\Dtos\CheckLayoutFieldsDto;
 use App\Enums\CheckType;
+use App\Models\Scopes\CurrentYearScope;
+use App\Observers\TransactionalObserver;
 use Bavix\Wallet\Models\Transaction;
 use Carbon\CarbonImmutable;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -31,6 +35,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property-read CheckLayout $layout
  * @property-read CheckLayoutFieldsDto $fields
  */
+#[ScopedBy([CurrentYearScope::class])]
+#[ObservedBy([TransactionalObserver::class])]
 final class Check extends Model
 {
     /** @use HasFactory<\Database\Factories\CheckFactory> */

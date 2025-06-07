@@ -285,5 +285,8 @@
     "Manage the visits that comes to the church": "Gestionar las visitas que llegan a la iglesia",
     "Transfer to member": "Transferir a miembro",
     "Timezone": "Zona horaria",
-    "Accept": "Aceptar"
+    "Accept": "Aceptar",
+    "Current year": "Año actual",
+    "This setting is only available for Super Admins.": "Esta configuración solo está disponible para Super Admins.",
+    "It allows you to set the current year for the application for you to work in.": "Te permite establecer el año actual para la aplicación en la que trabajarás."
 }

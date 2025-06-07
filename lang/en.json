@@ -285,5 +285,8 @@
     "Manage the visits that comes to the church": "Manage the visits that comes to the church",
     "Transfer to member": "Transfer to member",
     "Timezone": "Timezone",
-    "Accept": "Accept"
+    "Accept": "Accept",
+    "Current year": "Current year",
+    "This setting is only available for Super Admins.": "This setting is only available for Super Admins.",
+    "It allows you to set the current year for the application for you to work in.": "It allows you to set the current year for the application for you to work in."
 }

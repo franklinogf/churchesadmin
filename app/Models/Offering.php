@@ -5,13 +5,16 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\PaymentMethod;
+use App\Models\Scopes\CurrentYearScope;
+use App\Observers\TransactionalObserver;
 use Bavix\Wallet\Models\Transaction;
 use Carbon\CarbonImmutable;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
  * @property-read int $id
@@ -28,12 +31,12 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @property-read OfferingType|Missionary $offering_type
  * @property-read Member $donor
  */
-final class Offering extends Pivot
+#[ScopedBy([CurrentYearScope::class])]
+#[ObservedBy([TransactionalObserver::class])]
+final class Offering extends Model
 {
     /** @use HasFactory<\Database\Factories\OfferingFactory> */
     use HasFactory;
-
-    protected $table = 'offerings';
 
     /**
      * The transaction that the offering is part of.
@@ -42,7 +45,7 @@ final class Offering extends Pivot
      */
     public function transaction(): BelongsTo
     {
-        return $this->belongsTo(Transaction::class, 'transaction_id');
+        return $this->belongsTo(Transaction::class);
     }
 
     /**
@@ -73,7 +76,7 @@ final class Offering extends Pivot
     protected function casts(): array
     {
         return [
-            'date' => 'date:Y-m-d',
+            'date' => 'immutable_date:Y-m-d',
             'payment_method' => PaymentMethod::class,
         ];
     }

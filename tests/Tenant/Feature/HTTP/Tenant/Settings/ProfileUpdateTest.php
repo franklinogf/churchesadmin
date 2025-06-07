@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Models\CurrentYear;
 use App\Models\TenantUser;
 
 test('profile page is displayed', function (): void {
@@ -16,6 +17,7 @@ test('profile page is displayed', function (): void {
 
 test('profile information can be updated', function (): void {
     $user = TenantUser::factory()->create();
+    $currentYear = CurrentYear::factory()->create();
 
     $response = $this
         ->actingAs($user)
@@ -24,6 +26,7 @@ test('profile information can be updated', function (): void {
             'email' => 'test@example.com',
             'timezone' => 'America/New_York',
             'timezone_country' => 'US',
+            'current_year_id' => $currentYear->id,
         ]);
 
     $response
@@ -39,6 +42,7 @@ test('profile information can be updated', function (): void {
 
 test('email verification status is unchanged when the email address is unchanged', function (): void {
     $user = TenantUser::factory()->create();
+    $currentYear = CurrentYear::factory()->create();
 
     $response = $this
         ->actingAs($user)
@@ -47,6 +51,7 @@ test('email verification status is unchanged when the email address is unchanged
             'email' => $user->email,
             'timezone' => 'America/New_York',
             'timezone_country' => 'US',
+            'current_year_id' => $currentYear->id,
         ]);
 
     $response

@@ -36,6 +36,7 @@ return [
     'transaction_type' => [
         'deposit' => 'Deposit',
         'withdraw' => 'Withdrawal',
+        'previous_balance' => 'Previous Balance',
     ],
     'transaction_meta_type' => [
         'initial' => 'Initial',

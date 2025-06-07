@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Enums\TenantRole;
+use App\Models\CurrentYear;
 use App\Models\TenantUser;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
@@ -35,6 +36,7 @@ final class TenantUserFactory extends Factory
             'remember_token' => Str::random(10),
             'timezone' => 'America/New_York',
             'timezone_country' => 'US',
+            'current_year_id' => CurrentYear::first()?->id ?? CurrentYear::factory(),
         ];
     }
 

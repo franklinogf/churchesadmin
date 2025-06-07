@@ -28,6 +28,8 @@ final class AuthUserResource extends JsonResource
             'timezoneCountry' => $this->timezone_country,
             'roles' => $this->getRoleNames(),
             'permissions' => $this->getAllPermissions()->pluck('name')->toArray(),
+            'currentYearId' => $this->current_year_id,
+            'currentYear' => $this->currentYear->year,
         ];
     }
 }

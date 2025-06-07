@@ -14,6 +14,7 @@ test('to array', function (): void {
         'email_verified_at',
         'timezone',
         'timezone_country',
+        'current_year_id',
         'created_at',
         'updated_at',
     ]);

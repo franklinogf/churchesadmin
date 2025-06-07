@@ -10,11 +10,16 @@ use App\Actions\Wallet\RestoreWalletAction;
 use App\Actions\Wallet\UpdateWalletAction;
 use App\Enums\FlashMessageKey;
 use App\Enums\TransactionMetaType;
+use App\Enums\TransactionType;
 use App\Exceptions\WalletException;
 use App\Http\Requests\Wallet\StoreWalletRequest;
 use App\Http\Requests\Wallet\UpdateWalletRequest;
 use App\Http\Resources\Wallet\ChurchWalletResource;
 use App\Models\ChurchWallet;
+use App\Models\CurrentYear;
+use App\Models\TenantUser;
+use Bavix\Wallet\Services\FormatterService;
+use Illuminate\Container\Attributes\CurrentUser;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Http\RedirectResponse;
@@ -46,7 +51,7 @@ final class WalletController extends Controller
         ]);
     }
 
-    public function show(ChurchWallet $wallet): Response
+    public function show(ChurchWallet $wallet, #[CurrentUser] TenantUser $user): Response
     {
         Gate::authorize('view', $wallet);
 
@@ -57,8 +62,37 @@ final class WalletController extends Controller
             },
         ]);
 
+        $currentYear = $user->currentYear;
+        $prevYear = CurrentYear::where('year', $currentYear->year - 1)->first();
+
+        $initialRow = null;
+
+        if ($prevYear !== null) {
+            $previousTransactions = $wallet->transactions()->withoutGlobalScopes()
+                ->where('meta->year', $prevYear->id)
+                ->get();
+
+            $previousBalance = 0;
+
+            foreach ($previousTransactions as $txn) {
+                $previousBalance += (int) $txn->amount;
+            }
+
+            $initialRow = [
+                'id' => 0,
+                'uuid' => 0,
+                'amount' => $previousBalance,
+                'amountFloat' => app(FormatterService::class)->floatValue($previousBalance, 2),
+                'confirmed' => true,
+                'type' => TransactionType::PREVIOUS->value,
+                'meta' => null,
+                'createdAt' => $prevYear->start_date,
+            ];
+        }
+
         return Inertia::render('wallets/show', [
             'wallet' => new ChurchWalletResource($wallet),
+            'initialRow' => $prevYear !== null ? $initialRow : null,
         ]);
     }
 

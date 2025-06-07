@@ -4,8 +4,12 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Models\Scopes\CurrentYearScope;
+use App\Observers\TransactionalObserver;
 use Bavix\Wallet\Models\Transaction;
 use Carbon\CarbonImmutable;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -24,6 +28,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property-read ExpenseType $expenseType
  * @property-read Member|null $member
  */
+#[ScopedBy([CurrentYearScope::class])]
+#[ObservedBy([TransactionalObserver::class])]
 final class Expense extends Model
 {
     /** @use HasFactory<\Database\Factories\ExpenseFactory> */
@@ -36,7 +42,7 @@ final class Expense extends Model
      */
     public function transaction(): BelongsTo
     {
-        return $this->belongsTo(Transaction::class, 'transaction_id');
+        return $this->belongsTo(Transaction::class);
     }
 
     /**
@@ -67,7 +73,7 @@ final class Expense extends Model
     protected function casts(): array
     {
         return [
-            'date' => 'date:Y-m-d',
+            'date' => 'immutable_date:Y-m-d',
         ];
     }
 }

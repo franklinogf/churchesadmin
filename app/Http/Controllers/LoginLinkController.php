@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers;
 
 use App\Enums\TenantRole;
+use App\Models\CurrentYear;
 use App\Models\TenantUser;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -44,6 +45,7 @@ final class LoginLinkController extends Controller
                 'name' => $name,
                 'email' => $email,
                 'password' => 'Password123',
+                'current_year_id' => CurrentYear::first()->id ?? 1,
             ]);
             $user->assignRole($role);
 

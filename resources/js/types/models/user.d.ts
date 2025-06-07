@@ -21,6 +21,8 @@ export interface AuthenticatedUser {
   emailVerifiedAt: string | null;
   timezone: string;
   timezoneCountry: string;
+  currentYearId: number;
+  currentYear: number;
 }
 
 export interface Role {

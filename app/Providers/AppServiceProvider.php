@@ -12,9 +12,11 @@ use App\Models\Email;
 use App\Models\Member;
 use App\Models\Missionary;
 use App\Models\OfferingType;
+use App\Models\Scopes\CurrentYearScope;
 use App\Models\TenantUser;
 use App\Models\User;
 use App\Models\Visit;
+use Bavix\Wallet\Models\Transaction;
 use Bavix\Wallet\WalletConfigure;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Model;
@@ -58,6 +60,8 @@ final class AppServiceProvider extends ServiceProvider
         WalletConfigure::ignoreMigrations();
 
         URL::forceHttps(app()->isProduction());
+
+        Transaction::addGlobalScope(CurrentYearScope::class);
 
     }
 

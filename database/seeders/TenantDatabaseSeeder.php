@@ -10,6 +10,7 @@ use App\Enums\LanguageCode;
 use App\Enums\TransactionMetaType;
 use App\Enums\WalletName;
 use App\Models\ChurchWallet;
+use App\Models\CurrentYear;
 use App\Models\ExpenseType;
 use App\Models\Member;
 use App\Models\Missionary;
@@ -24,6 +25,13 @@ final class TenantDatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        $currentYear = CurrentYear::create([
+            'year' => date('Y'),
+            'start_date' => now()->startOfYear(),
+            'end_date' => now()->endOfYear(),
+            'is_current' => true,
+        ]);
+
         if (app()->environment('testing')) {
             return;
         }
@@ -40,7 +48,7 @@ final class TenantDatabaseSeeder extends Seeder
         ]);
 
         if (app()->environment(['local', 'staging'])) {
-            $wallet->depositFloat('100.00', ['type' => TransactionMetaType::INITIAL->value]);
+            $wallet->depositFloat('100.00', ['type' => TransactionMetaType::INITIAL->value, 'year' => $currentYear->id]);
             Member::factory(10)->create();
             Missionary::factory(10)->create();
             ExpenseType::factory(5)->create();

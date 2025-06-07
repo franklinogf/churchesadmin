@@ -36,6 +36,7 @@ return [
     'transaction_type' => [
         'deposit' => 'Depósito',
         'withdraw' => 'Retiro',
+        'previous_balance' => 'Saldo Anterior',
     ],
     'transaction_meta_type' => [
         'initial' => 'Inicial',
