@@ -24,6 +24,7 @@ final class CurrentYearFactory extends Factory
             'year' => $year,
             'start_date' => "{$year}-01-01",
             'end_date' => "{$year}-12-31",
+            'is_current' => false,
         ];
     }
 }

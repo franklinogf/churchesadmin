@@ -36,10 +36,10 @@ final class UpdateOfferingRequest extends FormRequest
             'donor_id' => ['nullable', Rule::exists('members', 'id')],
             'date' => ['required', 'date:Y-m-d'],
 
-            'wallet_id' => ['required', 'string',
+            'wallet_id' => ['required',
                 Rule::exists('church_wallets', 'id'),
             ],
-            'payment_method' => ['required', 'string', Rule::enum(PaymentMethod::class)],
+            'payment_method' => ['required', Rule::enum(PaymentMethod::class)],
             'offering_type' => ['required', new SelectOptionWithModel],
             'amount' => ['required', 'decimal:2', 'min:1'],
             'note' => ['nullable', 'string', 'min:3', 'max:255'],

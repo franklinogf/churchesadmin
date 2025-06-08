@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Models\TenantUser;
 use Illuminate\Auth\Notifications\ResetPassword;
 use Illuminate\Support\Facades\Notification;
+use Inertia\Testing\AssertableInertia;
 
 use function Pest\Laravel\get;
 use function Pest\Laravel\post;
@@ -64,7 +65,7 @@ test('password can be reset with valid token', function (): void {
     });
 });
 
-describe('password reset link validation', function () {
+describe('password reset link validation', function (): void {
     test('password reset requires valid email format', function (): void {
         post(route('password.email'), ['email' => 'invalid-email'])
             ->assertSessionHasErrors(['email']);
@@ -83,7 +84,7 @@ describe('password reset link validation', function () {
     });
 });
 
-describe('new password validation', function () {
+describe('new password validation', function (): void {
     test('password reset requires token', function (): void {
         post(route('password.store'), [
             'email' => 'test@example.com',
@@ -153,13 +154,13 @@ describe('new password validation', function () {
     });
 });
 
-describe('reset password screen rendering', function () {
+describe('reset password screen rendering', function (): void {
     test('reset password screen displays email and token', function (): void {
         $response = get(route('password.reset', ['token' => 'test-token']).'?email=test@example.com');
 
         $response->assertOk()
             ->assertInertia(
-                fn (Inertia\Testing\AssertableInertia $page) => $page
+                fn (AssertableInertia $page): AssertableInertia => $page
                     ->component('auth/reset-password')
                     ->has('email')
                     ->has('token')

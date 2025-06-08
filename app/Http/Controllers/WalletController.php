@@ -170,6 +170,7 @@ final class WalletController extends Controller
      */
     public function restore(ChurchWallet $wallet, RestoreWalletAction $action): RedirectResponse
     {
+        Gate::authorize('restore', $wallet);
         $action->handle($wallet);
 
         return redirect()->route('wallets.index')->with(

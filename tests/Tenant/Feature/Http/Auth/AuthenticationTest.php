@@ -53,7 +53,7 @@ test('users can logout', function (): void {
 
 });
 
-describe('guest middleware protection', function () {
+describe('guest middleware protection', function (): void {
     test('authenticated users cannot access login page', function (): void {
         $user = TenantUser::factory()->create();
 
@@ -74,7 +74,7 @@ describe('guest middleware protection', function () {
     });
 });
 
-describe('session management', function () {
+describe('session management', function (): void {
     test('session is regenerated on successful login', function (): void {
         $user = TenantUser::factory()->create();
 
@@ -97,7 +97,7 @@ describe('session management', function () {
     });
 });
 
-describe('intended redirect functionality', function () {
+describe('intended redirect functionality', function (): void {
     test('users are redirected to intended route after login', function (): void {
         $user = TenantUser::factory()->create();
 
@@ -114,7 +114,7 @@ describe('intended redirect functionality', function () {
     });
 });
 
-describe('validation errors', function () {
+describe('validation errors', function (): void {
     test('login requires email', function (): void {
         post(route('login.store'), [
             'password' => 'password',

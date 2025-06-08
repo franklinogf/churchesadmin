@@ -21,7 +21,9 @@ final readonly class UpdateExpenseAction
 {
     public function __construct(
         private UpdateTransactionAction $updateTransactionAction,
-    ) {}
+    ) {
+        //
+    }
 
     /**
      * Handle the creation of an expense.
@@ -55,7 +57,7 @@ final readonly class UpdateExpenseAction
                     'date' => $data['date'] ?? $expense->date,
                     'note' => ArrayFallback::inputOrFallback($data, 'note', $expense->note),
                     'member_id' => ArrayFallback::inputOrFallback($data, 'member_id', $expense->member_id),
-
+                    'expense_type_id' => $data['expense_type_id'] ?? $expense->expense_type_id,
                 ]);
 
                 return $expense->refresh();

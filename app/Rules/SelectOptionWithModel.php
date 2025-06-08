@@ -32,10 +32,6 @@ final class SelectOptionWithModel implements ValidationRule
             $fail('The model must be a string.');
         }
 
-        if (! is_string($id)) {
-            $fail('The id must be a string.');
-        }
-
         if (empty($model)) {
             $fail('The model must not be empty.');
         }

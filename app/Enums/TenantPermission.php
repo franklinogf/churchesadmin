@@ -54,6 +54,7 @@ enum TenantPermission: string
     case WALLETS_CREATE = 'wallets.create';
     case WALLETS_UPDATE = 'wallets.update';
     case WALLETS_DELETE = 'wallets.delete';
+    case WALLETS_RESTORE = 'wallets.restore';
     case WALLETS_CHECK_LAYOUT_UPDATE = 'wallets.check_layout.update';
     case CHECK_LAYOUTS_MANAGE = 'check_layouts.manage';
     case CHECK_LAYOUTS_CREATE = 'check_layouts.create';
@@ -78,6 +79,10 @@ enum TenantPermission: string
     case VISITS_DELETE = 'visits.delete';
     case VISITS_FORCE_DELETE = 'visits.force_delete';
     case VISITS_RESTORE = 'visits.restore';
+    case EXPENSES_MANAGE = 'expenses.manage';
+    case EXPENSES_CREATE = 'expenses.create';
+    case EXPENSES_UPDATE = 'expenses.update';
+    case EXPENSES_DELETE = 'expenses.delete';
 
     public function label(): string
     {

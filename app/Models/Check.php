@@ -49,7 +49,7 @@ final class Check extends Model
      */
     public function transaction(): BelongsTo
     {
-        return $this->belongsTo(Transaction::class, 'transaction_id');
+        return $this->belongsTo(Transaction::class)->withoutGlobalScope(CurrentYearScope::class);
     }
 
     /**

@@ -42,7 +42,7 @@ final class Expense extends Model
      */
     public function transaction(): BelongsTo
     {
-        return $this->belongsTo(Transaction::class);
+        return $this->belongsTo(Transaction::class)->withoutGlobalScope(CurrentYearScope::class);
     }
 
     /**

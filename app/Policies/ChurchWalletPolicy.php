@@ -72,6 +72,18 @@ final class ChurchWalletPolicy
     }
 
     /**
+     * Determine whether the user can restore the model.
+     */
+    public function restore(TenantUser $user): Response
+    {
+        if ($user->can(TenantPermission::WALLETS_RESTORE)) {
+            return Response::allow();
+        }
+
+        return Response::deny(__('permission.restore', ['label' => __('Wallets')]));
+    }
+
+    /**
      * Determine whether the user can update the check layout.
      */
     public function updateCheckLayout(TenantUser $user): Response

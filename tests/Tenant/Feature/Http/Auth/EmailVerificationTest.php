@@ -49,7 +49,7 @@ test('email is not verified with invalid hash', function (): void {
     expect($user->fresh()->hasVerifiedEmail())->toBeFalse();
 });
 
-describe('email verification prompt controller', function () {
+describe('email verification prompt controller', function (): void {
     test('verified user is redirected to dashboard', function (): void {
         $user = TenantUser::factory()->create([
             'email_verified_at' => now(),
@@ -66,7 +66,7 @@ describe('email verification prompt controller', function () {
     });
 });
 
-describe('verify email controller', function () {
+describe('verify email controller', function (): void {
     test('already verified user is redirected to dashboard', function (): void {
         $user = TenantUser::factory()->create([
             'email_verified_at' => now(),

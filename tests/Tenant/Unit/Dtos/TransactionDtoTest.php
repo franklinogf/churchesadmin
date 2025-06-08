@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Dtos\TransactionDto;
 use App\Dtos\TransactionMetaDto;
 use App\Enums\TransactionMetaType;
+use App\Models\CurrentYear;
 
 describe('TransactionDto', function (): void {
     it('can be instantiated', function (): void {
@@ -76,6 +77,7 @@ describe('TransactionDto', function (): void {
         expect($decoded)->toBe([
             'meta' => [
                 'type' => TransactionMetaType::EXPENSE->value,
+                'year' => CurrentYear::current()->id,
             ],
             'amount' => $amount,
             'confirmed' => $confirmed,

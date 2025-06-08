@@ -36,7 +36,7 @@ test('password is not confirmed with invalid password', function (): void {
     $response->assertSessionHasErrors();
 });
 
-describe('guest middleware protection', function () {
+describe('guest middleware protection', function (): void {
     test('guest cannot access password confirmation screen', function (): void {
         get(route('password.confirm'))
             ->assertRedirect(route('login'));
@@ -50,7 +50,7 @@ describe('guest middleware protection', function () {
     });
 });
 
-describe('intended redirect functionality', function () {
+describe('intended redirect functionality', function (): void {
     test('user is redirected to intended route after password confirmation', function (): void {
         $user = TenantUser::factory()->create();
 
@@ -65,7 +65,7 @@ describe('intended redirect functionality', function () {
     });
 });
 
-describe('validation', function () {
+describe('validation', function (): void {
     test('password confirmation requires password field', function (): void {
         $user = TenantUser::factory()->create();
 
@@ -75,7 +75,7 @@ describe('validation', function () {
     });
 });
 
-describe('session state management', function () {
+describe('session state management', function (): void {
     test('password confirmation timestamp is stored in session', function (): void {
         $user = TenantUser::factory()->create();
 

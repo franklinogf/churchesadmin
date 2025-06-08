@@ -20,7 +20,7 @@ final class TransactionalObserver
         $user = Auth::user();
 
         if ($user === null || ! $user instanceof TenantUser) {
-            $transactionalModel->fill(['current_year_id' => CurrentYear::latest()->first()?->id]);
+            $transactionalModel->fill(['current_year_id' => CurrentYear::current()->id]);
 
             return;
         }

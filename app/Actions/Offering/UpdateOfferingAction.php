@@ -38,17 +38,19 @@ final readonly class UpdateOfferingAction
 
         try {
             return DB::transaction(function () use ($data, $offering) {
-
-                $transaction = $this->updateTransactionAction->handle(
-                    $offering->transaction,
-                    new TransactionDto(
-                        amount: $data['amount'] ?? $offering->transaction->amount,
-                        meta: new TransactionMetaDto(
-                            type: TransactionMetaType::OFFERING,
-                        )
-                    ),
-                    TransactionType::DEPOSIT
-                );
+                $transaction = $offering->transaction;
+                if (isset($data['amount'])) {
+                    $transaction = $this->updateTransactionAction->handle(
+                        $offering->transaction,
+                        new TransactionDto(
+                            amount: $data['amount'],
+                            meta: new TransactionMetaDto(
+                                type: TransactionMetaType::OFFERING,
+                            )
+                        ),
+                        TransactionType::DEPOSIT
+                    );
+                }
 
                 $offering->update([
                     'transaction_id' => $transaction->id,

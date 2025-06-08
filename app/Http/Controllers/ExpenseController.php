@@ -22,6 +22,7 @@ use App\Support\SelectOption;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -32,6 +33,8 @@ final class ExpenseController extends Controller
      */
     public function index(): Response
     {
+        Gate::authorize('viewAny', Expense::class);
+
         $expenses = Expense::latest('date')->with([
             'transaction.wallet' => function (Relation $query): void {
                 /** @phpstan-ignore-next-line */
@@ -49,6 +52,8 @@ final class ExpenseController extends Controller
      */
     public function create(): Response
     {
+        Gate::authorize('create', Expense::class);
+
         $wallets = ChurchWallet::all();
 
         $walletOptions = SelectOption::create($wallets);
@@ -113,6 +118,7 @@ final class ExpenseController extends Controller
      */
     public function edit(Expense $expense): Response
     {
+        Gate::authorize('update', $expense);
 
         $wallets = ChurchWallet::all();
 
@@ -166,6 +172,7 @@ final class ExpenseController extends Controller
      */
     public function destroy(Expense $expense, DeleteExpenseAction $action): RedirectResponse
     {
+        Gate::authorize('delete', $expense);
 
         try {
             $action->handle($expense);

@@ -50,6 +50,7 @@ it('has needed enums', function (): void {
         'WALLETS_CREATE',
         'WALLETS_UPDATE',
         'WALLETS_DELETE',
+        'WALLETS_RESTORE',
         'WALLETS_CHECK_LAYOUT_UPDATE',
         'CHECK_LAYOUTS_MANAGE',
         'CHECK_LAYOUTS_CREATE',
@@ -74,6 +75,10 @@ it('has needed enums', function (): void {
         'VISITS_DELETE',
         'VISITS_FORCE_DELETE',
         'VISITS_RESTORE',
+        'EXPENSES_MANAGE',
+        'EXPENSES_CREATE',
+        'EXPENSES_UPDATE',
+        'EXPENSES_DELETE',
 
     ]);
 

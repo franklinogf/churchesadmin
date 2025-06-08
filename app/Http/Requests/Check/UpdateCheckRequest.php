@@ -39,7 +39,7 @@ final class UpdateCheckRequest extends FormRequest
             'date' => ['required', 'date:Y-m-d'],
             'type' => ['required', 'string', Rule::enum(CheckType::class)],
             'note' => ['nullable', 'string', 'min:1', 'max:255'],
-            'expense_type_id' => [Rule::exists('expense_types', 'id')],
+            'expense_type_id' => ['required', Rule::exists('expense_types', 'id')],
         ];
     }
 }

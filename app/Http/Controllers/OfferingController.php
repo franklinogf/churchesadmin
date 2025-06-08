@@ -72,6 +72,8 @@ final class OfferingController extends Controller
      */
     public function create(): Response
     {
+        Gate::authorize('create', Offering::class);
+
         $paymentMethods = PaymentMethod::options();
         $walletsOptions = SelectOption::create(ChurchWallet::all());
         $membersOptions = SelectOption::create(Member::all(), labels: ['name', 'last_name']);
