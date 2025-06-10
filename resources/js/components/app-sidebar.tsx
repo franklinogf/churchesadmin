@@ -6,7 +6,18 @@ import { UserPermission } from '@/enums/user';
 import { useTranslations } from '@/hooks/use-translations';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BanknoteIcon, CogIcon, CoinsIcon, HandCoinsIcon, LayoutGridIcon, ListIcon, MailsIcon, Users2Icon, WalletCardsIcon } from 'lucide-react';
+import {
+  BanknoteIcon,
+  CogIcon,
+  CoinsIcon,
+  HandCoinsIcon,
+  HomeIcon,
+  LayoutGridIcon,
+  ListIcon,
+  MailsIcon,
+  Users2Icon,
+  WalletCardsIcon,
+} from 'lucide-react';
 import { useMemo } from 'react';
 import AppLogo from './app-logo';
 
@@ -20,7 +31,7 @@ export function AppSidebar() {
           {
             title: t('Dashboard'),
             href: route('dashboard'),
-            icon: LayoutGridIcon,
+            icon: HomeIcon,
           },
           {
             title: t('Skills'),
