@@ -16,7 +16,6 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-        "barryvdh/laravel-dompdf": "^3.1.1",
         "bavix/laravel-wallet": "^11.4.2",
         "codezero/laravel-unique-translation": "^4.3.1",
         "filament/filament": "^3.3.20",
@@ -29,6 +28,7 @@
         "propaganistas/laravel-phone": "^6.0.1",
         "resend/resend-laravel": "^0.19.0",
         "spatie/laravel-medialibrary": "^11.13.0",
+        "spatie/laravel-pdf": "^1.5",
         "spatie/laravel-permission": "^6.19",
         "spatie/laravel-tags": "^4.10",
         "spatie/laravel-translatable": "^6.11.4",
