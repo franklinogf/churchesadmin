@@ -74,14 +74,14 @@ export default function EmailsPage({ email: initialEmail, church }: EmailsPagePr
   const columns: ColumnDef<Member | Missionary>[] = useMemo(
     () => [
       {
-        header: ({ column }) => <DataTableColumnHeader column={column} title={t('Recipient')} />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Recipient" />,
         accessorKey: 'name',
         enableHiding: false,
         enableColumnFilter: false,
         cell: ({ row }) => <DatatableCell>{`${row.original.name} ${row.original.lastName}`}</DatatableCell>,
       },
       {
-        header: ({ column }) => <DataTableColumnHeader column={column} title={t('Status')} />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Status" />,
         accessorKey: 'emailMessage.status',
         enableHiding: false,
         meta: { filterVariant: 'select', translationPrefix: 'enum.email_status.' },
@@ -102,7 +102,7 @@ export default function EmailsPage({ email: initialEmail, church }: EmailsPagePr
         ),
       },
       {
-        header: ({ column }) => <DataTableColumnHeader column={column} title={t('Sent at')} />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Sent at" />,
         accessorKey: 'emailMessage.sentAt',
         enableHiding: false,
         enableColumnFilter: false,

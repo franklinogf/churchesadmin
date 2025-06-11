@@ -33,7 +33,7 @@ export default function VisitsIndex({ visit, memberOptions, followUpTypeOptions 
     () => [
       {
         enableHiding: false,
-        header: ({ column }) => <DataTableColumnHeader column={column} title={t('Member')} />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Member" />,
         accessorKey: 'member.name',
         cell: ({ row }) => (
           <span>
@@ -43,7 +43,7 @@ export default function VisitsIndex({ visit, memberOptions, followUpTypeOptions 
       },
       {
         enableHiding: false,
-        header: ({ column }) => <DataTableColumnHeader column={column} title={t('Type')} />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Type" />,
         accessorKey: 'type',
         cell: ({ row }) => (
           <DatatableCell justify="center">
@@ -53,7 +53,7 @@ export default function VisitsIndex({ visit, memberOptions, followUpTypeOptions 
       },
       {
         enableHiding: false,
-        header: ({ column }) => <DataTableColumnHeader column={column} title={t('Date')} />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Date" />,
         accessorKey: 'followUpAt',
         cell: ({ row }) => (
           <DatatableCell justify="center">
@@ -62,7 +62,7 @@ export default function VisitsIndex({ visit, memberOptions, followUpTypeOptions 
         ),
       },
       {
-        header: ({ column }) => <DataTableColumnHeader column={column} title={t('Notes')} />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Notes" />,
         accessorKey: 'notes',
         cell: ({ row }) => {
           if (!row.original.notes) {

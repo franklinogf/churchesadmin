@@ -23,19 +23,19 @@ export default function Index({ missionaries }: Props) {
     () => [
       selectionHeader as ColumnDef<Missionary>,
       {
-        header: ({ column }) => <DataTableColumnHeader column={column} title={t('Name')} />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Name" />,
         accessorKey: 'name',
         enableHiding: false,
         enableColumnFilter: false,
       },
       {
-        header: ({ column }) => <DataTableColumnHeader column={column} title={t('Last name')} />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Last name" />,
         accessorKey: 'lastName',
         enableHiding: false,
         enableColumnFilter: false,
       },
       {
-        header: ({ column }) => <DataTableColumnHeader column={column} title={t('Gender')} />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Gender" />,
         accessorKey: 'gender',
         filterFn: 'equalsString',
         meta: { filterVariant: 'select', translationPrefix: 'enum.gender.' },
@@ -49,7 +49,7 @@ export default function Index({ missionaries }: Props) {
         },
       },
     ],
-    [t],
+    [],
   );
 
   function handleNewEmail() {

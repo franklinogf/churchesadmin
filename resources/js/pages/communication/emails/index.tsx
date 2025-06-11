@@ -6,7 +6,7 @@ import { Link } from '@inertiajs/react';
 
 import { DataTable } from '@/components/custom-ui/datatable/data-table';
 import { DatatableActionsDropdown } from '@/components/custom-ui/datatable/data-table-actions-dropdown';
-import { DatatableCell } from '@/components/custom-ui/datatable/DatatableCell';
+import { DatatableBadgeCell, DatatableCell } from '@/components/custom-ui/datatable/DatatableCell';
 import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTableColumnHeader';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -54,20 +54,20 @@ export default function EmailsPage({ emails: initialEmails, auth: { user }, chur
   const columns: ColumnDef<Email>[] = useMemo(
     () => [
       {
-        header: ({ column }) => <DataTableColumnHeader column={column} title={t('Sender')} />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Sender" />,
         accessorKey: 'sender',
         enableHiding: false,
         enableColumnFilter: false,
         cell: ({ row }) => <DatatableCell>{user.id === row.original.senderId ? t('You') : row.original.sender?.name}</DatatableCell>,
       },
       {
-        header: ({ column }) => <DataTableColumnHeader column={column} title={t('Subject')} />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Subject" />,
         accessorKey: 'subject',
         enableHiding: false,
         enableColumnFilter: false,
       },
       {
-        header: ({ column }) => <DataTableColumnHeader column={column} title={t('Status')} />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Status" />,
         accessorKey: 'status',
         enableHiding: false,
         meta: { filterVariant: 'select', translationPrefix: 'enum.email_status.' },
@@ -80,14 +80,14 @@ export default function EmailsPage({ emails: initialEmails, auth: { user }, chur
         ),
       },
       {
-        header: ({ column }) => <DataTableColumnHeader column={column} title={t('Sent at')} />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Sent at" />,
         accessorKey: 'sentAt',
         enableHiding: false,
         enableColumnFilter: false,
         cell: ({ row }) => <DatatableCell justify="center">{row.original.sentAt ?? t('Not sent yet')}</DatatableCell>,
       },
       {
-        header: ({ column }) => <DataTableColumnHeader column={column} title={t('Recipients type')} />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Recipients type" />,
         accessorKey: 'recipientsType',
         enableHiding: false,
         meta: { filterVariant: 'select', translationPrefix: 'enum.model_morph_name.' },
@@ -98,14 +98,10 @@ export default function EmailsPage({ emails: initialEmails, auth: { user }, chur
         ),
       },
       {
-        header: ({ column }) => <DataTableColumnHeader column={column} title={t('Attachments')} />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Attachments" />,
         accessorKey: 'attachmentsCount',
         enableColumnFilter: false,
-        cell: ({ row }) => (
-          <DatatableCell justify="center">
-            <Badge variant="secondary">{row.original.attachmentsCount}</Badge>
-          </DatatableCell>
-        ),
+        cell: ({ row }) => <DatatableBadgeCell>{row.original.attachmentsCount}</DatatableBadgeCell>,
       },
       {
         id: 'actions',

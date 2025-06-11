@@ -5,9 +5,8 @@ import AppLayout from '@/layouts/app-layout';
 import type { Member } from '@/types/models/member';
 
 import { selectionHeader } from '@/components/custom-ui/datatable/columns';
-import { DatatableCell } from '@/components/custom-ui/datatable/DatatableCell';
+import { DatatableBadgeCell } from '@/components/custom-ui/datatable/DatatableCell';
 import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTableColumnHeader';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ModelMorphName, SessionName } from '@/enums';
 import { router } from '@inertiajs/react';
@@ -25,47 +24,39 @@ export default function Index({ members }: Props) {
     () => [
       selectionHeader as ColumnDef<Member>,
       {
-        header: ({ column }) => <DataTableColumnHeader column={column} title={t('Name')} />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Name" />,
         accessorKey: 'name',
         enableHiding: false,
         enableColumnFilter: false,
       },
       {
-        header: ({ column }) => <DataTableColumnHeader column={column} title={t('Last name')} />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Last name" />,
         accessorKey: 'lastName',
         enableHiding: false,
         enableColumnFilter: false,
       },
       {
-        header: ({ column }) => <DataTableColumnHeader column={column} title={t('Gender')} />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Gender" />,
         accessorKey: 'gender',
         filterFn: 'equalsString',
         meta: { filterVariant: 'select', translationPrefix: 'enum.gender.' },
         cell: function CellComponent({ row }) {
           const { t } = useTranslations();
-          return (
-            <DatatableCell justify="center">
-              <Badge className="w-24">{t(`enum.gender.${row.original.gender}`)}</Badge>
-            </DatatableCell>
-          );
+          return <DatatableBadgeCell className="w-24">{t(`enum.gender.${row.original.gender}`)}</DatatableBadgeCell>;
         },
       },
       {
-        header: ({ column }) => <DataTableColumnHeader column={column} title={t('Civil status')} />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Civil status" />,
         accessorKey: 'civilStatus',
         filterFn: 'equalsString',
         meta: { filterVariant: 'select', translationPrefix: 'enum.civil_status.' },
         cell: function CellComponent({ row }) {
           const { t } = useTranslations();
-          return (
-            <DatatableCell justify="center">
-              <Badge className="w-24">{t(`enum.civil_status.${row.original.civilStatus}`)}</Badge>
-            </DatatableCell>
-          );
+          return <DatatableBadgeCell className="w-24">{t(`enum.civil_status.${row.original.civilStatus}`)}</DatatableBadgeCell>;
         },
       },
     ],
-    [t],
+    [],
   );
 
   function handleNewEmail() {

@@ -25,7 +25,7 @@ export default function VisitsIndex({ visits }: VisitsIndexProps) {
     () => [
       {
         enableHiding: false,
-        header: ({ column }) => <DataTableColumnHeader column={column} title={t('Name')} />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Name" />,
         accessorKey: 'name',
         cell: ({ row }) => (
           <span>
@@ -35,20 +35,20 @@ export default function VisitsIndex({ visits }: VisitsIndexProps) {
       },
       {
         enableHiding: false,
-        header: ({ column }) => <DataTableColumnHeader column={column} title={t('Phone')} />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Phone" />,
         accessorKey: 'phone',
         cell: ({ row }) => <DatatableCell justify="center">{row.original.phone}</DatatableCell>,
       },
       {
         enableHiding: false,
-        header: ({ column }) => <DataTableColumnHeader column={column} title={t('Email')} />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title="Email" />,
         accessorKey: 'email',
         cell: ({ row }) => <DatatableCell justify="center">{row.original.email}</DatatableCell>,
       },
       {
         sortingFn: sortDate,
         enableHiding: false,
-        header: ({ column }) => <DataTableColumnHeader column={column} title={t('First visit')} />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title="First visit" />,
         accessorKey: 'firstVisitDate',
         cell: ({ row }) => <DatatableCell justify="center">{row.original.firstVisitDate}</DatatableCell>,
       },

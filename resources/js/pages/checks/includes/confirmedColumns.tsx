@@ -11,7 +11,7 @@ export const confirmedColumns: ColumnDef<Check>[] = [
   selectionHeader as ColumnDef<Check>,
   {
     enableHiding: false,
-    header: ({ column }) => <DataTableColumnHeader center={false} column={column} title="Member" />,
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Member" />,
     accessorKey: 'member',
     cell: ({ row }) => {
       const { member } = row.original;
