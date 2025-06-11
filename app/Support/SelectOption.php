@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Support;
 
+use BackedEnum;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use UnitEnum;
 
 final class SelectOption
 {
@@ -54,5 +56,26 @@ final class SelectOption
             ])->toArray(),
         ];
 
+    }
+
+    /**
+     * Create an array of select options from an enum class.
+     *
+     * @param  class-string<BackedEnum|UnitEnum>  $enumClass
+     * @return array{value: string, label: string}[]
+     */
+    public static function createFromEnum(string $enumClass): array
+    {
+        /**
+         * @var array{value: string, label: string}[] $data
+         */
+        $data = collect($enumClass::cases())
+            ->map(fn (BackedEnum|UnitEnum $case): array => [
+                'value' => $case instanceof BackedEnum ? $case->value : $case->name,
+                'label' => $case->name,
+            ])
+            ->toArray();
+
+        return $data;
     }
 }

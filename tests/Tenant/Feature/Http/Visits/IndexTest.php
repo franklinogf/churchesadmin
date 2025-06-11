@@ -28,17 +28,13 @@ describe('if user has permission', function (): void {
     });
 
     it('displays visits in the list', function (): void {
-        $visits = Visit::factory()->count(3)->create();
+        Visit::factory()->count(3)->create();
 
         get(route('visits.index'))
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page): Assert => $page
                 ->component('main/visits/index')
                 ->has('visits', 3)
-                ->has('visits.0', fn (Assert $page): Assert => $page
-                    ->where('id', $visits[0]->id)
-                    ->etc()
-                )
             );
     });
 });

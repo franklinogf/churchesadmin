@@ -23,6 +23,7 @@ test('to array', function (): void {
         'data',
         'created_at',
         'updated_at',
+        'media',
     ]);
 });
 

@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Enums\LanguageCode;
 use App\Enums\MediaCollectionName;
 use Bavix\Wallet\Interfaces\Wallet;
 use Bavix\Wallet\Interfaces\WalletFloat;
 use Bavix\Wallet\Traits\HasWalletFloat;
 use Bavix\Wallet\Traits\HasWallets;
 use Carbon\CarbonImmutable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Stancl\Tenancy\Database\Concerns\HasDatabase;
@@ -26,6 +26,7 @@ use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
  * @property-read string $name
  * @property-read string $locale
  * @property-read bool $active
+ * @property-read string|null $logo
  * @property-read array<string,mixed>|null $data
  * @property-read CarbonImmutable $created_at
  * @property-read CarbonImmutable $updated_at
@@ -58,11 +59,24 @@ final class Church extends BaseTenant implements HasMedia, TenantWithDatabase, W
             ->acceptsMimeTypes(['image/jpeg', 'image/png', 'image/svg+xml']);
     }
 
+    /**
+     * Get the church logo.
+     *
+     * @return Attribute<string|null,null>
+     */
+    protected function logo(): Attribute
+    {
+        $logo = $this->getFirstMediaUrl(MediaCollectionName::LOGO->value);
+
+        return Attribute::make(
+            get: fn (): ?string => $logo === '' ? null : $logo,
+        );
+    }
+
     protected function casts(): array
     {
         return [
             ...parent::casts(),
-            // 'locale' => LanguageCode::class,
             'active' => 'boolean',
         ];
     }

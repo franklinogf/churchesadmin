@@ -17,7 +17,7 @@ final class ChecksPdfController extends Controller
      */
     public function __invoke(Request $request): PdfBuilder
     {
-        $checkIds = $request->array('checks', []);
+        $checkIds = $request->array('checks');
         if (empty($checkIds)) {
             abort(404, 'No checks selected');
         }
@@ -28,7 +28,7 @@ final class ChecksPdfController extends Controller
             abort(404, 'No checks found');
         }
 
-        if ($checks->contains(fn (Check $check) => ! $check->isConfirmed())) {
+        if ($checks->contains(fn (Check $check): bool => ! $check->isConfirmed())) {
             abort(403, 'Some of the selected checks are not confirmed');
         }
 

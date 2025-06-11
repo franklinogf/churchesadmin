@@ -19,7 +19,7 @@ type GeneralForm = {
 
 export default function Language({ church }: { church: Church }) {
   const { t } = useTranslations();
-  const generalForm = useForm<Required<GeneralForm>>({
+  const { data, setData, post, errors, processing, recentlySuccessful } = useForm<Required<GeneralForm>>({
     name: church.name,
     logo: null,
   });
@@ -27,15 +27,12 @@ export default function Language({ church }: { church: Church }) {
   const submitGeneral: FormEventHandler = (e) => {
     e.preventDefault();
 
-    generalForm.post(route('church.general.update'), {
+    post(route('church.general.update'), {
       preserveScroll: true,
-      onSuccess: () => {
-        generalForm.reset();
-      },
     });
   };
 
-  const breadcrumbs: BreadcrumbItem[] = useMemo(() => [{ title: t('Church language'), href: route('church.language.edit') }], [t]);
+  const breadcrumbs: BreadcrumbItem[] = useMemo(() => [{ title: t('Church Settings') }, { title: t('General information') }], [t]);
 
   return (
     <AppLayout title="Church Settings" breadcrumbs={breadcrumbs}>
@@ -48,9 +45,9 @@ export default function Language({ church }: { church: Church }) {
               required
               className="max-w-xs"
               label={t('Church Name')}
-              value={generalForm.data.name}
-              onChange={(value) => generalForm.setData('name', value)}
-              error={generalForm.errors.name}
+              value={data.name}
+              onChange={(value) => setData('name', value)}
+              error={errors.name}
             />
 
             <FileField
@@ -62,15 +59,15 @@ export default function Language({ church }: { church: Church }) {
               labelIdle="Drop your logo here"
               acceptedFiles={['images']}
               maxFileSize="2MB"
-              onChange={(files) => generalForm.setData('logo', files[0] ?? null)}
-              error={generalForm.errors.logo}
+              onChange={(files) => setData('logo', files[0] ?? null)}
+              error={errors.logo}
             />
 
             <div className="flex items-center gap-4">
-              <SubmitButton isSubmitting={generalForm.processing}>{t('Save')}</SubmitButton>
+              <SubmitButton isSubmitting={processing}>{t('Save')}</SubmitButton>
 
               <Transition
-                show={generalForm.recentlySuccessful}
+                show={recentlySuccessful}
                 enter="transition ease-in-out"
                 enterFrom="opacity-0"
                 leave="transition ease-in-out"

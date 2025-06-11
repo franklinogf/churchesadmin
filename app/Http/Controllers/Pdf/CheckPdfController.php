@@ -20,7 +20,7 @@ final class CheckPdfController extends Controller
         Gate::authorize('print', $check);
         $pdf = Pdf::view('pdf.check', [
             'check' => $check,
-            'title' => __('Check #:number', ['number' => $check->check_number]),
+            'title' => __('Check #:number', ['number' => $check->check_number ?? '']),
         ]);
 
         return $pdf->name("check_{$check->check_number}.pdf");

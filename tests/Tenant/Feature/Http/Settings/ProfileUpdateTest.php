@@ -17,7 +17,6 @@ test('profile page is displayed', function (): void {
 
 test('profile information can be updated', function (): void {
     $user = TenantUser::factory()->create();
-    $currentYear = CurrentYear::factory()->create();
 
     $response = $this
         ->actingAs($user)
@@ -26,7 +25,7 @@ test('profile information can be updated', function (): void {
             'email' => 'test@example.com',
             'timezone' => 'America/New_York',
             'timezone_country' => 'US',
-            'current_year_id' => $currentYear->id,
+            'current_year_id' => $user->current_year_id,
         ]);
 
     $response

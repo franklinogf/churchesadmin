@@ -15,9 +15,14 @@
 
 <body class="bg-white font-sans text-black antialiased">
     @if (!$noHeader)
-        <div class="mb-8 mt-3 text-center">
-            <h1 class="text-3xl font-extrabold">{{ config('app.name') }}</h1>
-            <p class="text-lg">{{ $title }}</p>
+        <div class="relative mb-12 mt-3 text-center">
+            @if (tenant('logo'))
+                <div class="absolute left-4 top-0 mb-2 aspect-square h-auto w-20">
+                    @inlinedImage(tenant('logo'))
+                </div>
+            @endif
+            <h1 class="text-3xl font-extrabold">{{ tenant('name') }}</h1>
+            <p class="text-xl">{{ $title }}</p>
         </div>
     @endif
     {{ $slot }}

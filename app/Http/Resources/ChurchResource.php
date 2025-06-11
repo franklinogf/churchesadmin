@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Resources;
 
-use App\Enums\MediaCollectionName;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -26,7 +25,7 @@ final class ChurchResource extends JsonResource
             'locale' => $this->locale,
             'createdAt' => $this->created_at->inUserTimezone()->formatAsDatetime(),
             'updatedAt' => $this->updated_at->inUserTimezone()->formatAsDatetime(),
-            'logo' => ($logo = $this->getFirstMediaUrl(MediaCollectionName::LOGO->value)) === '' ? null : $logo,
+            'logo' => $this->logo,
             'active' => $this->active,
         ];
     }

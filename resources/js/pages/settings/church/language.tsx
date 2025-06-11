@@ -33,10 +33,10 @@ export default function Language({ languages }: { languages: SelectOption[] }) {
     });
   };
 
-  const breadcrumbs: BreadcrumbItem[] = useMemo(() => [{ title: t('Church language'), href: route('church.language.edit') }], [t]);
+  const breadcrumbs: BreadcrumbItem[] = useMemo(() => [{ title: t('Church Settings') }, { title: t('Church language') }], [t]);
 
   return (
-    <AppLayout title="Church Settings" breadcrumbs={breadcrumbs}>
+    <AppLayout title={t('Church Settings')} breadcrumbs={breadcrumbs}>
       <SettingsLayout>
         <div className="space-y-6">
           <HeadingSmall title={t('Language')} description={t('Update the website language')} />
