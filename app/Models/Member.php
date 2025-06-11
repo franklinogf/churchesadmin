@@ -7,8 +7,10 @@ namespace App\Models;
 use App\Casts\AsUcWords;
 use App\Enums\CivilStatus;
 use App\Enums\Gender;
+use App\Models\Scopes\LastnameScope;
 use App\Models\Traits\HasTags;
 use Carbon\CarbonImmutable;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -35,6 +37,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read Collection<int,Email> $emails
  * @property-read Emailable $emailMessage
  */
+#[ScopedBy(LastnameScope::class)]
 final class Member extends Model
 {
     /** @use HasFactory<\Database\Factories\MemberFactory> */

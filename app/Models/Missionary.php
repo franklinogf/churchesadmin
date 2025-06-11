@@ -7,7 +7,9 @@ namespace App\Models;
 use App\Casts\AsUcWords;
 use App\Enums\Gender;
 use App\Enums\OfferingFrequency;
+use App\Models\Scopes\LastnameScope;
 use Carbon\CarbonImmutable;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -36,6 +38,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read Email[] $emails
  * @property-read Emailable $emailMessage
  */
+#[ScopedBy(LastnameScope::class)]
 final class Missionary extends Model
 {
     /** @use HasFactory<\Database\Factories\MissionaryFactory> */

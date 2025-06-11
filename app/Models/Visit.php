@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Casts\AsUcWords;
+use App\Models\Scopes\LastnameScope;
 use Carbon\CarbonImmutable;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -28,6 +30,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read Collection<int,FollowUp> $followUps
  * @property-read FollowUp|null $lastFollowUp
  */
+#[ScopedBy(LastnameScope::class)]
 final class Visit extends Model
 {
     /** @use HasFactory<\Database\Factories\VisitFactory> */
