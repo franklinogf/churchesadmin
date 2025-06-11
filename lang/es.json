@@ -288,5 +288,6 @@
     "Accept": "Aceptar",
     "Current year": "Año actual",
     "This setting is only available for Super Admins.": "Esta configuración solo está disponible para Super Admins.",
-    "It allows you to set the current year for the application for you to work in.": "Te permite establecer el año actual para la aplicación en la que trabajarás."
+    "It allows you to set the current year for the application for you to work in.": "Te permite establecer el año actual para la aplicación en la que trabajarás.",
+    "Date of birth": "Fecha de nacimiento"
 }
