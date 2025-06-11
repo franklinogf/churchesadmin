@@ -8,6 +8,7 @@ import { CheckIcon, CheckSquareIcon, SquareIcon } from 'lucide-react';
 
 export const selectionHeader: ColumnDef<RowData> = {
   id: 'select',
+  size: 0,
   header: function HeaderComponent({ table }) {
     return (
       <TableSelectionToggle

@@ -1,26 +1,25 @@
-@props(['title'])
+@props(['title', 'noHeader' => false])
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta charset="UTF-8">
     <title>{{ $title }}</title>
+    @vite(['resources/css/app.css'])
     <style>
-        @page {
-            margin: 0;
-            font-size: 14px;
-            font-family: 'Arial', sans-serif;
-        }
-
         .page-break {
-            page-break-after: always;
+            @apply break-after-page;
         }
     </style>
 </head>
 
-<body>
+<body class="bg-white font-sans text-black antialiased">
+    @if (!$noHeader)
+        <div class="mb-8 mt-3 text-center">
+            <h1 class="text-3xl font-extrabold">{{ config('app.name') }}</h1>
+            <p class="text-lg">{{ $title }}</p>
+        </div>
+    @endif
     {{ $slot }}
 </body>
 

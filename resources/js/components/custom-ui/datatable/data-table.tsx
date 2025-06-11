@@ -30,12 +30,12 @@ import {
   useReactTable,
   type VisibilityState,
 } from '@tanstack/react-table';
-import { FilterIcon, Settings2Icon } from 'lucide-react';
-import { useEffect, useMemo, useState } from 'react';
+import { FilterIcon, PrinterIcon, Settings2Icon } from 'lucide-react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { toast } from 'sonner';
 
-interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[];
+type DataTableProps<TData> = {
+  columns: ColumnDef<TData>[];
   data: TData[];
   onButtonClick?: (data: TData[]) => void;
   selectedActionButtonLabel?: string;
@@ -45,9 +45,12 @@ interface DataTableProps<TData, TValue> {
   visibilityState?: Record<keyof TData, boolean> | VisibilityState;
   sortingState?: { id: keyof TData; desc: boolean }[];
   onSelectedRowsChange?: (selectedRows: string[]) => void;
-}
+  onSelectedRowsChangeOriginal?: (selectedRows: TData[]) => void;
+  print?: (selectedRows: string[]) => void;
+  printWithOriginalData?: (selectedRows: TData[]) => void;
+};
 
-export function DataTable<TData, TValue>({
+export function DataTable<TData>({
   columns,
   data,
   onButtonClick,
@@ -58,13 +61,17 @@ export function DataTable<TData, TValue>({
   visibilityState = {},
   sortingState = [],
   onSelectedRowsChange,
-}: DataTableProps<TData, TValue>) {
+  onSelectedRowsChangeOriginal,
+  print,
+  printWithOriginalData,
+}: DataTableProps<TData>) {
   const { t } = useTranslations();
   const [sorting, setSorting] = useState<SortingState>(sortingState as SortingState);
 
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(visibilityState);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const lastEmitted = useRef<string[] | TData[]>([]);
 
   const table = useReactTable({
     columns,
@@ -95,9 +102,16 @@ export function DataTable<TData, TValue>({
   );
 
   useEffect(() => {
-    if (!onSelectedRowsChange) return;
-    onSelectedRowsChange(Object.keys(rowSelection));
-  }, [rowSelection, onSelectedRowsChange]);
+    if (!onSelectedRowsChange && !onSelectedRowsChangeOriginal) return;
+    const current = Object.keys(rowSelection);
+    const same = current.length === lastEmitted.current.length && current.every((id, i) => id === lastEmitted.current[i]);
+
+    if (!same) {
+      lastEmitted.current = current;
+      onSelectedRowsChange?.(current);
+      onSelectedRowsChangeOriginal?.(table.getSelectedRowModel().flatRows.map((row) => row.original));
+    }
+  }, [rowSelection, onSelectedRowsChange, onSelectedRowsChangeOriginal, table]);
 
   return (
     <div>
@@ -123,7 +137,20 @@ export function DataTable<TData, TValue>({
           )}
         </div>
 
-        <div className="ml-auto">
+        <div className="ml-auto flex items-center gap-2">
+          {(print || printWithOriginalData) && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => {
+                print?.(Object.keys(rowSelection));
+                printWithOriginalData?.(table.getSelectedRowModel().flatRows.map((row) => row.original));
+              }}
+            >
+              <PrinterIcon className="size-4" />
+              {t('datatable.print_button')}
+            </Button>
+          )}
           <VisibilityDropdownMenu label={t('datatable.visibility_button')} columns={enabledHidingColumns} />
         </div>
       </section>

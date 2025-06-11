@@ -17,4 +17,7 @@ return [
         'force_delete' => 'You cannot permanently delete a confirmed check.',
         'confirm' => 'You cannot confirm a confirmed check.',
     ],
+    'unconfirmed_check' => [
+        'print' => 'You cannot print an unconfirmed check.',
+    ],
 ];

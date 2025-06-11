@@ -12,6 +12,7 @@ return [
     'no_selected_rows' => 'Please select at least one row',
     'visibility_button' => 'View',
     'hide' => 'Hide',
+    'print_button' => 'Print',
     'sort' => [
         'ascending' => 'Asc',
         'descending' => 'Desc',

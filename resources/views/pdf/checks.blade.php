@@ -1,13 +1,12 @@
-@use(App\Dtos\CheckLayoutFieldsDto)
-
-<x-layouts.pdf :title="__('Checks')">
+<x-layouts.pdf :title="$title" noHeader>
     @foreach ($checks as $check)
         @foreach ($check->layout->fields as $fieldLayout)
-            <div style="position: absolute; top: {{ $fieldLayout['position']['y'] }}px; left: {{ $fieldLayout['position']['x'] }}px;">
+            <p
+               style="position: absolute; top: {{ $fieldLayout['position']['y'] }}px; left: {{ $fieldLayout['position']['x'] }}px;">
                 {{ $check->fields->toArray()[$fieldLayout['target']] }}
-            </div>
+            </p>
         @endforeach
-        @if(!$loop->last)
+        @if (!$loop->last)
             <div class="page-break"></div>
         @endif
     @endforeach

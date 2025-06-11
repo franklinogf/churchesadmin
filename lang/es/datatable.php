@@ -12,6 +12,7 @@ return [
     'no_selected_rows' => 'Por favor seleccione al menos una fila',
     'visibility_button' => 'Ver',
     'hide' => 'Ocultar',
+    'print_button' => 'Imprimir',
     'sort' => [
         'ascending' => 'Asc',
         'descending' => 'Desc',

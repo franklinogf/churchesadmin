@@ -6,32 +6,37 @@ namespace App\Http\Controllers\Pdf;
 
 use App\Http\Controllers\Controller;
 use App\Models\Check;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Spatie\LaravelPdf\Facades\Pdf;
+use Spatie\LaravelPdf\PdfBuilder;
 
 final class ChecksPdfController extends Controller
 {
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Request $request): Response
+    public function __invoke(Request $request): PdfBuilder
     {
-        $checkIds = $request->array('checks');
+        $checkIds = $request->array('checks', []);
         if (empty($checkIds)) {
             abort(404, 'No checks selected');
         }
 
         $checks = Check::whereIn('id', $checkIds)->get();
-        // dd($checks[0]->layout->fields);
+
         if ($checks->isEmpty()) {
             abort(404, 'No checks found');
         }
 
-        $pdf = Pdf::loadView('pdf.checks', [
+        if ($checks->contains(fn (Check $check) => ! $check->isConfirmed())) {
+            abort(403, 'Some of the selected checks are not confirmed');
+        }
+
+        $pdf = Pdf::view('pdf.checks', [
             'checks' => $checks,
+            'title' => __('Checks'),
         ]);
 
-        return $pdf->stream('checks.pdf');
+        return $pdf->name('checks.pdf');
     }
 }

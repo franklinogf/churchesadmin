@@ -95,4 +95,17 @@ final class CheckPolicy
 
         return Response::deny(__('permission.confirm', ['label' => __('Checks')]));
     }
+
+    public function print(TenantUser $tenantUser, Check $check): Response
+    {
+        if ($tenantUser->cannot(TenantPermission::CHECKS_PRINT)) {
+            return Response::deny(__('permission.print', ['label' => __('Checks')]));
+        }
+
+        if (! $check->isConfirmed()) {
+            return Response::deny(__('permission.unconfirmed_check.print', ['label' => __('Checks')]));
+        }
+
+        return Response::allow();
+    }
 }

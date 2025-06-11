@@ -6,34 +6,23 @@ namespace App\Http\Controllers\Pdf;
 
 use App\Http\Controllers\Controller;
 use App\Models\Check;
-use App\Models\ChurchWallet;
-use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Gate;
+use Spatie\LaravelPdf\Facades\Pdf;
+use Spatie\LaravelPdf\PdfBuilder;
 
 final class CheckPdfController extends Controller
 {
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Check $check): Response
+    public function __invoke(Check $check): PdfBuilder
     {
-        /**
-         * @var ChurchWallet $wallet
-         */
-        $wallet = $check->transaction->wallet->holder;
+        Gate::authorize('print', $check);
+        $pdf = Pdf::view('pdf.check', [
+            'check' => $check,
+            'title' => __('Check #:number', ['number' => $check->check_number]),
+        ]);
 
-        $checkLayout = $wallet->checkLayout;
-
-        if ($checkLayout === null) {
-            abort(404);
-        }
-
-        $pdf = Pdf::loadView('pdf.check', [
-            'fields' => $check->fields->toArray(),
-            'checkLayout' => $checkLayout,
-        ])->setPaper([0, 0, $checkLayout->width * 0.75, $checkLayout->height * 0.75]);
-
-        return $pdf->stream();
+        return $pdf->name("check_{$check->check_number}.pdf");
     }
 }
