@@ -24,8 +24,8 @@ export type TranslationKey =
   | 'Are you sure you want to activate this :model?'
   | 'Are you sure you want to deactivate this :model?'
   | 'Are you sure you want to delete this :model?'
-  | 'Arrastra y suelta tu foto aquí o haz <span class=\'filepond--label-action\'>clic</span> para seleccionarla'
-  | 'Arrastra y suelta tus archivos o <span class=\'filepond--label-action\'>Buscar</span>'
+  | "Arrastra y suelta tu foto aquí o haz <span class='filepond--label-action'>clic</span> para seleccionarla"
+  | "Arrastra y suelta tus archivos o <span class='filepond--label-action'>Buscar</span>"
   | 'Assigned permissions'
   | 'Attachments'
   | 'Available funds'
@@ -141,7 +141,7 @@ export type TranslationKey =
   | 'Language'
   | 'Last Name'
   | 'Last name'
-  | 'Let us walk you through how ChurchesAdmin can serve your ministry\'s needs.'
+  | "Let us walk you through how ChurchesAdmin can serve your ministry's needs."
   | 'Loading preview'
   | 'Log Out'
   | 'Logo'
@@ -256,7 +256,7 @@ export type TranslationKey =
   | 'This is marked as regular.'
   | 'This setting is only available for Super Admins.'
   | 'This wallet will be usable again'
-  | 'This wallet won\'t be usable until it is activated'
+  | "This wallet won't be usable until it is activated"
   | 'Timezone'
   | 'Total'
   | 'Track assignments, support levels, communication logs, and prayer requests with ease.'
@@ -266,7 +266,7 @@ export type TranslationKey =
   | 'Unconfirmed Checks'
   | 'Unknown sender'
   | 'Update :model'
-  | 'Update account\'s appearance settings'
+  | "Update account's appearance settings"
   | 'Update password'
   | 'Update the church information'
   | 'Update the website language'
@@ -442,4 +442,4 @@ export type TranslationKey =
   | 'file_uploader.file_type.allowed'
   | 'file_uploader.file_type.not_allowed'
   | 'file_uploader.idle'
-  | '“I love how we can manage both members and missionaries from the same place. It\'s truly built for the church.”';
+  | "“I love how we can manage both members and missionaries from the same place. It's truly built for the church.”";
