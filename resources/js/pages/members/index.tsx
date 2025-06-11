@@ -21,6 +21,7 @@ export default function Index({ members }: IndexProps) {
       title: t('Members'),
     },
   ];
+
   return (
     <AppLayout breadcrumbs={breadcrumbs} title={t('Members')}>
       <PageTitle>{t('Members')}</PageTitle>

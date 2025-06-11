@@ -95,17 +95,30 @@ export default function Create({ genders, civilStatuses, skills, categories, vis
       <div className="mt-2 flex items-center justify-center">
         <Form isSubmitting={processing} className="w-full max-w-2xl" onSubmit={handleSubmit}>
           <FieldError error={errors.visit_id} />
-          <InputField required label="Name" value={data.name} onChange={(value) => setData('name', value)} error={errors.name} />
-          <InputField required label="Last Name" value={data.last_name} onChange={(value) => setData('last_name', value)} error={errors.last_name} />
+          <InputField required label={t('Name')} value={data.name} onChange={(value) => setData('name', value)} error={errors.name} />
+          <InputField
+            required
+            label={t('Last Name')}
+            value={data.last_name}
+            onChange={(value) => setData('last_name', value)}
+            error={errors.last_name}
+          />
           <FieldsGrid>
-            <InputField required label="Email" type="email" value={data.email} onChange={(value) => setData('email', value)} error={errors.email} />
-            <PhoneField required label="Phone" value={data.phone} onChange={(value) => setData('phone', value)} error={errors.phone} />
+            <InputField
+              required
+              label={t('Email')}
+              type="email"
+              value={data.email}
+              onChange={(value) => setData('email', value)}
+              error={errors.email}
+            />
+            <PhoneField required label={t('Phone')} value={data.phone} onChange={(value) => setData('phone', value)} error={errors.phone} />
           </FieldsGrid>
 
           <DatetimeField
             hideTime
             max={new Date()}
-            label="Date of Birth"
+            label={t('Date of birth')}
             value={data.dob}
             onChange={(value) => setData('dob', value)}
             error={errors.dob}
@@ -114,7 +127,7 @@ export default function Create({ genders, civilStatuses, skills, categories, vis
           <FieldsGrid>
             <SelectField
               required
-              label="Gender"
+              label={t('Gender')}
               value={data.gender}
               onChange={(value) => setData('gender', value)}
               options={genders}
@@ -122,7 +135,7 @@ export default function Create({ genders, civilStatuses, skills, categories, vis
             />
             <SelectField
               required
-              label="Civil Status"
+              label={t('Civil status')}
               value={data.civil_status}
               onChange={(value) => setData('civil_status', value)}
               options={civilStatuses}
