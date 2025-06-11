@@ -6,26 +6,41 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSepara
 
 import { useTranslations } from '@/hooks/use-translations';
 import { cn } from '@/lib/utils';
+import type { TranslationKey } from '@/types/lang-keys';
+import { cva, type VariantProps } from 'class-variance-authority';
 
-interface DataTableColumnHeaderProps<TData, TValue> extends React.HTMLAttributes<HTMLDivElement> {
+const headerVariants = cva('text', {
+  variants: {
+    justify: {
+      start: 'justify-start text-left',
+      end: 'justify-end text-right',
+      center: 'justify-center text-center',
+    },
+  },
+  defaultVariants: {
+    justify: 'start',
+  },
+});
+
+type DataTableColumnHeaderProps<TData, TValue> = VariantProps<typeof headerVariants> & {
   column: Column<TData, TValue>;
-  title: string;
-  center?: boolean;
-}
+  title: TranslationKey;
+  className?: string;
+};
 
-export function DataTableColumnHeader<TData, TValue>({ column, title, className, center = true }: DataTableColumnHeaderProps<TData, TValue>) {
+export function DataTableColumnHeader<TData, TValue>({ column, title, justify = 'center', className }: DataTableColumnHeaderProps<TData, TValue>) {
   const { t } = useTranslations();
 
   if (!column.getCanSort() && !column.getCanHide()) {
-    return <div className={cn('text-foreground', { 'text-center': center }, className)}>{title}</div>;
+    return <div className={cn('text-foreground', headerVariants({ justify, className }))}>{t(title)}</div>;
   }
 
   return (
-    <div className={cn('flex flex-col items-center', { 'justify-center': center }, className)}>
+    <div className={cn('flex flex-col items-center', headerVariants({ justify, className }))}>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" size="sm" className="text-foreground data-[state=open]:bg-accent data-[state=open]:text-accent-foreground h-8">
-            <span>{title}</span>
+            <span>{t(title)}</span>
             {column.getCanSort() &&
               (column.getIsSorted() === 'desc' ? (
                 <ArrowDown className="size-4" />

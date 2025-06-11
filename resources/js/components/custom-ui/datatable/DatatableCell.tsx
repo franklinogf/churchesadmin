@@ -1,6 +1,6 @@
 import { cva, type VariantProps } from 'class-variance-authority';
 
-const cellVariants = cva('flex items-center', {
+export const cellVariants = cva('flex items-center', {
   variants: {
     justify: {
       start: 'justify-start',

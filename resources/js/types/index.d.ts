@@ -58,3 +58,5 @@ export type SelectOptionWithModel = {
 export type Locale = `${LanguageCode}`;
 
 export type LanguageTranslations = Record<Locale, string | undefined>;
+
+export type PdfColumn = { name: string; label: string; selected: boolean };

@@ -30,8 +30,6 @@ final class MemberPdfController extends Controller
         return Inertia::render('reports/members', [
             'members' => MemberResource::collection($members),
             'columns' => $this->pdfGeneration->getForView(),
-            'formatOptions' => $this->pdfGeneration->getFormatOptions(),
-            'orientationOptions' => $this->pdfGeneration->getOrientationOptions(),
         ]);
     }
 
