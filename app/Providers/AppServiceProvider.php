@@ -29,6 +29,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
+use Spatie\LaravelPdf\Facades\Pdf;
 use Spatie\Translatable\Facades\Translatable;
 
 final class AppServiceProvider extends ServiceProvider
@@ -62,6 +63,13 @@ final class AppServiceProvider extends ServiceProvider
         URL::forceHttps(app()->isProduction());
 
         Transaction::addGlobalScope(CurrentYearScope::class);
+
+        if (! app()->environment(['local', 'testing'])) {
+            Pdf::default()->withBrowsershot(
+                fn ($browsershot): mixed => $browsershot->setChromePath('/usr/bin/chromium-browser')
+                    ->setCustomTempPath(storage_path())
+            );
+        }
 
     }
 
