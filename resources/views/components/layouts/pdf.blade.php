@@ -25,7 +25,7 @@
     </style>
 </head>
 
-<body class="bg-white font-sans text-black antialiased">
+<body class="bg-white text-black antialiased">
     @if (!$noHeader)
         <div class="relative mb-12 mt-3 text-center">
             @if (tenant('logo'))
