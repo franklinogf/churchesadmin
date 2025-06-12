@@ -69,6 +69,9 @@ final class AppServiceProvider extends ServiceProvider
                 fn ($browsershot): mixed => $browsershot->setNodeBinary('/usr/bin/node')
                     ->setNpmBinary('/usr/bin/npm')
                     ->setCustomTempPath(storage_path())
+                    ->addChromiumArguments([
+                        '--no-sandbox',
+                    ])
             );
         }
 
