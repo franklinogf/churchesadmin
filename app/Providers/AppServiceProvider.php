@@ -66,11 +66,18 @@ final class AppServiceProvider extends ServiceProvider
         Transaction::addGlobalScope(CurrentYearScope::class);
 
         if (! app()->environment(['local', 'testing'])) {
-            Pdf::default()->withBrowsershot(
-                fn (Browsershot $browsershot): mixed => $browsershot
-                    ->setChromePath('/usr/bin/chromium-browser')
-                    ->setCustomTempPath(storage_path())
-            );
+            Pdf::default()
+                ->withBrowsershot(
+                    fn (Browsershot $browsershot): mixed => $browsershot
+                        ->setChromePath('/usr/bin/chromium-browser')
+                        ->setCustomTempPath(storage_path())
+                        ->waitUntilNetworkIdle()
+                        ->addChromiumArguments([
+                            '--no-sandbox',
+                            '--disable-setuid-sandbox',
+                            '--disable-dev-shm-usage',
+                        ])
+                );
         }
 
     }

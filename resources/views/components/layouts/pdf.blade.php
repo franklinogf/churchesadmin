@@ -1,11 +1,23 @@
 @props(['title', 'noHeader' => false])
+@php
+    $manifestPath = public_path('build/manifest.json');
+    $manifest = json_decode(file_get_contents($manifestPath), true);
+    $cssFile = $manifest['resources/css/app.css']['file'];
+@endphp
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
 
 <head>
     <meta charset="UTF-8">
     <title>{{ $title }}</title>
-    @vite(['resources/css/app.css'])
+
+    @if (app()->isLocal())
+        @vite(['resources/css/app.css'])
+    @else
+        <style>
+            {!! file_get_contents(public_path('build/' . $cssFile)) !!}
+        </style>
+    @endif
     <style>
         .page-break {
             @apply break-after-page;
