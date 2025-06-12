@@ -29,6 +29,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
+use Spatie\Browsershot\Browsershot;
 use Spatie\LaravelPdf\Facades\Pdf;
 use Spatie\Translatable\Facades\Translatable;
 
@@ -66,9 +67,8 @@ final class AppServiceProvider extends ServiceProvider
 
         if (! app()->environment(['local', 'testing'])) {
             Pdf::default()->withBrowsershot(
-                fn ($browsershot): mixed => $browsershot
-                    ->setChromePath('/home/forge/.cache/puppeteer/chrome/linux-137.0.7151.55/chrome-linux64/chrome')
-                    ->addChromiumArguments(['--no-sandbox'])
+                fn (Browsershot $browsershot): mixed => $browsershot
+                    ->setChromePath('/usr/bin/chromium-browser')
                     ->setCustomTempPath(storage_path())
             );
         }
