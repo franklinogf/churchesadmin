@@ -68,6 +68,7 @@ final class AppServiceProvider extends ServiceProvider
             Pdf::default()->withBrowsershot(
                 fn ($browsershot): mixed => $browsershot
                     ->setChromePath('/home/forge/.cache/puppeteer/chrome/linux-137.0.7151.55/chrome-linux64/chrome')
+                    ->addChromiumArguments(['--no-sandbox'])
                     ->setCustomTempPath(storage_path())
             );
         }
