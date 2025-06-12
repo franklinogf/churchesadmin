@@ -37,7 +37,7 @@ final class ChecksPdfController extends Controller
             'checks' => $checks,
             'title' => __('Checks'),
         ])->withBrowsershot(function (Browsershot $browsershot): void {
-            $browsershot->setIncludePath('$PATH:/usr/bin');
+            $browsershot->setChromePath('/usr/bin/chromium-browser');
         });
 
         return $pdf->name('checks.pdf');
