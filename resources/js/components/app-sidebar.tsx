@@ -10,6 +10,7 @@ import {
   BanknoteIcon,
   CogIcon,
   CoinsIcon,
+  FileStackIcon,
   HandCoinsIcon,
   HomeIcon,
   LayoutGridIcon,
@@ -108,6 +109,16 @@ export function AppSidebar() {
             title: t('Expense types'),
             href: route('codes.expenseTypes.index'),
             icon: ListIcon,
+          },
+        ],
+      },
+      {
+        heading: t('Reports'),
+        items: [
+          {
+            title: t('General'),
+            href: route('reports'),
+            icon: FileStackIcon,
           },
         ],
       },
