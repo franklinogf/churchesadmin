@@ -7,6 +7,7 @@ namespace App\Http\Controllers\Pdf;
 use App\Http\Controllers\Controller;
 use App\Models\Check;
 use Illuminate\Http\Request;
+use Spatie\Browsershot\Browsershot;
 use Spatie\LaravelPdf\Facades\Pdf;
 use Spatie\LaravelPdf\PdfBuilder;
 
@@ -35,7 +36,9 @@ final class ChecksPdfController extends Controller
         $pdf = Pdf::view('pdf.checks', [
             'checks' => $checks,
             'title' => __('Checks'),
-        ]);
+        ])->withBrowsershot(function (Browsershot $browsershot): void {
+            $browsershot->setIncludePath('$PATH:/usr/bin');
+        });
 
         return $pdf->name('checks.pdf');
     }
