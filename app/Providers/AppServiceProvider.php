@@ -66,12 +66,9 @@ final class AppServiceProvider extends ServiceProvider
 
         if (! app()->environment(['local', 'testing'])) {
             Pdf::default()->withBrowsershot(
-                fn ($browsershot): mixed => $browsershot->setNodeBinary('/usr/bin/node')
-                    ->setNpmBinary('/usr/bin/npm')
+                fn ($browsershot): mixed => $browsershot
+                    ->setChromePath('/home/forge/.cache/puppeteer/chrome/linux-137.0.7151.55/chrome-linux64/chrome')
                     ->setCustomTempPath(storage_path())
-                    ->addChromiumArguments([
-                        '--no-sandbox',
-                    ])
             );
         }
 
