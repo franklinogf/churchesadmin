@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Http\Controllers\Pdf\CheckPdfController;
 use App\Http\Controllers\Pdf\ChecksPdfController;
 use App\Http\Controllers\Pdf\MemberPdfController;
+use App\Http\Controllers\Pdf\MissionaryPdfController;
 use Illuminate\Support\Facades\Route;
 
 Route::inertia('/reports', 'reports/index')->name('reports');
@@ -12,6 +13,10 @@ Route::inertia('/reports', 'reports/index')->name('reports');
 Route::get('/reports/members', [MemberPdfController::class, 'index'])->name('reports.members');
 Route::get('/reports/members/pdf', [MemberPdfController::class, 'show'])
     ->name('reports.members.pdf');
+
+Route::get('/reports/missionaries', [MissionaryPdfController::class, 'index'])->name('reports.missionaries');
+Route::get('/reports/missionaries/pdf', [MissionaryPdfController::class, 'show'])
+    ->name('reports.missionaries.pdf');
 
 // Checks pdf
 

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Support;
 
+use App\Enums\PdfGeneratorColumnPosition;
+use App\Enums\PdfGeneratorColumnType;
 use Illuminate\Support\Collection;
 use Spatie\LaravelPdf\Enums\Format;
 use Spatie\LaravelPdf\Enums\Orientation;
@@ -13,14 +15,14 @@ final readonly class PdfGeneration
     /**
      * The columns to be used for PDF generation.
      *
-     * @var Collection<string,array{label:string,position:string}>
+     * @var Collection<string,array{label:string,position:string,type:string}>
      */
     private Collection $columnsCollection;
 
     /**
      * Create a new PdfGenerationColumns instance.
      *
-     * @param  array<string,array{label?:string,position?:string}>|Collection<string,array{label?:string,position?:string}>  $columns
+     * @param  array<string,array{label?:string,position?:PdfGeneratorColumnPosition,type?:PdfGeneratorColumnType}>|Collection<string,array{label?:string,position?:PdfGeneratorColumnPosition,type?:PdfGeneratorColumnType}>  $columns
      */
     public function __construct(array|Collection $columns = [])
     {
@@ -28,9 +30,9 @@ final readonly class PdfGeneration
             $columns = collect($columns);
         }
         $this->columnsCollection = $columns->map(function (array $column, string $name): array {
-            if (! isset($column['position'])) {
-                $column['position'] = 'left';
-            }
+            $column['position'] = isset($column['position']) ? $column['position']->value : PdfGeneratorColumnPosition::LEFT->value;
+            $column['type'] = isset($column['type']) ? $column['type']->value : PdfGeneratorColumnType::TEXT->value;
+
             if (! isset($column['label'])) {
                 $column['label'] = $name;
             }
@@ -61,7 +63,7 @@ final readonly class PdfGeneration
      * Get the columns for the PDF generation.
      *
      * @param  array<string>  $unSelectedColumns
-     * @return array<string,array{label:string,position:string}>
+     * @return array<string,array{label:string,position:string,type:string}>
      */
     public function getForPdf(array $unSelectedColumns = []): array
     {

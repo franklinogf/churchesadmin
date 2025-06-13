@@ -8,8 +8,8 @@ use App\Enums\PdfGeneratorColumnPosition;
 use App\Enums\PdfGeneratorColumnType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Pdf\GeneratePdfRequest;
-use App\Http\Resources\Member\MemberResource;
-use App\Models\Member;
+use App\Http\Resources\Missionary\MissionaryResource;
+use App\Models\Missionary;
 use App\Support\PdfGeneration;
 use Illuminate\Database\Eloquent\Builder;
 use Inertia\Inertia;
@@ -18,7 +18,7 @@ use Spatie\LaravelPdf\PdfBuilder;
 
 use function Spatie\LaravelPdf\Support\pdf;
 
-final class MemberPdfController extends Controller
+final class MissionaryPdfController extends Controller
 {
     public function __construct(private PdfGeneration $pdfGeneration)
     {
@@ -27,10 +27,10 @@ final class MemberPdfController extends Controller
 
     public function index(): Response
     {
-        $members = Member::all();
+        $missionaries = Missionary::all();
 
-        return Inertia::render('reports/members', [
-            'members' => MemberResource::collection($members),
+        return Inertia::render('reports/missionaries', [
+            'missionaries' => MissionaryResource::collection($missionaries),
             'columns' => $this->pdfGeneration->getForView(),
         ]);
     }
@@ -39,20 +39,20 @@ final class MemberPdfController extends Controller
     {
         $rowIds = $request->getRows();
 
-        $members = Member::query()
+        $missionaries = Missionary::query()
             ->when($rowIds !== [], function (Builder $query) use ($rowIds): void {
                 $query->whereIn('id', $rowIds);
             })
             ->get();
 
         return pdf('pdf.generated', [
-            'title' => __('Members'),
-            'rows' => $members,
+            'title' => __('Missionaries'),
+            'rows' => $missionaries,
             'columns' => $this->pdfGeneration->getForPdf($request->getUnSelectedColumns()),
         ])
             ->orientation($request->getPdfOrientation())
             ->format($request->getPdfFormat())
-            ->name('members.pdf');
+            ->name('missionaries.pdf');
 
     }
 
@@ -69,8 +69,9 @@ final class MemberPdfController extends Controller
             'email' => ['label' => __('Email')],
             'phone' => ['label' => __('Phone'), 'position' => PdfGeneratorColumnPosition::CENTER],
             'gender' => ['label' => __('Gender'), 'position' => PdfGeneratorColumnPosition::CENTER, 'type' => PdfGeneratorColumnType::ENUM],
-            'dob' => ['label' => __('Date of birth'), 'position' => PdfGeneratorColumnPosition::CENTER, 'type' => PdfGeneratorColumnType::DATE],
-            'civil_status' => ['label' => __('Civil status'), 'position' => PdfGeneratorColumnPosition::CENTER, 'type' => PdfGeneratorColumnType::ENUM],
+            'church' => ['label' => __('Church')],
+            'offering' => ['label' => __('Offering'), 'position' => PdfGeneratorColumnPosition::RIGHT, 'type' => PdfGeneratorColumnType::CURRENCY],
+            'offering_frequency' => ['label' => __('Offering frequency'), 'position' => PdfGeneratorColumnPosition::CENTER, 'type' => PdfGeneratorColumnType::ENUM],
         ];
     }
 }

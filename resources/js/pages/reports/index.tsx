@@ -8,7 +8,7 @@ export default function Index() {
   const options = useMemo(
     () => [
       { label: 'Members report', url: route('reports.members') },
-      //   { label: 'Missionaries report', url: route('reports.missionaries') },
+      { label: 'Missionaries report', url: route('reports.missionaries') },
       //   { label: 'Offerings report', url: route('reports.offerings') },
     ],
     [],

@@ -10,21 +10,21 @@ import { PdfControls } from '@/pages/reports/components/pdf-controls';
 import { PdfPreview } from '@/pages/reports/components/pdf-preview';
 import { PdfRowsTable } from '@/pages/reports/components/pdf-rows-table';
 import type { PdfColumn } from '@/types';
-import type { Member } from '@/types/models/member';
+import type { Missionary } from '@/types/models/missionary';
 import { usePage } from '@inertiajs/react';
 import { type ColumnDef } from '@tanstack/react-table';
 import { useMemo } from 'react';
 
-interface MembersReportProps {
-  members: Member[];
+interface MissionariesReportProps {
+  missionaries: Missionary[];
   columns: PdfColumn[];
 }
 
-export default function MembersReport({ members, columns }: MembersReportProps) {
+export default function MissionariesReport({ missionaries, columns }: MissionariesReportProps) {
   const { t } = useTranslations();
-  const dataColumns = useMemo<ColumnDef<Member>[]>(
+  const dataColumns = useMemo<ColumnDef<Missionary>[]>(
     () => [
-      selectionHeader as ColumnDef<Member>,
+      selectionHeader as ColumnDef<Missionary>,
       {
         enableHiding: false,
         accessorKey: 'name',
@@ -37,18 +37,18 @@ export default function MembersReport({ members, columns }: MembersReportProps) 
 
   return (
     <AppLayout
-      title={t(':model report', { model: t('Members') })}
-      breadcrumbs={[{ title: t('Reports'), href: route('reports') }, { title: t(':model report', { model: t('Members') }) }]}
+      title={t(':model report', { model: t('Missionaries') })}
+      breadcrumbs={[{ title: t('Reports'), href: route('reports') }, { title: t(':model report', { model: t('Missionaries') }) }]}
     >
-      <PageTitle>{t(':model report', { model: t('Members') })}</PageTitle>
+      <PageTitle>{t(':model report', { model: t('Missionaries') })}</PageTitle>
       <FormErrorList errors={usePage().props.errors} />
-      <PdfGeneratorProvider columns={columns} route="reports.members.pdf">
+      <PdfGeneratorProvider columns={columns} route="reports.missionaries.pdf">
         <OpenPdfButton />
         <section className="grid h-[400px] grid-cols-1 gap-4 md:grid-cols-2">
           <PdfControls />
           <PdfPreview />
         </section>
-        <PdfRowsTable data={members} columns={dataColumns} />
+        <PdfRowsTable data={missionaries} columns={dataColumns} />
       </PdfGeneratorProvider>
     </AppLayout>
   );

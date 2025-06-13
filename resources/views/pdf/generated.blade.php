@@ -3,7 +3,7 @@
         $columnPositions = ['left' => 'text-left', 'center' => 'text-center', 'right' => 'text-right'];
     @endphp
 
-    <table class="mx-auto min-w-[700px] max-w-[780px] border border-gray-400">
+    <table class="max-w-screen mx-auto min-w-[700px] border border-gray-400">
         <thead>
             <tr>
                 <th class="bg-primary/30 border border-gray-400 p-1.5">
@@ -22,10 +22,16 @@
                     </td>
                     @foreach ($columns as $name => $col)
                         <td class="{{ $columnPositions[$col['position']] ?? 'text-left' }} border border-gray-400 p-1">
-                            @if ($row[$name] instanceof \Carbon\CarbonImmutable)
-                                {{ $row[$name]->format('Y-m-d') }}
-                            @elseif($row[$name] instanceof \BackedEnum)
-                                {{ $row[$name]->label() }}
+                            @if ($col['type'] === 'date')
+                                {{ $row[$name]?->format('Y-m-d') }}
+                            @elseif($col['type'] === 'datetime')
+                                {{ $row[$name]?->format('Y-m-d H:i:s') }}
+                            @elseif($col['type'] === 'enum')
+                                {{ $row[$name]?->label() }}
+                            @elseif($col['type'] === 'boolean')
+                                {{ $row[$name] ? __('Yes') : __('No') }}
+                            @elseif($col['type'] === 'currency')
+                                {{ $row[$name] ? "$ $row[$name]" : '' }}
                             @else
                                 {{ $row[$name] }}
                             @endif

@@ -28,7 +28,7 @@ type DataTableColumnHeaderProps<TData, TValue> = VariantProps<typeof headerVaria
   className?: string;
 };
 
-export function DataTableColumnHeader<TData, TValue>({ column, title, justify = 'center', className }: DataTableColumnHeaderProps<TData, TValue>) {
+export function DataTableColumnHeader<TData, TValue>({ column, title, justify = 'start', className }: DataTableColumnHeaderProps<TData, TValue>) {
   const { t } = useTranslations();
 
   if (!column.getCanSort() && !column.getCanHide()) {
@@ -36,7 +36,7 @@ export function DataTableColumnHeader<TData, TValue>({ column, title, justify = 
   }
 
   return (
-    <div className={cn('flex flex-col items-center', headerVariants({ justify, className }))}>
+    <div className={cn('flex items-center', headerVariants({ justify, className }))}>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" size="sm" className="text-foreground data-[state=open]:bg-accent data-[state=open]:text-accent-foreground h-8">
