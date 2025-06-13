@@ -72,11 +72,7 @@ final class AppServiceProvider extends ServiceProvider
                         ->setChromePath('/usr/bin/chromium-browser')
                         ->setCustomTempPath(storage_path())
                         ->waitUntilNetworkIdle()
-                        ->addChromiumArguments([
-                            '--no-sandbox',
-                            '--disable-setuid-sandbox',
-                            '--disable-dev-shm-usage',
-                        ])
+
                 );
         }
 
