@@ -59,7 +59,7 @@ final class MissionaryPdfController extends Controller
     /**
      * Get the columns to be used for PDF generation.
      *
-     * @return array<string,array{label:string,position?:string}>
+     * @return array<string,array{label:string,position?:PdfGeneratorColumnPosition,type?:PdfGeneratorColumnType}>
      */
     private function getColumns(): array
     {

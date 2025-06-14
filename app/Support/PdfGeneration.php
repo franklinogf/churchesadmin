@@ -68,7 +68,7 @@ final readonly class PdfGeneration
     public function getForPdf(array $unSelectedColumns = []): array
     {
         /**
-         * @var array<string,array{label:string,position:string}> $data
+         * @var array<string,array{label:string,position:string,type:string}> $data
          */
         $data = $this->columnsCollection
             ->filter(fn (array $_, string $name): bool => ! in_array($name, $unSelectedColumns))
