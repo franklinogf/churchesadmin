@@ -294,5 +294,10 @@
     "Loading preview": "Cargando vista previa",
     ":model report": "Informe de :model",
     "Open in new tab": "Abrir en nueva pestaña",
-    "Reports": "Informes"
+    "Reports": "Informes",
+    "Visitors": "Visitors",
+    "Offerings by month": "Offerings by month",
+    "Expenses by month": "Expenses by month",
+    "Persons by month": "Persons by month",
+    "No data available": "No data available"
 }

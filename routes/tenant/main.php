@@ -11,8 +11,6 @@ use App\Http\Controllers\VisitController;
 use App\Http\Controllers\VisitFollowUpController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('dashboard', fn () => inertia('dashboard'))->name('dashboard');
-
 Route::resource('skills', SkillController::class)
     ->parameter('skills', 'tag')
     ->except(['show', 'create', 'edit']);

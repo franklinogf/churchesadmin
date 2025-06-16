@@ -294,5 +294,10 @@
     "Loading preview": "Loading preview",
     ":model report": ":model report",
     "Open in new tab": "Open in new tab",
-    "Reports": "Reports"
+    "Reports": "Reports",
+    "Visitors": "Visitors",
+    "Offerings by month": "Offerings by month",
+    "Expenses by month": "Expenses by month",
+    "Persons by month": "Persons by month",
+    "No data available": "No data available"
 }
