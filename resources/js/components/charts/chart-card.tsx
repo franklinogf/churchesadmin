@@ -1,4 +1,4 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { ChartContainer, type ChartConfig } from '@/components/ui/chart';
 import { useTranslations } from '@/hooks/use-translations';
 import type { ReactElement } from 'react';
@@ -9,8 +9,10 @@ interface ChartCardProps {
   title: string;
   description?: string;
   noData?: boolean;
+  total?: number;
+  type?: 'currency' | 'number';
 }
-export function ChartCard({ children, chartConfig, title, description, noData }: ChartCardProps) {
+export function ChartCard({ children, chartConfig, title, description, noData, total, type = 'number' }: ChartCardProps) {
   const { t } = useTranslations();
   return (
     <Card>
@@ -29,6 +31,17 @@ export function ChartCard({ children, chartConfig, title, description, noData }:
           </ChartContainer>
         )}
       </CardContent>
+      <CardFooter className="py-0">
+        {/* the total */}
+        {noData ? null : (
+          <div className="flex items-center gap-x-2">
+            <span className="text-muted-foreground text-sm font-medium">{t('Total')}</span>
+            <span className="text-foreground text-lg font-semibold">
+              {type === 'currency' ? `$${total?.toLocaleString(undefined, { minimumFractionDigits: 2 })}` : total?.toLocaleString()}
+            </span>
+          </div>
+        )}
+      </CardFooter>
     </Card>
   );
 }

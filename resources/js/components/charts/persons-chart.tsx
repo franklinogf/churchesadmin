@@ -30,8 +30,10 @@ export function PersonsChart({ data }: { data: PersonChart[] }) {
     }),
     [t],
   );
+  const total = useMemo(() => data.reduce((acc, item) => acc + item.members + item.missionaries + item.visitors, 0), [data]);
+
   return (
-    <ChartCard noData={data.length === 0} title={t('Persons by month')} chartConfig={chartConfig}>
+    <ChartCard noData={data.length === 0} title={t('Persons by month')} chartConfig={chartConfig} total={total}>
       <BarChart accessibilityLayer data={data}>
         <CartesianGrid vertical={false} />
         <YAxis hide />
