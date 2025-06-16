@@ -24,7 +24,7 @@ final class ExpenseFactory extends Factory
     public function definition(): array
     {
         $currentYear = CurrentYear::first() ?? CurrentYear::factory()->create();
-        $wallet = ChurchWallet::firstOr();
+        $wallet = ChurchWallet::factory()->withBalance()->create();
         $amount = fake()->randomFloat(2, 1, 100);
         $transaction = $wallet->withdrawFloat($amount, ['type' => TransactionMetaType::EXPENSE->value, 'year' => $currentYear->id]);
 
