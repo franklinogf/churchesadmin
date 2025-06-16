@@ -11,8 +11,8 @@ use App\Models\Offering;
 use App\Models\Visit;
 use Bavix\Wallet\Services\FormatterService;
 use Carbon\CarbonImmutable;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -34,61 +34,80 @@ final class DashboardController extends Controller
         ]);
     }
 
+    /**
+     * Format the amount to a string with two decimal places.
+     */
     private function formatAmount(float|string $amount): string
     {
         $formatter = new FormatterService;
 
-        return $formatter->floatValue(abs($amount), 2);
+        return $formatter->floatValue(abs((float) $amount), 2);
     }
 
+    /**
+     * Get the offerings data grouped by month.
+     *
+     * @return array{month: string, total: string}[] The offerings data.
+     */
     private function getOfferingsData(): array
     {
         $offerings = Offering::query()
             ->with('transaction')
             ->get()
             ->groupBy(fn (Offering $offering) => $offering->date->format(self::GROUP_MONTH_FORMAT))
-            ->map(fn (Collection $group) => [
+            ->map(fn (Collection $group): array => [
                 'month' => $group->first()?->date->format(self::MONTH_FORMAT),
                 'total' => $this->formatAmount($group->sum(fn (Offering $offering): string => $offering->transaction->amount)),
             ]);
-
-        $months = $this->months();
-
-        return collect($months)
-            ->map(function (string $month) use ($offerings): array {
-                return [
-                    'month' => $this->formatMonth($month),
-                    'total' => $offerings->get($month, [])['total'] ?? 0,
-                ];
-            })
+        /**
+         * @var array{month: string, total: string}[] $data
+         */
+        $data = $this->months()
+            ->map(fn (string $month): array => [
+                'month' => $this->formatMonth($month),
+                'total' => $offerings->get($month, [])['total'] ?? '0',
+            ])
             ->values()
             ->toArray();
+
+        return $data;
     }
 
+    /**
+     * Get the expenses data grouped by month.
+     *
+     * @return array{month: string, total: string}[] The expenses data.
+     */
     private function getExpensesData(): array
     {
         $expenses = Expense::query()
             ->with('transaction')
             ->get()
             ->groupBy(fn (Expense $expense) => $expense->date->format(self::GROUP_MONTH_FORMAT))
-            ->map(fn (Collection $group) => [
-                'month' => $group->first()->date->format(self::MONTH_FORMAT),
+            ->map(fn (Collection $group): array => [
+                'month' => $group->first()?->date->format(self::MONTH_FORMAT),
                 'total' => $this->formatAmount($group->sum(fn (Expense $expense): string => $expense->transaction->amount)),
             ]);
 
-        $months = $this->months();
-
-        return collect($months)
-            ->map(function (string $month) use ($expenses): array {
-                return [
-                    'month' => $this->formatMonth($month),
-                    'total' => $expenses->get($month, [])['total'] ?? 0,
-                ];
-            })
+        /**
+         * @var array{month: string, total: string}[] $data
+         */
+        $data = $this->months()
+            ->map(fn (string $month): array => [
+                'month' => $this->formatMonth($month),
+                'total' => $expenses->get($month, [])['total'] ?? '0',
+            ])
             ->values()
             ->toArray();
+
+        return $data;
     }
 
+    /**
+     * Get the persons data grouped by month.
+     *
+     * @return array{month: string, members: int, missionaries: int, visitors: int}[] The persons data.
+     */
     private function getPersonsData(): array
     {
         $currentYear = now()->year;
@@ -111,32 +130,43 @@ final class DashboardController extends Controller
             ->get()
             ->groupBy(fn (Visit $visit) => $visit->created_at->format(self::GROUP_MONTH_FORMAT));
 
-        // Create the months array (all months until now for current year)
-        $months = $this->months();
-
-        // Build the persons array with data for all months
-        return collect($months)
-            ->map(function (string $month) use ($membersByMonth, $missionariesByMonth, $visitsByMonth): array {
-                return [
-                    'month' => $this->formatMonth($month),
-                    'members' => $membersByMonth->get($month, collect())->count(),
-                    'missionaries' => $missionariesByMonth->get($month, collect())->count(),
-                    'visitors' => $visitsByMonth->get($month, collect())->count(),
-                ];
-            })
+        /**
+         * @var array{month: string, members: int, missionaries: int, visitors: int}[] $data
+         */
+        $data = $this->months()
+            ->map(fn (string $month): array => [
+                'month' => $this->formatMonth($month),
+                'members' => $membersByMonth->get($month, collect())->count(),
+                'missionaries' => $missionariesByMonth->get($month, collect())->count(),
+                'visitors' => $visitsByMonth->get($month, collect())->count(),
+            ])
             ->values()
             ->toArray();
+
+        return $data;
     }
 
-    private function months(): array
+    /**
+     * Get the months of the current year up to the current month.
+     *
+     * @return Collection<int, non-falsy-string>
+     */
+    private function months(): Collection
     {
         return collect(range(1, now()->month))
-            ->map(fn (int $month) => CarbonImmutable::createFromDate(now()->year, $month, 1)->format(self::GROUP_MONTH_FORMAT))
-            ->toArray();
+            ->map(fn (int $month) => CarbonImmutable::createFromDate(now()->year, $month, 1)->format(self::GROUP_MONTH_FORMAT));
     }
 
+    /**
+     * Format the month string to a more readable format.
+     *
+     * @param  string  $month  The month in 'M' format.
+     * @return string The formatted month name.
+     */
     private function formatMonth(string $month): string
     {
-        return ucfirst(CarbonImmutable::createFromFormat(self::GROUP_MONTH_FORMAT, $month)->isoFormat(self::MONTH_FORMAT));
+        $month = CarbonImmutable::createFromFormat(self::GROUP_MONTH_FORMAT, $month)?->isoFormat(self::MONTH_FORMAT);
+
+        return $month !== null && $month !== '' && $month !== '0' ? $month : 'Unknown';
     }
 }
