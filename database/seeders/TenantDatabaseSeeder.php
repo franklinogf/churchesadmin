@@ -51,10 +51,54 @@ final class TenantDatabaseSeeder extends Seeder
             $wallet->depositFloat('100.00', ['type' => TransactionMetaType::INITIAL->value, 'year' => $currentYear->id]);
             Member::factory(10)->create();
             Missionary::factory(10)->create();
-            ExpenseType::factory(5)->create();
-            OfferingType::factory(5)->create();
-            Tag::factory(3)->skill()->create();
-            Tag::factory(3)->category()->create();
+
+            ExpenseType::factory(5)
+                ->sequence(
+                    ['name' => 'Water'],
+                    ['name' => 'Loan Payment'],
+                    ['name' => 'Internet'],
+                    ['name' => 'Electricity'],
+                    ['name' => 'Rent'],
+                )
+                ->create();
+
+            OfferingType::factory(3)
+                ->sequence(
+                    ['name' => 'Regular'],
+                    ['name' => 'Tithes'],
+                    ['name' => 'Pro Temple'],
+                )
+                ->create();
+
+            Tag::factory(9)
+                ->skill()
+                ->sequence(
+                    ['name' => 'Gardening'],
+                    ['name' => 'Mechanic'],
+                    ['name' => 'Sales'],
+                    ['name' => 'Cooking'],
+                    ['name' => 'Air Conditioning'],
+                    ['name' => 'Plumbing'],
+                    ['name' => 'Electrician'],
+                    ['name' => 'Carpentry'],
+                    ['name' => 'Painting'],
+                )
+                ->create();
+            Tag::factory(9)
+                ->category()
+                ->sequence(
+                    ['name' => 'Missionary'],
+                    ['name' => 'Secretary'],
+                    ['name' => 'Director'],
+                    ['name' => 'Pastor'],
+                    ['name' => 'Deacon'],
+                    ['name' => 'Treasurer'],
+                    ['name' => 'Usher'],
+                    ['name' => 'Worship Leader'],
+                    ['name' => 'Youth Leader'],
+                )
+                ->create();
+
             $this->call([
                 Tenants\VisitSeeder::class,
             ]);

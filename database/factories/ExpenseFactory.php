@@ -6,6 +6,7 @@ namespace Database\Factories;
 
 use App\Enums\TransactionMetaType;
 use App\Models\ChurchWallet;
+use App\Models\CurrentYear;
 use App\Models\ExpenseType;
 use App\Models\Member;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -22,9 +23,10 @@ final class ExpenseFactory extends Factory
      */
     public function definition(): array
     {
-        $wallet = ChurchWallet::factory()->withBalance()->create();
+        $currentYear = CurrentYear::first() ?? CurrentYear::factory()->create();
+        $wallet = ChurchWallet::firstOr();
         $amount = fake()->randomFloat(2, 1, 100);
-        $transaction = $wallet->withdrawFloat($amount, ['type' => TransactionMetaType::EXPENSE->value]);
+        $transaction = $wallet->withdrawFloat($amount, ['type' => TransactionMetaType::EXPENSE->value, 'year' => $currentYear->id]);
 
         return [
             'transaction_id' => $transaction->id,
