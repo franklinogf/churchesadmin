@@ -8,11 +8,11 @@ interface ChartCardProps {
   chartConfig: ChartConfig;
   title: string;
   description?: string;
-  noData?: boolean;
+
   total?: number;
   type?: 'currency' | 'number';
 }
-export function ChartCard({ children, chartConfig, title, description, noData, total, type = 'number' }: ChartCardProps) {
+export function ChartCard({ children, chartConfig, title, description, total, type = 'number' }: ChartCardProps) {
   const { t } = useTranslations();
   return (
     <Card>
@@ -21,7 +21,7 @@ export function ChartCard({ children, chartConfig, title, description, noData, t
         {description && <CardDescription>{description}</CardDescription>}
       </CardHeader>
       <CardContent className="min-h-[200px] p-1">
-        {noData ? (
+        {total === 0 ? (
           <div className="flex h-full w-full items-center justify-center">
             <p className="text-muted-foreground">{t('No data available')}</p>
           </div>
@@ -33,7 +33,7 @@ export function ChartCard({ children, chartConfig, title, description, noData, t
       </CardContent>
       <CardFooter className="py-0">
         {/* the total */}
-        {noData ? null : (
+        {total === 0 ? null : (
           <div className="flex items-center gap-x-2">
             <span className="text-muted-foreground text-sm font-medium">{t('Total')}</span>
             <span className="text-foreground text-lg font-semibold">

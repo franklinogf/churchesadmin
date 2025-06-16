@@ -18,7 +18,7 @@ export default function OfferingsChart({ data }: { data: OfferingChart[] }) {
   const { t } = useTranslations();
   const total = useMemo(() => data.reduce((acc, item) => acc + parseFloat(item.total), 0), [data]);
   return (
-    <ChartCard type="currency" total={total} noData={total === 0} title={t('Offerings by month')} chartConfig={chartConfig}>
+    <ChartCard type="currency" total={total} title={t('Offerings by month')} chartConfig={chartConfig}>
       <BarChart accessibilityLayer data={data} margin={{ top: 10 }}>
         <CartesianGrid vertical={false} />
         <XAxis dataKey="month" type="category" tickLine={false} tickMargin={10} axisLine={false} tickFormatter={(value) => value.slice(0, 3)} />

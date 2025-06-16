@@ -23,7 +23,6 @@ export default function ExpensesChart({ data }: { data: ExpenseChart[] }) {
     <ChartCard
       total={total}
       type="currency"
-      noData={total === 0}
       title={t('Expenses by month')}
       chartConfig={chartConfig}
       description="This chart shows the total expenses for each month. The values are in USD."
