@@ -86,8 +86,8 @@ export default function VisitsIndex({ visits }: VisitsIndexProps) {
   );
 
   return (
-    <AppLayout title={t('Visits')} breadcrumbs={[{ title: t('Visits') }]}>
-      <PageTitle description={t('Manage the visits that comes to the church')}>{t('Visits')}</PageTitle>
+    <AppLayout title={t('Visitors')} breadcrumbs={[{ title: t('Visitors') }]}>
+      <PageTitle description={t('Manage the visits that comes to the church')}>{t('Visitors')}</PageTitle>
 
       <DataTable
         headerButton={

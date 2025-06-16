@@ -65,7 +65,7 @@ export function AppSidebar() {
             permissionNeeded: UserPermission.USERS_MANAGE,
           },
           {
-            title: t('Visits'),
+            title: t('Visitors'),
             href: route('visits.index'),
             icon: Users2Icon,
             permissionNeeded: UserPermission.VISITS_MANAGE,
