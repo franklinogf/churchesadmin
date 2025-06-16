@@ -1,5 +1,6 @@
 export type TranslationKey =
   | ':amount recipient selected|:amount recipients selected'
+  | ':count persons'
   | ':model report'
   | ':name follow ups'
   | 'A new verification link has been sent to your email address.'

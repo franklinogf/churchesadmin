@@ -299,5 +299,6 @@
     "Offerings by month": "Offerings by month",
     "Expenses by month": "Expenses by month",
     "Persons by month": "Persons by month",
-    "No data available": "No data available"
+    "No data available": "No data available",
+    ":count persons": ":count personas"
 }

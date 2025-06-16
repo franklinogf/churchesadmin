@@ -21,11 +21,10 @@ export default function ExpensesChart({ data }: { data: ExpenseChart[] }) {
 
   return (
     <ChartCard
-      total={total}
-      type="currency"
+      noData={total === 0}
       title={t('Expenses by month')}
       chartConfig={chartConfig}
-      description="This chart shows the total expenses for each month. The values are in USD."
+      description={`$${total.toLocaleString(undefined, { minimumFractionDigits: 2 })}`}
     >
       <BarChart accessibilityLayer data={data} margin={{ top: 10 }}>
         <CartesianGrid vertical={false} />
