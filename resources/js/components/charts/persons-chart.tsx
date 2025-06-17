@@ -36,14 +36,14 @@ export function PersonsChart({ data }: { data: PersonChart[] }) {
     <ChartCard title={t('Persons by month')} chartConfig={chartConfig} description={`${t(':count persons', { count: total })}`} noData={total === 0}>
       <BarChart accessibilityLayer data={data}>
         <CartesianGrid vertical={false} />
-        <YAxis hide />
+        <YAxis domain={[0, (dataMax: number) => Math.ceil(dataMax * 1.1)]} type="number" hide />
         <XAxis type="category" dataKey="month" tickLine={false} tickMargin={10} axisLine={false} tickFormatter={(value) => value.slice(0, 3)} />
         <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="line" />} />
         <ChartLegend verticalAlign="top" content={<ChartLegendContent />} />
 
-        <Bar dataKey="members" fill="var(--color-members)" />
-        <Bar dataKey="missionaries" fill="var(--color-missionaries)" />
-        <Bar dataKey="visitors" fill="var(--color-visitors)" />
+        <Bar dataKey="members" fill="var(--color-members)" radius={2} />
+        <Bar dataKey="missionaries" fill="var(--color-missionaries)" radius={2} />
+        <Bar dataKey="visitors" fill="var(--color-visitors)" radius={2} />
       </BarChart>
     </ChartCard>
   );

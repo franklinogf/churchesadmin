@@ -29,7 +29,7 @@ export default function ExpensesChart({ data }: { data: ExpenseChart[] }) {
       <BarChart accessibilityLayer data={data} margin={{ top: 10 }}>
         <CartesianGrid vertical={false} />
         <XAxis dataKey="month" type="category" tickLine={false} tickMargin={10} axisLine={false} tickFormatter={(value) => value.slice(0, 3)} />
-        <YAxis dataKey="total" type="number" hide />
+        <YAxis dataKey="total" type="number" domain={[0, (dataMax: number) => Math.ceil(dataMax * 1.1)]} hide />
         <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="line" />} />
         <Bar dataKey="total" fill="var(--color-total)" radius={2}>
           <LabelList dataKey="total" position="top" offset={8} className="fill-foreground" fontSize={10} formatter={(value: string) => `$${value}`} />

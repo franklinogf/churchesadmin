@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
 
 /**
  * @property-read int $id
@@ -34,6 +35,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read int|null $check_layout_id
  * @property-read CheckLayout|null $checkLayout
  * @property-read Transaction|null $initialTransaction
+ * @property-read Collection<int,Transaction> $transactions
  */
 final class ChurchWallet extends Model implements Confirmable, Wallet, WalletFloat
 {

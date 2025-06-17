@@ -295,10 +295,11 @@
     ":model report": "Informe de :model",
     "Open in new tab": "Abrir en nueva pestaña",
     "Reports": "Informes",
-    "Visitors": "Visitors",
-    "Offerings by month": "Offerings by month",
-    "Expenses by month": "Expenses by month",
-    "Persons by month": "Persons by month",
-    "No data available": "No data available",
-    ":count persons": ":count personas"
+    "Visitors": "Visitas",
+    "Offerings by month": "Ofrendas por mes",
+    "Expenses by month": "Gastos por mes",
+    "Persons by month": "Personas por mes",
+    "No data available": "No hay datos disponibles",
+    ":count persons": ":count personas",
+    "Wallets by month": "Billeteras por mes"
 }

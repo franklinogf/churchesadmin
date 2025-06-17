@@ -291,6 +291,7 @@ export type TranslationKey =
   | 'Wallet'
   | 'Wallet :name'
   | 'Wallets'
+  | 'Wallets by month'
   | 'What Pastors Are Saying'
   | 'Who is this offering from?'
   | 'Width'

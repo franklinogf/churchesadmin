@@ -24,7 +24,7 @@ final class ProfileController extends Controller
      */
     public function edit(Request $request, #[CurrentUser] TenantUser $currentUser): Response
     {
-        $country = $request->query('country', $currentUser->timezone_country);
+        $country = $request->string('country', $currentUser->timezone_country)->value();
 
         if ($country === '') {
             $country = $currentUser->timezone_country;

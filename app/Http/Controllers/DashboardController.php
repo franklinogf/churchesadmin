@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Enums\TransactionType;
+use App\Models\ChurchWallet;
 use App\Models\Expense;
 use App\Models\Member;
 use App\Models\Missionary;
 use App\Models\Offering;
 use App\Models\Visit;
+use Bavix\Wallet\Models\Transaction;
 use Bavix\Wallet\Services\FormatterService;
 use Carbon\CarbonImmutable;
 use Illuminate\Http\Request;
@@ -31,17 +34,66 @@ final class DashboardController extends Controller
             'expenses' => $this->getExpensesData(),
             'offerings' => $this->getOfferingsData(),
             'persons' => $this->getPersonsData(),
+            'wallets' => $this->getWalletsData(),
         ]);
+    }
+
+    /**
+     * Get the wallets data grouped by month.
+     *
+     * @return array{month: string, wallet: string, deposits: string, withdrawals: string}[] The wallets data.
+     */
+    private function getWalletsData(): array
+    {
+        $wallets = ChurchWallet::query()
+            ->with('transactions')
+            ->get();
+
+        $transactions = $wallets->flatMap(fn (ChurchWallet $wallet): Collection => $wallet->transactions)
+            ->groupBy(function (Transaction $transaction): string {
+                /** @var ChurchWallet $churchWallet */
+                $churchWallet = $transaction->wallet->holder;
+
+                return $churchWallet->name.'-'.$transaction->created_at->format(self::GROUP_MONTH_FORMAT);
+            })
+            ->mapWithKeys(function (Collection $group): array {
+                /** @var ChurchWallet $churchWallet */
+                $churchWallet = $group->first()?->wallet->holder;
+
+                return [
+                    $churchWallet->name => [
+                        $group->first()?->created_at->format(self::GROUP_MONTH_FORMAT) => [
+                            'deposits' => $this->formatAmount($group->sum(fn (Transaction $transaction): string => $transaction->type === TransactionType::DEPOSIT->value ? $transaction->amount : '0')),
+                            'withdrawals' => $this->formatAmount($group->sum(fn (Transaction $transaction): string => $transaction->type === TransactionType::WITHDRAW->value ? $transaction->amount : '0')),
+                        ],
+                    ],
+                ];
+            });
+
+        /**
+         * @var array{month: string, wallet: string, deposits: string, withdrawals: string}[] $data
+         */
+        $data = $transactions->flatMap(fn (array $transaction, string $walletName): array => $this->months()
+            ->map(fn (string $month): array => [
+                'month' => $this->formatMonth($month),
+                'wallet' => $walletName,
+                'deposits' => $transaction[$month]['deposits'] ?? '0',
+                'withdrawals' => $transaction[$month]['withdrawals'] ?? '0',
+            ])
+            ->toArray())->toArray();
+
+        return $data;
+
     }
 
     /**
      * Format the amount to a string with two decimal places.
      */
-    private function formatAmount(float|string $amount): string
+    private function formatAmount(float|string $amount): float
     {
         $formatter = new FormatterService;
 
-        return $formatter->floatValue(abs((float) $amount), 2);
+        return (float) $formatter->floatValue(abs((float) $amount), 2);
     }
 
     /**
@@ -56,7 +108,7 @@ final class DashboardController extends Controller
             ->get()
             ->groupBy(fn (Offering $offering) => $offering->date->format(self::GROUP_MONTH_FORMAT))
             ->map(fn (Collection $group): array => [
-                'month' => $group->first()?->date->format(self::MONTH_FORMAT),
+                'month' => $group->first()?->date->format(self::GROUP_MONTH_FORMAT),
                 'total' => $this->formatAmount($group->sum(fn (Offering $offering): string => $offering->transaction->amount)),
             ]);
         /**
@@ -85,7 +137,7 @@ final class DashboardController extends Controller
             ->get()
             ->groupBy(fn (Expense $expense) => $expense->date->format(self::GROUP_MONTH_FORMAT))
             ->map(fn (Collection $group): array => [
-                'month' => $group->first()?->date->format(self::MONTH_FORMAT),
+                'month' => $group->first()?->date->format(self::GROUP_MONTH_FORMAT),
                 'total' => $this->formatAmount($group->sum(fn (Expense $expense): string => $expense->transaction->amount)),
             ]);
 
