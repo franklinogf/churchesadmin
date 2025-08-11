@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Support;
 
+use App\Enums\PdfFormat;
 use App\Enums\PdfGeneratorColumnPosition;
 use App\Enums\PdfGeneratorColumnType;
+use App\Enums\PdfOrientation;
 use Illuminate\Support\Collection;
 use Spatie\LaravelPdf\Enums\Format;
 use Spatie\LaravelPdf\Enums\Orientation;
@@ -84,7 +86,7 @@ final readonly class PdfGeneration
      */
     public function getFormatOptions(): array
     {
-        return SelectOption::createFromEnum(Format::class);
+        return SelectOption::createFromEnum(PdfFormat::class);
     }
 
     /**
@@ -94,6 +96,6 @@ final readonly class PdfGeneration
      */
     public function getOrientationOptions(): array
     {
-        return SelectOption::createFromEnum(Orientation::class);
+        return SelectOption::createFromEnum(PdfOrientation::class);
     }
 }

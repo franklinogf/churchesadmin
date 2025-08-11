@@ -73,6 +73,20 @@ final class Church extends BaseTenant implements HasMedia, TenantWithDatabase, W
         );
     }
 
+    /**
+     * Get the church logo.
+     *
+     * @return Attribute<string|null,null>
+     */
+    protected function logoPath(): Attribute
+    {
+        $logo = $this->getFirstMediaPath(MediaCollectionName::LOGO->value);
+
+        return Attribute::make(
+            get: fn (): ?string => $logo === '' ? null : $logo,
+        );
+    }
+
     protected function casts(): array
     {
         return [

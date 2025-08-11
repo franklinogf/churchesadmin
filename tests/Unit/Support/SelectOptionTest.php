@@ -4,17 +4,7 @@ declare(strict_types=1);
 
 use App\Support\SelectOption;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Model;
-
-final class TestModel extends Model
-{
-    protected $fillable = ['id', 'name', 'title', 'description'];
-
-    public function getMorphClass()
-    {
-        return 'TestModel';
-    }
-}
+use Tests\Unit\Support\TestModel;
 
 describe('SelectOption class', function (): void {
     it('returns an empty array if items is not a collection', function (): void {

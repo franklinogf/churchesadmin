@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Pdf;
 
+use App\Enums\PdfFormat;
+use App\Enums\PdfOrientation;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use InvalidArgumentException;
-use Spatie\LaravelPdf\Enums\Format;
-use Spatie\LaravelPdf\Enums\Orientation;
 
 final class GeneratePdfRequest extends FormRequest
 {
@@ -30,8 +30,8 @@ final class GeneratePdfRequest extends FormRequest
         return [
             'rows' => ['array'],
             'unSelectedColumns' => ['array'],
-            'orientation' => [Rule::enum(Orientation::class)],
-            'format' => [Rule::enum(Format::class)],
+            'orientation' => [Rule::enum(PdfOrientation::class)],
+            'format' => [Rule::enum(PdfFormat::class)],
         ];
     }
 
@@ -74,10 +74,10 @@ final class GeneratePdfRequest extends FormRequest
     /**
      * Get the PDF orientation.
      */
-    public function getPdfOrientation(): Orientation
+    public function getPdfOrientation(): PdfOrientation
     {
-        $enum = $this->enum('orientation', Orientation::class, Orientation::Portrait);
-        if (! $enum instanceof Orientation) {
+        $enum = $this->enum('orientation', PdfOrientation::class, PdfOrientation::PORTRAIT);
+        if (! $enum instanceof PdfOrientation) {
             throw new InvalidArgumentException('Invalid orientation provided.');
         }
 
@@ -87,10 +87,10 @@ final class GeneratePdfRequest extends FormRequest
     /**
      * Get the PDF format.
      */
-    public function getPdfFormat(): Format
+    public function getPdfFormat(): PdfFormat
     {
-        $enum = $this->enum('format', Format::class, Format::A4);
-        if (! $enum instanceof Format) {
+        $enum = $this->enum('format', PdfFormat::class, PdfFormat::A4);
+        if (! $enum instanceof PdfFormat) {
             throw new InvalidArgumentException('Invalid format provided.');
         }
 

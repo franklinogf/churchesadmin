@@ -3,25 +3,25 @@
         $columnPositions = ['left' => 'text-left', 'center' => 'text-center', 'right' => 'text-right'];
     @endphp
 
-    <table class="max-w-screen mx-auto min-w-[700px] border border-gray-400">
+    <table class="table">
         <thead>
             <tr>
-                <th class="bg-primary/30 border border-gray-400 p-1.5">
+                <th class="table-header">
                     #
                 </th>
                 @foreach ($columns as $name => $col)
-                    <th class="bg-primary/30 border border-gray-400 p-1.5">{{ $col['label'] }}</th>
+                    <th class="table-header">{{ $col['label'] }}</th>
                 @endforeach
             </tr>
         </thead>
         <tbody>
             @foreach ($rows as $row)
                 <tr>
-                    <td class="border border-gray-400 p-1">
+                    <td class="table-col">
                         {{ $loop->iteration }}
                     </td>
                     @foreach ($columns as $name => $col)
-                        <td class="{{ $columnPositions[$col['position']] ?? 'text-left' }} border border-gray-400 p-1">
+                        <td class="{{ $columnPositions[$col['position']] ?? 'text-left' }} table-col">
                             @if ($col['type'] === 'date')
                                 {{ $row[$name]?->format('Y-m-d') }}
                             @elseif($col['type'] === 'datetime')

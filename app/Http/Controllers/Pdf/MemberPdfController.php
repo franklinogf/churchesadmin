@@ -11,12 +11,11 @@ use App\Http\Requests\Pdf\GeneratePdfRequest;
 use App\Http\Resources\Member\MemberResource;
 use App\Models\Member;
 use App\Support\PdfGeneration;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Response as HttpResponse;
 use Inertia\Inertia;
 use Inertia\Response;
-use Spatie\LaravelPdf\PdfBuilder;
-
-use function Spatie\LaravelPdf\Support\pdf;
 
 final class MemberPdfController extends Controller
 {
@@ -35,7 +34,7 @@ final class MemberPdfController extends Controller
         ]);
     }
 
-    public function show(GeneratePdfRequest $request): PdfBuilder
+    public function show(GeneratePdfRequest $request): HttpResponse
     {
         $rowIds = $request->getRows();
 
@@ -45,14 +44,13 @@ final class MemberPdfController extends Controller
             })
             ->get();
 
-        return pdf('pdf.generated', [
+        return Pdf::loadView('pdf.generated', [
             'title' => __('Members'),
             'rows' => $members,
             'columns' => $this->pdfGeneration->getForPdf($request->getUnSelectedColumns()),
         ])
-            ->orientation($request->getPdfOrientation())
-            ->format($request->getPdfFormat())
-            ->name('members.pdf');
+            ->setPaper($request->getPdfFormat()->value, $request->getPdfOrientation()->value)
+            ->stream('members.pdf');
 
     }
 

@@ -2,7 +2,7 @@ import type { PdfColumn, SelectOption } from '@/types';
 import { createContext, type ReactNode, useContext, useEffect, useMemo, useState } from 'react';
 
 // Constants for PDF options
-const orientations = ['Portrait', 'Landscape'] as const;
+const orientations = ['portrait', 'landscape'] as const;
 const formats = ['letter', 'legal', 'tabloid', 'a0', 'a1', 'a2', 'a3', 'a4', 'a5', 'a6'] as const;
 
 export const formatOptions: SelectOption[] = formats.map((format) => ({
@@ -50,7 +50,7 @@ export function PdfGeneratorProvider({
   children,
   columns,
   route: routeName,
-  orientation: initialOrientation = 'Portrait',
+  orientation: initialOrientation = 'portrait',
   format: initialFormat = 'letter',
 }: PdfGeneratorProviderProps) {
   const [unSelectedColumns, setUnSelectedColumns] = useState(columns.filter((col) => !col.selected).map((col) => col.name));
