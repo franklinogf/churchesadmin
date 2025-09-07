@@ -19,7 +19,7 @@ final class CreateTagAction
     {
         return Tag::create([
             'name' => collect(LanguageCode::values())
-                ->mapWithKeys(fn (string $code) => [$code => $data['name']])
+                ->mapWithKeys(fn (string $code): array => [$code => $data['name']])
                 ->toArray(),
             'type' => $type?->value,
             'is_regular' => $data['is_regular'] ?? false,

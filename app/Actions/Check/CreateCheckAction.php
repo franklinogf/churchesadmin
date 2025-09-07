@@ -11,7 +11,6 @@ use App\Enums\TransactionMetaType;
 use App\Exceptions\WalletException;
 use App\Models\Check;
 use App\Models\ChurchWallet;
-use Bavix\Wallet\Models\Wallet;
 use Illuminate\Support\Facades\DB;
 
 final readonly class CreateCheckAction

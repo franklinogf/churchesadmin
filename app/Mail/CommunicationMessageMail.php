@@ -32,10 +32,10 @@ final class CommunicationMessageMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: $this->email->subject,
             replyTo: $this->email->reply_to ? [
                 new Address($this->email->reply_to),
             ] : [],
+            subject: $this->email->subject,
         );
     }
 

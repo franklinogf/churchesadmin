@@ -17,6 +17,7 @@ return RectorConfig::configure()
         __DIR__.'/tests',
     ])
     ->withSkip([
+        __DIR__.'/app/Filament',
         __DIR__.'/app/Providers/Filament',
         __DIR__.'/app/Providers/TenancyServiceProvider.php',
         ReturnBinaryOrToEarlyReturnRector::class,
