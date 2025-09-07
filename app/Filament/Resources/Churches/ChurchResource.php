@@ -2,48 +2,58 @@
 
 declare(strict_types=1);
 
-namespace App\Filament\Resources;
+namespace App\Filament\Resources\Churches;
 
 use App\Enums\LanguageCode;
-use App\Filament\Resources\ChurchResource\Pages;
+use App\Filament\Resources\Churches\Pages\CreateChurch;
+use App\Filament\Resources\Churches\Pages\EditChurch;
+use App\Filament\Resources\Churches\Pages\ListChurches;
 use App\Models\Church;
-use Filament\Forms;
-use Filament\Forms\Form;
+use BackedEnum;
+use Filament\Actions\Action;
+use Filament\Actions\EditAction;
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
 
 final class ChurchResource extends Resource
 {
     protected static ?string $model = Church::class;
 
-    protected static ?string $navigationIcon = 'lucide-church';
+    protected static string|BackedEnum|null $navigationIcon = 'lucide-church';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('name')
+        return $schema
+            ->components([
+                TextInput::make('name')
                     ->translateLabel()
                     ->required(),
-                Forms\Components\Repeater::make('domains')
+                Repeater::make('domains')
                     ->translateLabel()
                     ->required()
                     ->relationship()
                     ->simple(
-                        Forms\Components\TextInput::make('domain')
+                        TextInput::make('domain')
                             ->prefix('https://')
                             ->suffix('.'.str(config('app.url'))->after('://'))
                             ->required()
-                            ->unique('domains', 'domain', ignoreRecord: true),
+                            ->unique('domains', 'domain'),
                     )
                     ->extraItemActions([
-                        function (string $operation): ?Forms\Components\Actions\Action {
+                        function (string $operation): ?Action {
                             if ($operation === 'create') {
                                 return null;
                             }
 
-                            return Forms\Components\Actions\Action::make('Go to website')
+                            return Action::make('Go to website')
                                 ->translateLabel()
                                 ->url(fn (Church $record): string => tenant_route($record->domains()->first()->domain.'.'.str(config('app.url'))->after('://'), 'home'))
                                 ->openUrlInNewTab()
@@ -53,17 +63,17 @@ final class ChurchResource extends Resource
                     ->deletable(false)
                     ->maxItems(1)
                     ->minItems(1),
-                Forms\Components\Section::make('Settings')
+                Section::make('Settings')
                     ->translateLabel()
                     ->schema([
-                        Forms\Components\Select::make('locale')
+                        Select::make('locale')
                             ->label(__('Language'))
                             ->required()
                             ->options(LanguageCode::class),
                     ])
                     ->columns(2)
                     ->compact(),
-                Forms\Components\Toggle::make('active')
+                Toggle::make('active')
                     ->translateLabel()
                     ->required(),
             ]);
@@ -73,21 +83,21 @@ final class ChurchResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id')
+                TextColumn::make('id')
                     ->label('ID')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->translateLabel()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('locale')
+                TextColumn::make('locale')
                     ->label(__('Language'))
                     ->sortable()
                     ->badge(),
-                Tables\Columns\ToggleColumn::make('active')
+                ToggleColumn::make('active')
                     ->translateLabel()
                     ->sortable(),
 
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->translateLabel()
                     ->dateTime()
                     ->sortable()
@@ -96,15 +106,15 @@ final class ChurchResource extends Resource
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\Action::make('Go to website')
+            ->recordActions([
+                Action::make('Go to website')
                     ->translateLabel()
                     ->url(fn (Church $record): string => tenant_route($record->domains()->first()->domain.'.'.str(config('app.url'))->after('://'), 'home'))
                     ->openUrlInNewTab()
                     ->icon('heroicon-o-globe-alt'),
-                Tables\Actions\EditAction::make(),
+                EditAction::make(),
             ])
-            ->bulkActions([
+            ->toolbarActions([
                 //
             ]);
     }
@@ -119,9 +129,9 @@ final class ChurchResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListChurches::route('/'),
-            'create' => Pages\CreateChurch::route('/create'),
-            'edit' => Pages\EditChurch::route('/{record}/edit'),
+            'index' => ListChurches::route('/'),
+            'create' => CreateChurch::route('/create'),
+            'edit' => EditChurch::route('/{record}/edit'),
         ];
     }
 

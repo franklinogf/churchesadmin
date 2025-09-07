@@ -19,7 +19,7 @@
         "barryvdh/laravel-dompdf": "^3.1.1",
         "bavix/laravel-wallet": "^11.4.2",
         "codezero/laravel-unique-translation": "^4.3.1",
-        "filament/filament": "^3.3.37",
+        "filament/filament": "^4.0",
         "inertiajs/inertia-laravel": "^2.0.6",
         "kwn/number-to-words": "^2.12.0",
         "laravel/framework": "^12.28.1",
@@ -37,7 +37,6 @@
     },
     "require-dev": {
         "fakerphp/faker": "^1.24.1",
-        "filament/upgrade": "4.0",
         "larastan/larastan": "^3.6.1",
         "laravel-lang/lang": "^15.24.2",
         "laravel/boost": "^1.1.4",
