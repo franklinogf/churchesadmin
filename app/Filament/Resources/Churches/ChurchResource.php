@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources\Churches;
 
 use App\Enums\LanguageCode;
+use App\Enums\MediaCollectionName;
 use App\Filament\Resources\Churches\Pages\CreateChurch;
 use App\Filament\Resources\Churches\Pages\EditChurch;
 use App\Filament\Resources\Churches\Pages\ListChurches;
@@ -19,6 +20,7 @@ use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
@@ -83,6 +85,20 @@ final class ChurchResource extends Resource
     {
         return $table
             ->columns([
+                ImageColumn::make('logo')
+                    ->state(function (Church $record): ?string {
+                        $logoPath = $record->getFirstMedia(MediaCollectionName::LOGO->value)?->getPathRelativeToRoot();
+
+                        if ($logoPath === null) {
+                            return null;
+                        }
+
+                        return mb_rtrim(config('app.url'), '/')."/public-{$record->id}/{$logoPath}";
+                    })
+                    ->label(__('Logo'))
+                    ->square()
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->imageSize(40),
                 TextColumn::make('id')
                     ->label('ID')
                     ->searchable(),
