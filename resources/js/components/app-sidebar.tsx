@@ -120,6 +120,11 @@ export function AppSidebar() {
             href: route('reports'),
             icon: FileStackIcon,
           },
+          {
+            title: t('Entries and Expenses'),
+            href: route('reports.entries_expenses'),
+            icon: FileStackIcon,
+          },
         ],
       },
       {
