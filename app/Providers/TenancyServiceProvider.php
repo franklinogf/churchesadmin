@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use BackedEnum;
 use Carbon\Carbon;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Routing\Route;
@@ -91,7 +92,12 @@ final class TenancyServiceProvider extends ServiceProvider
             Events\TenancyInitialized::class => [
                 Listeners\BootstrapTenancy::class,
                 function (Events\TenancyInitialized $event): void {
-                    Carbon::setLocale($event->tenancy->tenant->locale ?? config('app.locale'));
+                    // Ensure locale is converted to a string if it's an enum
+                    $locale = $event->tenancy->tenant->locale;
+                    if ($locale instanceof BackedEnum) {
+                        $locale = $locale->value;
+                    }
+                    Carbon::setLocale($locale ?? config('app.locale'));
                 },
             ],
 

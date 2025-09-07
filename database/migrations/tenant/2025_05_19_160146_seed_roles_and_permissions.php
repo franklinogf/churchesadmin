@@ -21,9 +21,9 @@ return new class extends Migration
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
         $permissions = collect(TenantPermission::values())
-            ->map(fn ($permission): array => ['name' => $permission, 'guard_name' => $guardName]);
+            ->map(fn (string $permission): array => ['name' => $permission, 'guard_name' => $guardName]);
 
-        Permission::insert($permissions->toArray());
+        Permission::query()->insert($permissions->toArray());
 
         // seeding roles with the permissions
 
