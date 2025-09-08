@@ -28,6 +28,8 @@ return new class extends Migration
             'start_date' => now()->startOfYear(),
             'end_date' => now()->endOfYear(),
             'is_current' => true,
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
     }
 

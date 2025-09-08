@@ -43,6 +43,8 @@ return new class extends Migration
             ]),
             'type' => TagType::CATEGORY->value,
             'is_regular' => true,
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
     }
 
