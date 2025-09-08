@@ -33,6 +33,8 @@ return new class extends Migration
             'name' => tenant('locale') === LanguageCode::ENGLISH->value ? 'Primary' : 'Principal',
             'description' => tenant('locale') === LanguageCode::ENGLISH->value ? 'This is the primary wallet' : 'Esta es la billetera principal',
             'slug' => WalletName::PRIMARY->value,
+            'created_at' => now(),
+            'updated_at' => now(),
         ]);
 
     }
