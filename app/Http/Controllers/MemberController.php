@@ -9,6 +9,7 @@ use App\Actions\Member\DeleteMemberAction;
 use App\Actions\Member\ForceDeleteMemberAction;
 use App\Actions\Member\RestoreMemberAction;
 use App\Actions\Member\UpdateMemberAction;
+use App\Actions\Visit\TransferVisitToMemberAction;
 use App\Enums\CivilStatus;
 use App\Enums\FlashMessageKey;
 use App\Enums\Gender;
@@ -17,9 +18,13 @@ use App\Http\Requests\Member\StoreMemberRequest;
 use App\Http\Requests\Member\UpdateMemberRequest;
 use App\Http\Resources\Member\MemberResource;
 use App\Http\Resources\Tag\TagResource;
+use App\Http\Resources\Visit\VisitResource;
 use App\Models\Member;
 use App\Models\Tag;
+use App\Models\Visit;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -29,13 +34,9 @@ final class MemberController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): Response|RedirectResponse
+    public function index(): Response
     {
-        $response = Gate::inspect('viewAny', Member::class);
-
-        if ($response->denied()) {
-            return to_route('dashboard')->with(FlashMessageKey::ERROR->value, $response->message());
-        }
+        Gate::authorize('viewAny', Member::class);
 
         $members = Member::latest()->get();
 
@@ -45,13 +46,14 @@ final class MemberController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(): Response|RedirectResponse
+    public function create(Request $request): Response
     {
-        $response = Gate::inspect('create', Member::class);
 
-        if ($response->denied()) {
-            return to_route('members.index')->with(FlashMessageKey::ERROR->value, $response->message());
-        }
+        Gate::authorize('create', Member::class);
+
+        $visitId = $request->string('visit')->value();
+
+        $visit = $visitId ? Visit::with('address')->findOrFail($visitId) : null;
 
         $genders = Gender::options();
         $civilStatuses = CivilStatus::options();
@@ -63,24 +65,50 @@ final class MemberController extends Controller
             'civilStatuses' => $civilStatuses,
             'skills' => TagResource::collection($skills),
             'categories' => TagResource::collection($categories),
+            'visit' => $visit ? new VisitResource($visit) : null,
         ]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreMemberRequest $request, CreateMemberAction $action): RedirectResponse
+    public function store(StoreMemberRequest $request, CreateMemberAction $action, TransferVisitToMemberAction $transferVisitToMemberAction): RedirectResponse
     {
+        Gate::authorize('create', Member::class);
+        DB::transaction(function () use ($request, $action, $transferVisitToMemberAction): void {
+            /**
+             * @var array<int, string>|array{} $skills
+             */
+            $skills = $request->array('skills');
+            /**
+             * @var array<int, string>|array{} $categories
+             */
+            $categories = $request->array('categories');
 
-        $response = Gate::inspect('create', Member::class);
+            $member = $action->handle([
+                'name' => $request->string('name')->value(),
+                'last_name' => $request->string('last_name')->value(),
+                'email' => $request->string('email')->value(),
+                'phone' => $request->string('phone')->value(),
+                'gender' => Gender::from($request->string('gender')->value()),
+                'dob' => $request->string('dob')->value() ?: null,
+                'civil_status' => CivilStatus::from($request->string('civil_status')->value()),
+                'skills' => $skills,
+                'categories' => $categories,
 
-        if ($response->denied()) {
-            return to_route('members.index')->with(FlashMessageKey::ERROR->value, $response->message());
-        }
+            ], $request->getAddressData());
+            $visitId = $request->string('visit_id')->value();
+            if ($visitId) {
+                $visit = Visit::findOrFail($visitId);
+                $transferVisitToMemberAction->handle($visit, $member);
 
-        $action->handle($request->getMemberData(), $request->getSkillData(), $request->getCategoryData(), $request->getAddressData());
+            }
+        });
 
-        return to_route('members.index')->with(FlashMessageKey::SUCCESS->value, 'Member created successfully.');
+        return to_route('members.index')->with(
+            FlashMessageKey::SUCCESS->value,
+            __('flash.message.created', ['model' => __('Member')])
+        );
     }
 
     // /**
@@ -94,13 +122,9 @@ final class MemberController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Member $member): Response|RedirectResponse
+    public function edit(Member $member): Response
     {
-        $response = Gate::inspect('update', $member);
-
-        if ($response->denied()) {
-            return to_route('members.index')->with(FlashMessageKey::ERROR->value, $response->message());
-        }
+        Gate::authorize('update', $member);
 
         $member->load('address');
         $genders = Gender::options();
@@ -122,20 +146,34 @@ final class MemberController extends Controller
      */
     public function update(UpdateMemberRequest $request, Member $member, UpdateMemberAction $action): RedirectResponse
     {
-        $response = Gate::inspect('update', $member);
+        Gate::authorize('update', $member);
 
-        if ($response->denied()) {
-            return to_route('members.index')->with(FlashMessageKey::ERROR->value, $response->message());
-        }
+        /**
+         * @var array<int, string>|array{} $skills
+         */
+        $skills = $request->array('skills');
+        /**
+         * @var array<int, string>|array{} $categories
+         */
+        $categories = $request->array('categories');
 
-        $data = $request->getMemberData();
-        $skills = $request->getSkillData();
-        $categories = $request->getCategoryData();
-        $address = $request->getAddressData();
+        $action->handle($member, [
+            'name' => $request->string('name')->value(),
+            'last_name' => $request->string('last_name')->value(),
+            'email' => $request->string('email')->value(),
+            'phone' => $request->string('phone')->value(),
+            'gender' => Gender::from($request->string('gender')->value()),
+            'dob' => $request->string('dob')->value() ?: null,
+            'civil_status' => CivilStatus::from($request->string('civil_status')->value()),
+            'skills' => $skills,
+            'categories' => $categories,
 
-        $action->handle($member, $data, $skills, $categories, $address);
+        ], $request->getAddressData());
 
-        return to_route('members.index')->with(FlashMessageKey::SUCCESS->value, 'Member updated successfully.');
+        return to_route('members.index')->with(
+            FlashMessageKey::SUCCESS->value,
+            __('flash.message.updated', ['model' => __('Member')])
+        );
 
     }
 
@@ -144,43 +182,37 @@ final class MemberController extends Controller
      */
     public function destroy(Member $member, DeleteMemberAction $action): RedirectResponse
     {
-        $response = Gate::inspect('delete', $member);
-
-        if ($response->denied()) {
-
-            return to_route('members.index')->with(FlashMessageKey::ERROR->value, $response->message());
-        }
+        Gate::authorize('delete', $member);
 
         $action->handle($member);
 
-        return to_route('members.index')->with(FlashMessageKey::SUCCESS->value, 'Member deleted successfully.');
+        return to_route('members.index')->with(
+            FlashMessageKey::SUCCESS->value,
+            __('flash.message.deleted', ['model' => __('Member')])
+        );
     }
 
     public function restore(Member $member, RestoreMemberAction $action): RedirectResponse
     {
-        $response = Gate::inspect('restore', $member);
-
-        if ($response->denied()) {
-
-            return to_route('members.index')->with(FlashMessageKey::ERROR->value, $response->message());
-        }
+        Gate::authorize('restore', $member);
 
         $action->handle($member);
 
-        return to_route('members.index')->with(FlashMessageKey::SUCCESS->value, 'Member restored successfully.');
+        return to_route('members.index')->with(
+            FlashMessageKey::SUCCESS->value,
+            __('flash.message.restored', ['model' => __('Member')])
+        );
     }
 
     public function forceDelete(Member $member, ForceDeleteMemberAction $action): RedirectResponse
     {
-        $response = Gate::inspect('forceDelete', $member);
-
-        if ($response->denied()) {
-
-            return to_route('members.index')->with(FlashMessageKey::ERROR->value, $response->message());
-        }
+        Gate::authorize('forceDelete', $member);
 
         $action->handle($member);
 
-        return to_route('members.index')->with(FlashMessageKey::SUCCESS->value, 'Member permanently deleted successfully.');
+        return to_route('members.index')->with(
+            FlashMessageKey::SUCCESS->value,
+            __('flash.message.deleted', ['model' => __('Member')])
+        );
     }
 }

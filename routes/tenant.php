@@ -2,15 +2,9 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\MemberController;
-use App\Http\Controllers\MissionaryController;
-use App\Http\Controllers\OfferingController;
-use App\Http\Controllers\OfferingTypeController;
-use App\Http\Controllers\SkillController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\WalletController;
-use App\Http\Middleware\SetLocale;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LoginLinkController;
+use App\Http\Controllers\SessionController;
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware;
 
@@ -33,73 +27,23 @@ Route::middleware([
     Middleware\ScopeSessions::class,
 ])->group(function (): void {
 
-    Route::get('/locale/{locale}', function (string $locale) {
-        session(['locale' => $locale]);
+    Route::post('loginLink', LoginLinkController::class)->name('loginLink');
 
-        return redirect()->back();
-    })->name('locale');
+    Route::redirect('/', 'dashboard')->name('home');
 
-    Route::middleware(SetLocale::class)
-        ->group(function (): void {
+    Route::middleware('auth:tenant')->group(function (): void {
+        // This route is used to set session variables for the application
+        Route::post('session', SessionController::class)->name('session');
 
-            Route::get('/', fn (): string => app()->getLocale())->name('home');
+        Route::get('dashboard', DashboardController::class)->name('dashboard');
 
-            Route::middleware('auth')->group(function (): void {
-                Route::get('dashboard', fn () => inertia('dashboard'))->name('dashboard');
+        require __DIR__.'/tenant/main.php';
+        require __DIR__.'/tenant/codes.php';
+        require __DIR__.'/tenant/accounting.php';
+        require __DIR__.'/tenant/settings.php';
+        require __DIR__.'/tenant/communication.php';
+    });
 
-                Route::resource('users', UserController::class)
-                    ->except(['show']);
-
-                Route::put('members/{member}/restore', [MemberController::class, 'restore'])
-                    ->withTrashed()
-                    ->name('members.restore');
-                Route::delete('members/{member}/forceDelete', [MemberController::class, 'forceDelete'])
-                    ->withTrashed()
-                    ->name('members.forceDelete');
-                Route::resource('members', MemberController::class);
-
-                Route::put('missionaries/{missionary}/restore', [MissionaryController::class, 'restore'])
-                    ->withTrashed()
-                    ->name('missionaries.restore');
-                Route::delete('missionaries/{missionary}/forceDelete', [MissionaryController::class, 'forceDelete'])
-                    ->withTrashed()
-                    ->name('missionaries.forceDelete');
-                Route::resource('missionaries', MissionaryController::class);
-
-                Route::resource('skills', SkillController::class)
-                    ->parameter('skills', 'tag')
-                    ->except(['show', 'create', 'edit']);
-
-                Route::resource('categories', CategoryController::class)
-                    ->parameter('categories', 'tag')
-                    ->except(['show', 'create', 'edit']);
-
-                Route::put('wallets/{wallet:uuid}/restore', [WalletController::class, 'restore'])
-                    ->withTrashed()
-                    ->name('wallets.restore');
-                Route::resource('wallets', WalletController::class)
-                    ->withTrashed()
-                    ->scoped([
-                        'wallet' => 'uuid',
-                    ])
-                    ->except(['create', 'edit']);
-
-                Route::resource('offerings', OfferingController::class)
-                    ->parameter('offerings', 'transaction')
-                    ->scoped([
-                        'offering' => 'uuid',
-                    ]);
-
-                // codes
-                Route::prefix('codes')->name('codes.')->group(function (): void {
-                    Route::resource('offeringTypes', OfferingTypeController::class)
-                        ->except(['show', 'create', 'edit']);
-                });
-            });
-
-            require __DIR__.'/settings.php';
-            require __DIR__.'/auth.php';
-
-        });
+    require __DIR__.'/tenant/auth.php';
 
 });

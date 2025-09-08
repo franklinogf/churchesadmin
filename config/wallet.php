@@ -33,7 +33,9 @@ use Bavix\Wallet\Internal\Service\TranslatorService;
 use Bavix\Wallet\Internal\Service\UuidFactoryService;
 use Bavix\Wallet\Internal\Transform\TransactionDtoTransformer;
 use Bavix\Wallet\Internal\Transform\TransferDtoTransformer;
+use Bavix\Wallet\Models\Transaction;
 use Bavix\Wallet\Models\Transfer;
+use Bavix\Wallet\Models\Wallet;
 use Bavix\Wallet\Services\AssistantService;
 use Bavix\Wallet\Services\AtmService;
 use Bavix\Wallet\Services\AtomicService;
@@ -231,7 +233,7 @@ return [
      *
      * @var array<string, class-string>
      *
-     * @see \Bavix\Wallet\Services
+     * @see Bavix\Wallet\Services
      */
     'services' => [
         // Service for performing operations related to the assistant.
@@ -277,27 +279,27 @@ return [
      *
      * Each repository is responsible for fetching data from the database for a specific entity.
      *
-     * @see \Bavix\Wallet\Interfaces\Wallet
-     * @see \Bavix\Wallet\Interfaces\Transaction
-     * @see \Bavix\Wallet\Interfaces\Transfer
+     * @see Bavix\Wallet\Interfaces\Wallet
+     * @see Bavix\Wallet\Interfaces\Transaction
+     * @see Bavix\Wallet\Interfaces\Transfer
      */
     'repositories' => [
         /**
          * Repository for fetching transaction data.
          *
-         * @see \Bavix\Wallet\Interfaces\Transaction
+         * @see Bavix\Wallet\Interfaces\Transaction
          */
         'transaction' => TransactionRepository::class,
         /**
          * Repository for fetching transfer data.
          *
-         * @see \Bavix\Wallet\Interfaces\Transfer
+         * @see Bavix\Wallet\Interfaces\Transfer
          */
         'transfer' => TransferRepository::class,
         /**
          * Repository for fetching wallet data.
          *
-         * @see \Bavix\Wallet\Interfaces\Wallet
+         * @see Bavix\Wallet\Interfaces\Wallet
          */
         'wallet' => WalletRepository::class,
     ],
@@ -415,7 +417,7 @@ return [
          *
          * @see Transaction
          */
-        'model' => App\Models\Transaction::class,
+        'model' => Transaction::class,
     ],
 
     /**
@@ -469,7 +471,7 @@ return [
          *
          * @see Wallet
          */
-        'model' => App\Models\Wallet::class,
+        'model' => Wallet::class,
 
         /**
          * The configuration options for creating wallets.
@@ -489,7 +491,7 @@ return [
              *
              * @var string
              */
-            'name' => env('WALLET_DEFAULT_WALLET_NAME', WalletName::PRIMARY->label()),
+            'name' => env('WALLET_DEFAULT_WALLET_NAME', WalletName::PRIMARY->value),
 
             /**
              * The slug of the default wallet.

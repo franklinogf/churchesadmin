@@ -6,6 +6,8 @@ namespace App\Http\Resources\Member;
 
 use App\Enums\TagType;
 use App\Http\Resources\Address\AddressRelationshipResource;
+use App\Http\Resources\Communication\Email\EmailableResource;
+use App\Http\Resources\Communication\Email\EmailResource;
 use App\Http\Resources\Tag\TagRelationshipResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -29,16 +31,18 @@ final class MemberResource extends JsonResource
             'email' => $this->email,
             'phone' => $this->phone,
             'gender' => $this->gender->value,
-            'dob' => $this->dob->format('Y-m-d'),
+            'dob' => $this->dob?->format('Y-m-d'),
             'civilStatus' => $this->civil_status->value,
             'skills' => TagRelationshipResource::collection($this->tagsWithType(TagType::SKILL->value)),
             'skillsCount' => $this->whenCounted('skills', $this->tagsWithType(TagType::SKILL->value)->count()),
             'categories' => TagRelationshipResource::collection($this->tagsWithType(TagType::CATEGORY->value)),
             'categoriesCount' => $this->whenCounted('categories', $this->tagsWithType(TagType::CATEGORY->value)->count()),
             'address' => new AddressRelationshipResource($this->whenLoaded('address')),
-            'createdAt' => $this->created_at->format('Y-m-d H:i:s'),
-            'updatedAt' => $this->updated_at->format('Y-m-d H:i:s'),
-            'deletedAt' => $this->deleted_at?->format('Y-m-d H:i:s'),
+            'createdAt' => $this->created_at->inUserTimezone()->formatAsDatetime(),
+            'updatedAt' => $this->updated_at->inUserTimezone()->formatAsDatetime(),
+            'deletedAt' => $this->deleted_at?->inUserTimezone()->formatAsDatetime(),
+            'emails' => EmailResource::collection($this->whenLoaded('emails')),
+            'emailMessage' => $this->whenPivotLoadedAs('emailMessage', 'emailables', fn (): EmailableResource => new EmailableResource($this->emailMessage)),
         ];
     }
 }

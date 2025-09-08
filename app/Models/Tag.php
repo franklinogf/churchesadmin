@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Carbon\CarbonImmutable;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Spatie\Tags\Tag as SpatieTag;
@@ -17,9 +19,9 @@ use Spatie\Tags\Tag as SpatieTag;
  * @property-read string|null $type
  * @property-read int|null $order_column
  * @property-read bool $is_regular
- * @property-read \Illuminate\Database\Eloquent\Collection<int,Member> $members
- * @property-read \Carbon\CarbonImmutable $created_at
- * @property-read \Carbon\CarbonImmutable $updated_at
+ * @property-read Collection<int,Member> $members
+ * @property-read CarbonImmutable $created_at
+ * @property-read CarbonImmutable $updated_at
  */
 final class Tag extends SpatieTag
 {

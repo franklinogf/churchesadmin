@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Policies;
 
 use App\Enums\TenantPermission;
-use App\Models\User;
+use App\Models\TenantUser;
 use Illuminate\Auth\Access\Response;
 
 final class MemberPolicy
@@ -13,9 +13,9 @@ final class MemberPolicy
     /**
      * Determine whether the user can view models.
      */
-    public function viewAny(User $user): Response
+    public function viewAny(TenantUser $user): Response
     {
-        if ($user->can(TenantPermission::MANAGE_MEMBERS)) {
+        if ($user->can(TenantPermission::MEMBERS_MANAGE)) {
             return Response::allow();
         }
 
@@ -25,9 +25,9 @@ final class MemberPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user): Response
+    public function create(TenantUser $user): Response
     {
-        if ($user->can(TenantPermission::CREATE_MEMBERS)) {
+        if ($user->can(TenantPermission::MEMBERS_CREATE)) {
             return Response::allow();
         }
 
@@ -37,9 +37,9 @@ final class MemberPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user): Response
+    public function update(TenantUser $user): Response
     {
-        if ($user->can(TenantPermission::UPDATE_MEMBERS)) {
+        if ($user->can(TenantPermission::MEMBERS_UPDATE)) {
             return Response::allow();
         }
 
@@ -49,9 +49,9 @@ final class MemberPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user): Response
+    public function delete(TenantUser $user): Response
     {
-        if ($user->can(TenantPermission::DELETE_MEMBERS)) {
+        if ($user->can(TenantPermission::MEMBERS_DELETE)) {
             return Response::allow();
         }
 
@@ -61,9 +61,9 @@ final class MemberPolicy
     /**
      * Determine whether the user can restore the model.
      */
-    public function restore(User $user): Response
+    public function restore(TenantUser $user): Response
     {
-        if ($user->can(TenantPermission::RESTORE_MEMBERS)) {
+        if ($user->can(TenantPermission::MEMBERS_RESTORE)) {
             return Response::allow();
         }
 
@@ -73,9 +73,9 @@ final class MemberPolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user): Response
+    public function forceDelete(TenantUser $user): Response
     {
-        if ($user->can(TenantPermission::FORCE_DELETE_MEMBERS)) {
+        if ($user->can(TenantPermission::MEMBERS_FORCE_DELETE)) {
             return Response::allow();
         }
 

@@ -6,11 +6,11 @@ import { MultiSelectField } from '@/components/forms/inputs/MultiSelectField';
 import { SwitchField } from '@/components/forms/inputs/SwitchField';
 import { PageTitle } from '@/components/PageTitle';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import { convertRolesToMultiselectOptions, getMultiselecOptionsValues } from '@/lib/mutliselect';
 import type { Permission, Role, User } from '@/types/models/user';
 import { useForm } from '@inertiajs/react';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { getUniquePermissions } from './includes/functions';
 
 type CreateForm = {
@@ -29,7 +29,7 @@ interface EditPageProps {
 }
 
 export default function Edit({ permissions, roles }: EditPageProps) {
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations();
 
   // const userPermissions = user.permissions?.map((permission) => permission.name);
   const { data, setData, errors, post, processing, transform } = useForm<CreateForm>({
@@ -53,8 +53,8 @@ export default function Edit({ permissions, roles }: EditPageProps) {
   const selectedRolesPermissions = getUniquePermissions(roles, selectedRoles);
 
   return (
-    <AppLayout title={t('Users')}>
-      <PageTitle>{t('Add User')}</PageTitle>
+    <AppLayout title={t('Users')} breadcrumbs={[{ title: t('Users'), href: route('users.index') }, { title: t('Add :model', { model: t('User') }) }]}>
+      <PageTitle>{t('Add :model', { model: t('User') })}</PageTitle>
       <div className="mt-2 flex w-full items-center justify-center">
         <Form className="w-full max-w-2xl" onSubmit={handleSubmit} isSubmitting={processing}>
           <InputField required label={t('Name')} value={data.name} error={errors.name} onChange={(value) => setData('name', value)} />
@@ -99,7 +99,7 @@ export default function Edit({ permissions, roles }: EditPageProps) {
           <div className="space-y-4">
             <p className="text-lg font-medium">{t('Assigned permissions')}</p>
             <ScrollArea className="h-60 w-full">
-              <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-4">
+              <div className="flex flex-col flex-wrap gap-2">
                 {permissions.map((permission) => {
                   const existsOnRoles = selectedRolesPermissions.some((p) => p.name === permission.name);
                   const value = data.additional_permissions.includes(permission.name) || existsOnRoles;

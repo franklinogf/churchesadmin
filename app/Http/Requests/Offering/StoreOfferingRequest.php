@@ -5,7 +5,11 @@ declare(strict_types=1);
 namespace App\Http\Requests\Offering;
 
 use App\Enums\PaymentMethod;
+use App\Models\Offering;
+use App\Rules\SelectOptionWithModel;
+use Illuminate\Auth\Access\Response;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 
 final class StoreOfferingRequest extends FormRequest
@@ -13,9 +17,9 @@ final class StoreOfferingRequest extends FormRequest
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize(): bool
+    public function authorize(): Response
     {
-        return true;
+        return Gate::authorize('create', Offering::class);
     }
 
     /**
@@ -25,29 +29,13 @@ final class StoreOfferingRequest extends FormRequest
      */
     public function rules(): array
     {
-        /**
-         * @var string $connection
-         */
-        $connection = config('tenancy.database.central_connection');
-        /**
-         * @var string $tenantId
-         */
-        $tenantId = tenant('id');
-
         return [
-            'payer_id' => ['required', Rule::anyOf([
-                Rule::exists('members', 'id'),
-                Rule::in(['non_member']),
-            ])],
+            'donor_id' => ['nullable', 'exists:members,id'],
             'date' => ['required', 'date:Y-m-d'],
             'offerings' => ['required', 'array', 'min:1'],
-            'offerings.*.wallet_id' => ['required', 'string',
-                Rule::exists("$connection.wallets", 'id')
-                    ->where('holder_id', (string) $tenantId),
-            ],
-            'offerings.*.payment_method' => ['required', 'string', Rule::enum(PaymentMethod::class)],
-            'offerings.*.recipient_id' => ['nullable', Rule::exists('missionaries', 'id')],
-            'offerings.*.offering_type_id' => ['required', 'string', Rule::exists('offering_types', 'id')],
+            'offerings.*.wallet_id' => ['required', 'exists:church_wallets,id'],
+            'offerings.*.payment_method' => ['required', Rule::enum(PaymentMethod::class)],
+            'offerings.*.offering_type' => ['required', new SelectOptionWithModel],
             'offerings.*.amount' => ['required', 'decimal:2', 'min:1'],
             'offerings.*.note' => ['nullable', 'string', 'min:3', 'max:255'],
 
@@ -62,15 +50,12 @@ final class StoreOfferingRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'message' => mb_strtolower(__('Message')),
+            'donor_id' => mb_strtolower(__('Payer')),
             'date' => mb_strtolower(__('Date')),
-            'offeringType' => mb_strtolower(__('Offering Type')),
-            'payer_id' => mb_strtolower(__('Payer')),
             'offerings' => mb_strtolower(__('Offerings')),
             'offerings.*.wallet_id' => mb_strtolower(__('Wallet')),
             'offerings.*.payment_method' => mb_strtolower(__('Payment Method')),
-            'offerings.*.recipient_id' => mb_strtolower(__('Recipient')),
-            'offerings.*.offering_type_id' => mb_strtolower(__('Offering Type')),
+            'offerings.*.offering_type' => mb_strtolower(__('Offering type')),
             'offerings.*.amount' => mb_strtolower(__('Amount')),
             'offerings.*.note' => mb_strtolower(__('Note')),
         ];

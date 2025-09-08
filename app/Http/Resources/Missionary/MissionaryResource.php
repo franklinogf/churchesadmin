@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Resources\Missionary;
 
 use App\Http\Resources\Address\AddressRelationshipResource;
+use App\Http\Resources\Communication\Email\EmailableResource;
+use App\Http\Resources\Communication\Email\EmailResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -29,11 +31,13 @@ final class MissionaryResource extends JsonResource
             'gender' => $this->gender->value,
             'church' => $this->church,
             'offering' => $this->offering,
-            'offeringFrequency' => $this->offering_frequency->value,
+            'offeringFrequency' => $this->offering_frequency?->value,
             'address' => new AddressRelationshipResource($this->whenLoaded('address')),
-            'createdAt' => $this->created_at->format('Y-m-d H:i:s'),
-            'updatedAt' => $this->updated_at->format('Y-m-d H:i:s'),
-            'deletedAt' => $this->deleted_at?->format('Y-m-d H:i:s'),
+            'createdAt' => $this->created_at->inUserTimezone()->formatAsDatetime(),
+            'updatedAt' => $this->updated_at->inUserTimezone()->formatAsDatetime(),
+            'deletedAt' => $this->deleted_at?->inUserTimezone()->formatAsDatetime(),
+            'emails' => EmailResource::collection($this->whenLoaded('emails')),
+            'emailMessage' => $this->whenPivotLoadedAs('emailMessage', 'emailables', fn (): EmailableResource => new EmailableResource($this->emailMessage)),
         ];
     }
 }

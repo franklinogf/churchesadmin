@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests;
 
+use App\Enums\LanguageCode;
 use App\Models\Church;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
@@ -59,6 +60,7 @@ trait RefreshDatabaseWithTenant
              * This is necessary to avoid database collisions when running tests in parallel.
              */
             $token = ParallelTesting::token();
+            $tenantId .= $token ? "_{$token}" : '';
 
             config([
                 'tenancy.database.suffix' => config('tenancy.database.suffix').($token ? "_{$token}" : ''),
@@ -70,13 +72,23 @@ trait RefreshDatabaseWithTenant
             $dbName = config('tenancy.database.prefix').$tenantId.config('tenancy.database.suffix');
 
             // Drop the database if it already exists.
-            DB::unprepared("DROP DATABASE IF EXISTS `$dbName`");
+            if (DB::getDriverName() === 'sqlite') {
+                // For SQLite, we delete the file directly.
+                $dbPath = database_path("{$dbName}.sqlite");
+                if (File::exists($dbPath)) {
+                    File::delete($dbPath);
+                }
+            } else {
+                // For MySQL or other databases, we drop the database.
+                DB::unprepared("DROP DATABASE IF EXISTS `$dbName`");
+            }
+
             $storagePath = storage_path(config('tenancy.filesystem.suffix_base')."{$tenantId}");
             File::deleteDirectory(storage_path($storagePath));
             File::deleteDirectory(public_path("public-{$tenantId}".($token ? "-{$token}" : '')));
 
             // Create the tenant and associated domain if they don't exist.
-            $t = Church::create(['id' => $tenantId, 'name' => $this->tenantName]);
+            $t = Church::create(['id' => $tenantId, 'name' => $this->tenantName, 'locale' => LanguageCode::ENGLISH->value, 'active' => true]);
             if ($t->domains()->doesntExist()) {
                 $t->createDomain($tenantId);
             }

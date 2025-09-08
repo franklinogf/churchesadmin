@@ -7,7 +7,7 @@ namespace App\Policies;
 use App\Enums\TagType;
 use App\Enums\TenantPermission;
 use App\Models\Tag;
-use App\Models\User;
+use App\Models\TenantUser;
 use Illuminate\Auth\Access\Response;
 
 final class TagPolicy
@@ -15,11 +15,11 @@ final class TagPolicy
     /**
      * Determine whether the user can view models.
      */
-    public function viewAny(User $user, ?TagType $tagType = null): Response
+    public function viewAny(TenantUser $user, ?TagType $tagType = null): Response
     {
         return match ($tagType) {
-            TagType::CATEGORY => $user->can(TenantPermission::MANAGE_CATEGORIES) ? Response::allow() : Response::deny(__('permission.view_any', ['label' => $tagType->label()])),
-            TagType::SKILL => $user->can(TenantPermission::MANAGE_SKILLS) ? Response::allow() : Response::deny(__('permission.view_any', ['label' => $tagType->label()])),
+            TagType::CATEGORY => $user->can(TenantPermission::CATEGORIES_MANAGE) ? Response::allow() : Response::deny(__('permission.view_any', ['label' => $tagType->label()])),
+            TagType::SKILL => $user->can(TenantPermission::SKILLS_MANAGE) ? Response::allow() : Response::deny(__('permission.view_any', ['label' => $tagType->label()])),
             default => Response::deny(__('permission.view_any', ['label' => __('Tags')]))
         };
     }
@@ -27,15 +27,15 @@ final class TagPolicy
     /**
      * Determine whether the user can create models.
      */
-    public function create(User $user, bool $is_regular, ?TagType $tagType = null): Response
+    public function create(TenantUser $user, bool $is_regular, ?TagType $tagType = null): Response
     {
-        if ($is_regular && $user->cannot(TenantPermission::CREATE_REGULAR_TAG)) {
+        if ($is_regular && $user->cannot(TenantPermission::REGULAR_TAGS_CREATE)) {
             return Response::deny(__('permission.create', ['label' => __('Regular tags')]));
         }
 
         return match ($tagType) {
-            TagType::CATEGORY => $user->can(TenantPermission::CREATE_CATEGORIES) ? Response::allow() : Response::deny(__('permission.create', ['label' => $tagType->label()])),
-            TagType::SKILL => $user->can(TenantPermission::CREATE_SKILLS) ? Response::allow() : Response::deny(__('permission.create', ['label' => $tagType->label()])),
+            TagType::CATEGORY => $user->can(TenantPermission::CATEGORIES_CREATE) ? Response::allow() : Response::deny(__('permission.create', ['label' => $tagType->label()])),
+            TagType::SKILL => $user->can(TenantPermission::SKILLS_CREATE) ? Response::allow() : Response::deny(__('permission.create', ['label' => $tagType->label()])),
             default => Response::deny(__('permission.create', ['label' => __('Tags')]))
         };
     }
@@ -43,16 +43,17 @@ final class TagPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Tag $tag): Response
+    public function update(TenantUser $user, Tag $tag): Response
     {
-        if ($tag->is_regular && $user->cannot(TenantPermission::UPDATE_REGULAR_TAG)) {
+        if ($tag->is_regular && $user->cannot(TenantPermission::REGULAR_TAGS_UPDATE)) {
             return Response::deny(__('permission.update', ['label' => __('Regular tags')]));
         }
+
         $tagType = $tag->type ? TagType::tryFrom($tag->type) : null;
 
         return match ($tagType) {
-            TagType::CATEGORY => $user->can(TenantPermission::UPDATE_CATEGORIES) ? Response::allow() : Response::deny(__('permission.update', ['label' => $tagType->label()])),
-            TagType::SKILL => $user->can(TenantPermission::UPDATE_SKILLS) ? Response::allow() : Response::deny(__('permission.update', ['label' => $tagType->label()])),
+            TagType::CATEGORY => $user->can(TenantPermission::CATEGORIES_UPDATE) ? Response::allow() : Response::deny(__('permission.update', ['label' => $tagType->label()])),
+            TagType::SKILL => $user->can(TenantPermission::SKILLS_UPDATE) ? Response::allow() : Response::deny(__('permission.update', ['label' => $tagType->label()])),
             default => Response::deny(__('permission.update', ['label' => __('Tags')]))
         };
     }
@@ -60,18 +61,17 @@ final class TagPolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user, Tag $tag): Response
+    public function delete(TenantUser $user, Tag $tag): Response
     {
-        if ($tag->is_regular && $user->cannot(TenantPermission::DELETE_REGULAR_TAG)) {
-
+        if ($tag->is_regular && $user->cannot(TenantPermission::REGULAR_TAGS_DELETE)) {
             return Response::deny(__('permission.delete', ['label' => __('Regular tags')]));
         }
 
         $tagType = $tag->type ? TagType::tryFrom($tag->type) : null;
 
         return match ($tagType) {
-            TagType::CATEGORY => $user->can(TenantPermission::DELETE_CATEGORIES) ? Response::allow() : Response::deny(__('permission.delete', ['label' => $tagType->label()])),
-            TagType::SKILL => $user->can(TenantPermission::DELETE_SKILLS) ? Response::allow() : Response::deny(__('permission.delete', ['label' => $tagType->label()])),
+            TagType::CATEGORY => $user->can(TenantPermission::CATEGORIES_DELETE) ? Response::allow() : Response::deny(__('permission.delete', ['label' => $tagType->label()])),
+            TagType::SKILL => $user->can(TenantPermission::SKILLS_DELETE) ? Response::allow() : Response::deny(__('permission.delete', ['label' => $tagType->label()])),
             default => Response::deny(__('permission.delete', ['label' => __('Tags')]))
         };
     }

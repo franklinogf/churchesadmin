@@ -68,6 +68,7 @@ return [
     */
 
     'timezone' => 'UTC',
+    'timezone_display' => env('APP_TIMEZONE_DISPLAY', 'America/Puerto_Rico'),
 
     /*
     |--------------------------------------------------------------------------
@@ -80,9 +81,9 @@ return [
     |
     */
 
-    'locale' => env('APP_LOCALE', App\Enums\LanguageCode::ES->value),
+    'locale' => env('APP_LOCALE', App\Enums\LanguageCode::SPANISH->value),
 
-    'fallback_locale' => env('APP_FALLBACK_LOCALE', App\Enums\LanguageCode::EN->value),
+    'fallback_locale' => env('APP_FALLBACK_LOCALE', App\Enums\LanguageCode::ENGLISH->value),
 
     'faker_locale' => env('APP_FAKER_LOCALE', 'es_US'),
 

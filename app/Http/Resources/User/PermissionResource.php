@@ -20,10 +20,11 @@ final class PermissionResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'label' => TenantPermission::tryFrom($this->name)?->label(),
+            'label' => TenantPermission::from($this->name)->label(),
         ];
     }
 }

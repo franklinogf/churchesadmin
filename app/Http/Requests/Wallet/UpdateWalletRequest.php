@@ -4,20 +4,22 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Wallet;
 
-use CodeZero\UniqueTranslation\UniqueTranslationRule;
+use Illuminate\Auth\Access\Response;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\Rule;
 
 /**
- * @property-read \App\Models\Wallet $wallet
+ * @property-read \App\Models\ChurchWallet $wallet
  */
 final class UpdateWalletRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize(): bool
+    public function authorize(): Response
     {
-        return true;
+        return Gate::authorize('update', $this->route('wallet'));
     }
 
     /**
@@ -27,22 +29,17 @@ final class UpdateWalletRequest extends FormRequest
      */
     public function rules(): array
     {
-        /**
-         * @var string $connection
-         */
-        $connection = config('tenancy.database.central_connection');
-        /**
-         * @var string $tenantId
-         */
-        $tenantId = tenant('id');
 
         return [
-            'name' => ['required', 'array', 'min:2'],
-            'name.*' => ['required', 'string', 'min:3', 'max:255', UniqueTranslationRule::for("{$connection}.wallets")
-                ->ignore($this->wallet->id)
-                ->where('holder_id', $tenantId)],
-            'description' => ['nullable', 'array'],
-            'description.*' => ['nullable', 'string', 'min:3', 'max:255'],
+            'name' => [
+                'required',
+                'string',
+                'min:3',
+                'max:255',
+                Rule::unique('church_wallets')->ignore($this->wallet->id),
+            ],
+            'balance' => ['nullable', 'decimal:2', 'min:0'],
+            'description' => ['nullable', 'string', 'min:3', 'max:255'],
             'bank_name' => ['required', 'string', 'min:3', 'max:255'],
             'bank_routing_number' => ['required', 'string', 'min:3', 'max:255'],
             'bank_account_number' => ['required', 'string', 'min:3', 'max:255'],

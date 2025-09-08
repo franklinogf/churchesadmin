@@ -18,17 +18,9 @@ enum CivilStatus: string
 
     /**
      * Get the label.
-     *
-     * @return string
      */
     public function label(): string
     {
-        return match ($this) {
-            self::SINGLE => __('Single'),
-            self::MARRIED => __('Married'),
-            self::DIVORCED => __('Divorced'),
-            self::WIDOWED => __('Widowed'),
-            self::SEPARATED => __('Separated'),
-        };
+        return __("enum.civil_status.{$this->value}");
     }
 }

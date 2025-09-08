@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
-
+use Carbon\CarbonImmutable;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Spatie\Permission\Traits\HasRoles;
+use Stancl\Tenancy\Database\Concerns\CentralConnection;
 
 /**
  * Model used for authentication in the Tenant environment and admin panel.
@@ -22,15 +21,14 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read string $email
  * @property-read string $password
  * @property-read string $remember_token
- * @property-read \App\Enums\LanguageCode $language
- * @property-read \Carbon\CarbonImmutable|null $email_verified_at
- * @property-read \Carbon\CarbonImmutable|null $created_at
- * @property-read \Carbon\CarbonImmutable|null $updated_at
+ * @property-read CarbonImmutable|null $email_verified_at
+ * @property-read CarbonImmutable|null $created_at
+ * @property-read CarbonImmutable|null $updated_at
  */
 final class User extends Authenticatable implements FilamentUser
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, HasRoles, HasUuids, Notifiable;
+    use CentralConnection, HasFactory, HasUuids, Notifiable;
 
     /**
      * The attributes that should be hidden for serialization.
@@ -44,7 +42,7 @@ final class User extends Authenticatable implements FilamentUser
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return $panel->getId() === 'admin';
+        return true;
     }
 
     /**
@@ -57,7 +55,6 @@ final class User extends Authenticatable implements FilamentUser
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
-            'language' => \App\Enums\LanguageCode::class,
         ];
     }
 }

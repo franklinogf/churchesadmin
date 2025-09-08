@@ -19,10 +19,7 @@ final class OfferingTypeFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => [
-                'en' => fake('en')->word(),
-                'es' => fake('es')->word(),
-            ],
+            'name' => fake()->unique()->word(),
         ];
     }
 }

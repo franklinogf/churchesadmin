@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -20,9 +21,9 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property-read string $city
  * @property-read string $state
  * @property-read string $country
- * @property-read string $postal_code
- * @property-read \Carbon\CarbonImmutable $created_at
- * @property-read \Carbon\CarbonImmutable $updated_at
+ * @property-read string $zip_code
+ * @property-read CarbonImmutable $created_at
+ * @property-read CarbonImmutable $updated_at
  */
 final class Address extends Model
 {

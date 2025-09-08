@@ -19,8 +19,9 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('language', 2);
             $table->rememberToken();
+            $table->string('timezone')->default('America/Puerto_Rico');
+            $table->string('timezone_country')->default('PR');
             $table->timestamps();
         });
 

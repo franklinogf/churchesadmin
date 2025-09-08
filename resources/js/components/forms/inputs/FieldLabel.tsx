@@ -32,13 +32,13 @@ export function FieldLabel({
     >
       {id === undefined ? (
         <div>
-          {label}
-          {required && <RequiredFieldIcon />}
+          <span>{label}</span>
+          {required && <RequiredFieldIcon className="self-start" />}
         </div>
       ) : (
         <>
           <span>{label}</span>
-          {required && <RequiredFieldIcon />}
+          {required && <RequiredFieldIcon className="self-start" />}
         </>
       )}
     </Label>

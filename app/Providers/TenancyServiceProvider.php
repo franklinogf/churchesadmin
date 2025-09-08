@@ -4,12 +4,15 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use BackedEnum;
+use Carbon\Carbon;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route as RouteFacade;
 use Illuminate\Support\ServiceProvider;
 use Stancl\JobPipeline\JobPipeline;
+use Stancl\Tenancy\Bootstrappers\BroadcastChannelPrefixBootstrapper;
 use Stancl\Tenancy\Controllers\TenantAssetController;
 use Stancl\Tenancy\Events;
 use Stancl\Tenancy\Jobs;
@@ -31,7 +34,7 @@ final class TenancyServiceProvider extends ServiceProvider
                 JobPipeline::make([
                     Jobs\CreateDatabase::class,
                     Jobs\MigrateDatabase::class,
-                    Jobs\SeedDatabase::class,
+                    // Jobs\SeedDatabase::class,
                     Jobs\CreateStorageSymlinks::class,
 
                     // Your own jobs to prepare the tenant.
@@ -88,6 +91,14 @@ final class TenancyServiceProvider extends ServiceProvider
             Events\InitializingTenancy::class => [],
             Events\TenancyInitialized::class => [
                 Listeners\BootstrapTenancy::class,
+                function (Events\TenancyInitialized $event): void {
+                    // Ensure locale is converted to a string if it's an enum
+                    $locale = $event->tenancy->tenant->locale;
+                    if ($locale instanceof BackedEnum) {
+                        $locale = $locale->value;
+                    }
+                    Carbon::setLocale($locale ?? config('app.locale'));
+                },
             ],
 
             Events\EndingTenancy::class => [],
@@ -150,6 +161,7 @@ final class TenancyServiceProvider extends ServiceProvider
         $this->overrideUrlInTenantContext();
 
         TenantAssetController::$headers = ['cache-control' => 'public, max-age=3600'];
+        BroadcastChannelPrefixBootstrapper::reverb();
 
         // // Include soft deleted resources in synced resource queries.
         // ResourceSyncing\Listeners\UpdateOrCreateSyncedResource::$scopeGetModelQuery = function (Builder $query) {

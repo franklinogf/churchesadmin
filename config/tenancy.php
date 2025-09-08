@@ -157,7 +157,7 @@ return [
         // Bootstrappers\UrlGeneratorBootstrapper::class,
         // Bootstrappers\MailConfigBootstrapper::class, // Note: Queueing mail requires using QueueTenancyBootstrapper with $forceRefresh set to true
         // Bootstrappers\BroadcastingConfigBootstrapper::class,
-        // Bootstrappers\BroadcastChannelPrefixBootstrapper::class,
+        Bootstrappers\BroadcastChannelPrefixBootstrapper::class,
 
         // Integration bootstrappers
         // Bootstrappers\Integrations\FortifyRouteBootstrapper::class,
@@ -187,7 +187,7 @@ return [
          * Tenant database names are created like this:
          * prefix + tenant_id + suffix.
          */
-        'prefix' => 'tenant_',
+        'prefix' => env('TENANCY_PREFIX', 'tenant_'),
         'suffix' => '',
 
         /**
@@ -296,7 +296,7 @@ return [
         /**
          * Each disk listed in the 'disks' array will be suffixed by the suffix_base, followed by the tenant_id.
          */
-        'suffix_base' => 'tenant_',
+        'suffix_base' => env('TENANCY_PREFIX', 'tenant_'),
         'disks' => [
             'local',
             'public',
@@ -392,8 +392,8 @@ return [
      */
     'features' => [
         // Stancl\Tenancy\Features\UserImpersonation::class,
-        // Stancl\Tenancy\Features\TelescopeTags::class,
-        // Stancl\Tenancy\Features\TenantConfig::class,
+        Stancl\Tenancy\Features\TelescopeTags::class,
+        Stancl\Tenancy\Features\TenantConfig::class,
         // Stancl\Tenancy\Features\CrossDomainRedirect::class,
         // Stancl\Tenancy\Features\ViteBundler::class,
         // Stancl\Tenancy\Features\DisallowSqliteAttach::class,

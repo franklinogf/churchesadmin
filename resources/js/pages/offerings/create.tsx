@@ -1,67 +1,59 @@
 import { Form } from '@/components/forms/Form';
 import { ComboboxField } from '@/components/forms/inputs/ComboboxField';
 import { CurrencyField } from '@/components/forms/inputs/CurrencyField';
-import { DateField } from '@/components/forms/inputs/DateField';
+import { DatetimeField } from '@/components/forms/inputs/DatetimeField';
 import { FieldsGrid } from '@/components/forms/inputs/FieldsGrid';
 import { InputField } from '@/components/forms/inputs/InputField';
+import { MultipleComboboxField } from '@/components/forms/inputs/MultipleComboboxField';
 import { SelectField } from '@/components/forms/inputs/SelectField';
 import { PageTitle } from '@/components/PageTitle';
 import { Button } from '@/components/ui/button';
+import { useLocaleDate } from '@/hooks/use-locale-date';
+import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
-import { type BreadcrumbItem, type SelectOption } from '@/types';
+import { type BreadcrumbItem, type SelectOption, type SelectOptionWithModel } from '@/types';
 import { useForm } from '@inertiajs/react';
 import { formatDate } from 'date-fns';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { TrashIcon } from 'lucide-react';
 
 interface CreatePageProps {
-  wallets: SelectOption[];
+  walletsOptions: SelectOption[];
   paymentMethods: SelectOption[];
-  members: SelectOption[];
-  missionaries: SelectOption[];
-  offeringTypes: SelectOption[];
+  membersOptions: SelectOption[];
+  missionariesOptions: SelectOptionWithModel;
+  offeringTypesOptions: SelectOptionWithModel;
 }
 
 interface CreateForm {
-  payer_id: string;
+  donor_id: string;
   date: string;
   offerings: {
     payment_method: string;
-    offering_type_id: string;
-    recipient_id: string;
+    offering_type: {
+      id: string;
+      model: string;
+    };
     wallet_id: string;
     amount: string;
     note: string;
   }[];
 }
-const breadcrumbs: BreadcrumbItem[] = [
-  {
-    title: 'Offerings',
-    href: route('offerings.index'),
-  },
-  {
-    title: 'New Offering',
-  },
-];
 
-const nonMemberOption: SelectOption[] = [
-  {
-    label: 'Non member',
-    value: 'non_member',
-  },
-];
-export default function Create({ wallets, paymentMethods, members, missionaries, offeringTypes }: CreatePageProps) {
-  const { t } = useLaravelReactI18n();
+export default function Create({ walletsOptions, paymentMethods, membersOptions, missionariesOptions, offeringTypesOptions }: CreatePageProps) {
+  const { t } = useTranslations();
+  const { maxDate } = useLocaleDate();
   const { data, setData, post, errors, processing } = useForm<Required<CreateForm>>({
     date: formatDate(new Date(), 'yyyy-MM-dd'),
-    payer_id: 'non_member',
+    donor_id: '',
     offerings: [
       {
-        wallet_id: wallets[0].value.toString(),
+        wallet_id: walletsOptions[0]?.value.toString() ?? '',
         payment_method: paymentMethods[0]?.value.toString() ?? '',
-        offering_type_id: offeringTypes[0]?.value.toString() ?? '',
-        recipient_id: '',
-        amount: '5.00',
+        offering_type: {
+          id: offeringTypesOptions.options[0]?.value.toString() ?? '',
+          model: offeringTypesOptions.model ?? '',
+        },
+        amount: '',
         note: '',
       },
     ],
@@ -75,11 +67,13 @@ export default function Create({ wallets, paymentMethods, members, missionaries,
     setData('offerings', [
       ...data.offerings,
       {
-        wallet_id: wallets[0].value.toString(),
+        wallet_id: walletsOptions[0]?.value.toString() ?? '',
         payment_method: paymentMethods[0]?.value.toString() ?? '',
-        offering_type_id: offeringTypes[0]?.value.toString() ?? '',
-        recipient_id: '',
-        amount: '0.00',
+        offering_type: {
+          id: offeringTypesOptions?.options[0]?.value.toString() ?? '',
+          model: offeringTypesOptions?.model ?? '',
+        },
+        amount: '',
         note: '',
       },
     ]);
@@ -91,8 +85,11 @@ export default function Create({ wallets, paymentMethods, members, missionaries,
     setData('offerings', updatedOfferings);
   }
 
-  function handleUpdateOffering(index: number, field: string, value: string) {
+  function handleUpdateOffering(index: number, field: string, value: unknown) {
     const updatedOfferings = [...data.offerings];
+    if (updatedOfferings[index] === undefined) {
+      return;
+    }
     updatedOfferings[index] = {
       ...updatedOfferings[index],
       [field]: value,
@@ -100,25 +97,42 @@ export default function Create({ wallets, paymentMethods, members, missionaries,
     setData('offerings', updatedOfferings);
   }
 
+  const breadcrumbs: BreadcrumbItem[] = [
+    {
+      title: t('Offerings'),
+      href: route('offerings.index'),
+    },
+    {
+      title: t('New :model', { model: t('Offering') }),
+    },
+  ];
   return (
     <AppLayout title={t('Offerings')} breadcrumbs={breadcrumbs}>
-      <PageTitle>{t('New Offering')}</PageTitle>
+      <PageTitle>{t('New :model', { model: t('Offering') })}</PageTitle>
       <div className="mt-2 flex items-center justify-center">
         <Form isSubmitting={processing} className="w-full max-w-2xl" onSubmit={handleSubmit}>
           <ComboboxField
-            required
+            placeholder=""
             label={t('Who is this offering from?')}
-            value={data.payer_id}
-            onChange={(value) => setData('payer_id', value)}
-            error={errors.payer_id}
-            options={nonMemberOption.concat(members)}
+            value={data.donor_id}
+            onChange={(value) => setData('donor_id', value)}
+            error={errors.donor_id}
+            options={membersOptions}
           />
           <FieldsGrid>
-            <DateField required label={t('Date of Offering')} value={data.date} onChange={(value) => setData('date', value)} error={errors.date} />
+            <DatetimeField
+              hideTime
+              max={maxDate()}
+              required
+              label={t('Date of Offering')}
+              value={data.date}
+              onChange={(value) => setData('date', value)}
+              error={errors.date}
+            />
           </FieldsGrid>
 
           <Button size="sm" variant="secondary" type="button" onClick={handleAddOffering}>
-            {t('Add offering')}
+            {t('Add :model', { model: t('Offering') })}
           </Button>
 
           <div className="space-y-4 py-2">
@@ -131,7 +145,7 @@ export default function Create({ wallets, paymentMethods, members, missionaries,
                     </Button>
                   </legend>
                 )}
-                <FieldsGrid cols={2} className="grow">
+                <FieldsGrid className="grow">
                   <SelectField
                     required
                     label={t('Wallet')}
@@ -140,21 +154,8 @@ export default function Create({ wallets, paymentMethods, members, missionaries,
                       handleUpdateOffering(index, 'wallet_id', value);
                     }}
                     error={errors[`offerings.${index}.wallet_id` as keyof typeof data]}
-                    options={wallets}
+                    options={walletsOptions}
                   />
-                  <ComboboxField
-                    label={t('Recipient')}
-                    placeholder={t('Select one or leave empty')}
-                    value={offering.recipient_id}
-                    onChange={(value) => {
-                      handleUpdateOffering(index, 'recipient_id', value);
-                    }}
-                    error={errors[`offerings.${index}.recipient_id` as keyof typeof data]}
-                    options={missionaries}
-                  />
-                </FieldsGrid>
-
-                <FieldsGrid cols={3} className="grow">
                   <SelectField
                     required
                     label={t('Payment method')}
@@ -165,15 +166,17 @@ export default function Create({ wallets, paymentMethods, members, missionaries,
                     error={errors[`offerings.${index}.payment_method` as keyof typeof data]}
                     options={paymentMethods}
                   />
-                  <SelectField
+                </FieldsGrid>
+                <FieldsGrid className="grow">
+                  <MultipleComboboxField
                     required
                     label={t('Offering type')}
-                    value={offering.offering_type_id}
+                    value={offering.offering_type}
                     onChange={(value) => {
-                      handleUpdateOffering(index, 'offering_type_id', value);
+                      handleUpdateOffering(index, 'offering_type', value);
                     }}
-                    error={errors[`offerings.${index}.offering_type_id` as keyof typeof data]}
-                    options={offeringTypes}
+                    error={errors[`offerings.${index}.offering_type` as keyof typeof data]}
+                    data={[offeringTypesOptions, missionariesOptions]}
                   />
 
                   <CurrencyField

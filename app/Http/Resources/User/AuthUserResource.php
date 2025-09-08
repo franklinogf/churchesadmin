@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
- * @mixin \App\Models\User
+ * @mixin \App\Models\TenantUser
  */
 final class AuthUserResource extends JsonResource
 {
@@ -23,10 +23,13 @@ final class AuthUserResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
-            'language' => $this->language,
-            'emailVerifiedAt' => $this->email_verified_at,
+            'emailVerifiedAt' => $this->email_verified_at?->inUserTimezone()->formatAsDatetime(),
+            'timezone' => $this->timezone,
+            'timezoneCountry' => $this->timezone_country,
             'roles' => $this->getRoleNames(),
             'permissions' => $this->getAllPermissions()->pluck('name')->toArray(),
+            'currentYearId' => $this->current_year_id,
+            'currentYear' => $this->currentYear->year,
         ];
     }
 }

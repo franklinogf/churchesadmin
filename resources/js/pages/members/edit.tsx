@@ -1,6 +1,6 @@
 import { AddressFormSkeleton } from '@/components/forms/AddressFormSkeleton';
 import { Form } from '@/components/forms/Form';
-import { DateField } from '@/components/forms/inputs/DateField';
+import { DatetimeField } from '@/components/forms/inputs/DatetimeField';
 import { FieldsGrid } from '@/components/forms/inputs/FieldsGrid';
 import { InputField } from '@/components/forms/inputs/InputField';
 import { MultiSelectField } from '@/components/forms/inputs/MultiSelectField';
@@ -8,6 +8,7 @@ import { PhoneField } from '@/components/forms/inputs/PhoneField';
 import { SelectField } from '@/components/forms/inputs/SelectField';
 import { PageTitle } from '@/components/PageTitle';
 import { Separator } from '@/components/ui/separator';
+import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import { convertTagsToMultiselectOptions, getMultiselecOptionsLabels } from '@/lib/mutliselect';
 import type { BreadcrumbItem, SelectOption } from '@/types';
@@ -15,18 +16,6 @@ import { type AddressFormData } from '@/types/models/address';
 import { type Member, type MemberFormData } from '@/types/models/member';
 import { type Tag } from '@/types/models/tag';
 import { useForm } from '@inertiajs/react';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
-
-const breadcrumbs: BreadcrumbItem[] = [
-  {
-    title: 'Members',
-    href: route('members.index'),
-  },
-  {
-    title: 'Edit Member',
-    href: '',
-  },
-];
 
 type EditForm = MemberFormData & {
   address: AddressFormData;
@@ -40,13 +29,13 @@ interface EditPageProps {
   member: Member;
 }
 export default function Edit({ member, genders, civilStatuses, skills, categories }: EditPageProps) {
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations();
   const { data, setData, put, errors, processing, transform } = useForm<EditForm>({
     name: member.name,
     last_name: member.lastName,
     email: member.email,
     phone: member.phone,
-    dob: member.dob,
+    dob: member.dob ?? '',
     gender: member.gender,
     civil_status: member.civilStatus,
     skills: convertTagsToMultiselectOptions(member.skills),
@@ -68,12 +57,20 @@ export default function Edit({ member, genders, civilStatuses, skills, categorie
   }));
 
   const handleSubmit = () => {
-    put(route('members.update', member.id));
+    put(route('members.update', member.id), { preserveScroll: true });
   };
-
+  const breadcrumbs: BreadcrumbItem[] = [
+    {
+      title: t('Members'),
+      href: route('members.index'),
+    },
+    {
+      title: t('Edit :model', { model: t('Member') }),
+    },
+  ];
   return (
     <AppLayout breadcrumbs={breadcrumbs} title={t('Members')}>
-      <PageTitle>{t('Edit Member')}</PageTitle>
+      <PageTitle>{t('Edit :model', { model: t('Member') })}</PageTitle>
       <div className="mt-2 flex items-center justify-center">
         <Form isSubmitting={processing} className="w-full max-w-2xl" onSubmit={handleSubmit}>
           <InputField required label="Name" value={data.name} onChange={(value) => setData('name', value)} error={errors.name} />
@@ -83,7 +80,14 @@ export default function Edit({ member, genders, civilStatuses, skills, categorie
             <PhoneField required label="Phone" value={data.phone} onChange={(value) => setData('phone', value)} error={errors.phone} />
           </FieldsGrid>
 
-          <DateField required label="Date of Birth" value={data.dob} onChange={(value) => setData('dob', value)} error={errors.dob} />
+          <DatetimeField
+            hideTime
+            max={new Date()}
+            label="Date of Birth"
+            value={data.dob}
+            onChange={(value) => setData('dob', value)}
+            error={errors.dob}
+          />
 
           <FieldsGrid>
             <SelectField

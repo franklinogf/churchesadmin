@@ -1,26 +1,22 @@
-import { type LanguageTranslations } from '@/types';
 import { type Transaction } from '@/types/models/transaction';
-type WalletMeta = {
+import type { CheckLayout } from './check-layout';
+
+export interface Wallet {
+  id: number;
+  name: string;
+  slug: string;
+  description: string | null;
   bankName: string;
   bankAccountNumber: string;
   bankRoutingNumber: string;
-};
-export interface Wallet {
-  id: number;
-  uuid: string;
-  meta: WalletMeta | null;
-  name: string;
-  nameTranslations: LanguageTranslations;
-  slug: string;
-  description: string | null;
-  descriptionTranslations: LanguageTranslations;
   balance: string;
-  balanceInt: number;
+  balanceNumber: number;
   balanceFloat: string;
-  balanceFloatNum: number;
+  balanceFloatNumber: number;
   createdAt: string;
   updatedAt: string;
   deletedAt: string | null;
   transactions?: Transaction[];
   transactionsCount?: number;
+  checkLayout?: CheckLayout;
 }

@@ -10,38 +10,25 @@ use App\Enums\Traits\HasOptions;
 enum OfferingFrequency: string
 {
     use EnumToArray, HasOptions;
-    case ONE_TIME = 'one_time';
+    case ONETIME = 'one_time';
     case WEEKLY = 'weekly';
-    case BIWEEKLY = 'biweekly';
+    case BIWEEKLY = 'bi_weekly';
     case MONTHLY = 'monthly';
-    case BIMONTHLY = 'bimonthly';
+    case BIMONTHLY = 'bi_monthly';
     case QUARTERLY = 'quarterly';
-    case SEMIANNUALLY = 'semiannually';
+    case SEMIANNUALLY = 'semi_annually';
     case ANNUALLY = 'annually';
 
     /**
      * Get the label for the enum value.
-     *
-     * @return string
      */
     public function label(): string
     {
-        return match ($this) {
-            self::WEEKLY => __('Every week'),
-            self::BIWEEKLY => __('Every two weeks'),
-            self::MONTHLY => __('Every month'),
-            self::BIMONTHLY => __('Every two months'),
-            self::QUARTERLY => __('Every three months'),
-            self::SEMIANNUALLY => __('Every six months'),
-            self::ANNUALLY => __('Every year'),
-            self::ONE_TIME => __('One time only'),
-        };
+        return __("enum.offering_frequency.{$this->value}");
     }
 
     /**
      * Get the frequency in days.
-     *
-     * @return int
      */
     public function frequencyInDays(): int
     {
@@ -53,7 +40,7 @@ enum OfferingFrequency: string
             self::QUARTERLY => 90,
             self::SEMIANNUALLY => 180,
             self::ANNUALLY => 365,
-            self::ONE_TIME => 0,
+            self::ONETIME => 0,
         };
     }
 }

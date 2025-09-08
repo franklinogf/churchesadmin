@@ -15,14 +15,9 @@ enum Gender: string
 
     /**
      * Get the label.
-     *
-     * @return string
      */
     public function label(): string
     {
-        return match ($this) {
-            self::MALE => __('Male'),
-            self::FEMALE => __('Female'),
-        };
+        return __("enum.gender.{$this->value}");
     }
 }

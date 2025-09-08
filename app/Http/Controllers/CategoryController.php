@@ -9,7 +9,7 @@ use App\Actions\Tag\DeleteTagAction;
 use App\Actions\Tag\UpdateTagAction;
 use App\Enums\FlashMessageKey;
 use App\Enums\TagType;
-use App\Http\Requests\Tag\Category\CreateCategoryRequest;
+use App\Http\Requests\Tag\Category\StoreCategoryRequest;
 use App\Http\Requests\Tag\Category\UpdateCategoryRequest;
 use App\Http\Resources\Tag\TagResource;
 use App\Models\Tag;
@@ -23,13 +23,9 @@ final class CategoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): Response|RedirectResponse
+    public function index(): Response
     {
-        $response = Gate::inspect('viewAny', [Tag::class, TagType::CATEGORY]);
-
-        if ($response->denied()) {
-            return to_route('dashboard')->with(FlashMessageKey::ERROR->value, $response->message());
-        }
+        Gate::authorize('viewAny', [Tag::class, TagType::CATEGORY]);
 
         $categories = Tag::whereType(TagType::CATEGORY->value)->orderBy('created_at', 'desc')->get();
 
@@ -41,23 +37,21 @@ final class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(CreateCategoryRequest $request, CreateTagAction $action): RedirectResponse
+    public function store(StoreCategoryRequest $request, CreateTagAction $action): RedirectResponse
     {
-
         /**
          * @var array{name:string,is_regular:bool} $data
          */
         $data = $request->validated();
 
-        $response = Gate::inspect('create', [Tag::class, $data['is_regular'], TagType::CATEGORY]);
-
-        if ($response->denied()) {
-            return to_route('categories.index')->with(FlashMessageKey::ERROR->value, $response->message());
-        }
+        Gate::authorize('create', [Tag::class, $data['is_regular'], TagType::CATEGORY]);
 
         $action->handle($data, TagType::CATEGORY);
 
-        return to_route('categories.index')->with(FlashMessageKey::SUCCESS->value, __('Category created successfully.'));
+        return to_route('categories.index')->with(
+            FlashMessageKey::SUCCESS->value,
+            __('flash.message.created', ['model' => __('Category')])
+        );
     }
 
     /**
@@ -65,15 +59,17 @@ final class CategoryController extends Controller
      */
     public function update(UpdateCategoryRequest $request, Tag $tag, UpdateTagAction $action): RedirectResponse
     {
-        $response = Gate::inspect('update', $tag);
+        Gate::authorize('update', $tag);
 
-        if ($response->denied()) {
-            return to_route('categories.index')->with(FlashMessageKey::ERROR->value, $response->message());
-        }
+        $action->handle($tag, [
+            'name' => $request->string('name')->value(),
+            'is_regular' => $request->boolean('is_regular'),
+        ]);
 
-        $action->handle($tag, $request->validated());
-
-        return to_route('categories.index')->with(FlashMessageKey::SUCCESS->value, __('Category updated successfully.'));
+        return to_route('categories.index')->with(
+            FlashMessageKey::SUCCESS->value,
+            __('flash.message.updated', ['model' => __('Category')])
+        );
     }
 
     /**
@@ -81,14 +77,13 @@ final class CategoryController extends Controller
      */
     public function destroy(Tag $tag, DeleteTagAction $action): RedirectResponse
     {
-        $response = Gate::inspect('delete', $tag);
-
-        if ($response->denied()) {
-            return to_route('categories.index')->with(FlashMessageKey::ERROR->value, $response->message());
-        }
+        Gate::authorize('delete', $tag);
 
         $action->handle($tag);
 
-        return to_route('categories.index')->with(FlashMessageKey::SUCCESS->value, __('Category deleted successfully.'));
+        return to_route('categories.index')->with(
+            FlashMessageKey::SUCCESS->value,
+            __('flash.message.deleted', ['model' => __('Category')])
+        );
     }
 }

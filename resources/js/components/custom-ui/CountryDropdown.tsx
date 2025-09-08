@@ -9,7 +9,7 @@ import { cn } from '@/lib/utils';
 
 // assets
 import { useCountries } from '@/hooks/use-countries';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
+import { useTranslations } from '@/hooks/use-translations';
 import { CheckIcon, ChevronDown, XSquare } from 'lucide-react';
 import { Button } from '../ui/button';
 
@@ -19,14 +19,15 @@ interface CountryDropdownProps {
   defaultValue?: string;
   disabled?: boolean;
   placeholder?: string;
+  clearable?: boolean;
   ref?: Ref<HTMLButtonElement>;
 }
 
-export function CountryDropdown({ onChange, defaultValue, disabled = false, placeholder, ref }: CountryDropdownProps) {
+export function CountryDropdown({ onChange, defaultValue, disabled = false, placeholder, clearable = false, ref }: CountryDropdownProps) {
   const { countries, getCurrentCountryName } = useCountries();
   const [open, setOpen] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState('');
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations();
 
   useEffect(() => {
     if (defaultValue) {
@@ -45,15 +46,16 @@ export function CountryDropdown({ onChange, defaultValue, disabled = false, plac
 
   const handleSelect = useCallback(
     (countryCode: string) => {
-      setSelectedCountry(countryCode);
-      onChange?.(countryCode);
+      const country = countryCode === selectedCountry ? '' : countryCode; // Toggle selection
+      setSelectedCountry(country);
+      onChange?.(country);
       setOpen(false);
     },
-    [onChange],
+    [onChange, selectedCountry],
   );
 
   const triggerClasses = cn(
-    'border-input ring-offset-background placeholder:text-muted-foreground focus:ring-ring flex h-9 w-full items-center justify-between rounded-md border bg-transparent px-3 py-2 text-sm whitespace-nowrap shadow-sm focus:ring-1 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1',
+    'bg-input/20 border-input ring-offset-background placeholder:text-muted-foreground focus:ring-ring flex h-9 w-full items-center justify-between rounded-md border px-3 py-2 text-sm whitespace-nowrap shadow-sm focus:ring-1 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1',
   );
 
   return (
@@ -62,20 +64,22 @@ export function CountryDropdown({ onChange, defaultValue, disabled = false, plac
         {selectedCountry ? (
           <div className="flex flex-grow items-center gap-2 overflow-hidden">
             <span className="overflow-hidden text-ellipsis whitespace-nowrap">{getCurrentCountryName(selectedCountry)}</span>
-            <Button
-              asChild
-              className="hover:text-primary size-4 cursor-pointer"
-              size="sm"
-              variant="link"
-              onClick={(e) => {
-                e.stopPropagation();
-                handleSelect('');
-              }}
-            >
-              <span>
-                <XSquare />
-              </span>
-            </Button>
+            {clearable && (
+              <Button
+                asChild
+                className="hover:text-primary size-4 cursor-pointer"
+                size="sm"
+                variant="link"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleSelect('');
+                }}
+              >
+                <span>
+                  <XSquare />
+                </span>
+              </Button>
+            )}
           </div>
         ) : (
           <span>{placeholder}</span>

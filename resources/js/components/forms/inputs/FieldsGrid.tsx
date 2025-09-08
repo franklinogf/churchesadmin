@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils';
 import { cva, type VariantProps } from 'class-variance-authority';
 
-const inputsGridVariants = cva('grid grid-cols-1 gap-2', {
+const inputsGridVariants = cva('grid grid-cols-1 gap-2 items-start', {
   variants: {
     cols: {
       1: 'lg:grid-cols-1',

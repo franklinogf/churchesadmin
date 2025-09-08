@@ -8,6 +8,9 @@ use App\Http\Resources\Codes\OfferingTypeResource;
 use App\Http\Resources\Member\MemberResource;
 use App\Http\Resources\Missionary\MissionaryResource;
 use App\Http\Resources\Wallet\TransactionResource;
+use App\Models\Missionary;
+use App\Models\OfferingType;
+use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -28,10 +31,14 @@ final class OfferingResource extends JsonResource
             'id' => $this->id,
             'transaction' => new TransactionResource($this->transaction),
             'donor' => new MemberResource($this->donor),
-            'recipient' => new MissionaryResource($this->recipient),
             'date' => $this->date->format('Y-m-d'),
             'paymentMethod' => $this->payment_method,
-            'offeringType' => new OfferingTypeResource($this->offering_type),
+            'offeringType' => match ($this->offering_type_type) {
+                Relation::getMorphAlias(OfferingType::class) => new OfferingTypeResource($this->offeringType),
+                Relation::getMorphAlias(Missionary::class) => new MissionaryResource($this->offeringType),
+                default => null,
+            },
+            'offeringTypeModel' => $this->offering_type_type,
             'note' => $this->note,
         ];
     }

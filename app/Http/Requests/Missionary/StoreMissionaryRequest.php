@@ -6,7 +6,10 @@ namespace App\Http\Requests\Missionary;
 
 use App\Enums\Gender;
 use App\Enums\OfferingFrequency;
+use App\Models\Missionary;
+use Illuminate\Auth\Access\Response;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 
 final class StoreMissionaryRequest extends FormRequest
@@ -14,9 +17,9 @@ final class StoreMissionaryRequest extends FormRequest
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize(): bool
+    public function authorize(): Response
     {
-        return true;
+        return Gate::authorize('create', Missionary::class);
     }
 
     /**
@@ -29,12 +32,12 @@ final class StoreMissionaryRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'min:2', 'max:255'],
             'last_name' => ['required', 'string', 'min:2', 'max:255'],
-            'email' => ['required', 'email', Rule::unique('missionaries')],
-            'phone' => ['required', 'phone', Rule::unique('missionaries')],
+            'email' => ['nullable', 'email', Rule::unique('missionaries')],
+            'phone' => ['nullable', 'phone', Rule::unique('missionaries')],
             'gender' => ['required', 'string', Rule::enum(Gender::class)],
-            'church' => ['required', 'string', 'min:2', 'max:255'],
-            'offering' => ['required', 'decimal:2', 'min:1'],
-            'offering_frequency' => ['required', 'string', Rule::enum(OfferingFrequency::class)],
+            'church' => ['nullable', 'string', 'min:2', 'max:255'],
+            'offering' => ['nullable', 'required_with:offering_frequency', 'decimal:2', 'min:1'],
+            'offering_frequency' => ['nullable', 'required_with:offering', 'string', Rule::enum(OfferingFrequency::class)],
             'address' => ['exclude_if:address.address_1,null', 'array'],
             'address.address_1' => ['required_with:address.city,address.state,address.zip_code,address.country', 'nullable', 'string', 'min:2', 'max:255'],
             'address.address_2' => ['nullable', 'string', 'min:2', 'max:255'],

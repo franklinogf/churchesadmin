@@ -13,6 +13,11 @@ final class ForceDeleteMemberAction
      */
     public function handle(Member $member): void
     {
+        // Manually delete addresses since force delete won't trigger model events
+        if ($member->address) {
+            $member->address->delete();
+        }
+
         $member->forceDelete();
     }
 }

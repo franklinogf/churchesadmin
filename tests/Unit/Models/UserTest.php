@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Models\User;
+use Filament\Panel;
 
 uses(Illuminate\Foundation\Testing\RefreshDatabase::class);
 
@@ -14,18 +15,13 @@ test('to array', function (): void {
         'name',
         'email',
         'email_verified_at',
-        'language',
         'created_at',
         'updated_at',
     ]);
 });
 
-test('casts are applied correctly', function (): void {
-    $user = User::factory()->create([
-        'email_verified_at' => now(),
-        'language' => 'en',
-    ])->fresh();
+test('can access panel', function (): void {
+    $user = User::factory()->create();
 
-    expect($user->email_verified_at)->toBeInstanceOf(Carbon\CarbonImmutable::class);
-    expect($user->language)->toBeInstanceOf(App\Enums\LanguageCode::class);
+    expect($user->canAccessPanel(app(Panel::class)))->toBeTrue();
 });

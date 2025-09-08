@@ -6,9 +6,9 @@ export function formatDateToString(date = new Date()) {
   return format(date, 'yyyy-MM-dd');
 }
 
-export function formatStringToDate(date = formatDateToString(new Date())) {
+export function formatStringToDate(date = formatDateToString(new Date()), format = 'yyyy-MM-dd') {
   if (!date) return '';
-  return parse(date, 'yyyy-MM-dd', new Date());
+  return parse(date, format, new Date());
 }
 
 /* ----------------------------- Time formatters ---------------------------- */

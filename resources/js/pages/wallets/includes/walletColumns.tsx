@@ -1,16 +1,18 @@
+import { DatatableActionsDropdown } from '@/components/custom-ui/datatable/data-table-actions-dropdown';
+import { DatatableCellBoolean } from '@/components/custom-ui/datatable/datatable-cell-boolean';
 import { DatatableCell } from '@/components/custom-ui/datatable/DatatableCell';
 import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTableColumnHeader';
-import { Button } from '@/components/ui/button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { WalletForm } from '@/components/forms/wallet-form';
+import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 import { WalletName } from '@/enums';
+import { useTranslations } from '@/hooks/use-translations';
 import useConfirmationStore from '@/stores/confirmationStore';
 import type { Wallet } from '@/types/models/wallet';
 import { Link, router } from '@inertiajs/react';
 import { type ColumnDef } from '@tanstack/react-table';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
-import { ArchiveIcon, ArchiveRestoreIcon, CheckIcon, Edit2Icon, MoreHorizontalIcon, WalletIcon, XCircleIcon } from 'lucide-react';
-import { WalletForm } from '..';
+import { ArchiveIcon, ArchiveRestoreIcon, Edit2Icon, FilePenIcon, WalletIcon } from 'lucide-react';
+import { useState } from 'react';
 
 export const walletColumns: ColumnDef<Wallet>[] = [
   {
@@ -22,17 +24,13 @@ export const walletColumns: ColumnDef<Wallet>[] = [
       const wallet = row.original;
       return (
         <HoverCard>
-          <HoverCardTrigger asChild>
-            <Button variant="link" size="sm" className="px-0">
-              {wallet.name}
-            </Button>
-          </HoverCardTrigger>
+          <HoverCardTrigger>{wallet.name}</HoverCardTrigger>
           <HoverCardContent>
             <div className="flex flex-col gap-2">
               <span className="text-sm font-semibold">{wallet.name}</span>
-              {wallet.meta?.bankName && (
+              {wallet.bankName && (
                 <span className="text-muted-foreground text-sm">
-                  {wallet.meta.bankName} - {wallet.meta.bankAccountNumber}
+                  {wallet.bankName} - {wallet.bankAccountNumber}
                 </span>
               )}
               {wallet.description && <p className="text-muted-foreground text-sm">{wallet.description}</p>}
@@ -52,12 +50,12 @@ export const walletColumns: ColumnDef<Wallet>[] = [
     sortingFn: (rowA, rowB) => (rowA.original.deletedAt ? 1 : 0) - (rowB.original.deletedAt ? 1 : 0),
     accessorKey: 'deletedAt',
     header: ({ column }) => <DataTableColumnHeader column={column} title="Active" />,
-    meta: 'Active',
-    cell: ({ row }) => (
-      <DatatableCell justify="center">
-        {row.original.deletedAt ? <XCircleIcon className="text-destructive size-4" /> : <CheckIcon className="size-4 text-green-600" />}
-      </DatatableCell>
-    ),
+    cell: ({ row }) => <DatatableCellBoolean trueCondition={row.original.deletedAt === null} />,
+  },
+  {
+    accessorKey: 'checkLayout',
+    header: ({ column }) => <DataTableColumnHeader column={column} title="Check layout" />,
+    cell: ({ row }) => <DatatableCellBoolean trueCondition={row.original.checkLayout !== null} />,
   },
   {
     id: 'actions',
@@ -65,77 +63,79 @@ export const walletColumns: ColumnDef<Wallet>[] = [
     enableSorting: false,
     size: 0,
     cell: function CellComponent({ row }) {
-      const { t } = useLaravelReactI18n();
+      const { t } = useTranslations();
       const { openConfirmation } = useConfirmationStore();
+      const [isEditing, setIsEditing] = useState(false);
       //   const { can: userCan } = useUser();
       const wallet = row.original;
 
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="sm">
-              <MoreHorizontalIcon />
-              <span className="sr-only">{t('Actions')}</span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent>
+        <>
+          <WalletForm open={isEditing} wallet={wallet} setOpen={setIsEditing} />
+          <DatatableActionsDropdown>
             <DropdownMenuItem asChild>
-              <Link href={route('wallets.show', wallet.uuid)}>
+              <Link href={route('wallets.show', wallet.id)}>
                 <WalletIcon className="size-3" />
                 <span>{t('Transactions')}</span>
               </Link>
             </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link href={route('wallets.check.edit', wallet.id)}>
+                <FilePenIcon className="size-3" />
+                <span>{t('Check layout')}</span>
+              </Link>
+            </DropdownMenuItem>
             {/* {userCan(UserPermission.UPDATE_SKILLS) && ( */}
-            <WalletForm wallet={wallet}>
-              <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                <Edit2Icon className="size-3" />
-                <span>{t('Edit')}</span>
-              </DropdownMenuItem>
-            </WalletForm>
+
+            <DropdownMenuItem onSelect={() => setIsEditing(true)}>
+              <Edit2Icon className="size-3" />
+              <span>{t('Edit')}</span>
+            </DropdownMenuItem>
             {/* )} */}
-            {wallet.slug !== WalletName.PRIMARY && wallet.deletedAt ? (
-              <DropdownMenuItem
-                onClick={() => {
-                  openConfirmation({
-                    title: t('Are you sure you want to activate this wallet?'),
-                    description: t('This wallet will be usable again'),
-                    actionLabel: t('Activate'),
-                    cancelLabel: t('Cancel'),
-                    onAction: () => {
-                      router.put(route('wallets.restore', wallet.uuid), {
-                        preserveScroll: true,
-                      });
-                    },
-                  });
-                }}
-              >
-                <ArchiveRestoreIcon className="size-3" />
-                <span>{t('Activate')}</span>
-              </DropdownMenuItem>
-            ) : (
-              <DropdownMenuItem
-                variant="destructive"
-                onClick={() => {
-                  openConfirmation({
-                    title: t('Are you sure you want to deactivate this wallet?'),
-                    description: t("This wallet won't be usable until it is activated"),
-                    actionLabel: t('Deactivate'),
-                    actionVariant: 'destructive',
-                    cancelLabel: t('Cancel'),
-                    onAction: () => {
-                      router.delete(route('wallets.destroy', wallet.uuid), {
-                        preserveScroll: true,
-                      });
-                    },
-                  });
-                }}
-              >
-                <ArchiveIcon className="size-3" />
-                <span>{t('Deactivate')}</span>
-              </DropdownMenuItem>
-            )}
-          </DropdownMenuContent>
-        </DropdownMenu>
+            {wallet.slug !== WalletName.PRIMARY &&
+              (wallet.deletedAt !== null ? (
+                <DropdownMenuItem
+                  onClick={() => {
+                    openConfirmation({
+                      title: t('Are you sure you want to activate this :model?', { model: t('Wallet') }),
+                      description: t('This wallet will be usable again'),
+                      actionLabel: t('Activate'),
+                      cancelLabel: t('Cancel'),
+                      onAction: () => {
+                        router.put(route('wallets.restore', wallet.id), {
+                          preserveScroll: true,
+                        });
+                      },
+                    });
+                  }}
+                >
+                  <ArchiveRestoreIcon className="size-3" />
+                  <span>{t('Activate')}</span>
+                </DropdownMenuItem>
+              ) : (
+                <DropdownMenuItem
+                  variant="destructive"
+                  onClick={() => {
+                    openConfirmation({
+                      title: t('Are you sure you want to deactivate this :model?', { model: t('Wallet') }),
+                      description: t("This wallet won't be usable until it is activated"),
+                      actionLabel: t('Deactivate'),
+                      actionVariant: 'destructive',
+                      cancelLabel: t('Cancel'),
+                      onAction: () => {
+                        router.delete(route('wallets.destroy', wallet.id), {
+                          preserveScroll: true,
+                        });
+                      },
+                    });
+                  }}
+                >
+                  <ArchiveIcon className="size-3" />
+                  <span>{t('Deactivate')}</span>
+                </DropdownMenuItem>
+              ))}
+          </DatatableActionsDropdown>
+        </>
       );
     },
   },

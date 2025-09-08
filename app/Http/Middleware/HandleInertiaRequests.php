@@ -6,7 +6,9 @@ namespace App\Http\Middleware;
 
 use App\Enums\FlashMessageKey;
 use App\Enums\LanguageCode;
+use App\Http\Resources\ChurchResource;
 use App\Http\Resources\User\AuthUserResource;
+use App\Models\Church;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Tighten\Ziggy\Ziggy;
@@ -50,16 +52,19 @@ final class HandleInertiaRequests extends Middleware
             ...$parentShare,
             'auth' => [
                 'user' => $request->user()
-                    ? AuthUserResource::make($request->user())
+                    ? new AuthUserResource($request->user())
                     : null,
             ],
             'ziggy' => fn (): array => [
                 ...(new Ziggy)->toArray(),
                 'location' => $request->url(),
             ],
-            'sidebarOpen' => $request->cookie('sidebar_state') === 'true',
+            'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
             'flash' => $this->getFlashMessages($request),
             'availableLocales' => LanguageCode::options(),
+            'appName' => config('app.name'),
+            'environment' => app()->environment(),
+            'church' => ($church = Church::current()) instanceof Church ? new ChurchResource($church) : null,
         ];
     }
 
@@ -73,6 +78,7 @@ final class HandleInertiaRequests extends Middleware
         return [
             FlashMessageKey::SUCCESS->value => $request->session()->get(FlashMessageKey::SUCCESS->value),
             FlashMessageKey::ERROR->value => $request->session()->get(FlashMessageKey::ERROR->value),
+            FlashMessageKey::MESSAGE->value => $request->session()->get(FlashMessageKey::MESSAGE->value),
         ];
     }
 }

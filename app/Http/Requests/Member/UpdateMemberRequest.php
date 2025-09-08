@@ -6,7 +6,9 @@ namespace App\Http\Requests\Member;
 
 use App\Enums\CivilStatus;
 use App\Enums\Gender;
+use Illuminate\Auth\Access\Response;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 
 /**
@@ -17,9 +19,9 @@ final class UpdateMemberRequest extends FormRequest
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize(): bool
+    public function authorize(): Response
     {
-        return true;
+        return Gate::authorize('update', $this->member);
     }
 
     /**
@@ -35,7 +37,7 @@ final class UpdateMemberRequest extends FormRequest
             'email' => ['required', 'email', Rule::unique('members')->ignore($this->member->id)],
             'phone' => ['required', 'phone', Rule::unique('members')->ignore($this->member->id)],
             'gender' => ['required', 'string', Rule::enum(Gender::class)],
-            'dob' => ['required', 'date:Y-m-d'],
+            'dob' => ['nullable', 'date:Y-m-d'],
             'civil_status' => ['required', 'string', Rule::enum(CivilStatus::class)],
             'skills' => ['array'],
             'skills.*' => ['string'],
@@ -52,68 +54,25 @@ final class UpdateMemberRequest extends FormRequest
     }
 
     /**
-     * Get the validated member data from the request.
-     *
-     * @return array<string,mixed>
-     */
-    public function getMemberData(): array
-    {
-        /** @var array<string, mixed> $data */
-        $data = $this->safe()->except(['skills', 'categories', 'address']);
-
-        return $data;
-    }
-
-    /**
-     * Get the validated skills data from the request.
-     *
-     * @return array<int,string>
-     */
-    public function getSkillData(): array
-    {
-        /**
-         * @var array<int,string> $data
-         */
-        $data = collect($this->safe()->only('skills'))->flatten()->toArray();
-
-        return $data;
-    }
-
-    /**
-     * Get the validated category data from the request.
-     *
-     * @return array<int,string>
-     */
-    public function getCategoryData(): array
-    {
-        /**
-         * @var array<int,string> $data
-         */
-        $data = collect($this->safe()->only('categories'))->flatten()->toArray();
-
-        return $data;
-    }
-
-    /**
      * Get the validated address data from the request.
      *
-     * @return array{address_1?: string, address_2?: string, city?: string, state?: string, zip_code?: string, country?: string}|null
+     * @return array{address_1: string, address_2: string, city: string, state: string, zip_code: string, country: string}|null
      */
     public function getAddressData(): ?array
     {
         /**
-         * @var array<string|null, array{
-         *     address_1?: string,
-         *     address_2?: string,
-         *     city?: string,
-         *     state?: string,
-         *     zip_code?: string,
-         *     country?: string
-         * }> $data
+         * @var array{
+         *     address_1: string,
+         *     address_2: string,
+         *     city: string,
+         *     state: string,
+         *     zip_code: string,
+         *     country: string
+         * }|array{} $data
          */
-        $data = $this->safe()->only(['address']);
-        if (array_key_exists('address', $data)) {
-            return $data['address'];
+        $data = $this->safe()->array('address');
+        if ($data !== []) {
+            return $data;
         }
 
         return null;

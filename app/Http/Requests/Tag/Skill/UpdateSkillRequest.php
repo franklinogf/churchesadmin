@@ -6,7 +6,9 @@ namespace App\Http\Requests\Tag\Skill;
 
 use App\Enums\TagType;
 use CodeZero\UniqueTranslation\UniqueTranslationRule;
+use Illuminate\Auth\Access\Response;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 
 /**
  * @property-read \App\Models\Tag $tag
@@ -16,9 +18,9 @@ final class UpdateSkillRequest extends FormRequest
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize(): bool
+    public function authorize(): Response
     {
-        return true;
+        return Gate::authorize('update', $this->tag);
     }
 
     /**
@@ -29,7 +31,7 @@ final class UpdateSkillRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name.*' => ['required', 'string', 'min:3', 'max:255',
+            'name' => ['required', 'string', 'min:3', 'max:255',
                 UniqueTranslationRule::for('tags')
                     ->ignore($this->tag->id)
                     ->where('type', TagType::SKILL->value),

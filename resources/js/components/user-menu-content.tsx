@@ -1,6 +1,7 @@
 import { DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
 import { UserInfo } from '@/components/user-info';
 import { useMobileNavigation } from '@/hooks/use-mobile-navigation';
+import { useTranslations } from '@/hooks/use-translations';
 import { type AuthenticatedUser } from '@/types/models/user';
 import { Link } from '@inertiajs/react';
 import { LogOut, Settings } from 'lucide-react';
@@ -11,6 +12,7 @@ interface UserMenuContentProps {
 
 export function UserMenuContent({ user }: UserMenuContentProps) {
   const cleanup = useMobileNavigation();
+  const { t } = useTranslations();
 
   return (
     <>
@@ -22,9 +24,9 @@ export function UserMenuContent({ user }: UserMenuContentProps) {
       <DropdownMenuSeparator />
       <DropdownMenuGroup>
         <DropdownMenuItem asChild>
-          <Link className="block w-full" href={route('profile.edit')} as="button" prefetch onClick={cleanup}>
+          <Link className="block w-full" href={route('settings')} as="button" onClick={cleanup}>
             <Settings className="mr-2" />
-            Settings
+            {t('Settings')}
           </Link>
         </DropdownMenuItem>
       </DropdownMenuGroup>
@@ -32,7 +34,7 @@ export function UserMenuContent({ user }: UserMenuContentProps) {
       <DropdownMenuItem asChild>
         <Link className="block w-full" method="post" href={route('logout')} as="button" onClick={cleanup}>
           <LogOut className="mr-2" />
-          Log out
+          {t('Log Out')}
         </Link>
       </DropdownMenuItem>
     </>

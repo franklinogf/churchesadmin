@@ -1,8 +1,8 @@
 import { FieldContainer } from '@/components/forms/inputs/FieldContainer';
 import { FieldError } from '@/components/forms/inputs/FieldError';
 import { FieldLabel } from '@/components/forms/inputs/FieldLabel';
+import { useTranslations } from '@/hooks/use-translations';
 import { type SelectOption } from '@/types';
-import { useLaravelReactI18n } from 'laravel-react-i18n';
 import { Check, ChevronsUpDown } from 'lucide-react';
 import { useState } from 'react';
 
@@ -25,7 +25,7 @@ interface ComboboxFieldProps {
 
 export function ComboboxField({ error, label, disabled, className, placeholder, options, value, onChange, required }: ComboboxFieldProps) {
   const [open, setOpen] = useState(false);
-  const { t } = useLaravelReactI18n();
+  const { t } = useTranslations();
   placeholder = placeholder ?? t('Select an option');
   return (
     <FieldContainer className={className}>
@@ -36,14 +36,16 @@ export function ComboboxField({ error, label, disabled, className, placeholder, 
             variant="outline"
             role="combobox"
             aria-expanded={open}
-            className={cn('w-full justify-between', { 'border-destructive ring-offset-destructive focus-visible:ring-destructive': error })}
+            className={cn('bg-input/20 w-full justify-between', {
+              'border-destructive ring-offset-destructive focus-visible:ring-destructive': error,
+            })}
             disabled={disabled}
           >
             {value ? options.find((option) => option.value.toString() === value)?.label : placeholder}
             <ChevronsUpDown className="ml-auto shrink-0 opacity-50" />
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-fit max-w-[300px] p-0">
+        <PopoverContent className="w-full max-w-fit p-0">
           <Command
             filter={(value, search, keywords) => {
               const extendedValue = value + ' ' + keywords?.join(' ');
@@ -74,40 +76,6 @@ export function ComboboxField({ error, label, disabled, className, placeholder, 
           </Command>
         </PopoverContent>
       </Popover>
-      {/* <Select required={required} name={id} disabled={disabled} value={value} onValueChange={onChange}>
-        <SelectTrigger
-          id={id}
-          className={cn('w-full', {
-            'border-destructive ring-offset-destructive focus-visible:ring-destructive': error,
-          })}
-        >
-          <SelectValue placeholder={placeholder} />
-        </SelectTrigger>
-        <SelectContent>
-          {options
-            ? options.map((item) => (
-                <SelectItem key={item.value} value={item.value.toString()}>
-                  {item.label}
-                </SelectItem>
-              ))
-            : children}
-          {clearable && (
-            <>
-              <SelectSeparator />
-              <Button
-                size="sm"
-                onClick={() => {
-                  onChange?.('');
-                }}
-                className="w-full"
-                variant="secondary"
-              >
-                {t('Deseleccionar')}
-              </Button>
-            </>
-          )}
-        </SelectContent>
-      </Select> */}
       <FieldError error={error} />
     </FieldContainer>
   );
