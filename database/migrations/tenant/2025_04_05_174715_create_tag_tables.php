@@ -2,8 +2,10 @@
 
 declare(strict_types=1);
 
+use App\Enums\TagType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -29,6 +31,19 @@ return new class extends Migration
 
             $table->unique(['tag_id', 'taggable_id', 'taggable_type']);
         });
+
+        DB::table('tags')->insert([
+            'name' => json_encode([
+                'en' => 'Regular',
+                'es' => 'Regular',
+            ]),
+            'slug' => json_encode([
+                'en' => 'regular',
+                'es' => 'regular',
+            ]),
+            'type' => TagType::CATEGORY->value,
+            'is_regular' => true,
+        ]);
     }
 
     public function down(): void

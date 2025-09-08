@@ -24,6 +24,7 @@ use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
+use Illuminate\Validation\Rules\Password;
 
 final class ChurchResource extends Resource
 {
@@ -47,7 +48,7 @@ final class ChurchResource extends Resource
                             ->prefix('https://')
                             ->suffix('.'.str(config('app.url'))->after('://'))
                             ->required()
-                            ->unique('domains', 'domain'),
+                        // ->unique('domains', 'domain', ignoreRecord: true),
                     )
                     ->extraItemActions([
                         function (string $operation): ?Action {
@@ -67,17 +68,40 @@ final class ChurchResource extends Resource
                     ->minItems(1),
                 Section::make('Settings')
                     ->translateLabel()
+                    ->divided()
                     ->schema([
                         Select::make('locale')
                             ->label(__('Language'))
                             ->required()
                             ->options(LanguageCode::class),
+                        Toggle::make('active')
+                            ->default(true)
+                            ->translateLabel()
+                            ->required()
+                            ->columnSpanFull(),
+                    ])
+                    ->compact(),
+
+                Section::make('Super admin user')
+                    ->translateLabel()
+                    ->hiddenOn('edit')
+                    ->schema([
+                        TextInput::make('email')
+                            ->label(__('Email'))
+                            ->email()
+                            ->required()
+                            ->columnSpanFull()
+                            ->dehydrated(false),
+                        TextInput::make('password')
+                            ->required()
+                            ->label(__('Password'))
+                            ->password()
+                            ->rule(Password::defaults())
+                            ->revealable()
+                            ->dehydrated(false),
                     ])
                     ->columns(2)
                     ->compact(),
-                Toggle::make('active')
-                    ->translateLabel()
-                    ->required(),
             ]);
     }
 
