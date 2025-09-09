@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace App\Providers\Filament;
 
-use Filament\Pages\Dashboard;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\Pages;
+use Filament\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
@@ -61,6 +60,8 @@ final class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
+            ->resourceCreatePageRedirect('index')
+            ->resourceEditPageRedirect('index')
             ->authMiddleware([
                 Authenticate::class,
             ]);

@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Models\Church;
 use App\Models\TenantUser;
 use Carbon\CarbonImmutable;
 
@@ -24,5 +25,15 @@ if (! function_exists('serverDate')) {
         $date = $date->setTimezone($serverTimezone);
 
         return $date;
+    }
+}
+
+if (! function_exists('create_tenant_url')) {
+    /**
+     * Create a URL for a tenant.
+     */
+    function create_tenant_url(Church $church, string $routeName): string
+    {
+        return tenant_route($church->domains()->first()->domain.'.'.str(config('app.url'))->after('://'), $routeName);
     }
 }

@@ -18,20 +18,13 @@ final class CreateChurch extends CreateRecord
 {
     protected static string $resource = ChurchResource::class;
 
-    // protected function handleRecordCreation(array $data): Church
-    // {
-    //     dd($data, $this->form->getState());
-
-    //     return self::getModel()::create($data);
-    // }
-
     protected function afterCreate(): void
     {
         $data = $this->form->getRawState();
 
         $church = $this->record;
 
-        tenancy()->run($church, function () use ($data) {
+        tenancy()->run($church, function () use ($data): void {
             $user = TenantUser::create([
                 'name' => 'Super Admin',
                 'email' => $data['email'],
