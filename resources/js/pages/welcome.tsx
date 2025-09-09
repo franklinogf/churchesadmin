@@ -57,7 +57,7 @@ export default function Welcome({ demoLink }: { demoLink: string }) {
               <div className="space-y-3 text-left">
                 <div className="flex justify-between">
                   <span className="font-medium text-gray-600">{t('Email:')}</span>
-                  <span className="font-mono text-gray-800">admin@churchesadmin.com</span>
+                  <span className="font-mono text-gray-800">admin@churchesadministration.com</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="font-medium text-gray-600">{t('Password:')}</span>
