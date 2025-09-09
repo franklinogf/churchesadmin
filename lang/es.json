@@ -301,5 +301,11 @@
     "Persons by month": "Personas por mes",
     "No data available": "No hay datos disponibles",
     ":count persons": ":count personas",
-    "Wallets by month": "Billeteras por mes"
+    "Wallets by month": "Billeteras por mes",
+    "Try ChurchesAdmin Today": "Prueba ChurchesAdmin Hoy",
+    "Experience our platform firsthand with our demo church. No signup required - just log in and explore all features.": "Experimenta nuestra plataforma de primera mano con nuestra iglesia de demostración. No requiere registro - solo inicia sesión y explora todas las funciones.",
+    "Demo Login Credentials": "Credenciales de Acceso Demo",
+    "Email:": "Correo electrónico:",
+    "Password:": "Contraseña:",
+    "Access Demo Church": "Acceder a la Iglesia Demo"
 }
