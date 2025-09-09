@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\Unit\Support;
-
 declare(strict_types=1);
+
+namespace Tests\Unit\Support;
 
 use Illuminate\Database\Eloquent\Model;
 
