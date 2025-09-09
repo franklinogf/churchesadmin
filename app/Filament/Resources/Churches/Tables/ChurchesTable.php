@@ -59,7 +59,7 @@ final class ChurchesTable
             ->recordActions([
                 Action::make('Go to website')
                     ->translateLabel()
-                    ->url(fn (Church $record): string => tenant_route($record->domains()->first()->domain.'.'.str(config('app.url'))->after('://'), 'home'))
+                    ->url(fn (Church $record): string => create_tenant_url($record, 'home'))
                     ->openUrlInNewTab()
                     ->icon('heroicon-o-globe-alt'),
                 EditAction::make(),
