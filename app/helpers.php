@@ -32,8 +32,12 @@ if (! function_exists('create_tenant_url')) {
     /**
      * Create a URL for a tenant.
      */
-    function create_tenant_url(Church $church, string $routeName): string
+    function create_tenant_url(?Church $church, string $routeName): ?string
     {
+        if ($church === null) {
+            return null;
+        }
+
         return tenant_route($church->domains()->first()->domain.'.'.str(config('app.url'))->after('://'), $routeName);
     }
 }

@@ -9,7 +9,7 @@ import { motion } from 'motion/react';
 
 export const menuItems = [] as const;
 
-export default function Welcome({ demoLink }: { demoLink: string }) {
+export default function Welcome({ demoLink }: { demoLink: string | null }) {
   const { appName } = usePage<SharedData>().props;
   const { t } = useTranslations();
   return (
@@ -39,41 +39,43 @@ export default function Welcome({ demoLink }: { demoLink: string }) {
           </nav>
         </header>
         {/* Demo Access Section */}
-        <motion.section
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="bg-gradient-to-r from-blue-50 to-indigo-50 px-6 py-20"
-        >
-          <div className="mx-auto max-w-4xl text-center">
-            <h2 className="mb-6 text-3xl font-bold text-gray-800">{t('Try ChurchesAdmin Today')}</h2>
-            <p className="mb-8 text-lg text-gray-600">
-              {t('Experience our platform firsthand with our demo church. No signup required - just log in and explore all features.')}
-            </p>
+        {demoLink && (
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="bg-gradient-to-r from-blue-50 to-indigo-50 px-6 py-20"
+          >
+            <div className="mx-auto max-w-4xl text-center">
+              <h2 className="mb-6 text-3xl font-bold text-gray-800">{t('Try ChurchesAdmin Today')}</h2>
+              <p className="mb-8 text-lg text-gray-600">
+                {t('Experience our platform firsthand with our demo church. No signup required - just log in and explore all features.')}
+              </p>
 
-            <div className="mx-auto max-w-md rounded-lg bg-white p-6 shadow-lg">
-              <h3 className="mb-4 text-xl font-semibold text-gray-800">{t('Demo Login Credentials')}</h3>
-              <div className="space-y-3 text-left">
-                <div className="flex justify-between">
-                  <span className="font-medium text-gray-600">{t('Email:')}</span>
-                  <span className="font-mono text-gray-800">admin@churchesadministration.com</span>
+              <div className="mx-auto max-w-md rounded-lg bg-white p-6 shadow-lg">
+                <h3 className="mb-4 text-xl font-semibold text-gray-800">{t('Demo Login Credentials')}</h3>
+                <div className="space-y-3 text-left">
+                  <div className="flex justify-between">
+                    <span className="font-medium text-gray-600">{t('Email:')}</span>
+                    <span className="font-mono text-gray-800">admin@churchesadministration.com</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="font-medium text-gray-600">{t('Password:')}</span>
+                    <span className="font-mono text-gray-800">Password123</span>
+                  </div>
                 </div>
-                <div className="flex justify-between">
-                  <span className="font-medium text-gray-600">{t('Password:')}</span>
-                  <span className="font-mono text-gray-800">Password123</span>
+                <div className="mt-6">
+                  <Button variant="brand" className="w-full">
+                    <a href={demoLink} target="_blank" rel="noopener noreferrer">
+                      {t('Access Demo Church')}
+                    </a>
+                  </Button>
                 </div>
-              </div>
-              <div className="mt-6">
-                <Button variant="brand" className="w-full">
-                  <a href={demoLink} target="_blank" rel="noopener noreferrer">
-                    {t('Access Demo Church')}
-                  </a>
-                </Button>
               </div>
             </div>
-          </div>
-        </motion.section>
+          </motion.section>
+        )}
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
