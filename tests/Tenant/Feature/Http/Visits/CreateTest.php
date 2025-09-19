@@ -46,10 +46,30 @@ describe('if user has permission', function (): void {
         ]);
     });
 
+    it('can store a visit without phone', function (): void {
+        $visitData = [
+            'name' => 'Jane',
+            'last_name' => 'Smith',
+            'first_visit_date' => '2025-06-07',
+        ];
+
+        $this->from(route('visits.create'))
+            ->post(route('visits.store'), $visitData)
+            ->assertSessionDoesntHaveErrors()
+            ->assertRedirect(route('visits.index'))
+            ->assertSessionHas('success');
+
+        $this->assertDatabaseHas('visits', [
+            'name' => 'Jane',
+            'last_name' => 'Smith',
+            'phone' => null,
+        ]);
+    });
+
     it('validates required fields', function (): void {
         $this->from(route('visits.create'))
             ->post(route('visits.store'), [])
-            ->assertSessionHasErrors(['name', 'last_name', 'phone']);
+            ->assertSessionHasErrors(['name', 'last_name']);
     });
 });
 

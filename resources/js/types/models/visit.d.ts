@@ -7,7 +7,7 @@ export interface Visit {
   name: string;
   lastName: string;
   email: string | null;
-  phone: string;
+  phone: string | null;
   firstVisitDate: string | null;
   createdAt: string;
   updatedAt: string;

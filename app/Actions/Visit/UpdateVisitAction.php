@@ -12,7 +12,7 @@ final class UpdateVisitAction
     /**
      * Handle the action.
      *
-     * @param  array{name?:string,last_name?:string,email?:string|null,phone?:string,first_visit_date?:string|null}  $data
+     * @param  array{name?:string,last_name?:string,email?:string|null,phone?:string|null,first_visit_date?:string|null}  $data
      * @param  array{address_1:string,address_2:string|null,city:string,state:string,zip_code:string,country:string}|array{}|null  $address
      */
     public function handle(Visit $visit, array $data, ?array $address = []): Visit
@@ -21,7 +21,7 @@ final class UpdateVisitAction
             'name' => $data['name'] ?? $visit->name,
             'last_name' => $data['last_name'] ?? $visit->last_name,
             'email' => ArrayFallback::inputOrFallback($data, 'email', $visit->email),
-            'phone' => $data['phone'] ?? $visit->phone,
+            'phone' => ArrayFallback::inputOrFallback($data, 'phone', $visit->phone),
             'first_visit_date' => ArrayFallback::inputOrFallback($data, 'first_visit_date', $visit->first_visit_date),
         ]);
 

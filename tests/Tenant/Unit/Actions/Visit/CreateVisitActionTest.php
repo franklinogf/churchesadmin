@@ -29,6 +29,28 @@ it('can create a visit without an address', function (): void {
         ->and($visit->address)->toBeNull();
 });
 
+it('can create a visit without phone number', function (): void {
+
+    $visitData = [
+        'name' => 'Alice',
+        'last_name' => 'Johnson',
+        'email' => 'alice.johnson@example.com',
+        'phone' => null,
+        'first_visit_date' => '2025-05-01',
+    ];
+
+    $action = new CreateVisitAction();
+    $visit = $action->handle($visitData);
+
+    expect($visit)->toBeInstanceOf(Visit::class)
+        ->and($visit->name)->toBe('Alice')
+        ->and($visit->last_name)->toBe('Johnson')
+        ->and($visit->email)->toBe('alice.johnson@example.com')
+        ->and($visit->phone)->toBeNull()
+        ->and($visit->first_visit_date->toDateString())->toBe('2025-05-01')
+        ->and($visit->address)->toBeNull();
+});
+
 it('can create a visit with an address', function (): void {
 
     $visitData = [
