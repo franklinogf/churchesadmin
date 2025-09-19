@@ -110,6 +110,12 @@ export function AppSidebar() {
             href: route('codes.expenseTypes.index'),
             icon: ListIcon,
           },
+          {
+            title: t('Deactivation codes'),
+            href: route('codes.deactivationCodes.index'),
+            icon: ListIcon,
+            permissionNeeded: UserPermission.DEACTIVATION_CODES_MANAGE,
+          },
         ],
       },
       {

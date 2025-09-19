@@ -50,6 +50,10 @@ enum TenantPermission: string
     case EXPENSE_TYPES_CREATE = 'expense_types.create';
     case EXPENSE_TYPES_UPDATE = 'expense_types.update';
     case EXPENSE_TYPES_DELETE = 'expense_types.delete';
+    case DEACTIVATION_CODES_MANAGE = 'deactivation_codes.manage';
+    case DEACTIVATION_CODES_CREATE = 'deactivation_codes.create';
+    case DEACTIVATION_CODES_UPDATE = 'deactivation_codes.update';
+    case DEACTIVATION_CODES_DELETE = 'deactivation_codes.delete';
     case WALLETS_MANAGE = 'wallets.manage';
     case WALLETS_CREATE = 'wallets.create';
     case WALLETS_UPDATE = 'wallets.update';
