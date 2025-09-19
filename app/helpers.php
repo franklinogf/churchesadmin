@@ -34,7 +34,7 @@ if (! function_exists('create_tenant_url')) {
      */
     function create_tenant_url(?Church $church, string $routeName): ?string
     {
-        if ($church === null) {
+        if (!$church instanceof \App\Models\Church) {
             return null;
         }
 
