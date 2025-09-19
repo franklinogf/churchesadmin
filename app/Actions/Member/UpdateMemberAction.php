@@ -18,8 +18,8 @@ final class UpdateMemberAction
      *@param  array{
      * name?:string,
      * last_name?:string,
-     * email?:string,
-     * phone?:string,
+     * email?:string|null,
+     * phone?:string|null,
      * gender?:Gender,
      * dob?:string|null,
      * civil_status?:CivilStatus,
@@ -34,8 +34,8 @@ final class UpdateMemberAction
         $member->update([
             'name' => $data['name'] ?? $member->name,
             'last_name' => $data['last_name'] ?? $member->last_name,
-            'email' => $data['email'] ?? $member->email,
-            'phone' => $data['phone'] ?? $member->phone,
+            'email' => ArrayFallback::inputOrFallback($data, 'email', $member->email),
+            'phone' => ArrayFallback::inputOrFallback($data, 'phone', $member->phone),
             'gender' => $data['gender'] ?? $member->gender,
             'dob' => ArrayFallback::inputOrFallback($data, 'dob', $member->dob),
             'civil_status' => $data['civil_status'] ?? $member->civil_status,

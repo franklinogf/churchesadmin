@@ -33,8 +33,8 @@ export default function Edit({ member, genders, civilStatuses, skills, categorie
   const { data, setData, put, errors, processing, transform } = useForm<EditForm>({
     name: member.name,
     last_name: member.lastName,
-    email: member.email,
-    phone: member.phone,
+    email: member.email ?? '',
+    phone: member.phone ?? '',
     dob: member.dob ?? '',
     gender: member.gender,
     civil_status: member.civilStatus,
@@ -76,8 +76,8 @@ export default function Edit({ member, genders, civilStatuses, skills, categorie
           <InputField required label="Name" value={data.name} onChange={(value) => setData('name', value)} error={errors.name} />
           <InputField required label="Last Name" value={data.last_name} onChange={(value) => setData('last_name', value)} error={errors.last_name} />
           <FieldsGrid>
-            <InputField required label="Email" type="email" value={data.email} onChange={(value) => setData('email', value)} error={errors.email} />
-            <PhoneField required label="Phone" value={data.phone} onChange={(value) => setData('phone', value)} error={errors.phone} />
+            <InputField label="Email" type="email" value={data.email} onChange={(value) => setData('email', value)} error={errors.email} />
+            <PhoneField label="Phone" value={data.phone} onChange={(value) => setData('phone', value)} error={errors.phone} />
           </FieldsGrid>
 
           <DatetimeField

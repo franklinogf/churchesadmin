@@ -106,6 +106,33 @@ describe('if user has permission', function (): void {
             ->and($member->address)->not->toBeNull();
     });
 
+    it('can be stored without email and phone', function (): void {
+
+        from(route('members.create'))
+            ->post(route('members.store'), [
+                'name' => 'Jane',
+                'last_name' => 'Smith',
+                'gender' => Gender::FEMALE->value,
+                'dob' => '1985-05-15',
+                'civil_status' => CivilStatus::MARRIED->value,
+            ])
+            ->assertSessionDoesntHaveErrors()
+            ->assertRedirect(route('members.index'));
+
+        assertDatabaseCount('members', 1);
+
+        $member = Member::latest()->first();
+
+        expect($member)->not->toBeNull()
+            ->and($member->name)->toBe('Jane')
+            ->and($member->last_name)->toBe('Smith')
+            ->and($member->email)->toBeNull()
+            ->and($member->phone)->toBeNull()
+            ->and($member->gender)->toBe(Gender::FEMALE)
+            ->and($member->dob->format('Y-m-d'))->toBe('1985-05-15')
+            ->and($member->civil_status)->toBe(CivilStatus::MARRIED);
+    });
+
 });
 
 describe('if user does not have permission', function (): void {

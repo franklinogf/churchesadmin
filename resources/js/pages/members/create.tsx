@@ -104,15 +104,8 @@ export default function Create({ genders, civilStatuses, skills, categories, vis
             error={errors.last_name}
           />
           <FieldsGrid>
-            <InputField
-              required
-              label={t('Email')}
-              type="email"
-              value={data.email}
-              onChange={(value) => setData('email', value)}
-              error={errors.email}
-            />
-            <PhoneField required label={t('Phone')} value={data.phone} onChange={(value) => setData('phone', value)} error={errors.phone} />
+            <InputField label={t('Email')} type="email" value={data.email} onChange={(value) => setData('email', value)} error={errors.email} />
+            <PhoneField label={t('Phone')} value={data.phone} onChange={(value) => setData('phone', value)} error={errors.phone} />
           </FieldsGrid>
 
           <DatetimeField

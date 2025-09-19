@@ -18,8 +18,8 @@ final class CreateMemberAction
      * @param  array{
      * name:string,
      * last_name:string,
-     * email:string,
-     * phone:string,
+     * email:string|null,
+     * phone:string|null,
      * gender:Gender,
      * dob?:string|null,
      * civil_status:CivilStatus,

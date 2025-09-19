@@ -29,6 +29,28 @@ it('can create a member with basic data', function (): void {
         ->and($member->phone)->toBe('+123456789')
         ->and($member->dob->toDateString())->toBe('1990-01-01');
 });
+
+it('can create a member without email and phone', function (): void {
+    $memberData = [
+        'name' => 'NoContact',
+        'last_name' => 'Person',
+        'email' => null,
+        'phone' => null,
+        'dob' => '1985-06-15',
+        'gender' => 'female',
+        'civil_status' => 'single',
+    ];
+
+    $action = new CreateMemberAction();
+    $member = $action->handle($memberData);
+
+    expect($member)->not->toBeNull()
+        ->and($member->name)->toBe('NoContact')
+        ->and($member->last_name)->toBe('Person')
+        ->and($member->email)->toBeNull()
+        ->and($member->phone)->toBeNull()
+        ->and($member->dob->toDateString())->toBe('1985-06-15');
+});
 it('can create a member with skills', function (): void {
 
     $memberData = [

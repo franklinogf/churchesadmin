@@ -24,8 +24,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read int $id
  * @property-read string $name
  * @property-read string $last_name
- * @property-read string $email
- * @property-read string $phone
+ * @property-read string|null $email
+ * @property-read string|null $phone
  * @property-read Gender $gender
  * @property-read CarbonImmutable|null $dob
  * @property-read CivilStatus $civil_status
