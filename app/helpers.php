@@ -38,6 +38,22 @@ if (! function_exists('create_tenant_url')) {
             return null;
         }
 
-        return tenant_route($church->domains()->first()->domain.'.'.str(config('app.url'))->after('://'), $routeName);
+        try {
+            /** @phpstan-ignore-next-line */
+            $domain = $church->domains()->first();
+            if (! $domain) {
+                return null;
+            }
+
+            $appUrl = config('app.url');
+            if (! is_string($appUrl)) {
+                return null;
+            }
+
+            /** @phpstan-ignore-next-line */
+            return tenant_route($domain->domain.'.'.str($appUrl)->after('://'), $routeName);
+        } catch (Exception) {
+            return null;
+        }
     }
 }

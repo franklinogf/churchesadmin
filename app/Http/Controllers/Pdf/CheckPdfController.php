@@ -6,23 +6,23 @@ namespace App\Http\Controllers\Pdf;
 
 use App\Http\Controllers\Controller;
 use App\Models\Check;
+use Barryvdh\DomPDF\Facade\Pdf as DomPdf;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Gate;
-use Spatie\LaravelPdf\Facades\Pdf;
-use Spatie\LaravelPdf\PdfBuilder;
 
 final class CheckPdfController extends Controller
 {
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Check $check): PdfBuilder
+    public function __invoke(Check $check): Response
     {
         Gate::authorize('print', $check);
-        $pdf = Pdf::view('pdf.check', [
+        $pdf = DomPdf::loadView('pdf.check', [
             'check' => $check,
             'title' => __('Check #:number', ['number' => $check->check_number ?? '']),
         ]);
 
-        return $pdf->name("check_{$check->check_number}.pdf");
+        return $pdf->stream("check_{$check->check_number}.pdf");
     }
 }
