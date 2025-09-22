@@ -10,8 +10,10 @@ use App\Models\Offering;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response as HttpResponse;
+use Illuminate\Support\Collection as SupportCollection;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -41,16 +43,16 @@ final class EntriesExpensesPdfController extends Controller
                     default => '',
                 };
             })
-            ->map(fn ($group) => $group->groupBy(fn (Offering $offering): string => $offering->date->format('Y-m'))->sortKeys());
+            ->map(fn (Collection $group): Collection => $group->groupBy(fn (Offering $offering): string => $offering->date->format('Y-m'))->sortKeys());
 
-        $entries = $offerings->map(fn ($group) => $group->map(fn ($group) => $group->sum('transaction.amountFloat')))->toArray();
+        $entries = $offerings->map(fn (Collection $group): SupportCollection => $group->map(fn (Collection $group): mixed => $group->sum('transaction.amountFloat')))->toArray();
 
         $expenses = Expense::query()
             ->whereBetween('date', [$startOfMonth, $endOfMonth])
             ->with(['expenseType', 'member'])
             ->get()
             ->groupBy(fn (Expense $expense): string => $expense->date->format('Y-m'))
-            ->map(fn ($group) => $group->groupBy(fn (Expense $expense): string => $expense->expenseType->name));
+            ->map(fn (Collection $group): Collection => $group->groupBy(fn (Expense $expense): string => $expense->expenseType->name));
 
         $dates = $this->getMonthsBetweenDates($startOfMonth ?? now()->startOfMonth(), $endOfMonth ?? now()->endOfMonth());
 
