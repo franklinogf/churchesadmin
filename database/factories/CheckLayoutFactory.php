@@ -22,7 +22,7 @@ final class CheckLayoutFactory extends Factory
             'name' => fake()->word(),
             'width' => fake()->numberBetween(100, 500),
             'height' => fake()->numberBetween(100, 500),
-            'fields' => null,
+            'fields' => [],
         ];
     }
 }

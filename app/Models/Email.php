@@ -8,6 +8,7 @@ use App\Enums\EmailStatus;
 use App\Enums\ModelMorphName;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
@@ -32,7 +33,8 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  */
 final class Email extends Model implements HasMedia
 {
-    use InteractsWithMedia;
+    /** @use HasFactory<\Database\Factories\EmailFactory> */
+    use HasFactory, InteractsWithMedia;
 
     /**
      * The email's sender

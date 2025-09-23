@@ -45,4 +45,11 @@ final class CheckFactory extends Factory
             $check->transaction->wallet->confirm($check->transaction);
         });
     }
+
+    public function unconfirmed(): static
+    {
+        return $this->afterCreating(function (Check $check) {
+            // Transaction is unconfirmed by default, no action needed
+        });
+    }
 }

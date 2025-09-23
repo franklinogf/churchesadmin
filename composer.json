@@ -96,14 +96,14 @@
             "php artisan language:generate-keys",
             "npm run format:lang"
         ],
-        "lint": "pint -v",
+        "lint": "pint -vv --dirty",
         "refactor": "rector",
         "format": [
             "@refactor",
             "@lint"
         ],
         "test:refactor": "rector --dry-run",
-        "test:lint": "pint --test",
+        "test:lint": "pint --bail",
         "test:types": [
             "phpstan analyse",
             "pest --type-coverage --compact --colors=always --min=100"

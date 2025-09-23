@@ -30,4 +30,18 @@ final class CurrentYear extends Model
             ->where('is_current', true)
             ->firstOrFail();
     }
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'is_current' => 'boolean',
+            'start_date' => 'immutable_date',
+            'end_date' => 'immutable_date',
+        ];
+    }
 }
