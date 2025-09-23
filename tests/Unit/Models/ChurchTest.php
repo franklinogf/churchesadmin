@@ -6,7 +6,7 @@ use App\Models\Church;
 use Carbon\CarbonImmutable;
 
 test('to array', function (): void {
-    $church = Church::factory()->create()->fresh();
+    $church = Church::factory()->createQuietly()->fresh();
 
     expect(array_keys($church->toArray()))->toBe([
         'id',
@@ -16,13 +16,12 @@ test('to array', function (): void {
         'data',
         'created_at',
         'updated_at',
-        'tenancy_db_name',
         'media',
     ]);
 });
 
 test('casts are applied correctly', function (): void {
-    $church = Church::factory()->create()->fresh();
+    $church = Church::factory()->createQuietly()->fresh();
 
     expect($church->active)->toBeBool();
     expect($church->created_at)->toBeInstanceOf(CarbonImmutable::class);
@@ -38,7 +37,7 @@ it('has custom columns defined', function (): void {
 });
 
 it('can register media collections', function (): void {
-    $church = Church::factory()->create();
+    $church = Church::factory()->createQuietly();
 
     $church->registerMediaCollections();
 
@@ -46,32 +45,32 @@ it('can register media collections', function (): void {
 });
 
 it('returns null logo when no media exists', function (): void {
-    $church = Church::factory()->create();
+    $church = Church::factory()->createQuietly();
 
     expect($church->logo)->toBeNull();
 });
 
 it('returns logo path when no media exists', function (): void {
-    $church = Church::factory()->create();
+    $church = Church::factory()->createQuietly();
 
     expect($church->logoPath)->toBeNull();
 });
 
 it('implements wallet interfaces', function (): void {
-    $church = Church::factory()->create();
+    $church = Church::factory()->createQuietly();
 
     expect($church)->toBeInstanceOf(Bavix\Wallet\Interfaces\Wallet::class);
     expect($church)->toBeInstanceOf(Bavix\Wallet\Interfaces\WalletFloat::class);
 });
 
 it('implements media interface', function (): void {
-    $church = Church::factory()->create();
+    $church = Church::factory()->createQuietly();
 
     expect($church)->toBeInstanceOf(Spatie\MediaLibrary\HasMedia::class);
 });
 
 it('implements tenant interface', function (): void {
-    $church = Church::factory()->create();
+    $church = Church::factory()->createQuietly();
 
     expect($church)->toBeInstanceOf(Stancl\Tenancy\Database\Contracts\TenantWithDatabase::class);
 });
