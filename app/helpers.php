@@ -32,8 +32,28 @@ if (! function_exists('create_tenant_url')) {
     /**
      * Create a URL for a tenant.
      */
-    function create_tenant_url(Church $church, string $routeName): string
+    function create_tenant_url(?Church $church, string $routeName): ?string
     {
-        return tenant_route($church->domains()->first()->domain.'.'.str(config('app.url'))->after('://'), $routeName);
+        if (! $church instanceof Church) {
+            return null;
+        }
+
+        try {
+            /** @phpstan-ignore-next-line */
+            $domain = $church->domains()->first();
+            if (! $domain) {
+                return null;
+            }
+
+            $appUrl = config('app.url');
+            if (! is_string($appUrl)) {
+                return null;
+            }
+
+            /** @phpstan-ignore-next-line */
+            return tenant_route($domain->domain.'.'.str($appUrl)->after('://'), $routeName);
+        } catch (Exception) {
+            return null;
+        }
     }
 }

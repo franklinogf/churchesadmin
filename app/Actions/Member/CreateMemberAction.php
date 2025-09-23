@@ -18,8 +18,8 @@ final class CreateMemberAction
      * @param  array{
      * name:string,
      * last_name:string,
-     * email:string,
-     * phone:string,
+     * email:string|null,
+     * phone:string|null,
      * gender:Gender,
      * dob?:string|null,
      * civil_status:CivilStatus,
@@ -34,8 +34,8 @@ final class CreateMemberAction
             $member = Member::create([
                 'name' => $data['name'],
                 'last_name' => $data['last_name'],
-                'email' => $data['email'],
-                'phone' => $data['phone'],
+                'email' => $data['email'] ?? null,
+                'phone' => $data['phone'] ?? null,
                 'gender' => $data['gender'],
                 'dob' => $data['dob'] ?? null,
                 'civil_status' => $data['civil_status'],

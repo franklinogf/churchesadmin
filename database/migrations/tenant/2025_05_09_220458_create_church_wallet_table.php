@@ -29,13 +29,15 @@ return new class extends Migration
             $table->softDeletes();
         });
 
-        DB::table('church_wallets')->insert([
-            'name' => tenant('locale') === LanguageCode::ENGLISH->value ? 'Primary' : 'Principal',
-            'description' => tenant('locale') === LanguageCode::ENGLISH->value ? 'This is the primary wallet' : 'Esta es la billetera principal',
-            'slug' => WalletName::PRIMARY->value,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+        if (! app()->environment('testing')) {
+            DB::table('church_wallets')->insert([
+                'name' => tenant('locale') === LanguageCode::ENGLISH->value ? 'Primary' : 'Principal',
+                'description' => tenant('locale') === LanguageCode::ENGLISH->value ? 'This is the primary wallet' : 'Esta es la billetera principal',
+                'slug' => WalletName::PRIMARY->value,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
 
     }
 };

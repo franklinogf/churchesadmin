@@ -59,7 +59,7 @@ export default function VisitsCreate() {
           required
         />
         <FieldsGrid>
-          <PhoneField label={t('Phone')} value={data.phone} onChange={(value) => setData('phone', value)} error={errors.phone} required />
+          <PhoneField label={t('Phone')} value={data.phone} onChange={(value) => setData('phone', value)} error={errors.phone} />
           <InputField label={t('Email')} type="email" value={data.email} onChange={(value) => setData('email', value)} error={errors.email} />
         </FieldsGrid>
 

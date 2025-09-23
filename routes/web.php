@@ -19,7 +19,7 @@ foreach (config('tenancy.identification.central_domains') as $domain) {
         Route::name('root.')
             ->group(function (): void {
                 Route::get('/', function (): Response {
-                    $church = Church::where('name', 'Demo Church')->first();
+                    $church = Church::query()->first();
                     $url = create_tenant_url($church, 'login');
 
                     return Inertia::render('welcome', ['demoLink' => $url]);

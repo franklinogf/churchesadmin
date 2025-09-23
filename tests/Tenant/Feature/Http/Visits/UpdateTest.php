@@ -58,6 +58,34 @@ describe('if user has permission', function (): void {
         ]);
     });
 
+    it('can update a visit to remove phone', function (): void {
+        $visit = Visit::factory()->create([
+            'name' => 'Original',
+            'last_name' => 'Name',
+            'phone' => '+19293394305',
+        ]);
+
+        $updateData = [
+            'name' => 'Updated',
+            'last_name' => 'Name',
+            'phone' => null,
+            'first_visit_date' => '2025-06-07',
+        ];
+
+        $this->from(route('visits.edit', $visit))
+            ->put(route('visits.update', $visit), $updateData)
+            ->assertSessionDoesntHaveErrors()
+            ->assertRedirect(route('visits.index'))
+            ->assertSessionHas('success');
+
+        $this->assertDatabaseHas('visits', [
+            'id' => $visit->id,
+            'name' => 'Updated',
+            'last_name' => 'Name',
+            'phone' => null,
+        ]);
+    });
+
     it('validates required fields on update', function (): void {
         $visit = Visit::factory()->create();
 
@@ -65,9 +93,8 @@ describe('if user has permission', function (): void {
             ->put(route('visits.update', $visit), [
                 'name' => '',
                 'last_name' => '',
-                'phone' => '',
             ])
-            ->assertSessionHasErrors(['name', 'last_name', 'phone']);
+            ->assertSessionHasErrors(['name', 'last_name']);
     });
 });
 

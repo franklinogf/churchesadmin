@@ -78,6 +78,8 @@ export type TranslationKey =
   | 'Date of Offering'
   | 'Date of birth'
   | 'Deactivate'
+  | 'Deactivation code'
+  | 'Deactivation codes'
   | 'Default amount'
   | 'Delete'
   | 'Delete :model'

@@ -27,7 +27,7 @@ export default function VisitsEdit({ visit }: { visit: Visit }) {
     name: visit.name,
     last_name: visit.lastName,
     email: visit.email ?? '',
-    phone: visit.phone,
+    phone: visit.phone ?? '',
     first_visit_date: visit.firstVisitDate ?? '',
     address: {
       address_1: visit.address?.address1 ?? '',
@@ -60,7 +60,7 @@ export default function VisitsEdit({ visit }: { visit: Visit }) {
           required
         />
         <FieldsGrid>
-          <PhoneField label={t('Phone')} value={data.phone} onChange={(value) => setData('phone', value)} error={errors.phone} required />
+          <PhoneField label={t('Phone')} value={data.phone} onChange={(value) => setData('phone', value)} error={errors.phone} />
           <InputField label={t('Email')} type="email" value={data.email} onChange={(value) => setData('email', value)} error={errors.email} />
         </FieldsGrid>
 

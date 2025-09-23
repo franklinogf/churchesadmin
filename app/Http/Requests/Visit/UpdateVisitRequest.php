@@ -34,7 +34,7 @@ final class UpdateVisitRequest extends FormRequest
             'name' => ['required', 'string', 'min:1', 'max:255'],
             'last_name' => ['required', 'string', 'min:1', 'max:255'],
             'email' => ['nullable', 'string', 'email', Rule::unique('visits')->ignore($this->visit->id)],
-            'phone' => ['required', 'phone', Rule::unique('visits')->ignore($this->visit->id)],
+            'phone' => ['nullable', 'phone', Rule::unique('visits')->ignore($this->visit->id)],
             'first_visit_date' => ['nullable', Rule::date()->format('Y-m-d')->todayOrBefore()],
             'address' => ['exclude_if:address.address_1,null'],
             'address.address_1' => ['required_with:address.city,address.state,address.zip_code,address.country', 'nullable', 'string', 'min:2', 'max:255'],
@@ -49,7 +49,7 @@ final class UpdateVisitRequest extends FormRequest
     /**
      * Get the validated visit data from the request.
      *
-     * @return array{name:string,last_name:string,email:string|null,phone:string,first_visit_date:string|null}
+     * @return array{name:string,last_name:string,email:string|null,phone:string|null,first_visit_date:string|null}
      */
     public function getVisitData(): array
     {

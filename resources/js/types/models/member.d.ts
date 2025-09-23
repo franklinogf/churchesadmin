@@ -9,8 +9,8 @@ export interface Member {
   id: number;
   name: string;
   lastName: string;
-  email: string;
-  phone: string;
+  email: string | null;
+  phone: string | null;
   gender: Gender;
   dob: string | null;
   civilStatus: CivilStatus;

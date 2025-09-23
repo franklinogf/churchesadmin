@@ -25,8 +25,8 @@ final class MemberFactory extends Factory
         return [
             'name' => fake()->firstName($gender),
             'last_name' => fake()->lastName(),
-            'email' => fake()->unique()->safeEmail(),
-            'phone' => fake()->unique()->e164PhoneNumber(),
+            'email' => fake()->optional()->unique()?->safeEmail(),
+            'phone' => fake()->optional()->unique()?->e164PhoneNumber(),
             'gender' => $gender,
             'dob' => fake()->date(),
             'civil_status' => fake()->randomElement(CivilStatus::values()),

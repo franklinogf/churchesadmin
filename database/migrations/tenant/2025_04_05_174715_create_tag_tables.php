@@ -32,20 +32,22 @@ return new class extends Migration
             $table->unique(['tag_id', 'taggable_id', 'taggable_type']);
         });
 
-        DB::table('tags')->insert([
-            'name' => json_encode([
-                'en' => 'Regular',
-                'es' => 'Regular',
-            ]),
-            'slug' => json_encode([
-                'en' => 'regular',
-                'es' => 'regular',
-            ]),
-            'type' => TagType::CATEGORY->value,
-            'is_regular' => true,
-            'created_at' => now(),
-            'updated_at' => now(),
-        ]);
+        if (! app()->environment('testing')) {
+            DB::table('tags')->insert([
+                'name' => json_encode([
+                    'en' => 'Regular',
+                    'es' => 'Regular',
+                ]),
+                'slug' => json_encode([
+                    'en' => 'regular',
+                    'es' => 'regular',
+                ]),
+                'type' => TagType::CATEGORY->value,
+                'is_regular' => true,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
     }
 
     public function down(): void

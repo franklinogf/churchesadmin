@@ -20,7 +20,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read int $id
  * @property-read string $name
  * @property-read string $last_name
- * @property-read string $phone
+ * @property-read string|null $phone
  * @property-read string|null $email
  * @property-read CarbonImmutable|null $first_visit_date
  * @property-read CarbonImmutable $created_at
