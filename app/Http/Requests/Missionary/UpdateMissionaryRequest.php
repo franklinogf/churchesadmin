@@ -53,11 +53,11 @@ final class UpdateMissionaryRequest extends FormRequest
     /**
      * Get the validated missionary data from the request.
      *
-     * @return array<string,mixed>
+     * @return array{name:string,last_name:string,email?:string|null,phone?:string|null,gender:Gender,church?:string|null,offering?:string|null,offering_frequency?:OfferingFrequency|null}
      */
     public function getMissionaryData(): array
     {
-        /** @var array<string, mixed> $data */
+        /** @var array{name:string,last_name:string,email?:string|null,phone?:string|null,gender:Gender,church?:string|null,offering?:string|null,offering_frequency?:OfferingFrequency|null} $data */
         $data = $this->safe()->except([
             'address',
         ]);
