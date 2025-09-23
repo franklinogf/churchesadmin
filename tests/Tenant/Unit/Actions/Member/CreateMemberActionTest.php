@@ -32,8 +32,8 @@ it('can create a member with basic data', function (): void {
 
 it('can create a member without email and phone', function (): void {
     $memberData = [
-        'name' => 'NoContact',
-        'last_name' => 'Person',
+        'name' => 'Nicole',
+        'last_name' => 'Lopez',
         'email' => null,
         'phone' => null,
         'dob' => '1985-06-15',
@@ -45,8 +45,8 @@ it('can create a member without email and phone', function (): void {
     $member = $action->handle($memberData);
 
     expect($member)->not->toBeNull()
-        ->and($member->name)->toBe('NoContact')
-        ->and($member->last_name)->toBe('Person')
+        ->and($member->name)->toBe('Nicole')
+        ->and($member->last_name)->toBe('Lopez')
         ->and($member->email)->toBeNull()
         ->and($member->phone)->toBeNull()
         ->and($member->dob->toDateString())->toBe('1985-06-15');

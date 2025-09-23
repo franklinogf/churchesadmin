@@ -70,7 +70,18 @@ describe('if user has permission', function (): void {
     });
 
     it('can be updated without an address when it already has an address', function (): void {
-        $missionary = Missionary::factory()->hasAddress()->create();
+        $missionary = Missionary::factory()->hasAddress()->create(
+            [
+                'name' => 'Nicole',
+                'last_name' => 'Lopez',
+                'email' => 'nicole.lopez@example.com',
+                'phone' => '+19293390000',
+                'gender' => Gender::FEMALE->value,
+                'church' => 'Old Church',
+                'offering' => '5.00',
+                'offering_frequency' => OfferingFrequency::WEEKLY->value,
+            ]
+        );
 
         from(route('missionaries.edit', ['missionary' => $missionary]))
             ->put(route('missionaries.update', ['missionary' => $missionary]), [

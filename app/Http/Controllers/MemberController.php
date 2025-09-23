@@ -77,24 +77,30 @@ final class MemberController extends Controller
         Gate::authorize('create', Member::class);
         DB::transaction(function () use ($request, $action, $transferVisitToMemberAction): void {
             /**
-             * @var array<int, string>|array{} $skills
+             * @var array{
+             * name:string,
+             * last_name:string,
+             * email?:string|null,
+             * phone?:string|null,
+             * gender:Gender,
+             * dob?:string|null,
+             * civil_status:CivilStatus,
+             * skills:array<int,string>|null|array{},
+             * categories:array<int,string>|null|array{},
+             * } $validated
              */
-            $skills = $request->array('skills');
-            /**
-             * @var array<int, string>|array{} $categories
-             */
-            $categories = $request->array('categories');
+            $validated = $request->validated();
 
             $member = $action->handle([
-                'name' => $request->string('name')->value(),
-                'last_name' => $request->string('last_name')->value(),
-                'email' => $request->string('email')->value(),
-                'phone' => $request->string('phone')->value(),
-                'gender' => Gender::from($request->string('gender')->value()),
-                'dob' => $request->string('dob')->value() ?: null,
-                'civil_status' => CivilStatus::from($request->string('civil_status')->value()),
-                'skills' => $skills,
-                'categories' => $categories,
+                'name' => $validated['name'],
+                'last_name' => $validated['last_name'],
+                'email' => $validated['email'] ?? null,
+                'phone' => $validated['phone'] ?? null,
+                'gender' => $validated['gender'],
+                'dob' => $validated['dob'] ?? null,
+                'civil_status' => $validated['civil_status'],
+                'skills' => $validated['skills'] ?? [],
+                'categories' => $validated['categories'] ?? [],
 
             ], $request->getAddressData());
             $visitId = $request->string('visit_id')->value();

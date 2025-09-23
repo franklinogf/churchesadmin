@@ -34,8 +34,8 @@ final class CreateMemberAction
             $member = Member::create([
                 'name' => $data['name'],
                 'last_name' => $data['last_name'],
-                'email' => $data['email'],
-                'phone' => $data['phone'],
+                'email' => $data['email'] ?? null,
+                'phone' => $data['phone'] ?? null,
                 'gender' => $data['gender'],
                 'dob' => $data['dob'] ?? null,
                 'civil_status' => $data['civil_status'],
