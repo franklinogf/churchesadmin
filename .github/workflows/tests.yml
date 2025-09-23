@@ -74,4 +74,4 @@ jobs:
           DB_DATABASE: testing
           DB_USERNAME: root
           DB_PASSWORD: ""
-        run: composer test:all
+        run: ./vendor/bin/pest --colors=always --stop-on-failure --coverage --compact
