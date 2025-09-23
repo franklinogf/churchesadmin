@@ -8,6 +8,7 @@ use App\Models\ExpenseType;
 use App\Models\Member;
 use Bavix\Wallet\Models\Transaction;
 use Carbon\CarbonImmutable;
+use Pest\Expectation;
 
 test('to array', function (): void {
     $check = Check::factory()->create()->fresh();
@@ -71,7 +72,7 @@ it('can scope to confirmed checks', function (): void {
     $confirmedChecks = Check::confirmed()->get();
 
     expect($confirmedChecks)->toHaveCount(3);
-    $confirmedChecks->each(fn ($check) => expect($check->isConfirmed())->toBeTrue());
+    $confirmedChecks->each(fn (Check $check): Expectation => expect($check->isConfirmed())->toBeTrue());
 });
 
 it('can scope to unconfirmed checks', function (): void {
@@ -81,7 +82,7 @@ it('can scope to unconfirmed checks', function (): void {
     $unconfirmedChecks = Check::unconfirmed()->get();
 
     expect($unconfirmedChecks)->toHaveCount(2);
-    $unconfirmedChecks->each(fn ($check) => expect($check->isConfirmed())->toBeFalse());
+    $unconfirmedChecks->each(fn (Check $check): Expectation => expect($check->isConfirmed())->toBeFalse());
 });
 
 it('has fields attribute with correct data', function (): void {
