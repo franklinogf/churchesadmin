@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Enums\EmailStatus;
 use Carbon\CarbonImmutable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphPivot;
@@ -28,6 +29,9 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  */
 final class Emailable extends MorphPivot
 {
+    /** @use HasFactory<\Database\Factories\EmailableFactory> */
+    use HasFactory;
+
     /**
      * Indicates if the IDs are auto-incrementing.
      *

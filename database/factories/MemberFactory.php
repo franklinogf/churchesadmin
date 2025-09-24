@@ -6,6 +6,7 @@ namespace Database\Factories;
 
 use App\Enums\CivilStatus;
 use App\Enums\Gender;
+use App\Models\DeactivationCode;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -30,6 +31,29 @@ final class MemberFactory extends Factory
             'gender' => $gender,
             'dob' => fake()->date(),
             'civil_status' => fake()->randomElement(CivilStatus::values()),
+            'active' => true,
         ];
+    }
+
+    /**
+     * Indicate that the member is active.
+     */
+    public function active(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'active' => true,
+            'deactivation_code_id' => null,
+        ]);
+    }
+
+    /**
+     * Indicate that the member is inactive.
+     */
+    public function inactive(): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'active' => false,
+            'deactivation_code_id' => DeactivationCode::factory(),
+        ]);
     }
 }

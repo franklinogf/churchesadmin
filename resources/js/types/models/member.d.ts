@@ -1,6 +1,7 @@
 import { type Option } from '@/components/custom-ui/MultiSelect';
 import { type CivilStatus, type Gender } from '@/enums';
 import { type AddressRelationship } from '@/types/models/address';
+import { type DeactivationCode } from '@/types/models/deactivation-code';
 import { type TagRelationship } from '@/types/models/tag';
 import type { Email, EmailPivot } from './email';
 
@@ -14,6 +15,9 @@ export interface Member {
   gender: Gender;
   dob: string | null;
   civilStatus: CivilStatus;
+  active: boolean;
+  deactivationCodeId: number | null;
+  deactivationCode?: DeactivationCode | null;
   skills: TagRelationship[];
   skillsCount?: number;
   categories: TagRelationship[];

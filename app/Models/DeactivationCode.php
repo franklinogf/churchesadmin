@@ -4,16 +4,19 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Casts\AsUcWords;
+use App\Models\Scopes\ActiveMemberScope;
 use Carbon\CarbonImmutable;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property-read int $id
  * @property-read string $name
  * @property-read CarbonImmutable $created_at
  * @property-read CarbonImmutable $updated_at
+ * @property-read Collection<int,Member> $members
  */
 final class DeactivationCode extends Model
 {
@@ -21,14 +24,12 @@ final class DeactivationCode extends Model
     use HasFactory;
 
     /**
-     * Get the attributes that should be cast.
+     * Members that have been deactivated with this code.
      *
-     * @return array<string, string>
+     * @return HasMany<Member, $this>
      */
-    protected function casts(): array
+    public function members(): HasMany
     {
-        return [
-            'name' => AsUcWords::class,
-        ];
+        return $this->hasMany(Member::class)->withoutGlobalScope(ActiveMemberScope::class);
     }
 }

@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Casts\AsUcWords;
 use Carbon\CarbonImmutable;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
@@ -15,7 +16,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
  * @property-read string $name
  * @property-read CarbonImmutable $created_at
  * @property-read CarbonImmutable $updated_at
- * @property-read Offering[] $offerings
+ * @property-read Collection<int,Offering> $offerings
  */
 final class OfferingType extends Model
 {

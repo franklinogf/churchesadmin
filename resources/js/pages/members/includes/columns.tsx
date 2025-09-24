@@ -26,7 +26,27 @@ export const columns: ColumnDef<Member>[] = [
     enableColumnFilter: false,
   },
   {
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Phone" />,
+    accessorKey: 'active',
+    header: ({ column }) => <DataTableColumnHeader justify="center" column={column} title="Active" />,
+    filterFn: 'equals',
+    meta: { filterVariant: 'select', translationPrefix: 'datatable.boolean.' },
+    size: 80,
+    cell: function CellComponent({ row }) {
+      const { t } = useTranslations();
+      const active = row.getValue('active') as boolean;
+      return (
+        <DatatableCell justify="center">
+          {active ? (
+            <Badge className="bg-green-500/10 text-green-600">{t('datatable.boolean.true')}</Badge>
+          ) : (
+            <Badge className="bg-red-500/10 text-red-600">{t('datatable.boolean.false')}</Badge>
+          )}
+        </DatatableCell>
+      );
+    },
+  },
+  {
+    header: ({ column }) => <DataTableColumnHeader justify="center" column={column} title="Phone" />,
     accessorKey: 'phone',
     enableSorting: false,
     enableColumnFilter: false,
@@ -35,7 +55,7 @@ export const columns: ColumnDef<Member>[] = [
     },
   },
   {
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Gender" />,
+    header: ({ column }) => <DataTableColumnHeader justify="center" column={column} title="Gender" />,
     accessorKey: 'gender',
     filterFn: 'equalsString',
     meta: { filterVariant: 'select', translationPrefix: 'enum.gender.' },
@@ -49,7 +69,7 @@ export const columns: ColumnDef<Member>[] = [
     },
   },
   {
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Civil status" />,
+    header: ({ column }) => <DataTableColumnHeader justify="center" column={column} title="Civil status" />,
     accessorKey: 'civilStatus',
     filterFn: 'equalsString',
     meta: { filterVariant: 'select', translationPrefix: 'enum.civil_status.' },

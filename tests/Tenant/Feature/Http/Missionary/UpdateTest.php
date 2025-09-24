@@ -139,19 +139,20 @@ describe('if user has permission', function (): void {
 
         assertDatabaseCount('addresses', 1);
 
-        $updatedMissionary = Missionary::latest()->first();
+        $missionary->refresh();
 
-        expect($updatedMissionary)->not->toBeNull()
-            ->and($updatedMissionary->name)->toBe('John')
-            ->and($updatedMissionary->last_name)->toBe('Doe')
-            ->and($updatedMissionary->email)->toBe('john.doe@example.com')
-            ->and($updatedMissionary->phone)->toBe('+19293394305')
-            ->and($updatedMissionary->gender)->toBe(Gender::MALE)
-            ->and($updatedMissionary->church)->toBe('Church name')
-            ->and($updatedMissionary->offering)->toBe('10.15')
-            ->and($updatedMissionary->offering_frequency)->toBe(OfferingFrequency::MONTHLY)
-            ->and($updatedMissionary->address)->not->toBeNull();
+        expect($missionary)->not->toBeNull()
+            ->and($missionary->name)->toBe('John')
+            ->and($missionary->last_name)->toBe('Doe')
+            ->and($missionary->email)->toBe('john.doe@example.com')
+            ->and($missionary->phone)->toBe('+19293394305')
+            ->and($missionary->gender)->toBe(Gender::MALE)
+            ->and($missionary->church)->toBe('Church name')
+            ->and($missionary->offering)->toBe('10.15')
+            ->and($missionary->offering_frequency)->toBe(OfferingFrequency::MONTHLY)
+            ->and($missionary->address)->not->toBeNull();
     });
+
     it('can be updated with an address when it does not have an address', function (): void {
         $missionary = Missionary::factory()->create();
         from(route('missionaries.edit', ['missionary' => $missionary]))

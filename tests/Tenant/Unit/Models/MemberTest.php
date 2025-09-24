@@ -20,10 +20,12 @@ test('to array', function (): void {
         'gender',
         'dob',
         'civil_status',
+        'active',
         'created_at',
         'updated_at',
         'deleted_at',
         'visit_id',
+        'deactivation_code_id',
     ]);
 });
 
@@ -54,4 +56,14 @@ it('can have tags', function (): void {
     expect($member->tags)->toHaveCount(2);
     expect($member->tags[0])->toBeInstanceOf(App\Models\Tag::class);
     expect($member->tags[1])->toBeInstanceOf(App\Models\Tag::class);
+});
+
+it('can be active or inactive', function (): void {
+    $activeMember = Member::factory()->active()->create();
+    $inactiveMember = Member::factory()->inactive()->create();
+
+    expect($activeMember->active)->toBeTrue();
+    expect($inactiveMember->active)->toBeFalse()->and(
+        $inactiveMember->deactivation_code_id
+    )->not->toBeNull();
 });

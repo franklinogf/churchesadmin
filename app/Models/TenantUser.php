@@ -6,6 +6,7 @@ namespace App\Models;
 
 use Carbon\CarbonImmutable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -25,7 +26,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read CarbonImmutable|null $email_verified_at
  * @property-read CarbonImmutable $created_at
  * @property-read CarbonImmutable $updated_at
- * @property-read Email[] $emails
+ * @property-read Collection<int,Email> $emails
  * @property-read string $timezone
  * @property-read string $timezone_country
  * @property-read int $current_year_id
