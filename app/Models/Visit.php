@@ -26,7 +26,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read CarbonImmutable $created_at
  * @property-read CarbonImmutable $updated_at
  * @property-read CarbonImmutable|null $deleted_at
- * @property-read Address $address
+ * @property-read Address|null $address
  * @property-read Collection<int,FollowUp> $followUps
  * @property-read FollowUp|null $lastFollowUp
  */
