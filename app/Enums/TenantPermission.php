@@ -32,6 +32,8 @@ enum TenantPermission: string
     case MEMBERS_DELETE = 'members.delete';
     case MEMBERS_FORCE_DELETE = 'members.force_delete';
     case MEMBERS_RESTORE = 'members.restore';
+    case MEMBERS_DEACTIVATE = 'members.deactivate';
+    case MEMBERS_ACTIVATE = 'members.activate';
     case MISSIONARIES_MANAGE = 'missionaries.manage';
     case MISSIONARIES_CREATE = 'missionaries.create';
     case MISSIONARIES_UPDATE = 'missionaries.update';

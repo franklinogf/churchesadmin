@@ -97,9 +97,9 @@ export function DataTable<TData>({
   const canSelect = tableColumns.some((col) => col.id === 'select');
 
   const tableHeaderGroups = table.getHeaderGroups();
-  const tableSelectFilters = tableHeaderGroups.flatMap((headerGroup) =>
-    headerGroup.headers.filter((h) => h.column.getCanFilter() && h.column.columnDef.meta?.filterVariant === 'select'),
-  );
+  const tableSelectFilters = table
+    .getAllColumns()
+    .flatMap((column) => (column.getCanFilter() && column.columnDef.meta?.filterVariant === 'select' ? [column] : []));
 
   useEffect(() => {
     if (!onSelectedRowsChange && !onSelectedRowsChangeOriginal) return;
@@ -128,8 +128,8 @@ export function DataTable<TData>({
               </PopoverTrigger>
               <PopoverContent>
                 <div className="flex flex-col gap-1">
-                  {tableSelectFilters.map((header) => (
-                    <ColumnSelectFilter key={header.id} column={header.column} />
+                  {tableSelectFilters.map((column) => (
+                    <ColumnSelectFilter key={column.id} column={column} />
                   ))}
                 </div>
               </PopoverContent>

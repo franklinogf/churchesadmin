@@ -35,6 +35,7 @@ export default function Index({ members }: IndexProps) {
         }
         data={members}
         rowId="id"
+        visibilityState={{ active: false, civilStatus: false }}
         columns={columns}
       />
     </AppLayout>

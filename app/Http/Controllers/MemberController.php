@@ -16,10 +16,13 @@ use App\Enums\Gender;
 use App\Enums\TagType;
 use App\Http\Requests\Member\StoreMemberRequest;
 use App\Http\Requests\Member\UpdateMemberRequest;
+use App\Http\Resources\DeactivationCode\DeactivationCodeResource;
 use App\Http\Resources\Member\MemberResource;
 use App\Http\Resources\Tag\TagResource;
 use App\Http\Resources\Visit\VisitResource;
+use App\Models\DeactivationCode;
 use App\Models\Member;
+use App\Models\Scopes\ActiveMemberScope;
 use App\Models\Tag;
 use App\Models\Visit;
 use Illuminate\Http\RedirectResponse;
@@ -38,7 +41,10 @@ final class MemberController extends Controller
     {
         Gate::authorize('viewAny', Member::class);
 
-        $members = Member::latest()->get();
+        $members = Member::query()
+            ->withoutGlobalScope(ActiveMemberScope::class)
+            ->latest()
+            ->get();
 
         return Inertia::render('members/index', ['members' => MemberResource::collection($members)]);
     }
@@ -128,15 +134,20 @@ final class MemberController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Member $member): Response
+    public function edit(int $memberId): Response
     {
+        $member = Member::query()
+            ->withoutGlobalScope(ActiveMemberScope::class)
+            ->findOrFail($memberId);
+
         Gate::authorize('update', $member);
 
-        $member->load('address');
+        $member->load('address', 'deactivationCode');
         $genders = Gender::options();
         $civilStatuses = CivilStatus::options();
         $skills = Tag::getWithType(TagType::SKILL->value);
         $categories = Tag::getWithType(TagType::CATEGORY->value);
+        $deactivationCodes = DeactivationCode::all();
 
         return Inertia::render('members/edit', [
             'member' => new MemberResource($member),
@@ -144,6 +155,7 @@ final class MemberController extends Controller
             'civilStatuses' => $civilStatuses,
             'skills' => TagResource::collection($skills),
             'categories' => TagResource::collection($categories),
+            'deactivationCodes' => DeactivationCodeResource::collection($deactivationCodes),
         ]);
     }
 

@@ -71,6 +71,30 @@ final class MemberPolicy
     }
 
     /**
+     * Determine whether the user can deactivate the model.
+     */
+    public function deactivate(TenantUser $user): Response
+    {
+        if ($user->can(TenantPermission::MEMBERS_DEACTIVATE)) {
+            return Response::allow();
+        }
+
+        return Response::deny(__('permission.deactivate', ['label' => __('Member')]));
+    }
+
+    /**
+     * Determine whether the user can activate the model.
+     */
+    public function activate(TenantUser $user): Response
+    {
+        if ($user->can(TenantPermission::MEMBERS_ACTIVATE)) {
+            return Response::allow();
+        }
+
+        return Response::deny(__('permission.activate', ['label' => __('Member')]));
+    }
+
+    /**
      * Determine whether the user can permanently delete the model.
      */
     public function forceDelete(TenantUser $user): Response

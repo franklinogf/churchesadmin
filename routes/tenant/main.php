@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MemberController;
+use App\Http\Controllers\MemberStatusController;
 use App\Http\Controllers\MissionaryController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\UserController;
@@ -26,6 +27,10 @@ Route::put('members/{member}/restore', [MemberController::class, 'restore'])
 Route::delete('members/{member}/force-delete', [MemberController::class, 'forceDelete'])
     ->withTrashed()
     ->name('members.forceDelete');
+Route::patch('members/{member}/deactivate', [MemberStatusController::class, 'deactivate'])
+    ->name('members.deactivate');
+Route::patch('members/{member}/activate', [MemberStatusController::class, 'activate'])
+    ->name('members.activate');
 
 Route::resource('missionaries', MissionaryController::class);
 Route::put('missionaries/{missionary}/restore', [MissionaryController::class, 'restore'])

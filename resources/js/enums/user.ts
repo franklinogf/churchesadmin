@@ -20,6 +20,8 @@ export enum UserPermission {
   MEMBERS_DELETE = 'members.delete',
   MEMBERS_FORCE_DELETE = 'members.force_delete',
   MEMBERS_RESTORE = 'members.restore',
+  MEMBERS_DEACTIVATE = 'members.deactivate',
+  MEMBERS_ACTIVATE = 'members.activate',
   MISSIONARIES_MANAGE = 'missionaries.manage',
   MISSIONARIES_CREATE = 'missionaries.create',
   MISSIONARIES_UPDATE = 'missionaries.update',

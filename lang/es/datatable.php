@@ -27,5 +27,9 @@ return [
         'last_page' => 'Ir a la última página',
         'next_page' => 'Ir a la página siguiente',
     ],
+    'boolean' => [
+        'true' => 'Sí',
+        'false' => 'No',
+    ],
 
 ];

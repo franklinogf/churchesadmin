@@ -114,6 +114,8 @@ return [
             'delete' => 'Eliminar Miembros',
             'force_delete' => 'Forzar Eliminación de Miembros',
             'restore' => 'Restaurar Miembros',
+            'deactivate' => 'Desactivar Miembros',
+            'activate' => 'Activar Miembros',
         ],
         'missionaries' => [
             'manage' => 'Gestionar Misioneros',
