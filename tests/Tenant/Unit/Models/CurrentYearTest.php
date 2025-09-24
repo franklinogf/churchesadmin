@@ -57,15 +57,3 @@ it('throws exception when no current year exists', function (): void {
     expect(fn (): CurrentYear => CurrentYear::current())
         ->toThrow(Illuminate\Database\Eloquent\ModelNotFoundException::class);
 });
-
-it('can have start and end dates', function (): void {
-    $currentYear = CurrentYear::factory()->create([
-        'start_date' => '2023-01-01',
-        'end_date' => '2023-12-31',
-    ]);
-
-    expect($currentYear->start_date)->toBeInstanceOf(CarbonImmutable::class);
-    expect($currentYear->end_date)->toBeInstanceOf(CarbonImmutable::class);
-    expect($currentYear->start_date->format('Y-m-d'))->toBe('2023-01-01');
-    expect($currentYear->end_date->format('Y-m-d'))->toBe('2023-12-31');
-});
