@@ -28,6 +28,8 @@ it('has needed enums', function (): void {
         'MEMBERS_DELETE',
         'MEMBERS_FORCE_DELETE',
         'MEMBERS_RESTORE',
+        'MEMBERS_DEACTIVATE',
+        'MEMBERS_ACTIVATE',
         'MISSIONARIES_MANAGE',
         'MISSIONARIES_CREATE',
         'MISSIONARIES_UPDATE',

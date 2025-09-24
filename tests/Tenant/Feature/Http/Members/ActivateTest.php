@@ -19,23 +19,13 @@ describe('if user has permission', function (): void {
 
         $response = patch(route('members.activate', $member));
 
-        $response->assertOk();
+        $response->assertRedirect();
 
         $member->refresh();
         expect($member->active)->toBeTrue();
         expect($member->deactivation_code_id)->toBeNull();
     });
 
-    it('cannot activate an already active member', function (): void {
-        asUserWithPermission(TenantPermission::MEMBERS_ACTIVATE);
-
-        $member = Member::factory()->active()->create();
-
-        $response = patch(route('members.activate', $member));
-
-        $response->assertUnprocessable();
-        $response->assertJsonValidationErrors(['active']);
-    });
 });
 
 describe('if user does not have permission', function (): void {

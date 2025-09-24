@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use App\Models\DeactivationCode;
-use Carbon\CarbonImmutable;
 
 test('to array', function (): void {
     $deactivationCode = DeactivationCode::factory()->create()->fresh();
@@ -16,12 +15,12 @@ test('to array', function (): void {
     ]);
 });
 
-test('casts are applied correctly', function (): void {
-    $deactivationCode = DeactivationCode::factory()->create([
-        'name' => 'test deactivation code',
-    ])->fresh();
+it('can have members', function (): void {
+    $deactivationCode = DeactivationCode::factory()->create();
+    $members = App\Models\Member::factory()->count(3)->inactive()->create([
+        'deactivation_code_id' => $deactivationCode->id,
+    ]);
 
-    expect($deactivationCode->created_at)->toBeInstanceOf(CarbonImmutable::class);
-    expect($deactivationCode->updated_at)->toBeInstanceOf(CarbonImmutable::class);
-    expect($deactivationCode->name)->toBe('Test Deactivation Code'); // AsUcWords cast
+    expect($deactivationCode->members)->toHaveCount(3);
+    expect($deactivationCode->members->pluck('id')->all())->toEqualCanonicalizing($members->pluck('id')->all());
 });

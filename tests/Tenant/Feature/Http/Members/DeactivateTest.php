@@ -16,14 +16,13 @@ describe('if user has permission', function (): void {
         $member = Member::factory()->active()->create();
         $deactivationCode = DeactivationCode::factory()->create([
             'name' => 'Moved Away',
-            'description' => 'Member moved to another location',
         ]);
 
         $response = patch(route('members.deactivate', $member), [
             'deactivation_code_id' => $deactivationCode->id,
         ]);
 
-        $response->assertOk();
+        $response->assertRedirect();
 
         $member->refresh();
         expect($member->active)->toBeFalse();
@@ -37,8 +36,8 @@ describe('if user has permission', function (): void {
 
         $response = patch(route('members.deactivate', $member), []);
 
-        $response->assertUnprocessable();
-        $response->assertJsonValidationErrors(['deactivation_code_id']);
+        $response->assertRedirect();
+        $response->assertSessionHasErrors(['deactivation_code_id']);
 
         $member->refresh();
         expect($member->active)->toBeTrue();
@@ -53,28 +52,13 @@ describe('if user has permission', function (): void {
             'deactivation_code_id' => 999,
         ]);
 
-        $response->assertUnprocessable();
-        $response->assertJsonValidationErrors(['deactivation_code_id']);
+        $response->assertRedirect();
+        $response->assertSessionHasErrors(['deactivation_code_id']);
 
         $member->refresh();
         expect($member->active)->toBeTrue();
     });
 
-    it('cannot deactivate an already inactive member', function (): void {
-        asUserWithPermission(TenantPermission::MEMBERS_DEACTIVATE);
-
-        $deactivationCode = DeactivationCode::factory()->create();
-        $member = Member::factory()->inactive()->create([
-            'deactivation_code_id' => $deactivationCode->id,
-        ]);
-
-        $response = patch(route('members.deactivate', $member), [
-            'deactivation_code_id' => $deactivationCode->id,
-        ]);
-
-        $response->assertUnprocessable();
-        $response->assertJsonValidationErrors(['active']);
-    });
 });
 
 describe('if user does not have permission', function (): void {

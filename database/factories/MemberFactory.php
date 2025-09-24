@@ -6,6 +6,7 @@ namespace Database\Factories;
 
 use App\Enums\CivilStatus;
 use App\Enums\Gender;
+use App\Models\DeactivationCode;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -52,6 +53,7 @@ final class MemberFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'active' => false,
+            'deactivation_code_id' => DeactivationCode::factory(),
         ]);
     }
 }
