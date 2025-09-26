@@ -7,20 +7,28 @@ namespace App\Support;
 use Carbon\Carbon;
 use DateTimeInterface;
 use Exception;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 final class DiffLogger
 {
+    /**
+     * @var array{old:array<string, mixed>|array{},attributes:array<string, mixed>|array{}}
+     */
     private array $diff = [
         'old' => [],
         'attributes' => [],
     ];
 
+    /**
+     * Fields to ignore during comparison
+     *
+     * @var string[]
+     */
     private array $ignoredFields = ['updated_at', 'created_at'];
 
     /**
-     * Set fields to ignore during comparison.
+     * @param  string[]  $fields
+     *                            Set fields to ignore during comparison.
      */
     public function ignore(array $fields): self
     {
@@ -31,6 +39,9 @@ final class DiffLogger
 
     /**
      * Compare old and new arrays recursively, auto-normalizing dates.
+     *
+     * @param  array<string, mixed>  $old
+     * @param  array<string, mixed>  $new
      */
     public function addChanges(array $old, array $new): self
     {
@@ -41,10 +52,12 @@ final class DiffLogger
 
     /**
      * Compare Eloquent models directly.
+     *
+     * @param  string[]  $fields  Fields to compare; if empty, compare all attributes.
      */
     public function compareModels(Model $old, Model $new, array $fields = []): self
     {
-        $fields = empty($fields) ? array_keys($old->getAttributes()) : $fields;
+        $fields = $fields === [] ? array_keys($old->getAttributes()) : $fields;
         $fields = array_diff($fields, $this->ignoredFields);
 
         $oldData = $old->only($fields);
@@ -72,6 +85,8 @@ final class DiffLogger
 
     /**
      * Get the diff array.
+     *
+     * @return array{old:array<string, mixed>|array{},attributes:array<string, mixed>|array{}}
      */
     public function get(): array
     {
@@ -88,6 +103,8 @@ final class DiffLogger
 
     /**
      * Get only the changed fields as a simple array.
+     *
+     * @return string[]
      */
     public function getChangedFields(): array
     {
@@ -101,11 +118,13 @@ final class DiffLogger
     {
         $changes = $this->getChangedFields();
 
-        return empty($changes) ? 'No changes' : 'Changed: '.implode(', ', $changes);
+        return $changes === [] ? 'No changes' : 'Changed: '.implode(', ', $changes);
     }
 
     /**
      * Log the changes using Laravel Activitylog.
+     *
+     * @param  string|null  $summary  Optional summary message; if null, a default summary will be used.
      */
     public function log(Model $model, string $event, ?string $summary = null): void
     {
@@ -113,11 +132,17 @@ final class DiffLogger
             activity()
                 ->event($event)
                 ->performedOn($model)
-                ->withProperties($this->get())
+                ->withProperties($this->diff)
                 ->log($summary ?? $this->getSummary());
         }
     }
 
+    /**
+     * Recursive diffing helper.
+     *
+     * @param  array<string, mixed>  $old
+     * @param  array<string, mixed>  $new
+     */
     private function diffRecursive(array $old, array $new): void
     {
         // Check for removed fields
@@ -132,20 +157,24 @@ final class DiffLogger
             }
         }
 
+        /**
+         * @var array<string, mixed>|string $newValue
+         */
         // Check for added/changed fields
         foreach ($new as $key => $newValue) {
             if (in_array($key, $this->ignoredFields)) {
                 continue;
             }
-
-            $oldValue = array_key_exists($key, $old) ? $old[$key] : null;
+            /**
+             * @var array<string, mixed>|null|string $oldValue
+             */
+            $oldValue = $old[$key] ?? null;
 
             if (is_array($newValue) && is_array($oldValue)) {
                 // Create a nested logger for recursive comparison
                 $nested = new self();
                 $nested->ignoredFields = $this->ignoredFields;
                 $nested->diffRecursive($oldValue, $newValue);
-
                 if ($nested->hasChanges()) {
                     // Instead of nesting the entire diff structure,
                     // flatten it with prefixed keys for better readability
@@ -156,25 +185,24 @@ final class DiffLogger
                         $this->diff['attributes']["{$key}.{$nestedKey}"] = $nestedNewValue;
                     }
                 }
-            } else {
-                if (! $this->valuesAreEqual($oldValue, $newValue)) {
-                    $this->diff['old'][$key] = $this->normalizeValue($oldValue);
-                    $this->diff['attributes'][$key] = $this->normalizeValue($newValue);
-                }
+            } elseif (! $this->valuesAreEqual($oldValue, $newValue)) {
+                $this->diff['old'][$key] = $this->normalizeValue($oldValue);
+                $this->diff['attributes'][$key] = $this->normalizeValue($newValue);
             }
         }
     }
 
+    /**
+     * Normalize a value for comparison and logging.
+     *
+     * Converts dates to 'Y-m-d' format, trims strings, converts empty strings to null,
+     * and handles arrays and collections recursively.
+     */
     private function normalizeValue(mixed $value): mixed
     {
         // Handle null values
         if ($value === null) {
             return null;
-        }
-
-        // Handle Eloquent Collections
-        if ($value instanceof Collection) {
-            return $value->toArray();
         }
 
         // Handle Eloquent Models
@@ -282,9 +310,15 @@ final class DiffLogger
 
     /**
      * Check if an array is indexed (not associative).
+     *
+     * @param  array<mixed>  $array
      */
     private function isIndexedArray(array $array): bool
     {
+        if ($array === []) {
+            return true;
+        }
+
         return array_keys($array) === range(0, count($array) - 1);
     }
 }

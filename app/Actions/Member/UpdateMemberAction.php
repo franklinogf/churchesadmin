@@ -11,7 +11,7 @@ use App\Models\Member;
 use App\Support\ArrayFallback;
 use App\Support\DiffLogger;
 
-final class UpdateMemberAction
+final readonly class UpdateMemberAction
 {
     public function __construct(private DiffLogger $logger) {}
 
@@ -33,9 +33,11 @@ final class UpdateMemberAction
      */
     public function handle(Member $member, array $data, ?array $address = []): void
     {
+        // Create a logger for tracking changes
 
         // Capture original state
         $originalMember = $member->replicate();
+        /** @var array<string, array<string>> */
         $originalTags = [
             'skills' => $member->tags()->where('type', TagType::SKILL->value)->pluck('name')->toArray(),
             'categories' => $member->tags()->where('type', TagType::CATEGORY->value)->pluck('name')->toArray(),
@@ -54,9 +56,12 @@ final class UpdateMemberAction
         ]);
 
         // Compare member changes
-        $this->logger->compareModels($originalMember, $member->fresh(), [
-            'name', 'last_name', 'email', 'phone', 'gender', 'dob', 'civil_status',
-        ]);
+        $freshMember = $member->fresh();
+        if ($freshMember !== null) {
+            $this->logger->compareModels($originalMember, $freshMember, [
+                'name', 'last_name', 'email', 'phone', 'gender', 'dob', 'civil_status',
+            ]);
+        }
 
         // Handle tags
         $this->handleTagsUpdates($member, $data, $originalTags);
@@ -64,17 +69,28 @@ final class UpdateMemberAction
         // Handle address
         $this->handleAddressUpdates($member, $address, $originalAddress);
 
-        $this->logger->log($member, 'updated');
+        // Log activity if there are changes
+        if ($this->logger->hasChanges()) {
+            activity()
+                ->event('updated')
+                ->performedOn($member)
+                ->withProperties($this->logger->get())
+                ->log('Member updated');
+        }
     }
 
     /**
      * Handle tags updates and logging.
+     *
+     * @param  array<string, mixed>  $data
+     * @param  array<string, array<string>>  $originalTags
      */
     private function handleTagsUpdates(Member $member, array $data, array $originalTags): void
     {
         foreach (['skills' => TagType::SKILL, 'categories' => TagType::CATEGORY] as $key => $type) {
             if (array_key_exists($key, $data)) {
-                $member->syncTagsWithType($data[$key] ?? [], $type->value);
+                $tags = $data[$key] ?? [];
+                $member->syncTagsWithType(is_array($tags) ? $tags : [], $type->value);
                 $newTags = $member->tags()->where('type', $type->value)->pluck('name')->toArray();
                 $this->logger->addCustom($key, $originalTags[$key], $newTags);
             }
@@ -83,6 +99,9 @@ final class UpdateMemberAction
 
     /**
      * Handle address updates and logging.
+     *
+     * @param  array<string, mixed>|null  $address
+     * @param  array<string, mixed>|null  $originalAddress
      */
     private function handleAddressUpdates(Member $member, ?array $address, ?array $originalAddress): void
     {
@@ -90,7 +109,7 @@ final class UpdateMemberAction
             if ($member->address !== null) {
                 $member->address()->update($address);
                 $member->load('address'); // Reload to get fresh data
-                $newAddress = $member->address->only(array_keys($originalAddress ?? []));
+                $newAddress = $member->address?->only(array_keys($originalAddress ?? []));
 
                 $this->logger->addChanges(['address' => $originalAddress], ['address' => $newAddress]);
 
