@@ -14,5 +14,9 @@ final class DeleteMemberAction
     public function handle(Member $member): void
     {
         $member->delete();
+        activity('members')
+            ->event('deleted')
+            ->performedOn($member)
+            ->log('Member :subject.name deleted');
     }
 }

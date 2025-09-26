@@ -8,6 +8,7 @@ use App\Enums\CivilStatus;
 use App\Enums\Gender;
 use App\Enums\TagType;
 use App\Models\Member;
+use App\Support\DiffLogger;
 use Illuminate\Support\Facades\DB;
 
 final class CreateMemberAction
@@ -31,6 +32,9 @@ final class CreateMemberAction
     public function handle(array $data, ?array $address = null): Member
     {
         return DB::transaction(function () use ($data, $address) {
+            // Create a logger for tracking the creation
+            $logger = new DiffLogger();
+
             $member = Member::create([
                 'name' => $data['name'],
                 'last_name' => $data['last_name'],
@@ -41,16 +45,32 @@ final class CreateMemberAction
                 'civil_status' => $data['civil_status'],
             ]);
 
+            // Log member creation with all provided data
+            $memberData = $member->only([
+                'name', 'last_name', 'email', 'phone', 'gender', 'dob', 'civil_status',
+            ]);
+            $logger->addCustom('member', null, $memberData);
+
+            // Handle skills
             if (isset($data['skills']) && $data['skills'] !== []) {
                 $member->attachTags($data['skills'], TagType::SKILL->value);
-            }
-            if (isset($data['categories']) && $data['categories'] !== []) {
-                $member->attachTags($data['categories'], TagType::CATEGORY->value);
+                $logger->addCustom('skills', null, $data['skills']);
             }
 
+            // Handle categories
+            if (isset($data['categories']) && $data['categories'] !== []) {
+                $member->attachTags($data['categories'], TagType::CATEGORY->value);
+                $logger->addCustom('categories', null, $data['categories']);
+            }
+
+            // Handle address
             if ($address !== null) {
                 $member->address()->create($address);
+                $logger->addCustom('address', null, $address);
             }
+
+            // Log the creation activity
+            $logger->log($member, 'created', 'Member created');
 
             return $member;
         });
