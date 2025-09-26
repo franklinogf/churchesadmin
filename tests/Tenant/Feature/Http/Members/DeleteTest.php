@@ -17,10 +17,7 @@ it('can be deleted if user has permission', function (): void {
         ->assertRedirect(route('members.index'))
         ->assertSessionHas(FlashMessageKey::SUCCESS->value);
 
-    assertDatabaseCount('members', 1);
-
-    expect(Member::all()->count())->toBe(0)
-        ->and(Member::withTrashed()->count())->toBe(1);
+    assertDatabaseCount('members', 0);
 
 });
 

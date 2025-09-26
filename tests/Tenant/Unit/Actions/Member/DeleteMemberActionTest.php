@@ -3,9 +3,10 @@
 declare(strict_types=1);
 
 use App\Actions\Member\DeleteMemberAction;
+use App\Models\Address;
 use App\Models\Member;
 
-it('can soft delete a member', function (): void {
+it('can delete a member', function (): void {
     $member = Member::factory()->create([
         'name' => 'John',
         'last_name' => 'Doe',
@@ -17,10 +18,8 @@ it('can soft delete a member', function (): void {
     $action = new DeleteMemberAction();
     $action->handle($member);
 
-    // Member should be soft deleted
-    expect(Member::find($memberId))->toBeNull()
-        ->and(Member::withTrashed()->find($memberId))->not->toBeNull()
-        ->and(Member::withTrashed()->find($memberId)->deleted_at)->not->toBeNull();
+    expect(Member::find($memberId))->toBeNull();
+
 });
 
 it('can delete member with address', function (): void {
@@ -31,12 +30,8 @@ it('can delete member with address', function (): void {
     $action = new DeleteMemberAction();
     $action->handle($member);
 
-    // Member should be soft deleted
     expect(Member::find($memberId))->toBeNull()
-        ->and(Member::withTrashed()->find($memberId))->not->toBeNull();
-
-    // Address should still exist (not cascade deleted)
-    expect($member->fresh(['address'])->address)->not->toBeNull();
+        ->and(Address::find($addressId))->toBeNull();
 });
 
 it('can delete member with tags', function (): void {
@@ -54,6 +49,6 @@ it('can delete member with tags', function (): void {
     $action->handle($member);
 
     // Member should be soft deleted
-    expect(Member::find($memberId))->toBeNull()
-        ->and(Member::withTrashed()->find($memberId))->not->toBeNull();
+    expect(Member::find($memberId))->toBeNull();
+
 });
