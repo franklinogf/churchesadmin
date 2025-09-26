@@ -43,6 +43,7 @@ type DataTableProps<TData> = {
   rowId?: keyof TData;
   headerButton?: React.ReactNode;
   visibilityState?: Record<keyof TData, boolean> | VisibilityState;
+  filteringState?: ColumnFiltersState;
   sortingState?: { id: keyof TData; desc: boolean }[];
   onSelectedRowsChange?: (selectedRows: string[]) => void;
   onSelectedRowsChangeOriginal?: (selectedRows: TData[]) => void;
@@ -60,6 +61,7 @@ export function DataTable<TData>({
   headerButton,
   visibilityState = {},
   sortingState = [],
+  filteringState = [],
   onSelectedRowsChange,
   onSelectedRowsChangeOriginal,
   print,
@@ -70,7 +72,7 @@ export function DataTable<TData>({
 
   const [rowSelection, setRowSelection] = useState({});
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(visibilityState);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>(filteringState);
   const lastEmitted = useRef<string[] | TData[]>([]);
 
   const table = useReactTable({
