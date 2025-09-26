@@ -18,7 +18,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * Member model.
@@ -33,7 +32,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read CivilStatus $civil_status
  * @property-read bool $active
  * @property-read int|null $deactivation_code_id
- * @property-read CarbonImmutable|null $deleted_at
  * @property-read CarbonImmutable $created_at
  * @property-read CarbonImmutable $updated_at
  * @property-read Address|null $address
@@ -46,7 +44,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 final class Member extends Model
 {
     /** @use HasFactory<\Database\Factories\MemberFactory> */
-    use HasFactory, HasTags, SoftDeletes;
+    use HasFactory, HasTags;
 
     /**
      * The name of the table associated with the Tag model.
