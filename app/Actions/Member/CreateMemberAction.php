@@ -6,6 +6,7 @@ namespace App\Actions\Member;
 
 use App\Enums\CivilStatus;
 use App\Enums\Gender;
+use App\Enums\ModelMorphName;
 use App\Enums\TagType;
 use App\Models\Member;
 use App\Support\DiffLogger;
@@ -69,8 +70,11 @@ final class CreateMemberAction
                 $logger->addCustom('address', null, $address);
             }
 
-            // Log the creation activity
-            $logger->log($member, 'created', 'Member created');
+            activity(ModelMorphName::MEMBER->activityLogName())
+                ->event('created')
+                ->performedOn($member)
+                ->withProperties($logger->get())
+                ->log($logger->getSummary());
 
             return $member;
         });

@@ -71,11 +71,11 @@ final readonly class UpdateMemberAction
 
         // Log activity if there are changes
         if ($this->logger->hasChanges()) {
-            activity()
+            activity('members')
                 ->event('updated')
                 ->performedOn($member)
                 ->withProperties($this->logger->get())
-                ->log('Member updated');
+                ->log($this->logger->getSummary());
         }
     }
 
