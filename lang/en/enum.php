@@ -25,6 +25,9 @@ return [
         'check_layout' => 'Check Layout',
         'email' => 'Email',
         'visit' => 'Visit',
+        'expense' => 'Expense',
+        'offering' => 'Offering',
+        'check' => 'Check',
     ],
     'wallet_name' => [
         'primary' => 'Primary',

@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Enums\ModelMorphName;
+use App\Models\Check;
 use App\Models\CheckLayout;
 use App\Models\Church;
 use App\Models\ChurchWallet;
 use App\Models\Email;
+use App\Models\Expense;
 use App\Models\Member;
 use App\Models\Missionary;
+use App\Models\Offering;
 use App\Models\OfferingType;
 use App\Models\Scopes\CurrentYearScope;
 use App\Models\TenantUser;
@@ -113,6 +116,10 @@ final class AppServiceProvider extends ServiceProvider
             ModelMorphName::CHECK_LAYOUT->value => CheckLayout::class,
             ModelMorphName::EMAIL->value => Email::class,
             ModelMorphName::VISIT->value => Visit::class,
+            ModelMorphName::EXPENSE->value => Expense::class,
+            ModelMorphName::OFFERING->value => Offering::class,
+            ModelMorphName::CHECK->value => Check::class,
+
         ]);
     }
 
