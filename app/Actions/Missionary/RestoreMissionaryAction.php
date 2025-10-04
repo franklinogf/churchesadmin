@@ -14,5 +14,9 @@ final class RestoreMissionaryAction
     public function handle(Missionary $missionary): void
     {
         $missionary->restore();
+        activity('missionary')
+            ->event('restored')
+            ->performedOn($missionary)
+            ->log('Missionary :subject.name restored');
     }
 }

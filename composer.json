@@ -97,7 +97,7 @@
             "php artisan language:generate-keys",
             "npm run format:lang"
         ],
-        "lint": "pint -vv --dirty",
+        "lint": "pint -vv --diff=main",
         "refactor": "rector",
         "format": [
             "@refactor",

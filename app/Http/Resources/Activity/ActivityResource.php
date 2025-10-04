@@ -52,6 +52,7 @@ final class ActivityResource extends JsonResource
                 ModelMorphName::OFFERING->value => new OfferingResource($this->subject),
                 ModelMorphName::EXPENSE->value => new ExpenseResource($this->subject),
                 ModelMorphName::CHECK->value => new CheckResource($this->subject),
+                default => null,
             } : null),
         ];
     }

@@ -85,6 +85,7 @@ it('has needed enums', function (): void {
         'EXPENSES_CREATE',
         'EXPENSES_UPDATE',
         'EXPENSES_DELETE',
+        'ACTIVITY_LOGS_MANAGE',
 
     ]);
 

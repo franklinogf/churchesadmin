@@ -6,6 +6,7 @@ namespace App\Actions\Member;
 
 use App\Enums\CivilStatus;
 use App\Enums\Gender;
+use App\Enums\ModelMorphName;
 use App\Enums\TagType;
 use App\Models\Member;
 use App\Support\ArrayFallback;
@@ -33,8 +34,6 @@ final readonly class UpdateMemberAction
      */
     public function handle(Member $member, array $data, ?array $address = []): void
     {
-        // Create a logger for tracking changes
-
         // Capture original state
         $originalMember = $member->replicate();
         /** @var array<string, array<string>> */
@@ -63,15 +62,13 @@ final readonly class UpdateMemberAction
             ]);
         }
 
-        // Handle tags
         $this->handleTagsUpdates($member, $data, $originalTags);
 
-        // Handle address
         $this->handleAddressUpdates($member, $address, $originalAddress);
 
         // Log activity if there are changes
         if ($this->logger->hasChanges()) {
-            activity('members')
+            activity(ModelMorphName::MEMBER->activityLogName())
                 ->event('updated')
                 ->performedOn($member)
                 ->withProperties($this->logger->get())

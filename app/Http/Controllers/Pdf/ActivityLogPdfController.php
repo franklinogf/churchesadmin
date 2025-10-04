@@ -56,9 +56,9 @@ final class ActivityLogPdfController extends Controller
 
             if ($startDate && $endDate) {
                 $title .= " ({$startDate} to {$endDate})";
-            } elseif ($startDate) {
+            } elseif ($startDate !== '' && $startDate !== '0') {
                 $title .= " (from {$startDate})";
-            } elseif ($endDate) {
+            } elseif ($endDate !== '' && $endDate !== '0') {
                 $title .= " (until {$endDate})";
             }
         }

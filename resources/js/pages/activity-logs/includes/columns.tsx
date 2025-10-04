@@ -4,6 +4,8 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
+import { useTranslations } from '@/hooks/use-translations';
+import { cleanProperty } from '@/lib/utils';
 import type { ActivityLog } from '@/types/models/activity-log';
 import { type ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
@@ -90,9 +92,10 @@ export const columns: ColumnDef<ActivityLog>[] = [
     enableHiding: false,
     enableColumnFilter: false,
     cell: function CellComponent({ row: { original } }) {
+      const { t } = useTranslations();
       const { properties, subjectId, subjectType } = original;
       if (!properties || Object.keys(properties).length === 0) {
-        return <DatatableCell className="text-gray-400">No changes</DatatableCell>;
+        return <DatatableCell className="text-gray-400">{t('No changes')}</DatatableCell>;
       }
 
       return (
@@ -101,24 +104,27 @@ export const columns: ColumnDef<ActivityLog>[] = [
             <DialogTrigger asChild>
               <Button variant="outline" size="icon">
                 <EyeIcon className="h-4 w-4" />
-                <span className="sr-only">View Changes</span>
+                <span className="sr-only">{t('View Changes')}</span>
               </Button>
             </DialogTrigger>
             <DialogContent className="max-w-2xl">
               <DialogHeader>
-                <DialogTitle>Changes</DialogTitle>
+                <DialogTitle>{t('Changes')}</DialogTitle>
                 <DialogDescription>
-                  Here are the changes made to the {subjectType} with the id {subjectId}
+                  {t('Here are the changes made to the :subject_type with the id :subject_id', {
+                    subject_type: subjectType,
+                    subject_id: subjectId.toString(),
+                  })}
                 </DialogDescription>
               </DialogHeader>
               <div className="space-y-4">
                 {properties.old && (
                   <div>
-                    <div className="font-medium">Old:</div>
+                    <div className="font-medium">{t('Old:')}</div>
                     <div className="prose">
                       <pre className="rounded p-2 break-words whitespace-pre-wrap">
                         {Object.entries(properties.old)
-                          .map(([key, value]) => `${key.replace(/_/g, ' ')}: ${value}`)
+                          .map(([key, value]) => `${cleanProperty(key)}: ${value}`)
                           .join('\n')}
                       </pre>
                     </div>
@@ -127,11 +133,11 @@ export const columns: ColumnDef<ActivityLog>[] = [
 
                 {properties.attributes && (
                   <div>
-                    <div className="font-medium">New:</div>
+                    <div className="font-medium">{t('New:')}</div>
                     <div className="prose">
                       <pre className="rounded break-words whitespace-pre-wrap">
                         {Object.entries(properties.attributes)
-                          .map(([key, value]) => `${key.replace(/_/g, ' ')}: ${value}`)
+                          .map(([key, value]) => `${cleanProperty(key)}: ${value}`)
                           .join('\n')}
                       </pre>
                     </div>

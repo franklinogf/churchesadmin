@@ -330,5 +330,17 @@
     "Demo Login Credentials": "Demo Login Credentials",
     "Email:": "Email:",
     "Password:": "Password:",
-    "Access Demo Church": "Access Demo Church"
+    "Access Demo Church": "Access Demo Church",
+    "Events": "Events",
+    "Event": "Event",
+    "Changes": "Changes",
+    "Activity Logs": "Activity Logs",
+    "All types": "All types",
+    "Filter": "Filter",
+    "Export PDF": "Export PDF",
+    "No changes": "No changes",
+    "View Changes": "View Changes",
+    "Here are the changes made to the :subject_type with the id :subject_id": "Here are the changes made to the :subject_type with the id :subject_id",
+    "Old:": "Old:",
+    "New:": "New:"
 }

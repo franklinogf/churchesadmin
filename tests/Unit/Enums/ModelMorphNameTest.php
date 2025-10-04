@@ -5,7 +5,7 @@ declare(strict_types=1);
 use App\Enums\ModelMorphName;
 
 it('has needed enums', function (): void {
-    expect(ModelMorphName::cases())->toHaveCount(9);
+    expect(ModelMorphName::cases())->toHaveCount(12);
     expect(ModelMorphName::MEMBER->value)->toBe('member');
     expect(ModelMorphName::MISSIONARY->value)->toBe('missionary');
     expect(ModelMorphName::USER->value)->toBe('user');
@@ -15,6 +15,9 @@ it('has needed enums', function (): void {
     expect(ModelMorphName::CHECK_LAYOUT->value)->toBe('check_layout');
     expect(ModelMorphName::EMAIL->value)->toBe('email');
     expect(ModelMorphName::VISIT->value)->toBe('visit');
+    expect(ModelMorphName::EXPENSE->value)->toBe('expense');
+    expect(ModelMorphName::OFFERING->value)->toBe('offering');
+    expect(ModelMorphName::CHECK->value)->toBe('check');
 });
 
 test('label return correct label', function (): void {
@@ -27,4 +30,7 @@ test('label return correct label', function (): void {
     expect(ModelMorphName::CHECK_LAYOUT->label())->toBe(__('enum.model_morph_name.check_layout'))->toBeString();
     expect(ModelMorphName::EMAIL->label())->toBe(__('enum.model_morph_name.email'))->toBeString();
     expect(ModelMorphName::VISIT->label())->toBe(__('enum.model_morph_name.visit'))->toBeString();
+    expect(ModelMorphName::EXPENSE->label())->toBe(__('enum.model_morph_name.expense'))->toBeString();
+    expect(ModelMorphName::OFFERING->label())->toBe(__('enum.model_morph_name.offering'))->toBeString();
+    expect(ModelMorphName::CHECK->label())->toBe(__('enum.model_morph_name.check'))->toBeString();
 });

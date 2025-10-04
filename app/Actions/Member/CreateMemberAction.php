@@ -32,7 +32,7 @@ final class CreateMemberAction
      */
     public function handle(array $data, ?array $address = null): Member
     {
-        return DB::transaction(function () use ($data, $address) {
+        return DB::transaction(function () use ($data, $address): Member {
             // Create a logger for tracking the creation
             $logger = new DiffLogger();
 
