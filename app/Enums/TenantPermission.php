@@ -89,6 +89,7 @@ enum TenantPermission: string
     case EXPENSES_CREATE = 'expenses.create';
     case EXPENSES_UPDATE = 'expenses.update';
     case EXPENSES_DELETE = 'expenses.delete';
+    case ACTIVITY_LOGS_MANAGE = 'activity_logs.manage';
 
     public function label(): string
     {

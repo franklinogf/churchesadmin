@@ -70,6 +70,8 @@ export enum ModelMorphName {
   CHECK = 'check',
   TRANSACTION = 'transaction',
   WALLET = 'wallet',
+  VISIT = 'visit',
+  USER = 'user',
 }
 
 export enum EmailStatus {

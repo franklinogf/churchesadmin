@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\Member;
 
+use App\Enums\ModelMorphName;
 use App\Models\Member;
 use Exception;
 use Illuminate\Support\Facades\DB;
@@ -27,7 +28,7 @@ final class DeleteMemberAction
         } catch (Exception $th) {
             throw new Exception('Failed to delete member: '.$th->getMessage(), $th->getCode(), $th);
         }
-        activity('members')
+        activity(ModelMorphName::MEMBER->activityLogName())
             ->event('deleted')
             ->performedOn($member)
             ->log('Member :subject.name deleted');

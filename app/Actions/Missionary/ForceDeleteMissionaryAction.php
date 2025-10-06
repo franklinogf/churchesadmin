@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Actions\Missionary;
 
+use App\Enums\ModelMorphName;
 use App\Models\Missionary;
+use Exception;
+use Illuminate\Support\Facades\DB;
 
 final class ForceDeleteMissionaryAction
 {
@@ -13,11 +16,19 @@ final class ForceDeleteMissionaryAction
      */
     public function handle(Missionary $missionary): void
     {
-        // Delete the missionary's address if it exists
-        if ($missionary->address) {
-            $missionary->address->delete();
+        try {
+            DB::transaction(function () use ($missionary): void {
+                if ($missionary->address) {
+                    $missionary->address->delete();
+                }
+                $missionary->forceDelete();
+            });
+        } catch (Exception $th) {
+            throw new Exception('Failed to delete missionary: '.$th->getMessage(), $th->getCode(), $th);
         }
-
-        $missionary->forceDelete();
+        activity(ModelMorphName::MISSIONARY->activityLogName())
+            ->event('force deleted')
+            ->performedOn($missionary)
+            ->log('Missionary :subject.name force deleted');
     }
 }

@@ -131,6 +131,12 @@ export function AppSidebar() {
             href: route('reports.entries_expenses'),
             icon: FileStackIcon,
           },
+          {
+            title: t('Activity Logs'),
+            href: route('activity-logs.index'),
+            icon: FileStackIcon,
+            permissionNeeded: UserPermission.ACTIVITY_LOGS_MANAGE,
+          },
         ],
       },
       {

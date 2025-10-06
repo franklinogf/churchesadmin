@@ -4,6 +4,7 @@
 - use `Illuminate\Auth\Access\Response;` for the response instead or just `true` or `false` inside policies.
 - use `@property-read` for the model attributes in the PHPDocBlock.
 - When the new feature or change is related to the tenants and there is a new migration for the tenants, use `php artisan tenants:migrate` to run the migration for the tenants.
+- Every time you finish adding new translations, make sure to run `composer lang:generate` to sync the translations.
 
 # testing
 - Use Pest for testing.

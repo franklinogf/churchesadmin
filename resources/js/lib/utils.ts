@@ -23,3 +23,6 @@ export function isImage(mime_type: string) {
 export function offeringTypeIsMissionary(offeringType: Offering['offeringType']): offeringType is Missionary {
   return 'lastName' in offeringType;
 }
+export const cleanProperty = (property: string) => {
+  return property.replaceAll(/_/g, ' ').replaceAll(/[.]/g, '->');
+};

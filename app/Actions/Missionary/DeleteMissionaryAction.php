@@ -14,5 +14,9 @@ final class DeleteMissionaryAction
     public function handle(Missionary $missionary): void
     {
         $missionary->delete();
+        activity('missionary')
+            ->event('deleted')
+            ->performedOn($missionary)
+            ->log('Missionary :subject.name deleted');
     }
 }

@@ -72,6 +72,7 @@ export enum UserPermission {
   VISITS_DELETE = 'visits.delete',
   VISITS_FORCE_DELETE = 'visits.force_delete',
   VISITS_RESTORE = 'visits.restore',
+  ACTIVITY_LOGS_MANAGE = 'activity_logs.manage',
 }
 
 export enum UserRole {

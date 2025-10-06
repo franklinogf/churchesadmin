@@ -25,6 +25,9 @@ return [
         'check_layout' => 'Diseño de Cheque',
         'email' => 'Email',
         'visit' => 'Visita',
+        'expense' => 'Gasto',
+        'offering' => 'Ofrenda',
+        'check' => 'Cheque',
     ],
     'wallet_name' => [
         'primary' => 'Principal',
