@@ -21,12 +21,7 @@ Route::resource('categories', CategoryController::class)
     ->except(['show', 'create', 'edit']);
 
 Route::resource('members', MemberController::class);
-Route::put('members/{member}/restore', [MemberController::class, 'restore'])
-    ->withTrashed()
-    ->name('members.restore');
-Route::delete('members/{member}/force-delete', [MemberController::class, 'forceDelete'])
-    ->withTrashed()
-    ->name('members.forceDelete');
+
 Route::patch('members/{member}/deactivate', [MemberStatusController::class, 'deactivate'])
     ->name('members.deactivate');
 Route::patch('members/{member}/activate', [MemberStatusController::class, 'activate'])

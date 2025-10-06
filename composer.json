@@ -28,6 +28,7 @@
         "mallardduck/blade-lucide-icons": "^1.23",
         "propaganistas/laravel-phone": "^6.0.2",
         "resend/resend-laravel": "^0.19.0",
+        "spatie/laravel-activitylog": "^4.10",
         "spatie/laravel-medialibrary": "^11.15.0",
         "spatie/laravel-permission": "^6.21",
         "spatie/laravel-tags": "^4.10",

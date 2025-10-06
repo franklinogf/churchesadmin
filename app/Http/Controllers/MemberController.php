@@ -6,8 +6,6 @@ namespace App\Http\Controllers;
 
 use App\Actions\Member\CreateMemberAction;
 use App\Actions\Member\DeleteMemberAction;
-use App\Actions\Member\ForceDeleteMemberAction;
-use App\Actions\Member\RestoreMemberAction;
 use App\Actions\Member\UpdateMemberAction;
 use App\Actions\Visit\TransferVisitToMemberAction;
 use App\Enums\CivilStatus;
@@ -201,30 +199,6 @@ final class MemberController extends Controller
     public function destroy(Member $member, DeleteMemberAction $action): RedirectResponse
     {
         Gate::authorize('delete', $member);
-
-        $action->handle($member);
-
-        return to_route('members.index')->with(
-            FlashMessageKey::SUCCESS->value,
-            __('flash.message.deleted', ['model' => __('Member')])
-        );
-    }
-
-    public function restore(Member $member, RestoreMemberAction $action): RedirectResponse
-    {
-        Gate::authorize('restore', $member);
-
-        $action->handle($member);
-
-        return to_route('members.index')->with(
-            FlashMessageKey::SUCCESS->value,
-            __('flash.message.restored', ['model' => __('Member')])
-        );
-    }
-
-    public function forceDelete(Member $member, ForceDeleteMemberAction $action): RedirectResponse
-    {
-        Gate::authorize('forceDelete', $member);
 
         $action->handle($member);
 
