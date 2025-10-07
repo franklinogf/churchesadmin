@@ -154,6 +154,7 @@ export type TranslationKey =
   | 'Height'
   | 'Here are the changes made to the :subject_type with the id :subject_id'
   | 'Here you can update the printing check layout'
+  | 'IP'
   | 'Inactive'
   | 'Inactive members are hidden from default views'
   | 'Initial Amount'

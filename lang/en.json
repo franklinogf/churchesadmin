@@ -342,5 +342,6 @@
     "View Changes": "View Changes",
     "Here are the changes made to the :subject_type with the id :subject_id": "Here are the changes made to the :subject_type with the id :subject_id",
     "Old:": "Old:",
-    "New:": "New:"
+    "New:": "New:",
+    "IP": "IP"
 }

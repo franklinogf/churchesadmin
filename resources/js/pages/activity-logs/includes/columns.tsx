@@ -63,6 +63,20 @@ export const columns: ColumnDef<ActivityLog>[] = [
     },
   },
   {
+    header: ({ column }) => <DataTableColumnHeader column={column} title="IP" />,
+    accessorKey: 'properties.extra.ip_address',
+    enableHiding: false,
+    filterFn: 'equals',
+    meta: { filterVariant: 'select' },
+    cell: function CellComponent({
+      row: {
+        original: { properties },
+      },
+    }) {
+      return <DatatableCell className="text-sm font-medium">{properties?.extra.ip_address}</DatatableCell>;
+    },
+  },
+  {
     header: ({ column }) => <DataTableColumnHeader column={column} title="Description" />,
     accessorKey: 'description',
     enableHiding: false,

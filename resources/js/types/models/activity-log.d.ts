@@ -11,6 +11,7 @@ import type { Wallet } from './wallet';
 type ActivityLogProperties = {
   attributes: Record<string, unknown>;
   old?: Record<string, unknown>;
+  extra: { ip_address: string | null };
 };
 
 type ActivityLogBase = {

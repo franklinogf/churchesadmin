@@ -86,11 +86,15 @@ final class DiffLogger
     /**
      * Get the diff array.
      *
-     * @return array{old:array<string, mixed>|array{},attributes:array<string, mixed>|array{}}
+     * @return array{old:array<string, mixed>|array{},attributes:array<string, mixed>|array{},extra:array<string, mixed>}
      */
     public function get(): array
     {
-        return $this->diff;
+        $properties = array_merge($this->diff, [
+            'extra' => ['ip_address' => request()?->ip()],
+        ]);
+
+        return $properties;
     }
 
     /**
@@ -119,22 +123,6 @@ final class DiffLogger
         $changes = $this->getChangedFields();
 
         return $changes === [] ? 'No changes' : 'Changed: '.implode(', ', $changes);
-    }
-
-    /**
-     * Log the changes using Laravel Activitylog.
-     *
-     * @param  string|null  $summary  Optional summary message; if null, a default summary will be used.
-     */
-    public function log(Model $model, string $event, ?string $summary = null): void
-    {
-        if ($this->hasChanges()) {
-            activity()
-                ->event($event)
-                ->performedOn($model)
-                ->withProperties($this->diff)
-                ->log($summary ?? $this->getSummary());
-        }
     }
 
     /**
