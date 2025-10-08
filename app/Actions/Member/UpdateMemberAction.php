@@ -11,6 +11,7 @@ use App\Enums\TagType;
 use App\Models\Member;
 use App\Support\ArrayFallback;
 use App\Support\DiffLogger;
+use Illuminate\Support\Facades\DB;
 
 final readonly class UpdateMemberAction
 {
@@ -34,46 +35,48 @@ final readonly class UpdateMemberAction
      */
     public function handle(Member $member, array $data, ?array $address = []): void
     {
-        // Capture original state
-        $originalMember = $member->replicate();
-        /** @var array<string, array<string>> */
-        $originalTags = [
-            'skills' => $member->tags()->where('type', TagType::SKILL->value)->pluck('name')->toArray(),
-            'categories' => $member->tags()->where('type', TagType::CATEGORY->value)->pluck('name')->toArray(),
-        ];
-        $originalAddress = $member->address?->only(['address_1', 'address_2', 'city', 'state', 'zip_code', 'country']);
+        DB::transaction(function () use ($member, $data, $address): void {
+            // Capture original state
+            $originalMember = $member->replicate();
+            /** @var array<string, array<string>> */
+            $originalTags = [
+                'skills' => $member->tags()->where('type', TagType::SKILL->value)->pluck('name')->toArray(),
+                'categories' => $member->tags()->where('type', TagType::CATEGORY->value)->pluck('name')->toArray(),
+            ];
+            $originalAddress = $member->address?->only(['address_1', 'address_2', 'city', 'state', 'zip_code', 'country']);
 
-        // Update member
-        $member->update([
-            'name' => $data['name'] ?? $member->name,
-            'last_name' => $data['last_name'] ?? $member->last_name,
-            'email' => ArrayFallback::inputOrFallback($data, 'email', $member->email),
-            'phone' => ArrayFallback::inputOrFallback($data, 'phone', $member->phone),
-            'gender' => $data['gender'] ?? $member->gender,
-            'dob' => ArrayFallback::inputOrFallback($data, 'dob', $member->dob),
-            'civil_status' => $data['civil_status'] ?? $member->civil_status,
-        ]);
-
-        // Compare member changes
-        $freshMember = $member->fresh();
-        if ($freshMember !== null) {
-            $this->logger->compareModels($originalMember, $freshMember, [
-                'name', 'last_name', 'email', 'phone', 'gender', 'dob', 'civil_status',
+            // Update member
+            $member->update([
+                'name' => $data['name'] ?? $member->name,
+                'last_name' => $data['last_name'] ?? $member->last_name,
+                'email' => ArrayFallback::inputOrFallback($data, 'email', $member->email),
+                'phone' => ArrayFallback::inputOrFallback($data, 'phone', $member->phone),
+                'gender' => $data['gender'] ?? $member->gender,
+                'dob' => ArrayFallback::inputOrFallback($data, 'dob', $member->dob),
+                'civil_status' => $data['civil_status'] ?? $member->civil_status,
             ]);
-        }
 
-        $this->handleTagsUpdates($member, $data, $originalTags);
+            // Compare member changes
+            $freshMember = $member->fresh();
+            if ($freshMember !== null) {
+                $this->logger->compareModels($originalMember, $freshMember, [
+                    'name', 'last_name', 'email', 'phone', 'gender', 'dob', 'civil_status',
+                ]);
+            }
 
-        $this->handleAddressUpdates($member, $address, $originalAddress);
+            $this->handleTagsUpdates($member, $data, $originalTags);
 
-        // Log activity if there are changes
-        if ($this->logger->hasChanges()) {
-            activity(ModelMorphName::MEMBER->activityLogName())
-                ->event('updated')
-                ->performedOn($member)
-                ->withProperties($this->logger->get())
-                ->log($this->logger->getSummary());
-        }
+            $this->handleAddressUpdates($member, $address, $originalAddress);
+
+            // Log activity if there are changes
+            if ($this->logger->hasChanges()) {
+                activity(ModelMorphName::MEMBER->activityLogName())
+                    ->event('updated')
+                    ->performedOn($member)
+                    ->withProperties($this->logger->get())
+                    ->log($this->logger->getSummary());
+            }
+        });
     }
 
     /**

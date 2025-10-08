@@ -24,13 +24,14 @@ final class DeleteMemberAction
                 }
                 $member->tags()->detach();
                 $member->delete();
+                activity(ModelMorphName::MEMBER->activityLogName())
+                    ->event('deleted')
+                    ->performedOn($member)
+                    ->log('Member :subject.name deleted');
             });
         } catch (Exception $th) {
             throw new Exception('Failed to delete member: '.$th->getMessage(), $th->getCode(), $th);
         }
-        activity(ModelMorphName::MEMBER->activityLogName())
-            ->event('deleted')
-            ->performedOn($member)
-            ->log('Member :subject.name deleted');
+
     }
 }
