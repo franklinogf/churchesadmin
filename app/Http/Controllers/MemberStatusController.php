@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
+use App\Actions\Member\ActivateMemberAction;
+use App\Actions\Member\DeactivateMemberAction;
 use App\Enums\FlashMessageKey;
 use App\Http\Requests\Member\DeactivateMemberRequest;
 use App\Models\Member;
@@ -16,16 +18,15 @@ final class MemberStatusController extends Controller
     /**
      * Deactivate a member.
      */
-    public function deactivate(DeactivateMemberRequest $request, Member $member): RedirectResponse
+    public function deactivate(DeactivateMemberRequest $request, Member $member, DeactivateMemberAction $action): RedirectResponse
     {
         Gate::authorize('deactivate', $member);
-
+        /**
+         * @var array{deactivation_code_id:string} $validated
+         */
         $validated = $request->validated();
 
-        $member->update([
-            'active' => false,
-            'deactivation_code_id' => $validated['deactivation_code_id'],
-        ]);
+        $action->handle($member, $validated['deactivation_code_id']);
 
         return redirect()->back()->with(FlashMessageKey::SUCCESS->value, __('Member has been deactivated successfully.'));
     }
@@ -33,7 +34,7 @@ final class MemberStatusController extends Controller
     /**
      * Activate a member.
      */
-    public function activate(int $memberId): RedirectResponse
+    public function activate(int $memberId, ActivateMemberAction $action): RedirectResponse
     {
 
         $member = Member::query()
@@ -42,10 +43,7 @@ final class MemberStatusController extends Controller
 
         Gate::authorize('activate', $member);
 
-        $member->update([
-            'active' => true,
-            'deactivation_code_id' => null,
-        ]);
+        $action->handle($member);
 
         return redirect()->back()->with(FlashMessageKey::SUCCESS->value, __('Member has been activated successfully.'));
     }
