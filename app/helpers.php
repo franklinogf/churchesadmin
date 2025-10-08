@@ -45,15 +45,24 @@ if (! function_exists('create_tenant_url')) {
                 return null;
             }
 
-            $appUrl = config('app.url');
-            if (! is_string($appUrl)) {
-                return null;
-            }
+            $url = config()->string('app.url');
 
             /** @phpstan-ignore-next-line */
-            return tenant_route($domain->domain.'.'.str($appUrl)->after('://'), $routeName);
+            return tenant_route($domain->domain.'.'.str($url)->after('://'), $routeName);
         } catch (Exception) {
             return null;
         }
+    }
+}
+
+if (! function_exists('app_url_subdomain')) {
+    /**
+     * Get the application URL.
+     */
+    function app_url_subdomain(string $subdomain): string
+    {
+        $url = config()->string('app.url');
+
+        return str($url)->before('://').'://'.$subdomain.'.'.str($url)->after('://');
     }
 }

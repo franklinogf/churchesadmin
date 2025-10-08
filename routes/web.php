@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Models\Church;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -19,8 +18,7 @@ foreach (config('tenancy.identification.central_domains') as $domain) {
         Route::name('root.')
             ->group(function (): void {
                 Route::get('/', function (): Response {
-                    $church = Church::query()->first();
-                    $url = create_tenant_url($church, 'login');
+                    $url = app_url_subdomain('demo');
 
                     return Inertia::render('welcome', ['demoLink' => $url]);
                 })->name('home');
