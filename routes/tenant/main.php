@@ -22,9 +22,9 @@ Route::resource('categories', CategoryController::class)
 
 Route::resource('members', MemberController::class);
 
-Route::patch('members/{member}/deactivate', [MemberStatusController::class, 'deactivate'])
+Route::patch('members/{member}/deactivate', [MemberStatusController::class, 'destroy'])
     ->name('members.deactivate');
-Route::patch('members/{member}/activate', [MemberStatusController::class, 'activate'])
+Route::patch('members/{member}/activate', [MemberStatusController::class, 'update'])
     ->name('members.activate');
 
 Route::resource('missionaries', MissionaryController::class);

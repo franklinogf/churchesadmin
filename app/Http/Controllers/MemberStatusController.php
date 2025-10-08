@@ -18,7 +18,7 @@ final class MemberStatusController extends Controller
     /**
      * Deactivate a member.
      */
-    public function deactivate(DeactivateMemberRequest $request, Member $member, DeactivateMemberAction $action): RedirectResponse
+    public function destroy(DeactivateMemberRequest $request, Member $member, DeactivateMemberAction $action): RedirectResponse
     {
         Gate::authorize('deactivate', $member);
         /**
@@ -34,7 +34,7 @@ final class MemberStatusController extends Controller
     /**
      * Activate a member.
      */
-    public function activate(int $memberId, ActivateMemberAction $action): RedirectResponse
+    public function update(int $memberId, ActivateMemberAction $action): RedirectResponse
     {
 
         $member = Member::query()
