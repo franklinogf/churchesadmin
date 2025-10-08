@@ -48,7 +48,7 @@ final class UpdateUserAction
             }
 
             if ($logger->hasChanges()) {
-                activity(ModelMorphName::USER->value)
+                activity(ModelMorphName::USER->activityLogName())
                     ->event('updated')
                     ->performedOn($user)
                     ->withProperties($logger->get())
