@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Actions\Visit;
 
+use App\Enums\ModelMorphName;
 use App\Models\Visit;
+use App\Support\DiffLogger;
+use Illuminate\Support\Facades\DB;
 
 final class CreateVisitAction
 {
@@ -16,12 +19,26 @@ final class CreateVisitAction
      */
     public function handle(array $data, ?array $address = null): Visit
     {
-        $visit = Visit::create($data);
+        return DB::transaction(function () use ($data, $address): Visit {
+            $logger = new DiffLogger();
+            $visit = Visit::create($data);
+            $visitData = $visit->only([
+                'name', 'last_name', 'email', 'phone', 'first_visit_date',
+            ]);
+            $logger->addChanges([], $visitData);
 
-        if ($address !== null) {
-            $visit->address()->create($address);
-        }
+            if ($address !== null) {
+                $visit->address()->create($address);
+                $logger->addCustom('address', null, $address);
+            }
 
-        return $visit;
+            activity(ModelMorphName::VISIT->activityLogName())
+                ->event('created')
+                ->performedOn($visit)
+                ->withProperties($logger->get())
+                ->log('Visit added');
+
+            return $visit;
+        });
     }
 }

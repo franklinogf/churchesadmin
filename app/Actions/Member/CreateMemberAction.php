@@ -50,7 +50,7 @@ final class CreateMemberAction
             $memberData = $member->only([
                 'name', 'last_name', 'email', 'phone', 'gender', 'dob', 'civil_status',
             ]);
-            $logger->addCustom('member', null, $memberData);
+            $logger->addChanges([], $memberData);
 
             // Handle skills
             if (isset($data['skills']) && $data['skills'] !== []) {
@@ -74,7 +74,7 @@ final class CreateMemberAction
                 ->event('created')
                 ->performedOn($member)
                 ->withProperties($logger->get())
-                ->log($logger->getSummary());
+                ->log('Member added');
 
             return $member;
         });
