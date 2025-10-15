@@ -31,8 +31,10 @@ if (! function_exists('serverDate')) {
 if (! function_exists('create_tenant_url')) {
     /**
      * Create a URL for a tenant.
+     *
+     * @param  array<string, mixed>  $routeParams
      */
-    function create_tenant_url(?Church $church, string $routeName): ?string
+    function create_tenant_url(?Church $church, string $routeName, array $routeParams = []): ?string
     {
         if (! $church instanceof Church) {
             return null;
@@ -48,7 +50,7 @@ if (! function_exists('create_tenant_url')) {
             $url = config()->string('app.url');
 
             /** @phpstan-ignore-next-line */
-            return tenant_route($domain->domain.'.'.str($url)->after('://'), $routeName);
+            return tenant_route($domain->domain.'.'.str($url)->after('://'), $routeName, $routeParams);
         } catch (Exception) {
             return null;
         }

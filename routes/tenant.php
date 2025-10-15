@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ImpersonateUserController;
 use App\Http\Controllers\LoginLinkController;
 use App\Http\Controllers\SessionController;
 use Illuminate\Support\Facades\Route;
@@ -30,6 +31,7 @@ Route::middleware([
     Route::post('loginLink', LoginLinkController::class)->name('loginLink');
 
     Route::redirect('/', 'dashboard')->name('home');
+    Route::get('/impersonate/{token}', ImpersonateUserController::class)->name('impersonate');
 
     Route::middleware('auth:tenant')->group(function (): void {
         // This route is used to set session variables for the application
