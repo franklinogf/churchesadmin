@@ -158,7 +158,7 @@ export default function Welcome({ demoLink }: { demoLink: string | null }) {
         {/* Footer */}
         <footer className="px-6 py-10 text-center text-sm text-gray-500">
           <div>
-            <p>{t('Contact us: :email | :phone', { email: 'support@churchesadministration.com', phone: '(000) 000-0000' })}</p>
+            <p>{t('Contact us: :email | :phone', { email: 'support@churchesadministration.com', phone: '689-338-5438 (5435) (5431)' })}</p>
             <p>
               &copy; {new Date().getFullYear()} {t('ChurchesAdmin. All rights reserved.')}
             </p>
