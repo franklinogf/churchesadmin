@@ -143,7 +143,7 @@ return [
     'bootstrappers' => [
         // Basic Laravel features
         Bootstrappers\DatabaseTenancyBootstrapper::class,
-        // Bootstrappers\CacheTenancyBootstrapper::class,
+        Bootstrappers\CacheTenancyBootstrapper::class,
         // Bootstrappers\CacheTagsBootstrapper::class, // Alternative to CacheTenancyBootstrapper
         Bootstrappers\FilesystemTenancyBootstrapper::class,
         Bootstrappers\QueueTenancyBootstrapper::class,
@@ -283,7 +283,7 @@ return [
          *
          * Note: This will implicitly add your configured session store to the list of prefixed stores above.
          */
-        'scope_sessions' => false,
+        'scope_sessions' => true,
 
         'tag_base' => 'tenant', // This tag_base, followed by the tenant_id, will form a tag that will be applied on each cache call.
     ],
