@@ -75,6 +75,7 @@ it('has needed enums', function (): void {
         'EMAILS_SEND',
         'EMAILS_SEND_TO_MEMBERS',
         'EMAILS_SEND_TO_MISSIONARIES',
+        'EMAILS_SEND_TO_VISITORS',
         'VISITS_MANAGE',
         'VISITS_CREATE',
         'VISITS_UPDATE',
