@@ -1,5 +1,4 @@
 import { DataTable } from '@/components/custom-ui/datatable/data-table';
-import { PageTitle } from '@/components/PageTitle';
 import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import type { Member } from '@/types/models/member';
@@ -12,6 +11,7 @@ import { ModelMorphName, SessionName } from '@/enums';
 import { router } from '@inertiajs/react';
 import { type ColumnDef } from '@tanstack/react-table';
 import { useMemo, useState } from 'react';
+import { EmailHeader } from './_components/EmailHeader';
 
 interface Props {
   members: Member[];
@@ -73,10 +73,10 @@ export default function Index({ members }: Props) {
   }
   return (
     <AppLayout
-      title={t('Send email to members')}
+      title={t('Send email to :name', { name: t('Members') })}
       breadcrumbs={[{ title: t('Communication') }, { title: t('Emails'), href: route('communication.emails.index') }, { title: t('Members') }]}
     >
-      <PageTitle description={t('Select the members you want to send a message to')}>{t('Send email to members')}</PageTitle>
+      <EmailHeader name={t('Members')} />
 
       <div className="mx-auto w-full max-w-2xl">
         <DataTable

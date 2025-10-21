@@ -1,5 +1,6 @@
 import type { FollowUpType } from '@/enums';
 import type { AddressRelationship } from './address';
+import type { EmailPivot } from './email';
 import type { Member } from './member';
 
 export interface Visit {
@@ -15,6 +16,7 @@ export interface Visit {
   address?: AddressRelationship | null;
   followUps?: VisitFollowUp[];
   lastFollowUp?: VisitFollowUp | null;
+  emailMessage?: EmailPivot;
 }
 
 export interface VisitFollowUp {

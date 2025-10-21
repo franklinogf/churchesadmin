@@ -8,12 +8,14 @@ use App\Casts\AsUcWords;
 use App\Models\Scopes\LastnameScope;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -29,6 +31,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read Address|null $address
  * @property-read Collection<int,FollowUp> $followUps
  * @property-read FollowUp|null $lastFollowUp
+ * @property-read Collection<int,Email> $emails
  */
 #[ScopedBy(LastnameScope::class)]
 final class Visit extends Model
@@ -64,6 +67,30 @@ final class Visit extends Model
     public function lastFollowUp(): HasOne
     {
         return $this->followUps()->one()->latestOfMany();
+    }
+
+    /**
+     * The emails that has been sent to this visit.
+     *
+     * @return MorphToMany<Email, $this, Emailable, 'message'>
+     */
+    public function emails(): MorphToMany
+    {
+        return $this->morphToMany(Email::class, 'recipient', 'emailables')
+            ->using(Emailable::class)
+            ->as('message')
+            ->withPivot('status', 'sent_at', 'error_message', 'id')
+            ->withTimestamps();
+    }
+
+    /**
+     * Scope a query to only include visits with an email.
+     *
+     * @param  Builder<$this>  $query
+     */
+    protected function scopeWithEmail(Builder $query): void
+    {
+        $query->whereNotNull('email');
     }
 
     /**

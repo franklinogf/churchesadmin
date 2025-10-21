@@ -10,6 +10,7 @@ use App\Exceptions\EmailException;
 use App\Models\Email;
 use App\Models\Member;
 use App\Models\Missionary;
+use App\Models\Visit;
 use Illuminate\Bus\Batch;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Builder;
@@ -55,12 +56,22 @@ final class SendEmailJob implements ShouldQueue
             ->where(fn (Builder $query): Builder => $query->where('status', EmailStatus::PENDING)
                 ->orWhere('status', EmailStatus::FAILED))
             ->get();
+        $pendingVisits = $email
+            ->visits()
+            ->where(fn (Builder $query): Builder => $query->where('status', EmailStatus::PENDING)
+                ->orWhere('status', EmailStatus::FAILED))
+            ->get();
 
         $pendingMembers->each(function (Member $member) use (&$batch): void {
             $batch[] = new SendCommunicationMessageJob($member->emailMessage);
         });
+
         $pendingMissionaries->each(function (Missionary $missionary) use (&$batch): void {
             $batch[] = new SendCommunicationMessageJob($missionary->emailMessage);
+        });
+
+        $pendingVisits->each(function (Visit $visit) use (&$batch): void {
+            $batch[] = new SendCommunicationMessageJob($visit->emailMessage);
         });
 
         if ($batch === []) {
@@ -83,7 +94,7 @@ final class SendEmailJob implements ShouldQueue
                 ]);
                 event(new EmailStatusUpdatedEvent($email));
             })
-            ->name('Send Email: '.$email->subject.' id: '.$email->id)
+            ->name("Send Email: $email->subject id: $email->id")
             ->allowFailures()
             ->onQueue('emails')
             ->dispatch();

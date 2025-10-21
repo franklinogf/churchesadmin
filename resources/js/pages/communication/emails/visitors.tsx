@@ -3,25 +3,23 @@ import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 
 import { selectionHeader } from '@/components/custom-ui/datatable/columns';
-import { DatatableCell } from '@/components/custom-ui/datatable/DatatableCell';
 import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTableColumnHeader';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { ModelMorphName, SessionName } from '@/enums';
-import type { Missionary } from '@/types/models/missionary';
+import type { Visit } from '@/types/models/visit';
 import { router } from '@inertiajs/react';
 import { type ColumnDef } from '@tanstack/react-table';
 import { useMemo, useState } from 'react';
 import { EmailHeader } from './_components/EmailHeader';
 interface Props {
-  missionaries: Missionary[];
+  visitors: Visit[];
 }
-export default function Index({ missionaries }: Props) {
-  const [selectedMissionaries, setSelectedMissionaries] = useState<string[]>([]);
+export default function Index({ visitors }: Props) {
+  const [selectedVisitors, setSelectedVisitors] = useState<string[]>([]);
   const { t } = useTranslations();
-  const columns: ColumnDef<Missionary>[] = useMemo(
+  const columns: ColumnDef<Visit>[] = useMemo(
     () => [
-      selectionHeader as ColumnDef<Missionary>,
+      selectionHeader as ColumnDef<Visit>,
       {
         header: ({ column }) => <DataTableColumnHeader column={column} title="Name" />,
         accessorKey: 'name',
@@ -34,20 +32,6 @@ export default function Index({ missionaries }: Props) {
         enableHiding: false,
         enableColumnFilter: false,
       },
-      {
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Gender" />,
-        accessorKey: 'gender',
-        filterFn: 'equalsString',
-        meta: { filterVariant: 'select', translationPrefix: 'enum.gender.' },
-        cell: function CellComponent({ row }) {
-          const { t } = useTranslations();
-          return (
-            <DatatableCell justify="center">
-              <Badge className="w-24">{t(`enum.gender.${row.original.gender}`)}</Badge>
-            </DatatableCell>
-          );
-        },
-      },
     ],
     [],
   );
@@ -57,8 +41,8 @@ export default function Index({ missionaries }: Props) {
       route('session', {
         name: SessionName.EMAIL_RECIPIENTS,
         value: {
-          type: ModelMorphName.MISSIONARY,
-          ids: selectedMissionaries,
+          type: ModelMorphName.VISIT,
+          ids: selectedVisitors,
         },
         redirect_to: 'communication.emails.create',
       }),
@@ -66,20 +50,20 @@ export default function Index({ missionaries }: Props) {
   }
   return (
     <AppLayout
-      title={t('Send email to :name', { name: t('Missionaries') })}
-      breadcrumbs={[{ title: t('Communication') }, { title: t('Emails'), href: route('communication.emails.index') }, { title: t('Missionaries') }]}
+      title={t('Send email to :name', { name: t('Visitors') })}
+      breadcrumbs={[{ title: t('Communication') }, { title: t('Emails'), href: route('communication.emails.index') }, { title: t('Visitors') }]}
     >
-      <EmailHeader name={t('Missionaries')} />
+      <EmailHeader name={t('Visitors')} />
 
       <div className="mx-auto w-full max-w-2xl">
         <DataTable
           headerButton={
-            <Button disabled={selectedMissionaries.length === 0} size="sm" onClick={handleNewEmail}>
+            <Button disabled={selectedVisitors.length === 0} size="sm" onClick={handleNewEmail}>
               {t('New :model', { model: t('Email') })}
             </Button>
           }
-          onSelectedRowsChange={setSelectedMissionaries}
-          data={missionaries}
+          onSelectedRowsChange={setSelectedVisitors}
+          data={visitors}
           rowId="id"
           columns={columns}
         />

@@ -31,6 +31,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { EmailStatus } from '@/enums';
 import type { Member } from '@/types/models/member';
 import type { Missionary } from '@/types/models/missionary';
+import type { Visit } from '@/types/models/visit';
 import { Link } from '@inertiajs/react';
 import { AlertCircleIcon } from 'lucide-react';
 
@@ -40,9 +41,8 @@ interface EmailsPageProps extends SharedData {
 export default function EmailsPage({ email: initialEmail, church }: EmailsPageProps) {
   const { t } = useTranslations();
   const [email, setEmail] = useState<Email>(initialEmail);
-  const [datatableData, setDatatableData] = useState<(Member | Missionary)[]>(
-    email.recipientsType === 'member' ? email.members! : email.missionaries!,
-  );
+  const [datatableData, setDatatableData] = useState<(Member | Missionary | Visit)[]>(email.recipients);
+  console.log(email);
   useEcho<{ email: Email }>(`${church?.id}.emails.${email.id}`, 'EmailStatusUpdatedEvent', (e) => {
     setEmail({
       ...email,
@@ -71,7 +71,7 @@ export default function EmailsPage({ email: initialEmail, church }: EmailsPagePr
     );
   });
 
-  const columns: ColumnDef<Member | Missionary>[] = useMemo(
+  const columns: ColumnDef<Member | Missionary | Visit>[] = useMemo(
     () => [
       {
         header: ({ column }) => <DataTableColumnHeader column={column} title="Recipient" />,
@@ -239,7 +239,15 @@ function EmailDetailButton({ email }: { email: Email }) {
   );
 }
 
-function ErrorMessageDialog({ recipient, open, setOpen }: { recipient: Member | Missionary; open: boolean; setOpen: (open: boolean) => void }) {
+function ErrorMessageDialog({
+  recipient,
+  open,
+  setOpen,
+}: {
+  recipient: Member | Missionary | Visit;
+  open: boolean;
+  setOpen: (open: boolean) => void;
+}) {
   const { t } = useTranslations();
   return (
     <Dialog open={open} onOpenChange={setOpen}>

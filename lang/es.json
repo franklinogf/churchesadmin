@@ -247,8 +247,6 @@
     "Print checks": "Imprimir cheques",
     "Communication": "Comunicación",
     "Members email": "Correo electrónico de miembros",
-    "Send email to members": "Enviar correo electrónico a miembros",
-    "Select the members you want to send a message to": "Selecciona los miembros a los que deseas enviar un mensaje",
     "Send a new email to the recipients you selected": "Enviar un nuevo correo electrónico a los destinatarios seleccionados",
     ":amount recipient selected|:amount recipients selected": ":amount destinatario seleccionado|:amount destinatarios seleccionados",
     "Send email": "Enviar correo electrónico",
@@ -262,9 +260,6 @@
     "Sent at": "Enviado en",
     "Not sent yet": "No enviado aún",
     "Recipients type": "Tipo de destinatarios",
-    "Select the missionaries you want to send a message to": "Selecciona los misioneros a los que deseas enviar un mensaje",
-    "Send email to missionaries": "Enviar correo electrónico a misioneros",
-    "Only missionaries with an email address will be shown in the list.": "Solo se mostrarán en la lista los misioneros con dirección de correo electrónico.",
     "Send a message": "Enviar un mensaje",
     "Manage your emails here": "Gestiona tus correos electrónicos aquí",
     "View recipients": "Ver destinatarios",
@@ -342,5 +337,8 @@
     "Here are the changes made to the :subject_type with the id :subject_id": "Aquí están los cambios realizados al :subject_type con el id :subject_id",
     "Old:": "Anterior:",
     "New:": "Nuevo:",
-    "IP": "IP"
+    "IP": "IP",
+    "Send email to :name": "Enviar correo electrónico a :name",
+    "Select the :name you want to send a message to": "Selecciona :name a los que quieres enviar un mensaje",
+    "Only :name with an email address will be shown in the list.": "Solo se mostrarán en la lista :name con una dirección de correo electrónico."
 }

@@ -29,6 +29,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
  * @property-read TenantUser $sender
  * @property-read Collection<int,Member> $members
  * @property-read Collection<int,Missionary> $missionaries
+ * @property-read Collection<int,Visit> $visits
  * @property-read Emailable $message
  */
 final class Email extends Model implements HasMedia
@@ -68,6 +69,20 @@ final class Email extends Model implements HasMedia
     public function missionaries(): MorphToMany
     {
         return $this->morphedByMany(Missionary::class, 'recipient', 'emailables')
+            ->using(Emailable::class)
+            ->as('emailMessage')
+            ->withPivot('status', 'sent_at', 'error_message', 'id')
+            ->withTimestamps();
+    }
+
+    /**
+     * The visits that this email was sent to.
+     *
+     * @return MorphToMany<Visit,$this,Emailable,'emailMessage'>
+     */
+    public function visits(): MorphToMany
+    {
+        return $this->morphedByMany(Visit::class, 'recipient', 'emailables')
             ->using(Emailable::class)
             ->as('emailMessage')
             ->withPivot('status', 'sent_at', 'error_message', 'id')

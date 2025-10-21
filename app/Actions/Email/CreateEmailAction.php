@@ -53,6 +53,7 @@ final class CreateEmailAction
                 match ($recipientType) {
                     ModelMorphName::MEMBER => $this->attachToMembers($email, $recipientIds),
                     ModelMorphName::MISSIONARY => $this->attachToMissionaries($email, $recipientIds),
+                    ModelMorphName::VISIT => $this->attachToVisitors($email, $recipientIds),
                     default => throw EmailException::invalidRecipientType(),
 
                 };
@@ -90,5 +91,15 @@ final class CreateEmailAction
     private function attachToMissionaries(Email $email, array $recipients): void
     {
         $email->missionaries()->attach($recipients, ['status' => EmailStatus::PENDING->value]);
+    }
+
+    /**
+     * Attach the email to visitors.
+     *
+     * @param  array<int,string>  $recipients
+     */
+    private function attachToVisitors(Email $email, array $recipients): void
+    {
+        $email->visits()->attach($recipients, ['status' => EmailStatus::PENDING->value]);
     }
 }

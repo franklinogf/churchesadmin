@@ -248,8 +248,6 @@
     "Print checks": "Print checks",
     "Communication": "Communication",
     "Members email": "Members email",
-    "Send email to members": "Send email to members",
-    "Select the members you want to send a message to": "Select the members you want to send a message to",
     "Send a new email to the recipients you selected": "Send a new email to the recipients you selected",
     ":amount recipient selected|:amount recipients selected": ":amount recipient selected|:amount recipients selected",
     "Send email": "Send email",
@@ -263,9 +261,6 @@
     "Sent at": "Sent at",
     "Not sent yet": "Not sent yet",
     "Recipients type": "Recipients type",
-    "Select the missionaries you want to send a message to": "Select the missionaries you want to send a message to",
-    "Send email to missionaries": "Send email to missionaries",
-    "Only missionaries with an email address will be shown in the list.": "Only missionaries with an email address will be shown in the list.",
     "Send a message": "Send a message",
     "Manage your emails here": "Manage your emails here",
     "View recipients": "View recipients",
@@ -343,5 +338,8 @@
     "Here are the changes made to the :subject_type with the id :subject_id": "Here are the changes made to the :subject_type with the id :subject_id",
     "Old:": "Old:",
     "New:": "New:",
-    "IP": "IP"
+    "IP": "IP",
+    "Send email to :name": "Send email to :name",
+    "Select the :name you want to send a message to": "Select the :name you want to send a message to",
+    "Only :name with an email address will be shown in the list.": "Only :name with an email address will be shown in the list."
 }

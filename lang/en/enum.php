@@ -178,6 +178,7 @@ return [
             'send_to' => [
                 'members' => 'Send Emails to Members',
                 'missionaries' => 'Send Emails to Missionaries',
+                'visitors' => 'Send Emails to Visitors',
             ],
         ],
         'visits' => [

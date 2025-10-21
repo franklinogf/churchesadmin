@@ -178,6 +178,7 @@ return [
             'send_to' => [
                 'members' => 'Enviar Correos Electrónicos a Miembros',
                 'missionaries' => 'Enviar Correos Electrónicos a Misioneros',
+                'visitors' => 'Enviar Correos Electrónicos a Visitantes',
             ],
         ],
         'visits' => [

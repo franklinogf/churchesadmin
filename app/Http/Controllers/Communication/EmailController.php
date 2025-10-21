@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Communication;
 
 use App\Enums\FlashMessageKey;
-use App\Enums\ModelMorphName;
 use App\Exceptions\EmailException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Email\StoreEmailRequest;
@@ -42,11 +41,6 @@ final class EmailController extends Controller
     {
         Gate::authorize('viewAny', Email::class);
         $email->load(['media', 'sender']);
-        if ($email->recipients_type === ModelMorphName::MEMBER) {
-            $email->load('members');
-        } elseif ($email->recipients_type === ModelMorphName::MISSIONARY) {
-            $email->load('missionaries');
-        }
 
         return Inertia::render('communication/emails/show', [
             'email' => new EmailResource($email),

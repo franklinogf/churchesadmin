@@ -66,6 +66,7 @@ export enum UserPermission {
   EMAILS_SEND = 'emails.send',
   EMAILS_SEND_TO_MEMBERS = 'emails.send_to.members',
   EMAILS_SEND_TO_MISSIONARIES = 'emails.send_to.missionaries',
+  EMAILS_SEND_TO_VISITORS = 'emails.send_to.visitors',
   VISITS_MANAGE = 'visits.manage',
   VISITS_CREATE = 'visits.create',
   VISITS_UPDATE = 'visits.update',

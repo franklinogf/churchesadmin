@@ -11,7 +11,7 @@ import { useForm } from '@inertiajs/react';
 
 interface Props {
   recipientsAmount: number;
-  recipientsType: ModelMorphName.MEMBER | ModelMorphName.MISSIONARY;
+  recipientsType: ModelMorphName.MEMBER | ModelMorphName.MISSIONARY | ModelMorphName.VISIT;
 }
 
 type EmailForm = {
@@ -31,14 +31,22 @@ export default function Create({ recipientsAmount, recipientsType }: Props) {
   function handleSubmit() {
     post(route('communication.emails.store'));
   }
+  const breadcrumbTitle =
+    recipientsType === ModelMorphName.MEMBER ? t('Members') : recipientsType === ModelMorphName.MISSIONARY ? t('Missionaries') : t('Visitors');
+  const breadcrumbHref =
+    recipientsType === ModelMorphName.MEMBER
+      ? route('communication.emails.members')
+      : recipientsType === ModelMorphName.MISSIONARY
+        ? route('communication.emails.missionaries')
+        : route('communication.emails.visitors');
   return (
     <AppLayout
       title={t('New :model', { model: t('Email') })}
       breadcrumbs={[
         { title: t('Email'), href: route('communication.emails.index') },
         {
-          title: recipientsType === ModelMorphName.MEMBER ? t('Members') : t('Missionaries'),
-          href: recipientsType === ModelMorphName.MEMBER ? route('communication.emails.members') : route('communication.emails.missionaries'),
+          title: breadcrumbTitle,
+          href: breadcrumbHref,
         },
         { title: t('New :model', { model: t('Email') }) },
       ]}

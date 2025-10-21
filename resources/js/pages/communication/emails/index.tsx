@@ -22,18 +22,19 @@ import { type ColumnDef } from '@tanstack/react-table';
 import { Users2Icon, UsersIcon } from 'lucide-react';
 import { useMemo, useState } from 'react';
 
-const recipientTypes = [
-  { label: 'Members', route: 'communication.emails.members', permissionNeeded: UserPermission.EMAILS_SEND_TO_MEMBERS },
-  { label: 'Missionaries', route: 'communication.emails.missionaries', permissionNeeded: UserPermission.EMAILS_SEND_TO_MISSIONARIES },
-];
-
 interface EmailsPageProps extends SharedData {
-  emails: Email[]; // Adjust type as needed
+  emails: Email[];
 }
 export default function EmailsPage({ emails: initialEmails, auth: { user }, church }: EmailsPageProps) {
   const { t } = useTranslations();
   const [emails, setEmails] = useState<Email[]>(initialEmails);
   const { can: userCan } = useUser();
+
+  const recipientTypes = [
+    { label: t('Members'), route: 'communication.emails.members', permissionNeeded: UserPermission.EMAILS_SEND_TO_MEMBERS },
+    { label: t('Missionaries'), route: 'communication.emails.missionaries', permissionNeeded: UserPermission.EMAILS_SEND_TO_MISSIONARIES },
+    { label: t('Visitors'), route: 'communication.emails.visitors', permissionNeeded: UserPermission.EMAILS_SEND_TO_VISITORS },
+  ];
 
   useEcho<{ email: Email }>(`${church?.id}.emails`, 'EmailStatusUpdatedEvent', (e) => {
     setEmails((prevEmails) => {

@@ -18,7 +18,7 @@ final class EmailListMissionaryController extends Controller
      */
     public function __invoke(): Response
     {
-        $missionaries = Missionary::whereNotNull('email')->get();
+        $missionaries = Missionary::query()->whereNotNull('email')->get();
 
         return Inertia::render('communication/emails/missionaries', [
             'missionaries' => MissionaryResource::collection($missionaries),

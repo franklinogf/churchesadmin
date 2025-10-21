@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Resources\Visit;
 
 use App\Http\Resources\Address\AddressRelationshipResource;
+use App\Http\Resources\Communication\Email\EmailableResource;
+use App\Http\Resources\Communication\Email\EmailResource;
 use App\Models\Visit;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -34,6 +36,8 @@ final class VisitResource extends JsonResource
             'address' => new AddressRelationshipResource($this->whenLoaded('address')),
             'followUps' => FollowUpResource::collection($this->whenLoaded('followUps')),
             'lastFollowUp' => new FollowUpResource($this->whenLoaded('lastFollowUp')),
+            'emails' => EmailResource::collection($this->whenLoaded('emails')),
+            'emailMessage' => $this->whenPivotLoadedAs('emailMessage', 'emailables', fn (): EmailableResource => new EmailableResource($this->emailMessage)),
         ];
     }
 }

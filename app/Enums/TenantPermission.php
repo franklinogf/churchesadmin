@@ -79,6 +79,7 @@ enum TenantPermission: string
     case EMAILS_SEND = 'emails.send';
     case EMAILS_SEND_TO_MEMBERS = 'emails.send_to.members';
     case EMAILS_SEND_TO_MISSIONARIES = 'emails.send_to.missionaries';
+    case EMAILS_SEND_TO_VISITORS = 'emails.send_to.visitors';
     case VISITS_MANAGE = 'visits.manage';
     case VISITS_CREATE = 'visits.create';
     case VISITS_UPDATE = 'visits.update';
