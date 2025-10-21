@@ -42,7 +42,6 @@ export default function EmailsPage({ email: initialEmail, church }: EmailsPagePr
   const { t } = useTranslations();
   const [email, setEmail] = useState<Email>(initialEmail);
   const [datatableData, setDatatableData] = useState<(Member | Missionary | Visit)[]>(email.recipients);
-  console.log(email);
   useEcho<{ email: Email }>(`${church?.id}.emails.${email.id}`, 'EmailStatusUpdatedEvent', (e) => {
     setEmail({
       ...email,
