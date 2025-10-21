@@ -16,7 +16,7 @@ final class ActivateMemberAction
         $logger = new DiffLogger();
         DB::transaction(function () use ($member, $logger): void {
 
-            $deactivationCode = $member->deactivationCode->name;
+            $deactivationCode = $member->deactivationCode?->name;
             $member->update([
                 'active' => true,
                 'deactivation_code_id' => null,

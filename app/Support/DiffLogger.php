@@ -90,11 +90,9 @@ final class DiffLogger
      */
     public function get(): array
     {
-        $properties = array_merge($this->diff, [
-            'extra' => ['ip_address' => request()?->ip()],
+        return array_merge($this->diff, [
+            'extra' => ['ip_address' => request()->ip()],
         ]);
-
-        return $properties;
     }
 
     /**

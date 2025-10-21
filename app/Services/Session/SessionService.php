@@ -19,7 +19,7 @@ final class SessionService
     /**
      * Get the session value for the given name.
      */
-    public static function get(SessionName $name, $default = null): mixed
+    public static function get(SessionName $name, string|int|null $default = null): mixed
     {
         return session()->get($name->value, $default);
     }
@@ -27,7 +27,7 @@ final class SessionService
     /**
      * Get the session value for the given name and forget it.
      */
-    public static function getAndForget(SessionName $name, $default = null): mixed
+    public static function getAndForget(SessionName $name, string|int|null $default = null): mixed
     {
         $value = self::get($name, $default);
         self::forget($name);

@@ -32,6 +32,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read Collection<int,FollowUp> $followUps
  * @property-read FollowUp|null $lastFollowUp
  * @property-read Collection<int,Email> $emails
+ *  @property-read Emailable $emailMessage
  */
 #[ScopedBy(LastnameScope::class)]
 final class Visit extends Model

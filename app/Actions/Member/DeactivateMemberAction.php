@@ -23,7 +23,7 @@ final class DeactivateMemberAction
             $member->refresh();
 
             $logger->addCustom('active', true, false);
-            $logger->addCustom('deactivation_code', null, $member->deactivationCode->name);
+            $logger->addCustom('deactivation_code', null, $member->deactivationCode?->name);
             activity(ModelMorphName::MEMBER->activityLogName())
                 ->event('deactivated')
                 ->performedOn($member)
