@@ -32,6 +32,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
+use Laravel\Pennant\Feature;
 use Spatie\Translatable\Facades\Translatable;
 
 final class AppServiceProvider extends ServiceProvider
@@ -49,6 +50,7 @@ final class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Feature::resolveScopeUsing(fn (): ?Church => Church::current());
         $this->configureCommands();
         $this->configureDates();
         $this->configureModels();

@@ -12,6 +12,7 @@ use Bavix\Wallet\Traits\HasWallets;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Laravel\Pennant\Concerns\HasFeatures;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Stancl\Tenancy\Database\Concerns\HasDatabase;
@@ -35,7 +36,7 @@ use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
 final class Church extends BaseTenant implements HasMedia, TenantWithDatabase, Wallet, WalletFloat
 {
     /** @use HasFactory<\Database\Factories\ChurchFactory> */
-    use HasDatabase, HasDomains, HasFactory, HasWalletFloat, HasWallets, InteractsWithMedia, MaintenanceMode;
+    use HasDatabase, HasDomains, HasFactory, HasFeatures, HasWalletFloat, HasWallets, InteractsWithMedia, MaintenanceMode;
 
     /**
      * Set the custom columns for the tenant model.
