@@ -14,7 +14,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
-import { UserPermission } from '@/enums/user';
+import { TenantPermission } from '@/enums/TenantPermission';
 import { useUser } from '@/hooks/use-user';
 import type { SharedData } from '@/types';
 import { useEcho } from '@laravel/echo-react';
@@ -31,9 +31,9 @@ export default function EmailsPage({ emails: initialEmails, auth: { user }, chur
   const { can: userCan } = useUser();
 
   const recipientTypes = [
-    { label: t('Members'), route: 'communication.emails.members', permissionNeeded: UserPermission.EMAILS_SEND_TO_MEMBERS },
-    { label: t('Missionaries'), route: 'communication.emails.missionaries', permissionNeeded: UserPermission.EMAILS_SEND_TO_MISSIONARIES },
-    { label: t('Visitors'), route: 'communication.emails.visitors', permissionNeeded: UserPermission.EMAILS_SEND_TO_VISITORS },
+    { label: t('Members'), route: 'communication.emails.members', permissionNeeded: TenantPermission.EMAILS_SEND_TO_MEMBERS },
+    { label: t('Missionaries'), route: 'communication.emails.missionaries', permissionNeeded: TenantPermission.EMAILS_SEND_TO_MISSIONARIES },
+    { label: t('Visitors'), route: 'communication.emails.visitors', permissionNeeded: TenantPermission.EMAILS_SEND_TO_VISITORS },
   ];
 
   useEcho<{ email: Email }>(`${church?.id}.emails`, 'EmailStatusUpdatedEvent', (e) => {

@@ -3,7 +3,7 @@ import { DatatableCell } from '@/components/custom-ui/datatable/DatatableCell';
 import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTableColumnHeader';
 import { Badge } from '@/components/ui/badge';
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
-import { UserPermission } from '@/enums/user';
+import { TenantPermission } from '@/enums/TenantPermission';
 import { useTranslations } from '@/hooks/use-translations';
 import { useUser } from '@/hooks/use-user';
 import useConfirmationStore from '@/stores/confirmationStore';
@@ -51,13 +51,13 @@ export const columns: ColumnDef<User>[] = [
       const { can: userCan } = useUser();
       const user = row.original;
 
-      if (!userCan(UserPermission.USERS_UPDATE) && !userCan(UserPermission.USERS_DELETE)) {
+      if (!userCan(TenantPermission.USERS_UPDATE) && !userCan(TenantPermission.USERS_DELETE)) {
         return null;
       }
 
       return (
         <DatatableActionsDropdown>
-          {userCan(UserPermission.USERS_UPDATE) && (
+          {userCan(TenantPermission.USERS_UPDATE) && (
             <DropdownMenuItem asChild>
               <Link href={route('users.edit', user.id)}>
                 <Edit2Icon className="size-3" />
@@ -65,7 +65,7 @@ export const columns: ColumnDef<User>[] = [
               </Link>
             </DropdownMenuItem>
           )}
-          {userCan(UserPermission.USERS_DELETE) && (
+          {userCan(TenantPermission.USERS_DELETE) && (
             <DropdownMenuItem
               variant="destructive"
               onClick={() => {

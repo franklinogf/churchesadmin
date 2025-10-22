@@ -2,7 +2,7 @@ import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTabl
 import { SkillForm } from '@/components/forms/skill-form';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { UserPermission } from '@/enums/user';
+import { TenantPermission } from '@/enums/TenantPermission';
 import { useTranslations } from '@/hooks/use-translations';
 import { useUser } from '@/hooks/use-user';
 import useConfirmationStore from '@/stores/confirmationStore';
@@ -29,11 +29,11 @@ export const columns: ColumnDef<Tag>[] = [
       const { can: userCan } = useUser();
       const [isEditing, setIsEditing] = useState(false);
       const skill = row.original;
-      if (skill.isRegular && !userCan(UserPermission.REGULAR_TAGS_UPDATE) && !userCan(UserPermission.REGULAR_TAGS_DELETE)) {
+      if (skill.isRegular && !userCan(TenantPermission.REGULAR_TAGS_UPDATE) && !userCan(TenantPermission.REGULAR_TAGS_DELETE)) {
         return null;
       }
 
-      if (!userCan(UserPermission.SKILLS_UPDATE) && !userCan(UserPermission.SKILLS_DELETE)) {
+      if (!userCan(TenantPermission.SKILLS_UPDATE) && !userCan(TenantPermission.SKILLS_DELETE)) {
         return null;
       }
 
@@ -48,13 +48,13 @@ export const columns: ColumnDef<Tag>[] = [
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              {userCan(UserPermission.SKILLS_UPDATE) && (
+              {userCan(TenantPermission.SKILLS_UPDATE) && (
                 <DropdownMenuItem onSelect={() => setIsEditing(true)}>
                   <Edit2Icon className="size-3" />
                   <span>{t('Edit')}</span>
                 </DropdownMenuItem>
               )}
-              {userCan(UserPermission.SKILLS_DELETE) && (
+              {userCan(TenantPermission.SKILLS_DELETE) && (
                 <DropdownMenuItem
                   variant="destructive"
                   onClick={() => {

@@ -5,7 +5,7 @@ import { MultiSelectField } from '@/components/forms/inputs/MultiSelectField';
 import { SwitchField } from '@/components/forms/inputs/SwitchField';
 import { PageTitle } from '@/components/PageTitle';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { UserRole } from '@/enums/user';
+import { TenantRole } from '@/enums/TenantRole';
 import { useTranslations } from '@/hooks/use-translations';
 import { useUser } from '@/hooks/use-user';
 import AppLayout from '@/layouts/app-layout';
@@ -67,7 +67,7 @@ export default function Edit({ user, permissions, roles }: EditPageProps) {
             error={errors.email}
             onChange={(value) => setData('email', value)}
           />
-          {hasRole(UserRole.SUPER_ADMIN) && (
+          {hasRole(TenantRole.SUPER_ADMIN) && (
             <MultiSelectField
               required
               label={t('Roles')}
@@ -81,7 +81,7 @@ export default function Edit({ user, permissions, roles }: EditPageProps) {
             />
           )}
 
-          {(hasRole(UserRole.SUPER_ADMIN) || hasRole(UserRole.ADMIN)) && (
+          {(hasRole(TenantRole.SUPER_ADMIN) || hasRole(TenantRole.ADMIN)) && (
             <div className="space-y-4">
               <p className="text-lg font-medium">{t('Assigned permissions')}</p>
               <ScrollArea className="h-60 w-full">

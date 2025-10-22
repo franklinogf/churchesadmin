@@ -1,4 +1,4 @@
-import { type PaymentMethod } from '@/enums';
+import { type PaymentMethod } from '@/enums/PaymentMethod';
 import { type Member } from '@/types/models/member';
 import { type Missionary, type MissionaryMorphClass } from '@/types/models/missionary';
 import { type OfferingType, type OfferingTypeMorphClass } from '@/types/models/offering-type';
@@ -9,7 +9,7 @@ export interface Offering {
   transaction: Transaction;
   donor: Member | null;
   date: string;
-  paymentMethod: `${PaymentMethod}`;
+  paymentMethod: PaymentMethod;
   offeringType: OfferingType | Missionary;
   offeringTypeModel: MissionaryMorphClass | OfferingTypeMorphClass;
   note: string | null;

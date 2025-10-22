@@ -2,7 +2,7 @@ import { NavFooter } from '@/components/nav-footer';
 import { NavUser } from '@/components/nav-user';
 import { SidebarNav } from '@/components/sidebar-nav';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
-import { UserPermission } from '@/enums/user';
+import { TenantPermission } from '@/enums/TenantPermission';
 import { useTranslations } from '@/hooks/use-translations';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
@@ -38,37 +38,37 @@ export function AppSidebar() {
             title: t('Skills'),
             href: route('skills.index'),
             icon: LayoutGridIcon,
-            permissionNeeded: UserPermission.SKILLS_MANAGE,
+            permissionNeeded: TenantPermission.SKILLS_MANAGE,
           },
           {
             title: t('Categories'),
             href: route('categories.index'),
             icon: LayoutGridIcon,
-            permissionNeeded: UserPermission.CATEGORIES_MANAGE,
+            permissionNeeded: TenantPermission.CATEGORIES_MANAGE,
           },
           {
             title: t('Members'),
             href: route('members.index'),
             icon: Users2Icon,
-            permissionNeeded: UserPermission.MEMBERS_MANAGE,
+            permissionNeeded: TenantPermission.MEMBERS_MANAGE,
           },
           {
             title: t('Missionaries'),
             href: route('missionaries.index'),
             icon: Users2Icon,
-            permissionNeeded: UserPermission.MISSIONARIES_MANAGE,
+            permissionNeeded: TenantPermission.MISSIONARIES_MANAGE,
           },
           {
             title: t('Users'),
             href: route('users.index'),
             icon: Users2Icon,
-            permissionNeeded: UserPermission.USERS_MANAGE,
+            permissionNeeded: TenantPermission.USERS_MANAGE,
           },
           {
             title: t('Visitors'),
             href: route('visits.index'),
             icon: Users2Icon,
-            permissionNeeded: UserPermission.VISITS_MANAGE,
+            permissionNeeded: TenantPermission.VISITS_MANAGE,
           },
         ],
       },
@@ -114,7 +114,7 @@ export function AppSidebar() {
             title: t('Deactivation codes'),
             href: route('codes.deactivationCodes.index'),
             icon: ListIcon,
-            permissionNeeded: UserPermission.DEACTIVATION_CODES_MANAGE,
+            permissionNeeded: TenantPermission.DEACTIVATION_CODES_MANAGE,
           },
         ],
       },
@@ -135,7 +135,7 @@ export function AppSidebar() {
             title: t('Activity Logs'),
             href: route('activity-logs.index'),
             icon: FileStackIcon,
-            permissionNeeded: UserPermission.ACTIVITY_LOGS_MANAGE,
+            permissionNeeded: TenantPermission.ACTIVITY_LOGS_MANAGE,
           },
         ],
       },
@@ -146,7 +146,7 @@ export function AppSidebar() {
             title: t('Emails'),
             href: route('communication.emails.index'),
             icon: MailsIcon,
-            permissionNeeded: UserPermission.EMAILS_MANAGE,
+            permissionNeeded: TenantPermission.EMAILS_MANAGE,
           },
         ],
       },

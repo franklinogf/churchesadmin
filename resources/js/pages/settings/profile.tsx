@@ -9,7 +9,7 @@ import { InputField } from '@/components/forms/inputs/InputField';
 import { SelectField } from '@/components/forms/inputs/SelectField';
 import HeadingSmall from '@/components/heading-small';
 import { Button } from '@/components/ui/button';
-import { UserRole } from '@/enums/user';
+import { TenantRole } from '@/enums/TenantRole';
 import { useTranslations } from '@/hooks/use-translations';
 import { useUser } from '@/hooks/use-user';
 import AppLayout from '@/layouts/app-layout';
@@ -123,7 +123,7 @@ export default function Profile({ mustVerifyEmail, status, timezones, country, w
               options={timezones}
             />
 
-            {hasRole(UserRole.SUPER_ADMIN) && (
+            {hasRole(TenantRole.SUPER_ADMIN) && (
               <div>
                 <SelectField
                   label={t('Current year')}

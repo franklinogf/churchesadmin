@@ -1,4 +1,4 @@
-import type { FollowUpType } from '@/enums';
+import type { FollowUpType } from '@/enums/FollowUpType';
 import type { AddressRelationship } from './address';
 import type { EmailPivot } from './email';
 import type { Member } from './member';

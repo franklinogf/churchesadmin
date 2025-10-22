@@ -28,7 +28,8 @@ import {
 } from '@/components/ui/dialog';
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { EmailStatus } from '@/enums';
+
+import { EmailStatus } from '@/enums/EmailStatus';
 import type { Member } from '@/types/models/member';
 import type { Missionary } from '@/types/models/missionary';
 import type { Visit } from '@/types/models/visit';

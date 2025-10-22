@@ -1,9 +1,10 @@
 import { type Option } from '@/components/custom-ui/MultiSelect';
-import { type CivilStatus, type Gender } from '@/enums';
+import { type CivilStatus } from '@/enums/CivilStatus';
+import { type Gender } from '@/enums/Gender';
 import { type AddressRelationship } from '@/types/models/address';
 import { type DeactivationCode } from '@/types/models/deactivation-code';
+import type { Email, EmailPivot } from '@/types/models/email';
 import { type TagRelationship } from '@/types/models/tag';
-import type { Email, EmailPivot } from './email';
 
 export type MemberMorphClass = 'member';
 export interface Member {

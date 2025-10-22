@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthLayout from '@/layouts/auth-layout';
 
-import { UserRole } from '@/enums/user';
+import { TenantRole } from '@/enums/TenantRole';
 import type { SharedData } from '@/types';
 
 type LoginForm = {
@@ -39,13 +39,13 @@ export default function Login() {
       <Head title="Log in" />
       {environment !== 'production' && (
         <div className="mb-6 flex flex-col gap-2">
-          <Link method="post" href={route('loginLink')} data={{ role: UserRole.SUPER_ADMIN }}>
+          <Link method="post" href={route('loginLink')} data={{ role: TenantRole.SUPER_ADMIN }}>
             Log in as super admin
           </Link>
-          <Link method="post" href={route('loginLink')} data={{ role: UserRole.ADMIN }}>
+          <Link method="post" href={route('loginLink')} data={{ role: TenantRole.ADMIN }}>
             Log in as admin
           </Link>
-          <Link method="post" href={route('loginLink')} data={{ role: UserRole.SECRETARY }}>
+          <Link method="post" href={route('loginLink')} data={{ role: TenantRole.SECRETARY }}>
             Log in as secretary
           </Link>
         </div>

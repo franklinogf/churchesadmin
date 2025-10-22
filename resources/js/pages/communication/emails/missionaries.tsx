@@ -7,7 +7,9 @@ import { DatatableCell } from '@/components/custom-ui/datatable/DatatableCell';
 import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTableColumnHeader';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { ModelMorphName, SessionName } from '@/enums';
+
+import { ModelMorphName } from '@/enums/ModelMorphName';
+import { SessionName } from '@/enums/SessionName';
 import type { Missionary } from '@/types/models/missionary';
 import { router } from '@inertiajs/react';
 import { type ColumnDef } from '@tanstack/react-table';

@@ -4,7 +4,7 @@ import { InputField } from '@/components/forms/inputs/InputField';
 import { RichTextField } from '@/components/forms/inputs/RichTextField';
 import { PageTitle } from '@/components/PageTitle';
 import { Badge } from '@/components/ui/badge';
-import { ModelMorphName } from '@/enums';
+import { ModelMorphName } from '@/enums/ModelMorphName';
 import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import { useForm } from '@inertiajs/react';

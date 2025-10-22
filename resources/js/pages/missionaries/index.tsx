@@ -1,7 +1,7 @@
 import { DataTable } from '@/components/custom-ui/datatable/data-table';
 import { PageTitle } from '@/components/PageTitle';
 import { Button } from '@/components/ui/button';
-import { UserPermission } from '@/enums/user';
+import { TenantPermission } from '@/enums/TenantPermission';
 import AppLayout from '@/layouts/app-layout';
 
 import { useTranslations } from '@/hooks/use-translations';
@@ -23,7 +23,7 @@ export default function Index({ missionaries }: IndexPageProps) {
       <PageTitle>{t('Missionaries')}</PageTitle>
       <DataTable
         headerButton={
-          userCan(UserPermission.MISSIONARIES_CREATE) && (
+          userCan(TenantPermission.MISSIONARIES_CREATE) && (
             <Button asChild>
               <Link href={route('missionaries.create')}>{t('Add :model', { model: t('Missionary') })}</Link>
             </Button>

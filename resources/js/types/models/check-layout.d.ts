@@ -1,5 +1,4 @@
-import type { CheckLayoutFieldName } from '@/enums';
-
+import type { CheckLayoutField as CheckLayoutFieldName } from '@/enums/CheckLayoutField';
 export type CheckFieldName = `${CheckLayoutFieldName}`;
 
 export type CheckLayoutPosition = {

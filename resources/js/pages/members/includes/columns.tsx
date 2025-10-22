@@ -3,7 +3,7 @@ import { DatatableCell } from '@/components/custom-ui/datatable/DatatableCell';
 import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTableColumnHeader';
 import { Badge } from '@/components/ui/badge';
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
-import { UserPermission } from '@/enums/user';
+import { TenantPermission } from '@/enums/TenantPermission';
 import { useTranslations } from '@/hooks/use-translations';
 import { useUser } from '@/hooks/use-user';
 import useConfirmationStore from '@/stores/confirmationStore';
@@ -99,7 +99,7 @@ export const columns: ColumnDef<Member>[] = [
               <span>{t('View')}</span>
             </Link>
           </DropdownMenuItem>
-          {userCan(UserPermission.MEMBERS_UPDATE) && (
+          {userCan(TenantPermission.MEMBERS_UPDATE) && (
             <DropdownMenuItem asChild>
               <Link href={route('members.edit', row.original.id)}>
                 <Edit2Icon className="size-3" />
@@ -107,7 +107,7 @@ export const columns: ColumnDef<Member>[] = [
               </Link>
             </DropdownMenuItem>
           )}
-          {userCan(UserPermission.MEMBERS_DELETE) && (
+          {userCan(TenantPermission.MEMBERS_DELETE) && (
             <DropdownMenuItem
               variant="destructive"
               onClick={() => {

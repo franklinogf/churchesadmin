@@ -1,7 +1,7 @@
 import { DataTable } from '@/components/custom-ui/datatable/data-table';
 import { PageTitle } from '@/components/PageTitle';
 import { Button } from '@/components/ui/button';
-import { UserPermission } from '@/enums/user';
+import { TenantPermission } from '@/enums/TenantPermission';
 import { useTranslations } from '@/hooks/use-translations';
 import { useUser } from '@/hooks/use-user';
 import AppLayout from '@/layouts/app-layout';
@@ -21,7 +21,7 @@ export default function Index({ users }: IndexPageProps) {
       <PageTitle>{t('Users')}</PageTitle>
       <DataTable
         headerButton={
-          userCan(UserPermission.USERS_CREATE) && (
+          userCan(TenantPermission.USERS_CREATE) && (
             <Button asChild>
               <Link href={route('users.create')}>{t('Add :model', { model: t('User') })}</Link>
             </Button>

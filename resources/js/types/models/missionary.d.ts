@@ -1,4 +1,5 @@
-import { type Gender, type OfferingFrequency } from '@/enums';
+import type { Gender } from '@/enums/Gender';
+import type { OfferingFrequency } from '@/enums/OfferingFrequency';
 import { type AddressRelationship } from './address';
 import type { Email, EmailPivot } from './email';
 

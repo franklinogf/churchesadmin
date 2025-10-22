@@ -1,7 +1,7 @@
 import { InputField } from '@/components/forms/inputs/InputField';
 import { SwitchField } from '@/components/forms/inputs/SwitchField';
 import { ResponsiveModal, ResponsiveModalFooterSubmit } from '@/components/responsive-modal';
-import { UserPermission } from '@/enums/user';
+import { TenantPermission } from '@/enums/TenantPermission';
 import { useTranslations } from '@/hooks/use-translations';
 import { useUser } from '@/hooks/use-user';
 import type { Tag } from '@/types/models/tag';
@@ -44,7 +44,7 @@ export function SkillForm({ skill, open, setOpen }: { skill?: Tag; open: boolean
     >
       <form className="space-y-4" onSubmit={handleSubmit}>
         <InputField label={t('Name')} value={data.name} onChange={(value) => setData(`name`, value)} error={errors.name} />
-        {userCan(skill ? UserPermission.REGULAR_TAGS_UPDATE : UserPermission.REGULAR_TAGS_CREATE) && (
+        {userCan(skill ? TenantPermission.REGULAR_TAGS_UPDATE : TenantPermission.REGULAR_TAGS_CREATE) && (
           <SwitchField
             description={t('Only admins would be allowed to edit and delete this skill')}
             label={t('Mark this skill as regular')}

@@ -2,7 +2,7 @@ import { DataTable } from '@/components/custom-ui/datatable/data-table';
 import { SkillForm } from '@/components/forms/skill-form';
 import { PageTitle } from '@/components/PageTitle';
 import { Button } from '@/components/ui/button';
-import { UserPermission } from '@/enums/user';
+import { TenantPermission } from '@/enums/TenantPermission';
 import { useTranslations } from '@/hooks/use-translations';
 import { useUser } from '@/hooks/use-user';
 import AppLayout from '@/layouts/app-layout';
@@ -25,7 +25,7 @@ export default function Index({ skills }: IndexPageProps) {
         <SkillForm open={open} setOpen={setOpen} />
         <DataTable
           headerButton={
-            userCan(UserPermission.SKILLS_CREATE) && (
+            userCan(TenantPermission.SKILLS_CREATE) && (
               <Button size="sm" onClick={() => setOpen(true)}>
                 {t('Add :model', { model: t('Skill') })}
               </Button>

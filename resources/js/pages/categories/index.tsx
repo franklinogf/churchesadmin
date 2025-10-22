@@ -2,7 +2,7 @@ import { DataTable } from '@/components/custom-ui/datatable/data-table';
 import { CategoryForm } from '@/components/forms/category-form';
 import { PageTitle } from '@/components/PageTitle';
 import { Button } from '@/components/ui/button';
-import { UserPermission } from '@/enums/user';
+import { TenantPermission } from '@/enums/TenantPermission';
 import { useTranslations } from '@/hooks/use-translations';
 import { useUser } from '@/hooks/use-user';
 import AppLayout from '@/layouts/app-layout';
@@ -24,7 +24,7 @@ export default function Index({ categories }: IndexPageProps) {
         <CategoryForm open={open} setOpen={setOpen} />
         <DataTable
           headerButton={
-            userCan(UserPermission.CATEGORIES_CREATE) && (
+            userCan(TenantPermission.CATEGORIES_CREATE) && (
               <Button size="sm" onClick={() => setOpen(true)}>
                 {t('Add :model', { model: t('Category') })}
               </Button>

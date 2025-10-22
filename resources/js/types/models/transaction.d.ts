@@ -1,4 +1,5 @@
-import type { TransactionMetaType, TransactionType } from '@/enums';
+import { type TransactionMetaType } from '@/enums/TransactionMetaType';
+import { type TransactionType } from '@/enums/TransactionType';
 import { type Wallet } from './wallet';
 
 type TransactionMeta = {
@@ -9,7 +10,7 @@ export interface Transaction {
   id: number;
   uuid: string;
   wallet?: Wallet;
-  type: `${TransactionType}`;
+  type: TransactionType;
   amount: number;
   amountFloat: string;
   meta: TransactionMeta | null;

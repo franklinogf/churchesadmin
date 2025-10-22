@@ -1,4 +1,5 @@
-import type { EmailStatus, ModelMorphName } from '@/enums';
+import type { EmailStatus } from '@/enums/EmailStatus';
+import type { ModelMorphName } from '@/enums/ModelMorphName';
 import type { Media } from '@/types/models/media';
 import type { Member } from '@/types/models/member';
 import type { Missionary } from '@/types/models/missionary';

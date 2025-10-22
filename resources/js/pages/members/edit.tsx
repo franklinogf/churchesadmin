@@ -12,7 +12,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Separator } from '@/components/ui/separator';
-import { UserPermission } from '@/enums/user';
+import { TenantPermission } from '@/enums/TenantPermission';
 import { useTranslations } from '@/hooks/use-translations';
 import { useUser } from '@/hooks/use-user';
 import AppLayout from '@/layouts/app-layout';
@@ -215,7 +215,7 @@ export default function Edit({ member, genders, civilStatuses, skills, categorie
 
                 <div className="space-y-3">
                   <div className="space-y-2">
-                    {member.active && userCan(UserPermission.MEMBERS_DEACTIVATE) && (
+                    {member.active && userCan(TenantPermission.MEMBERS_DEACTIVATE) && (
                       <Dialog open={deactivateDialogOpen} onOpenChange={setDeactivateDialogOpen}>
                         <DialogTrigger asChild>
                           <Button variant="destructive" size="sm" className="w-full justify-start">
@@ -279,7 +279,7 @@ export default function Edit({ member, genders, civilStatuses, skills, categorie
                       </Dialog>
                     )}
 
-                    {!member.active && userCan(UserPermission.MEMBERS_ACTIVATE) && (
+                    {!member.active && userCan(TenantPermission.MEMBERS_ACTIVATE) && (
                       <Button
                         variant="default"
                         size="sm"

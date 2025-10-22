@@ -1,4 +1,5 @@
-import { type UserPermission, type UserRole } from '@/enums/user';
+import { type TenantPermission } from '@/enums/TenantPermission';
+import { type TenantRole } from '@/enums/TenantRole';
 import { type SharedData } from '@/types';
 import { usePage } from '@inertiajs/react';
 
@@ -9,11 +10,11 @@ export function useUser() {
     },
   } = usePage<SharedData>();
 
-  const can = (permission: UserPermission) => {
+  const can = (permission: TenantPermission) => {
     return user.permissions.includes(permission);
   };
 
-  const hasRole = (role: UserRole) => {
+  const hasRole = (role: TenantRole) => {
     return user.roles.includes(role);
   };
 

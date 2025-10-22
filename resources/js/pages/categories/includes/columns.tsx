@@ -2,7 +2,7 @@ import { DatatableActionsDropdown } from '@/components/custom-ui/datatable/data-
 import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTableColumnHeader';
 import { CategoryForm } from '@/components/forms/category-form';
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
-import { UserPermission } from '@/enums/user';
+import { TenantPermission } from '@/enums/TenantPermission';
 import { useTranslations } from '@/hooks/use-translations';
 import { useUser } from '@/hooks/use-user';
 import useConfirmationStore from '@/stores/confirmationStore';
@@ -29,11 +29,11 @@ export const columns: ColumnDef<Tag>[] = [
       const { can: userCan } = useUser();
       const [isEditing, setIsEditing] = useState(false);
       const category = row.original;
-      if (category.isRegular && !userCan(UserPermission.REGULAR_TAGS_UPDATE) && !userCan(UserPermission.REGULAR_TAGS_DELETE)) {
+      if (category.isRegular && !userCan(TenantPermission.REGULAR_TAGS_UPDATE) && !userCan(TenantPermission.REGULAR_TAGS_DELETE)) {
         return null;
       }
 
-      if (!userCan(UserPermission.CATEGORIES_UPDATE) && !userCan(UserPermission.CATEGORIES_DELETE)) {
+      if (!userCan(TenantPermission.CATEGORIES_UPDATE) && !userCan(TenantPermission.CATEGORIES_DELETE)) {
         return null;
       }
 
@@ -41,14 +41,14 @@ export const columns: ColumnDef<Tag>[] = [
         <>
           <CategoryForm category={category} open={isEditing} setOpen={setIsEditing} />
           <DatatableActionsDropdown>
-            {userCan(UserPermission.CATEGORIES_UPDATE) && (
+            {userCan(TenantPermission.CATEGORIES_UPDATE) && (
               <DropdownMenuItem onSelect={() => setIsEditing(true)}>
                 <Edit2Icon className="size-3" />
                 <span>{t('Edit')}</span>
               </DropdownMenuItem>
             )}
 
-            {userCan(UserPermission.CATEGORIES_DELETE) && (
+            {userCan(TenantPermission.CATEGORIES_DELETE) && (
               <DropdownMenuItem
                 variant="destructive"
                 onSelect={() => {

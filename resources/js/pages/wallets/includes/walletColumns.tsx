@@ -5,7 +5,7 @@ import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTabl
 import { WalletForm } from '@/components/forms/wallet-form';
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
-import { WalletName } from '@/enums';
+import { WalletName } from '@/enums/WalletName';
 import { useTranslations } from '@/hooks/use-translations';
 import useConfirmationStore from '@/stores/confirmationStore';
 import type { Wallet } from '@/types/models/wallet';
