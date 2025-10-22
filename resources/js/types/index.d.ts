@@ -1,5 +1,6 @@
 import { type LanguageCode } from '@/enums';
 
+import type { ChurchFeature } from '@/enums/ChurchFeature';
 import { type UserPermission } from '@/enums/user';
 import { type LucideIcon } from 'lucide-react';
 import type { Config } from 'ziggy-js';
@@ -41,6 +42,7 @@ export interface SharedData {
   appName: string;
   environment: 'production' | 'local' | 'staging';
   church: Church | null;
+  features: Record<ChurchFeature, boolean>;
   [key: string]: unknown;
 }
 

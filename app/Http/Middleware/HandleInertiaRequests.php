@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
+use App\Enums\ChurchFeature;
 use App\Enums\FlashMessageKey;
 use App\Enums\LanguageCode;
 use App\Http\Resources\ChurchResource;
@@ -65,6 +66,7 @@ final class HandleInertiaRequests extends Middleware
             'appName' => config('app.name'),
             'environment' => app()->environment(),
             'church' => ($church = Church::current()) instanceof Church ? new ChurchResource($church) : null,
+            'features' => $this->getChurchFeatures(),
         ];
     }
 
@@ -80,5 +82,25 @@ final class HandleInertiaRequests extends Middleware
             FlashMessageKey::ERROR->value => $request->session()->get(FlashMessageKey::ERROR->value),
             FlashMessageKey::MESSAGE->value => $request->session()->get(FlashMessageKey::MESSAGE->value),
         ];
+    }
+
+    /**
+     * Get the features enabled for the current church.
+     *
+     * @return array<string, bool>
+     */
+    private function getChurchFeatures(): array
+    {
+        $church = Church::current();
+        if (! $church) {
+            return [];
+        }
+        $features = collect(ChurchFeature::values())
+            ->mapWithKeys(fn ($feature): array => [
+                $feature => $church->features()->active($feature),
+            ])
+            ->toArray();
+
+        return $features;
     }
 }
