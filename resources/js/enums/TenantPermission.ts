@@ -1,4 +1,5 @@
-export enum UserPermission {
+// Auto-generated from App\Enums\TenantPermission. DO NOT EDIT MANUALLY.
+export enum TenantPermission {
   REGULAR_TAGS_UPDATE = 'regular_tags.update',
   REGULAR_TAGS_DELETE = 'regular_tags.delete',
   REGULAR_TAGS_CREATE = 'regular_tags.create',
@@ -48,6 +49,7 @@ export enum UserPermission {
   WALLETS_CREATE = 'wallets.create',
   WALLETS_UPDATE = 'wallets.update',
   WALLETS_DELETE = 'wallets.delete',
+  WALLETS_RESTORE = 'wallets.restore',
   WALLETS_CHECK_LAYOUT_UPDATE = 'wallets.check_layout.update',
   CHECK_LAYOUTS_MANAGE = 'check_layouts.manage',
   CHECK_LAYOUTS_CREATE = 'check_layouts.create',
@@ -73,12 +75,9 @@ export enum UserPermission {
   VISITS_DELETE = 'visits.delete',
   VISITS_FORCE_DELETE = 'visits.force_delete',
   VISITS_RESTORE = 'visits.restore',
+  EXPENSES_MANAGE = 'expenses.manage',
+  EXPENSES_CREATE = 'expenses.create',
+  EXPENSES_UPDATE = 'expenses.update',
+  EXPENSES_DELETE = 'expenses.delete',
   ACTIVITY_LOGS_MANAGE = 'activity_logs.manage',
-}
-
-export enum UserRole {
-  SUPER_ADMIN = 'super_admin',
-  ADMIN = 'admin',
-  SECRETARY = 'secretary',
-  NO_ROLE = 'no_role',
 }
