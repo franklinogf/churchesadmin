@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\Churches\Schemas;
 
+use App\Enums\ChurchFeature;
 use App\Enums\LanguageCode;
 use App\Models\Church;
 use Filament\Actions\Action;
+use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -14,6 +16,7 @@ use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Illuminate\Validation\Rules\Password;
+use Laravel\Pennant\Feature;
 
 final class ChurchForm
 {
@@ -86,6 +89,28 @@ final class ChurchForm
                             ->dehydrated(false),
                     ])
                     ->columns(2)
+                    ->compact(),
+                Section::make('Features')
+                    ->translateLabel()
+                    ->divided()
+                    ->schema([
+                        CheckboxList::make('features')
+                            ->dehydrated(false)
+                            ->columns(2)
+                            ->label(__('Enabled Features'))
+                            ->options(ChurchFeature::class)
+                            ->afterStateHydrated(function (CheckboxList $component, ?Church $record, string $operation): void {
+                                if ($operation !== 'edit') {
+                                    return;
+                                }
+                                $activeFeatures = collect(ChurchFeature::values())
+                                    ->filter(fn ($key) => Feature::for($record)->active($key))
+                                    ->toArray();
+
+                                $component->state($activeFeatures);
+                            }),
+                    ])
+                    ->columnSpanFull()
                     ->compact(),
             ]);
     }
