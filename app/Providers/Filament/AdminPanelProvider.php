@@ -37,7 +37,8 @@ final class AdminPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Cyan,
             ])
-            ->font('Poppins')
+            ->globalSearch(false)
+            ->font('Inter')
             ->spa(hasPrefetching: true)
             ->unsavedChangesAlerts()
             ->topNavigation()

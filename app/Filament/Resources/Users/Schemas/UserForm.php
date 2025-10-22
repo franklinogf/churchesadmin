@@ -22,6 +22,7 @@ final class UserForm
                     ->label('Email')
                     ->required()
                     ->email()
+                    ->unique(ignoreRecord: true)
                     ->maxLength(255),
                 TextInput::make('password')
                     ->label('Password')

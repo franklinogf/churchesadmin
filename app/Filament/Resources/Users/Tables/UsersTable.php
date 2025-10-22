@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\Users\Tables;
 
+use App\Filament\Resources\Users\Pages\EditUser;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
@@ -31,7 +32,7 @@ final class UsersTable
                 DeleteAction::make()
                     ->visible(fn ($record): bool => $record->id !== Auth::id()),
             ])
-            ->recordUrl(null)
+            ->recordUrl(fn ($record): string => $record->id !== Auth::id() ? EditUser::getUrl(['record' => $record]) : '')
             ->toolbarActions([
                 //
             ]);
