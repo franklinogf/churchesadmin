@@ -1,6 +1,6 @@
 # Churches Administration
 
-[![Laravel Forge Site Deployment Status](https://img.shields.io/endpoint?url=https%3A%2F%2Fforge.laravel.com%2Fsite-badges%2F5129b258-7cf5-4173-8aef-861ede4b0c1a%3Flabel%3D1&style=flat)](https://forge.laravel.com/servers/910633/sites/2692376)
+[![Laravel Forge Site Deployment Status](https://img.shields.io/endpoint?url=https%3A%2F%2Fforge.laravel.com%2Fsite-badges%2Fc350667d-b349-4762-b017-65980bb33ad7%3Fdate%3D1&style=flat)](https://forge.laravel.com/franklin-gonzalez/divine-leaf-0xx/2896435)
 [![tests](https://github.com/franklinogf/churchesadmin/actions/workflows/tests.yml/badge.svg)](https://github.com/franklinogf/churchesadmin/actions/workflows/tests.yml)
 [![linter](https://github.com/franklinogf/churchesadmin/actions/workflows/lint.yml/badge.svg)](https://github.com/franklinogf/churchesadmin/actions/workflows/lint.yml)
 
