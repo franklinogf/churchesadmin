@@ -30,6 +30,7 @@ final class AdminPanelProvider extends PanelProvider
             ->authGuard('web')
             ->authPasswordBroker('users')
             ->login()
+            ->passwordReset()
             ->profile(isSimple: false)
             ->emailVerification()
             ->passwordReset()
@@ -37,9 +38,9 @@ final class AdminPanelProvider extends PanelProvider
                 'primary' => Color::Cyan,
             ])
             ->font('Poppins')
-            ->spa()
+            ->spa(hasPrefetching: true)
             ->unsavedChangesAlerts()
-            ->sidebarFullyCollapsibleOnDesktop()
+            ->topNavigation()
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
@@ -64,7 +65,8 @@ final class AdminPanelProvider extends PanelProvider
             ->resourceEditPageRedirect('index')
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+            ->databaseTransactions();
 
     }
 }

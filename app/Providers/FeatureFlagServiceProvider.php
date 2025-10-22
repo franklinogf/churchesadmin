@@ -24,6 +24,7 @@ final class FeatureFlagServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Feature::useMorphMap();
         Feature::resolveScopeUsing(fn (): ?Church => Church::current());
 
         $churchFeatures = ChurchFeature::values();
