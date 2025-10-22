@@ -6,22 +6,22 @@ import { resolve } from 'node:path';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-    plugins: [
-        laravel({
-            input: ['resources/css/app.css', 'resources/js/app.tsx'],
-            ssr: 'resources/js/ssr.tsx',
-            refresh: true,
-        }),
-        react(),
-        tailwindcss(),
-        i18n(),
-    ],
-    esbuild: {
-        jsx: 'automatic',
+  plugins: [
+    laravel({
+      input: ['resources/css/app.css', 'resources/js/app.tsx', 'resources/css/filament/admin/theme.css'],
+      ssr: 'resources/js/ssr.tsx',
+      refresh: true,
+    }),
+    react(),
+    tailwindcss(),
+    i18n(),
+  ],
+  esbuild: {
+    jsx: 'automatic',
+  },
+  resolve: {
+    alias: {
+      'ziggy-js': resolve(__dirname, 'vendor/tightenco/ziggy'),
     },
-    resolve: {
-        alias: {
-            'ziggy-js': resolve(__dirname, 'vendor/tightenco/ziggy'),
-        },
-    },
+  },
 });

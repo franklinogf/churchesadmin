@@ -67,7 +67,9 @@ final class AdminPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
-            ->databaseTransactions();
+            ->databaseTransactions()
+            ->plugin(\Boquizo\FilamentLogViewer\FilamentLogViewerPlugin::make()->navigationIcon('heroicon-o-document-text')->navigationGroup('System'))
+            ->viteTheme('resources/css/filament/admin/theme.css');
 
     }
 }
