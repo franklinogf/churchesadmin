@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-use Stancl\Tenancy\Features\TenantConfig;
+use Stancl\Tenancy\Bootstrappers\TenantConfigBootstrapper;
 use Stancl\Tenancy\Middleware\InitializeTenancyBySubdomain;
 
 final class ChurchServiceProvider extends ServiceProvider
@@ -23,7 +23,7 @@ final class ChurchServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        TenantConfig::$storageToConfigMap = [
+        TenantConfigBootstrapper::$storageToConfigMap = [
             'locale' => 'app.locale',
             'name' => 'mail.from.name',
         ];
