@@ -18,6 +18,8 @@ final class SessionService
 
     /**
      * Get the session value for the given name.
+     *
+     * @param  array<int,mixed>|string|int|null  $default
      */
     public static function get(SessionName $name, array|string|int|null $default = null): mixed
     {
@@ -26,6 +28,8 @@ final class SessionService
 
     /**
      * Get the session value for the given name and forget it.
+     *
+     * @param  array<int,mixed>|string|int|null  $default
      */
     public static function getAndForget(SessionName $name, array|string|int|null $default = null): mixed
     {
