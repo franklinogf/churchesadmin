@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Enums\Gender;
 use App\Enums\OfferingFrequency;
 use App\Enums\TenantPermission;
+use App\Models\Address;
 use App\Models\Missionary;
 use Inertia\Testing\AssertableInertia as Assert;
 
@@ -41,11 +42,11 @@ describe('if user has permission', function (): void {
 
         from(route('missionaries.edit', ['missionary' => $missionary]))
             ->put(route('missionaries.update', ['missionary' => $missionary]), [
-                'name' => 'John',
-                'last_name' => 'Doe',
-                'email' => 'john.doe@example.com',
-                'phone' => '+19293394305',
-                'gender' => Gender::MALE->value,
+                'name' => 'Nicole',
+                'last_name' => 'Lopez',
+                'email' => 'nicole.lopez@example.com',
+                'phone' => '+19293390000',
+                'gender' => Gender::FEMALE->value,
                 'church' => 'Church name',
                 'offering' => '10.15',
                 'offering_frequency' => OfferingFrequency::MONTHLY->value,
@@ -58,11 +59,11 @@ describe('if user has permission', function (): void {
         $updatedMissionary = Missionary::latest()->first();
 
         expect($updatedMissionary)->not->toBeNull()
-            ->and($updatedMissionary->name)->toBe('John')
-            ->and($updatedMissionary->last_name)->toBe('Doe')
-            ->and($updatedMissionary->email)->toBe('john.doe@example.com')
-            ->and($updatedMissionary->phone)->toBe('+19293394305')
-            ->and($updatedMissionary->gender)->toBe(Gender::MALE)
+            ->and($updatedMissionary->name)->toBe('Nicole')
+            ->and($updatedMissionary->last_name)->toBe('Lopez')
+            ->and($updatedMissionary->email)->toBe('nicole.lopez@example.com')
+            ->and($updatedMissionary->phone)->toBe('+19293390000')
+            ->and($updatedMissionary->gender)->toBe(Gender::FEMALE)
             ->and($updatedMissionary->church)->toBe('Church name')
             ->and($updatedMissionary->offering)->toBe('10.15')
             ->and($updatedMissionary->offering_frequency)->toBe(OfferingFrequency::MONTHLY)
@@ -70,7 +71,8 @@ describe('if user has permission', function (): void {
     });
 
     it('can be updated without an address when it already has an address', function (): void {
-        $missionary = Missionary::factory()->hasAddress()->create(
+
+        $missionary = Missionary::factory()->has(Address::factory())->create(
             [
                 'name' => 'Nicole',
                 'last_name' => 'Lopez',
@@ -99,7 +101,7 @@ describe('if user has permission', function (): void {
 
         assertDatabaseCount('addresses', 0);
 
-        $updatedMissionary = Missionary::latest()->first();
+        $updatedMissionary = Missionary::find($missionary->id);
 
         expect($updatedMissionary)->not->toBeNull()
             ->and($updatedMissionary->name)->toBe('John')
