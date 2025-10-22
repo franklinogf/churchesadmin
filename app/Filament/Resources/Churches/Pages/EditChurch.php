@@ -9,7 +9,6 @@ use App\Filament\Resources\Churches\ChurchResource;
 use App\Models\Church;
 use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
-use Laravel\Pennant\Feature;
 
 /**
  * @property-read Church $record
@@ -32,11 +31,11 @@ final class EditChurch extends EditRecord
         $featuresToDeactivate = array_diff($existingFeatures, $features);
 
         foreach ($featuresToDeactivate as $feature) {
-            Feature::for($this->record)->deactivate($feature);
+            $this->record->features()->deactivate($feature);
         }
 
         foreach ($features as $feature) {
-            Feature::for($this->record)->activate($feature);
+            $this->record->features()->activate($feature);
         }
     }
 }

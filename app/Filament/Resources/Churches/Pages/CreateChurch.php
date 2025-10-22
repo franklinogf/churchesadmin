@@ -10,7 +10,6 @@ use App\Models\Church;
 use App\Models\CurrentYear;
 use App\Models\TenantUser;
 use Filament\Resources\Pages\CreateRecord;
-use Laravel\Pennant\Feature;
 
 /**
  * @property-read Church $record
@@ -40,7 +39,7 @@ final class CreateChurch extends CreateRecord
         $features = $this->data['features'] ?? [];
 
         foreach ($features as $feature) {
-            Feature::for($church)->activate($feature);
+            $church->features()->activate($feature);
         }
     }
 }
