@@ -30,7 +30,14 @@ test('to array', function (): void {
 });
 
 test('casts are applied correctly', function (): void {
-    $member = Member::factory()->create()->fresh();
+    $member = Member::factory()
+        ->create([
+            'gender' => Gender::MALE->value,
+            'dob' => '1992-03-15',
+            'baptism_date' => '2005-07-20',
+            'civil_status' => CivilStatus::SINGLE->value,
+        ])
+        ->fresh();
 
     expect($member->gender)->toBeInstanceOf(Gender::class);
     expect($member->dob)->toBeInstanceOf(CarbonImmutable::class);
