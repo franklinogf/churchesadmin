@@ -92,15 +92,14 @@ final class HandleInertiaRequests extends Middleware
     private function getChurchFeatures(): array
     {
         $church = Church::current();
-        if (! $church) {
+        if (! $church instanceof Church) {
             return [];
         }
-        $features = collect(ChurchFeature::values())
+
+        return collect(ChurchFeature::values())
             ->mapWithKeys(fn ($feature): array => [
                 $feature => $church->features()->active($feature),
             ])
             ->toArray();
-
-        return $features;
     }
 }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
+use BackedEnum;
 use Illuminate\Console\Command;
 
 final class SyncEnums extends Command
@@ -41,7 +42,7 @@ final class SyncEnums extends Command
         foreach ($enums as $name => $enum) {
 
             $cases = collect($enum::cases())
-                ->map(fn ($case) => "  {$case->name} = '{$case->value}',")
+                ->map(fn (BackedEnum $case): string => "  {$case->name} = '{$case->value}',")
                 ->implode("\n");
 
             $ts = <<<TS
