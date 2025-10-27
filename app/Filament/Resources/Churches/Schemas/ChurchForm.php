@@ -104,7 +104,7 @@ final class ChurchForm
                                     return;
                                 }
                                 $activeFeatures = collect(ChurchFeature::values())
-                                    ->filter(fn ($key) => Feature::for($record)->active($key))
+                                    ->filter(fn (string $key) => Feature::for($record)->active($key))
                                     ->toArray();
 
                                 $component->state($activeFeatures);

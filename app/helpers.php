@@ -41,7 +41,7 @@ if (! function_exists('create_tenant_url')) {
         }
 
         try {
-            /** @phpstan-ignore-next-line */
+
             $domain = $church->domains()->first();
             if (! $domain) {
                 return null;
@@ -49,7 +49,6 @@ if (! function_exists('create_tenant_url')) {
 
             $url = config()->string('app.url');
 
-            /** @phpstan-ignore-next-line */
             return tenant_route($domain->domain.'.'.str($url)->after('://'), $routeName, $routeParams);
         } catch (Exception) {
             return null;

@@ -95,11 +95,15 @@ final class HandleInertiaRequests extends Middleware
         if (! $church instanceof Church) {
             return [];
         }
-
-        return collect(ChurchFeature::values())
-            ->mapWithKeys(fn ($feature): array => [
+        /**
+         * @var array<string,bool>
+         */
+        $features = collect(ChurchFeature::values())
+            ->mapWithKeys(fn (string $feature): array => [
                 $feature => $church->features()->active($feature),
             ])
             ->toArray();
+
+        return $features;
     }
 }

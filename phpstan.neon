@@ -10,7 +10,7 @@ parameters:
     paths:
         - app/
 
-    level: max
+    level: 6
 
     editorUrl: 'vscode://file/%%file%%:%%line%%'
 

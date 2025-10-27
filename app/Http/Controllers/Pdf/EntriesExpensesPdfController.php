@@ -33,15 +33,12 @@ final class EntriesExpensesPdfController extends Controller
             ->whereBetween('date', [$startOfMonth, $endOfMonth])
             ->with(['offeringType', 'donor', 'transaction'])
             ->get()
-            ->groupBy(fn (Offering $offering): string =>
+            ->groupBy(fn (Offering $offering): string => match ($offering->offering_type_type) {
+                'offering_type' => $offering->offeringType->name ?? '',
                 /** @phpstan-ignore-next-line */
-                match ($offering->offering_type_type) {
-                    /** @phpstan-ignore-next-line */
-                    'offering_type' => $offering->offeringType?->name ?? '',
-                    /** @phpstan-ignore-next-line */
-                    'missionary' => "{$offering->offeringType?->name} {$offering->offeringType?->last_name}",
-                    default => '',
-                })
+                'missionary' => "{$offering->offeringType->name} {$offering->offeringType->last_name}",
+                default => '',
+            })
             ->map(fn (Collection $group): Collection => $group->groupBy(fn (Offering $offering): string => $offering->date->format('Y-m'))->sortKeys());
 
         $entries = $offerings->map(fn (Collection $group): SupportCollection => $group->map(fn (Collection $group): mixed => $group->sum('transaction.amountFloat')))->toArray();

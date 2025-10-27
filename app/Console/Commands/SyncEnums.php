@@ -6,6 +6,7 @@ namespace App\Console\Commands;
 
 use BackedEnum;
 use Illuminate\Console\Command;
+use Illuminate\Support\Str;
 
 final class SyncEnums extends Command
 {
@@ -16,17 +17,14 @@ final class SyncEnums extends Command
     public function handle(): int
     {
         $fileName = $this->argument('fileName');
-        if (gettype($fileName) !== 'string' && $fileName !== null) {
-            $this->error('Invalid file name provided.');
 
-            return self::FAILURE;
-        }
-        $fileName = $fileName !== null ? mb_rtrim($fileName, '.').'.php' : null;
+        $fileName = $fileName !== null ? Str::of($fileName)->trim()->whenEmpty(fn (): null => null) : null;
+
         $enumsPath = app_path('enums');
 
         $enums = file_exists($enumsPath)
                     ? collect(scandir($enumsPath))
-                        ->filter(fn (string $file): bool => $fileName !== null ? $file === $fileName && str_ends_with($file, '.php') : str_ends_with($file, '.php'))
+                        ->filter(fn (string $file): bool => $fileName !== null ? $file === $fileName->value() && str_ends_with($file, '.php') : str_ends_with($file, '.php'))
                         ->mapWithKeys(fn (string $file): array => [
                             pathinfo($file, PATHINFO_FILENAME) => 'App\\Enums\\'.pathinfo($file, PATHINFO_FILENAME),
                         ])
@@ -40,7 +38,7 @@ final class SyncEnums extends Command
         }
 
         foreach ($enums as $name => $enum) {
-
+            /** @var class-string<BackedEnum> $enum */
             $cases = collect($enum::cases())
                 ->map(fn (BackedEnum $case): string => "  {$case->name} = '{$case->value}',")
                 ->implode("\n");

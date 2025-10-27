@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources\Users\Tables;
 
 use App\Filament\Resources\Users\Pages\EditUser;
+use App\Models\Church;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
@@ -28,11 +29,11 @@ final class UsersTable
             ])
             ->recordActions([
                 EditAction::make()
-                    ->visible(fn ($record): bool => $record->id !== Auth::id()),
+                    ->visible(fn (Church $record): bool => $record->id !== Auth::id()),
                 DeleteAction::make()
-                    ->visible(fn ($record): bool => $record->id !== Auth::id()),
+                    ->visible(fn (Church $record): bool => $record->id !== Auth::id()),
             ])
-            ->recordUrl(fn ($record): string => $record->id !== Auth::id() ? EditUser::getUrl(['record' => $record]) : '')
+            ->recordUrl(fn (Church $record): string => $record->id !== Auth::id() ? EditUser::getUrl(['record' => $record]) : '')
             ->toolbarActions([
                 //
             ]);
