@@ -51,6 +51,7 @@ export default function Edit({ member, genders, civilStatuses, skills, categorie
     email: member.email ?? '',
     phone: member.phone ?? '',
     dob: member.dob ?? '',
+    baptism_date: member.baptismDate ?? '',
     gender: member.gender,
     civil_status: member.civilStatus,
     skills: convertTagsToMultiselectOptions(member.skills),
@@ -110,6 +111,14 @@ export default function Edit({ member, genders, civilStatuses, skills, categorie
               value={data.dob}
               onChange={(value) => setData('dob', value)}
               error={errors.dob}
+            />
+
+            <DatetimeField
+              hideTime
+              label="Baptism date"
+              value={data.baptism_date}
+              onChange={(value) => setData('baptism_date', value)}
+              error={errors.baptism_date}
             />
 
             <FieldsGrid>

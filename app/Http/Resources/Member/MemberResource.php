@@ -33,6 +33,7 @@ final class MemberResource extends JsonResource
             'phone' => $this->phone,
             'gender' => $this->gender->value,
             'dob' => $this->dob?->format('Y-m-d'),
+            'baptismDate' => $this->baptism_date?->format('Y-m-d'),
             'civilStatus' => $this->civil_status->value,
             'active' => $this->active,
             'deactivationCodeId' => $this->deactivation_code_id,

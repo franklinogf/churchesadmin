@@ -30,6 +30,7 @@ final class MemberFactory extends Factory
             'phone' => fake()->optional()->unique()?->e164PhoneNumber(),
             'gender' => $gender,
             'dob' => fake()->date(),
+            'baptism_date' => fake()->optional()->date(),
             'civil_status' => fake()->randomElement(CivilStatus::values()),
             'active' => true,
         ];

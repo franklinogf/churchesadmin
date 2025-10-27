@@ -24,6 +24,7 @@ final class CreateMemberAction
      * phone:string|null,
      * gender:Gender,
      * dob?:string|null,
+     * baptism_date?:string|null,
      * civil_status:CivilStatus,
      * skills?:array<int,string>|null|array{},
      * categories?:array<int,string>|null|array{}
@@ -43,12 +44,13 @@ final class CreateMemberAction
                 'phone' => $data['phone'] ?? null,
                 'gender' => $data['gender'],
                 'dob' => $data['dob'] ?? null,
+                'baptism_date' => $data['baptism_date'] ?? null,
                 'civil_status' => $data['civil_status'],
             ]);
 
             // Log member creation with all provided data
             $memberData = $member->only([
-                'name', 'last_name', 'email', 'phone', 'gender', 'dob', 'civil_status',
+                'name', 'last_name', 'email', 'phone', 'gender', 'dob', 'baptism_date', 'civil_status',
             ]);
             $logger->addChanges([], $memberData);
 

@@ -27,6 +27,7 @@ final readonly class UpdateMemberAction
      * phone?:string|null,
      * gender?:Gender,
      * dob?:string|null,
+     * baptism_date?:string|null,
      * civil_status?:CivilStatus,
      * skills?:array<int,string>|null|array{},
      * categories?:array<int,string>|null|array{}
@@ -53,6 +54,7 @@ final readonly class UpdateMemberAction
                 'phone' => ArrayFallback::inputOrFallback($data, 'phone', $member->phone),
                 'gender' => $data['gender'] ?? $member->gender,
                 'dob' => ArrayFallback::inputOrFallback($data, 'dob', $member->dob),
+                'baptism_date' => ArrayFallback::inputOrFallback($data, 'baptism_date', $member->baptism_date),
                 'civil_status' => $data['civil_status'] ?? $member->civil_status,
             ]);
 
@@ -60,7 +62,7 @@ final readonly class UpdateMemberAction
             $freshMember = $member->fresh();
             if ($freshMember !== null) {
                 $this->logger->compareModels($originalMember, $freshMember, [
-                    'name', 'last_name', 'email', 'phone', 'gender', 'dob', 'civil_status',
+                    'name', 'last_name', 'email', 'phone', 'gender', 'dob', 'baptism_date', 'civil_status',
                 ]);
             }
 

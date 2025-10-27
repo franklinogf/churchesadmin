@@ -15,6 +15,7 @@ export interface Member {
   phone: string | null;
   gender: Gender;
   dob: string | null;
+  baptismDate: string | null;
   civilStatus: CivilStatus;
   active: boolean;
   deactivationCodeId: number | null;
@@ -37,6 +38,7 @@ export type MemberFormData = {
   email: string;
   phone: string;
   dob: string;
+  baptism_date: string;
   gender: string;
   civil_status: string;
   skills: Option[];

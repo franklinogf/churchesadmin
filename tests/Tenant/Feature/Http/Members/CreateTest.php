@@ -46,6 +46,7 @@ describe('if user has permission', function (): void {
                 'phone' => '+19293394305',
                 'gender' => Gender::MALE->value,
                 'dob' => '1990-01-01',
+                'baptism_date' => '2000-05-15',
                 'civil_status' => CivilStatus::SINGLE->value,
             ])
             ->assertSessionDoesntHaveErrors()
@@ -63,6 +64,7 @@ describe('if user has permission', function (): void {
             ->and($member->phone)->toBe('+19293394305')
             ->and($member->gender)->toBe(Gender::MALE)
             ->and($member->dob->format('Y-m-d'))->toBe('1990-01-01')
+            ->and($member->baptism_date->format('Y-m-d'))->toBe('2000-05-15')
             ->and($member->civil_status)->toBe(CivilStatus::SINGLE)
             ->and($member->address)->toBeNull();
     });
@@ -114,6 +116,7 @@ describe('if user has permission', function (): void {
                 'last_name' => 'Smith',
                 'gender' => Gender::FEMALE->value,
                 'dob' => '1985-05-15',
+                'baptism_date' => '1995-08-20',
                 'civil_status' => CivilStatus::MARRIED->value,
             ])
             ->assertSessionDoesntHaveErrors()
@@ -130,6 +133,7 @@ describe('if user has permission', function (): void {
             ->and($member->phone)->toBeNull()
             ->and($member->gender)->toBe(Gender::FEMALE)
             ->and($member->dob->format('Y-m-d'))->toBe('1985-05-15')
+            ->and($member->baptism_date->format('Y-m-d'))->toBe('1995-08-20')
             ->and($member->civil_status)->toBe(CivilStatus::MARRIED);
     });
 

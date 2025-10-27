@@ -36,6 +36,7 @@ export type TranslationKey =
   | 'Available funds'
   | 'Balance'
   | 'Bank Name'
+  | 'Baptism date'
   | 'Cancel'
   | 'Cash'
   | 'Categories'

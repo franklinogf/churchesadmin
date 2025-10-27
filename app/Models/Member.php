@@ -29,6 +29,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @property-read string|null $phone
  * @property-read Gender $gender
  * @property-read CarbonImmutable|null $dob
+ * @property-read CarbonImmutable|null $baptism_date
  * @property-read CivilStatus $civil_status
  * @property-read bool $active
  * @property-read int|null $deactivation_code_id
@@ -100,6 +101,7 @@ final class Member extends Model
             'active' => 'boolean',
             'gender' => Gender::class,
             'dob' => 'immutable_date',
+            'baptism_date' => 'immutable_date',
             'civil_status' => CivilStatus::class,
             'name' => AsUcWords::class,
             'last_name' => AsUcWords::class,

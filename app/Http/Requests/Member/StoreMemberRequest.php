@@ -37,6 +37,7 @@ final class StoreMemberRequest extends FormRequest
             'phone' => ['nullable', 'phone', Rule::unique('members')],
             'gender' => ['required', 'string', Rule::enum(Gender::class)],
             'dob' => ['nullable', 'date:Y-m-d'],
+            'baptism_date' => ['nullable', 'date:Y-m-d'],
             'civil_status' => ['required', 'string', Rule::enum(CivilStatus::class)],
             'skills' => ['array'],
             'skills.*' => ['string'],

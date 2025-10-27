@@ -13,6 +13,7 @@ it('can create a member with basic data', function (): void {
         'email' => 'john.doe@example.com',
         'phone' => '+123456789',
         'dob' => '1990-01-01',
+        'baptism_date' => '2000-05-15',
         'gender' => 'male',
         'civil_status' => 'single',
     ];
@@ -27,7 +28,8 @@ it('can create a member with basic data', function (): void {
         ->and($member->last_name)->toBe('Doe')
         ->and($member->email)->toBe('john.doe@example.com')
         ->and($member->phone)->toBe('+123456789')
-        ->and($member->dob->toDateString())->toBe('1990-01-01');
+        ->and($member->dob->toDateString())->toBe('1990-01-01')
+        ->and($member->baptism_date->toDateString())->toBe('2000-05-15');
 });
 
 it('can create a member without email and phone', function (): void {

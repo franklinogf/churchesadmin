@@ -11,12 +11,14 @@ it('can update member basic data', function (): void {
         'name' => 'John',
         'last_name' => 'Doe',
         'email' => 'john.doe@example.com',
+        'baptism_date' => '2000-01-01',
     ]);
 
     $updateData = [
         'name' => 'Jane',
         'last_name' => 'Smith',
         'email' => 'jane.smith@example.com',
+        'baptism_date' => '2005-06-15',
     ];
 
     $action = app(UpdateMemberAction::class);
@@ -26,7 +28,8 @@ it('can update member basic data', function (): void {
 
     expect($member->name)->toBe('Jane')
         ->and($member->last_name)->toBe('Smith')
-        ->and($member->email)->toBe('jane.smith@example.com');
+        ->and($member->email)->toBe('jane.smith@example.com')
+        ->and($member->baptism_date->toDateString())->toBe('2005-06-15');
 });
 
 it('can update member skills', function (): void {

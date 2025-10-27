@@ -19,6 +19,7 @@ test('to array', function (): void {
         'phone',
         'gender',
         'dob',
+        'baptism_date',
         'civil_status',
         'active',
         'created_at',
@@ -33,6 +34,7 @@ test('casts are applied correctly', function (): void {
 
     expect($member->gender)->toBeInstanceOf(Gender::class);
     expect($member->dob)->toBeInstanceOf(CarbonImmutable::class);
+    expect($member->baptism_date)->toBeInstanceOf(CarbonImmutable::class);
     expect($member->civil_status)->toBeInstanceOf(CivilStatus::class);
 });
 

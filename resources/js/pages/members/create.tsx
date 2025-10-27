@@ -43,6 +43,7 @@ export default function Create({ genders, civilStatuses, skills, categories, vis
     email: visit?.email || '',
     phone: visit?.phone || '',
     dob: '',
+    baptism_date: '',
     gender: Gender.MALE,
     civil_status: CivilStatus.SINGLE,
     skills: [],
@@ -116,6 +117,14 @@ export default function Create({ genders, civilStatuses, skills, categories, vis
             value={data.dob}
             onChange={(value) => setData('dob', value)}
             error={errors.dob}
+          />
+
+          <DatetimeField
+            hideTime
+            label={t('Baptism date')}
+            value={data.baptism_date}
+            onChange={(value) => setData('baptism_date', value)}
+            error={errors.baptism_date}
           />
 
           <FieldsGrid>
