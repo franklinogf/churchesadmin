@@ -86,7 +86,7 @@ final class WalletController extends Controller
                 'confirmed' => true,
                 'type' => TransactionType::PREVIOUS->value,
                 'meta' => null,
-                'createdAt' => $prevYear->start_date,
+                'createdAt' => $prevYear->start_date->format('Y-m-d'),
             ];
         }
 

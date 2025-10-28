@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * CurrentYear model.
  *
  * @property-read int $id
- * @property-read int $year
+ * @property-read string $year
  * @property-read CarbonImmutable|null $start_date
  * @property-read CarbonImmutable|null $end_date
  * @property-read bool $is_current
