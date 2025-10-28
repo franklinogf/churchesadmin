@@ -341,5 +341,12 @@
     "IP": "IP",
     "Send email to :name": "Enviar correo electrónico a :name",
     "Select the :name you want to send a message to": "Selecciona :name a los que quieres enviar un mensaje",
-    "Only :name with an email address will be shown in the list.": "Solo se mostrarán en la lista :name con una dirección de correo electrónico."
+    "Only :name with an email address will be shown in the list.": "Solo se mostrarán en la lista :name con una dirección de correo electrónico.",
+    "Year End Closing": "Cierre de Fin de Año",
+    "Close the current fiscal year": "Cerrar el año fiscal actual",
+    "The current fiscal year is :year": "El año fiscal actual es :year",
+    "If you close the current fiscal year, all financial data will be archived and a new fiscal year will be created.": "Si cierras el año fiscal actual, todos los datos financieros se archivarán y se creará un nuevo año fiscal.",
+    "The next fiscal year will be :year": "El próximo año fiscal será :year",
+    "Close Fiscal Year": "Cerrar Año Fiscal",
+    "Are you sure you want to close the fiscal year? This action cannot be undone.": "¿Estás seguro de que quieres cerrar el año fiscal? Esta acción no se puede deshacer."
 }

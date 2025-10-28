@@ -342,5 +342,12 @@
     "IP": "IP",
     "Send email to :name": "Send email to :name",
     "Select the :name you want to send a message to": "Select the :name you want to send a message to",
-    "Only :name with an email address will be shown in the list.": "Only :name with an email address will be shown in the list."
+    "Only :name with an email address will be shown in the list.": "Only :name with an email address will be shown in the list.",
+    "Year End Closing": "Year End Closing",
+    "Close the current fiscal year": "Close the current fiscal year",
+    "The current fiscal year is :year": "The current fiscal year is :year",
+    "If you close the current fiscal year, all financial data will be archived and a new fiscal year will be created.": "If you close the current fiscal year, all financial data will be archived and a new fiscal year will be created.",
+    "The next fiscal year will be :year": "The next fiscal year will be :year",
+    "Close Fiscal Year": "Close Fiscal Year",
+    "Are you sure you want to close the fiscal year? This action cannot be undone.": "Are you sure you want to close the fiscal year? This action cannot be undone."
 }
