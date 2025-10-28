@@ -6,6 +6,7 @@ use App\Http\Controllers\Settings\PasswordController;
 use App\Http\Controllers\Settings\ProfileController;
 use App\Http\Controllers\Settings\TenantGeneralController;
 use App\Http\Controllers\Settings\TenantLanguageController;
+use App\Http\Controllers\Settings\TenantYearEndController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -28,6 +29,9 @@ Route::prefix('settings')->group(function (): void {
 
         Route::get('general', [TenantGeneralController::class, 'edit'])->name('church.general.edit');
         Route::post('general', [TenantGeneralController::class, 'update'])->name('church.general.update');
+
+        Route::get('year-end-closing', [TenantYearEndController::class, 'edit'])->name('church.general.year-end.edit');
+        Route::post('year-end-closing', [TenantYearEndController::class, 'update'])->name('church.general.year-end.update');
 
     });
 });

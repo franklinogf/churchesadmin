@@ -23,18 +23,7 @@ export default function Dashboard({ expenses, offerings, persons, wallets }: Das
           <PersonsChart data={persons} />
         </div>
         <div className="border-sidebar-border/70 dark:border-sidebar-border relative min-h-[100vh] flex-1 overflow-hidden rounded-xl border md:min-h-min">
-          <WalletsChart
-            data={
-              wallets ?? [
-                { month: 'Jan', wallet: 'primary', deposits: 1000, withdrawals: 500 },
-                { month: 'Feb', wallet: 'secondary', deposits: 1200, withdrawals: 600 },
-                { month: 'Mar', wallet: 'secondary', deposits: 900, withdrawals: 300 },
-                { month: 'Apr', wallet: 'primary', deposits: 1500, withdrawals: 800 },
-                { month: 'May', wallet: 'secondary', deposits: 1100, withdrawals: 400 },
-                { month: 'Jun', wallet: 'primary', deposits: 1300, withdrawals: 700 },
-              ]
-            }
-          />
+          <WalletsChart data={wallets} />
         </div>
       </div>
     </AppLayout>
