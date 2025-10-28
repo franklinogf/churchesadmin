@@ -80,4 +80,7 @@ export enum TenantPermission {
   EXPENSES_UPDATE = 'expenses.update',
   EXPENSES_DELETE = 'expenses.delete',
   ACTIVITY_LOGS_MANAGE = 'activity_logs.manage',
+  SETTINGS_MANAGE = 'settings.manage',
+  SETTINGS_CLOSE_YEAR = 'settings.close_year',
+  SETTINGS_CHANGE_LANGUAGE = 'settings.change_language',
 }

@@ -1,7 +1,9 @@
 import Heading from '@/components/heading';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { TenantPermission } from '@/enums/TenantPermission';
 import { useTranslations } from '@/hooks/use-translations';
+import { useUser } from '@/hooks/use-user';
 import { cn } from '@/lib/utils';
 import { type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
@@ -14,8 +16,9 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
       ziggy: { location },
     },
   } = usePage<SharedData>();
+  const { can: userCan } = useUser();
 
-  const sidebarNavItems: NavItem[] = useMemo(
+  const sidebarNavItems: NavItem[] = useMemo<NavItem[]>(
     () => [
       {
         title: t('General'),
@@ -24,6 +27,12 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
       {
         title: t('Language'),
         href: route('church.language.edit'),
+        permissionNeeded: TenantPermission.SETTINGS_CHANGE_LANGUAGE,
+      },
+      {
+        title: t('Year End Closing'),
+        href: route('church.general.year-end.edit'),
+        permissionNeeded: TenantPermission.SETTINGS_CLOSE_YEAR,
       },
       //   {
       //     title: t('Contact Information'),
@@ -41,6 +50,7 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
   if (typeof window === 'undefined') {
     return null;
   }
+  const filteredItems = sidebarNavItems.filter((item) => (item.permissionNeeded !== undefined ? userCan(item.permissionNeeded) : true));
 
   return (
     <div className="px-4 py-6">
@@ -49,7 +59,7 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
       <div className="flex flex-col space-y-8 lg:flex-row lg:space-y-0 lg:space-x-12">
         <aside className="w-full max-w-xl lg:w-48">
           <nav className="flex flex-col space-y-1 space-x-0">
-            {sidebarNavItems.map((item, index) => (
+            {filteredItems.map((item, index) => (
               <Button
                 key={`${item.href}-${index}`}
                 size="sm"

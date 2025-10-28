@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Settings;
 
 use App\Enums\MediaCollectionName;
+use App\Enums\TenantPermission;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Tenant\UpdateGeneralRequest;
 use App\Http\Resources\ChurchResource;
 use App\Models\Church;
+use App\Models\TenantUser;
+use Illuminate\Container\Attributes\CurrentUser;
 use Illuminate\Http\RedirectResponse;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -18,12 +21,14 @@ final class TenantGeneralController extends Controller
     /**
      * Show the church's language settings page.
      */
-    public function edit(): Response
+    public function edit(#[CurrentUser] TenantUser $user): Response
     {
-        $church = Church::currentOrFail();
 
-        // dd($church->getFirstMedia(MediaCollectionName::LOGO->value)
-        //     ->getPathRelativeToRoot());
+        if ($user->cannot(TenantPermission::SETTINGS_MANAGE)) {
+            abort(403);
+        }
+
+        $church = Church::currentOrFail();
 
         return Inertia::render('settings/church/general', [
             'church' => new ChurchResource($church),
@@ -32,6 +37,7 @@ final class TenantGeneralController extends Controller
 
     public function update(UpdateGeneralRequest $request): RedirectResponse
     {
+
         $church = Church::currentOrFail();
         $church->update($request->validated());
 

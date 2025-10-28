@@ -160,6 +160,7 @@ export function AppSidebar() {
         title: t('Church Settings'),
         href: route('church.settings'),
         icon: CogIcon,
+        permissionNeeded: TenantPermission.SETTINGS_MANAGE,
       },
     ],
     [t],

@@ -189,5 +189,10 @@ return [
             'force_delete' => 'Force Delete Visits',
             'restore' => 'Restore Visits',
         ],
+        'settings' => [
+            'manage' => 'Manage Settings',
+            'close_year' => 'Close Fiscal Year',
+            'change_language' => 'Change Language',
+        ],
     ],
 ];

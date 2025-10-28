@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Tenant;
 
+use App\Enums\TenantPermission;
+use App\Models\TenantUser;
+use Illuminate\Container\Attributes\CurrentUser;
 use Illuminate\Foundation\Http\FormRequest;
 
 final class UpdateGeneralRequest extends FormRequest
@@ -11,9 +14,10 @@ final class UpdateGeneralRequest extends FormRequest
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize(): bool
+    public function authorize(#[CurrentUser] TenantUser $user): bool
     {
-        return true;
+
+        return $user->can(TenantPermission::SETTINGS_MANAGE);
     }
 
     /**

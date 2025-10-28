@@ -189,6 +189,11 @@ return [
             'force_delete' => 'Forzar Eliminación de Visitas',
             'restore' => 'Restaurar Visitas',
         ],
+        'settings' => [
+            'manage' => 'Gestionar Configuraciones',
+            'close_year' => 'Cerrar Año Fiscal',
+            'change_language' => 'Cambiar Idioma',
+        ],
 
     ],
 ];
