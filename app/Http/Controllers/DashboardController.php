@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\TransactionType;
 use App\Models\ChurchWallet;
+use App\Models\CurrentYear;
 use App\Models\Expense;
 use App\Models\Member;
 use App\Models\Missionary;
@@ -161,7 +162,7 @@ final class DashboardController extends Controller
      */
     private function getPersonsData(): array
     {
-        $currentYear = now()->year;
+        $currentYear = CurrentYear::current()->year;
 
         // Get members created by month
         $membersByMonth = Member::query()
