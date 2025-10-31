@@ -28,7 +28,7 @@ final class SessionController extends Controller
                 }
             }],
         ]);
-
+        dd($request->all());
         $sessionService->create(
             SessionName::from($request->string('name')->value()),
             $request->input('value')

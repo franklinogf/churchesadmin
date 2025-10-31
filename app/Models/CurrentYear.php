@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Carbon\CarbonImmutable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -57,6 +58,14 @@ final class CurrentYear extends Model
         return self::query()
             ->where('year', $previousYear)
             ->first();
+    }
+
+    /**
+     * Scope a query to only include a specific year.
+     */
+    protected function scopeOfYear(Builder $query, string $year): Builder
+    {
+        return $query->where('year', $year);
     }
 
     /**

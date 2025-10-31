@@ -274,6 +274,7 @@ export type TranslationKey =
   | 'Select an option'
   | 'Select the :name you want to send a message to'
   | 'Select the layout you want to use for this wallet or create a new one'
+  | 'Send Email'
   | 'Send a message'
   | 'Send a new email to the recipients you selected'
   | 'Send email'

@@ -9,14 +9,13 @@ use App\Http\Resources\CurrentYear\CurrentYearResource;
 use App\Models\CurrentYear;
 use App\Models\Member;
 use App\Support\SelectOption;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
 final class ContributionController extends Controller
 {
-    public function index(Request $request): Response
+    public function __invoke(Request $request): Response
     {
         $selectedYear = $request->string('year');
 
@@ -28,15 +27,13 @@ final class ContributionController extends Controller
             abort(404, 'Fiscal year not found.');
         }
 
-        $members = Member::query()->with([
-            'previousYearContributions' => fn (HasMany $query): HasMany => $query->where('current_year_id', $selectedYear->id),
-            'previousYearContributions.transaction',
-        ])->get();
+        $members = Member::query()->get();
 
         $contributions = $members->map(fn (Member $member): array => [
-            'name' => sprintf('%s %s', $member->last_name, $member->name),
+            'id' => $member->id,
+            'name' => "$member->last_name $member->name",
             'email' => $member->email,
-            'contributionAmount' => format_to_currency($member->previousYearContributions->sum('transaction.amount')),
+            'contributionAmount' => format_to_currency($member->getPreviousYearContributionsAmount($selectedYear->year)),
         ]);
 
         $years = CurrentYear::query()
@@ -48,17 +45,5 @@ final class ContributionController extends Controller
             'years' => SelectOption::create($years, 'year', 'year'),
             'contributions' => $contributions,
         ]);
-    }
-
-    public function show(Request $request)
-    {
-        // Validate request parameters if needed
-
-        // Generate PDF logic here
-        $pdfContent = 'PDF content for contributions report';
-
-        return response($pdfContent, 200)
-            ->header('Content-Type', 'application/pdf')
-            ->header('Content-Disposition', 'attachment; filename="contributions_report.pdf"');
     }
 }

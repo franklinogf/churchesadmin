@@ -353,5 +353,6 @@
     "Contributions of the fiscal year :year": "Contribuciones del año fiscal :year",
     "Fiscal Year": "Año Fiscal",
     "Contribution": "Contribución",
-    "The selected year is the current fiscal year, is not allowed to send reports for the current year. Please select a previous fiscal year to view contributions.": "El año seleccionado es el año fiscal actual, no está permitido enviar informes para el año actual. Por favor selecciona un año fiscal anterior para ver las contribuciones."
+    "The selected year is the current fiscal year, is not allowed to send reports for the current year. Please select a previous fiscal year to view contributions.": "El año seleccionado es el año fiscal actual, no se permite enviar informes para el año actual. Por favor, seleccione un año fiscal anterior para ver las contribuciones.",
+    "Send Email": "Enviar Correo"
 }

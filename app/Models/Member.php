@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Casts\AsUcWords;
 use App\Enums\CivilStatus;
 use App\Enums\Gender;
+use App\Enums\ModelMorphName;
 use App\Models\Scopes\ActiveMemberScope;
 use App\Models\Scopes\CurrentYearScope;
 use App\Models\Scopes\LastnameScope;
@@ -20,6 +21,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Support\Collection as SupportCollection;
 
 /**
  * Member model.
@@ -114,6 +116,34 @@ final class Member extends Model
             ->withoutGlobalScope(CurrentYearScope::class);
     }
 
+    public function getPreviousYearContributionsAmount(string|int|null|CurrentYear $year = null): int
+    {
+        if ($year !== null) {
+            $yearId = $year instanceof CurrentYear ? $year->id : CurrentYear::query()->ofYear((string) $year)->firstOrFail()->id;
+
+            return $this->previousYearContributions()
+                ->where('current_year_id', $yearId)
+                ->get()
+                ->sum('transaction.amount');
+        }
+
+        return $this->previousYearContributions->sum('transaction.amount');
+    }
+
+    public function getPreviousYearContributions(string|int|null|CurrentYear $year = null): SupportCollection
+    {
+        $previousYearContributions = $this->previousYearContributions()->with('offeringType', 'transaction');
+        if ($year !== null) {
+            $yearId = $year instanceof CurrentYear ? $year->id : CurrentYear::query()->ofYear((string) $year)->firstOrFail()->id;
+            $previousYearContributions->where('current_year_id', $yearId);
+        }
+
+        return $previousYearContributions->get()->groupBy(fn (Offering $contribution): string => match ($contribution->offering_type_type) {
+            ModelMorphName::OFFERING_TYPE->value => $contribution->offeringType->name,
+            ModelMorphName::MISSIONARY->value => "{$contribution->offeringType->name} {$contribution->offeringType->last_name}",
+        })->map(fn (SupportCollection $group): string => format_to_currency($group->sum('transaction.amount')));
+    }
+
     /**
      * Get the attributes that should be cast.
      *
@@ -128,8 +158,8 @@ final class Member extends Model
             'dob' => 'immutable_date',
             'baptism_date' => 'immutable_date',
             'civil_status' => CivilStatus::class,
-            'name' => AsUcWords::class,
-            'last_name' => AsUcWords::class,
+            // 'name' => AsUcWords::class,
+            // 'last_name' => AsUcWords::class,
         ];
     }
 }

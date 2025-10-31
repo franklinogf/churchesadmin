@@ -5,14 +5,19 @@ import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTabl
 import { SelectField } from '@/components/forms/inputs/SelectField';
 import { PageTitle } from '@/components/PageTitle';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Button } from '@/components/ui/button';
+import { SessionName } from '@/enums/SessionName';
 import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import type { SelectOption } from '@/types';
 import type { CurrentYear } from '@/types/models/current-year';
 import { router } from '@inertiajs/react';
 import type { ColumnDef } from '@tanstack/react-table';
+import { MailIcon, PrinterIcon } from 'lucide-react';
+import { useState } from 'react';
 
 type ContributionsRecord = {
+  id: number;
   name: string;
   email: string;
   contributionAmount: number;
@@ -26,6 +31,7 @@ interface ContributionsPageProps {
 
 export default function ContributionsPage({ contributions, year, years }: ContributionsPageProps) {
   const { t } = useTranslations();
+  const [selectedContributions, setSelectedContributions] = useState<string[]>([]);
 
   const dataColumns: ColumnDef<ContributionsRecord>[] = [
     selectionHeader as ColumnDef<ContributionsRecord>,
@@ -56,6 +62,26 @@ export default function ContributionsPage({ contributions, year, years }: Contri
     );
   };
 
+  const handlePrintPdf = () => {
+    const url = route('reports.contributions.pdf.multiple', {
+      year: year.year,
+      members: selectedContributions,
+    });
+    window.open(url, '_blank');
+  };
+
+  const handleSendEmail = () => {
+    router.post(
+      route('session', {
+        name: SessionName.CONTRIBUTIONS_REPORT_YEAR,
+        value: {
+          member_ids: selectedContributions,
+        },
+        redirect_to: 'communication.emails.create',
+      }),
+    );
+  };
+
   return (
     <AppLayout title={t('Contributions')} breadcrumbs={[{ title: t('Reports'), href: route('reports') }, { title: t('Contributions') }]}>
       <PageTitle description={t('Contributions of the fiscal year :year', { year: year.year })}>{t('Contributions')}</PageTitle>
@@ -73,11 +99,24 @@ export default function ContributionsPage({ contributions, year, years }: Contri
         </Alert>
       )}
 
-      <div className="mb-6">
-        <SelectField label={t('Fiscal Year')} value={year.year} onChange={handleYearChange} options={years} />
+      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+        <div className="flex-1 sm:max-w-xs">
+          <SelectField label={t('Fiscal Year')} value={year.year} onChange={handleYearChange} options={years} />
+        </div>
+
+        <div className="flex gap-2">
+          <Button variant="outline" size="sm" disabled={selectedContributions.length === 0 || year.isCurrent} onClick={handlePrintPdf}>
+            <PrinterIcon className="size-4" />
+            {t('Export PDF')}
+          </Button>
+          <Button variant="outline" size="sm" disabled={selectedContributions.length === 0 || year.isCurrent} onClick={handleSendEmail}>
+            <MailIcon className="size-4" />
+            {t('Send Email')}
+          </Button>
+        </div>
       </div>
 
-      <DataTable data={contributions} columns={dataColumns} />
+      <DataTable data={contributions} columns={dataColumns} rowId="id" onSelectedRowsChange={setSelectedContributions} />
     </AppLayout>
   );
 }

@@ -28,7 +28,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property-read CarbonImmutable $created_at
  * @property-read CarbonImmutable $updated_at
  * @property-read Transaction $transaction
- * @property-read OfferingType|Missionary $offering_type
+ * @property-read OfferingType|Missionary $offeringType
  * @property-read Member $donor
  * @property-read CurrentYear $currentYear
  */

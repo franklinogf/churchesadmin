@@ -7,4 +7,5 @@ namespace App\Enums;
 enum SessionName: string
 {
     case EMAIL_RECIPIENTS = 'email_recipients';
+    case CONTRIBUTIONS_REPORT_YEAR = 'contributions_report_year';
 }
