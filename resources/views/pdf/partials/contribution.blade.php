@@ -51,9 +51,40 @@
          margin-left: 0px;
      }
 
-     .contribution-line {
-         margin: 8px 0;
-         padding-left: 60px;
+     .contribution-table {
+         width: 300px;
+         max-width: 500px;
+         margin-left: 60px;
+     }
+
+     .contribution-table td {
+         padding: 4px 0;
+     }
+
+     .contribution-name {
+         min-width: 100px;
+         padding-right: 10px;
+     }
+
+     .contribution-dots {
+         text-align: left;
+         overflow: hidden;
+         max-width: 200px;
+     }
+
+     .contribution-amount {
+         text-align: right;
+         white-space: nowrap;
+         width: 100px;
+     }
+
+     .total-row {
+         font-weight: bold;
+         border-top: 1px solid #000;
+     }
+
+     .total-row td {
+         padding-top: 12px;
      }
 
      .signature {
@@ -107,15 +138,20 @@
  <div class="contribution-details">
      <p><strong>Our records show that you contributed</strong></p>
 
-     @foreach ($contribution['contributions'] as $name => $amount)
-         <div class="contribution-line">
-             {{ $name }} {{ str_repeat('.', 30 - strlen($name)) }} {{ $amount }}
-         </div>
-     @endforeach
-
-     <div class="contribution-line">
-         Total {{ str_repeat('.', 30 - strlen('Total')) }} {{ $contribution['contributionAmount'] }}
-     </div>
+     <table cellpadding="0" cellspacing="0" class="contribution-table">
+         @foreach ($contribution['contributions'] as $name => $amount)
+             <tr>
+                 <td class="contribution-name">{{ $name }}</td>
+                 <td class="contribution-dots">{{ str_repeat('.', 50) }}</td>
+                 <td class="contribution-amount">{{ $amount }}</td>
+             </tr>
+         @endforeach
+         <tr class="total-row">
+             <td class="contribution-name">Total</td>
+             <td class="contribution-dots">{{ str_repeat('.', 50) }}</td>
+             <td class="contribution-amount">{{ $contribution['contributionAmount'] }}</td>
+         </tr>
+     </table>
  </div>
 
  <div class="content">
