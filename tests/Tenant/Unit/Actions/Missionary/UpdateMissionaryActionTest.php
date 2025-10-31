@@ -81,7 +81,7 @@ it('can delete address when set to null', function (): void {
     $updateData = [];
 
     $action = new UpdateMissionaryAction();
-    $action->handle($missionary, $updateData, null);
+    $action->handle($missionary, $updateData);
 
     $missionary->refresh();
 

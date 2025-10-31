@@ -219,6 +219,6 @@ final class DashboardController extends Controller
     {
         $month = CarbonImmutable::createFromFormat(self::GROUP_MONTH_FORMAT, $month)?->isoFormat(self::MONTH_FORMAT);
 
-        return $month !== null && $month !== '' && $month !== '0' ? $month : 'Unknown';
+        return in_array($month, [null, '', '0'], true) ? 'Unknown' : $month;
     }
 }
