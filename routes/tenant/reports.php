@@ -6,6 +6,7 @@ use App\Http\Controllers\ActivityLogController;
 use App\Http\Controllers\Pdf\ActivityLogPdfController;
 use App\Http\Controllers\Pdf\CheckPdfController;
 use App\Http\Controllers\Pdf\ChecksPdfController;
+use App\Http\Controllers\Pdf\ContributionController;
 use App\Http\Controllers\Pdf\EntriesExpensesPdfController;
 use App\Http\Controllers\Pdf\MemberPdfController;
 use App\Http\Controllers\Pdf\MissionaryPdfController;
@@ -35,3 +36,6 @@ Route::get('/reports/activity-logs/pdf', [ActivityLogPdfController::class, 'show
 
 Route::get('checks/pdf', ChecksPdfController::class)->name('checks.pdf.multiple');
 Route::get('checks/{check}/pdf', CheckPdfController::class)->name('checks.pdf');
+
+Route::get('reports/contributions', [ContributionController::class, 'index'])->name('reports.contributions');
+Route::get('reports/contributions/pdf', [ContributionController::class, 'show'])->name('reports.contributions.pdf');

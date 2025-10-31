@@ -8,6 +8,7 @@ use App\Casts\AsUcWords;
 use App\Enums\CivilStatus;
 use App\Enums\Gender;
 use App\Models\Scopes\ActiveMemberScope;
+use App\Models\Scopes\CurrentYearScope;
 use App\Models\Scopes\LastnameScope;
 use App\Models\Traits\HasTags;
 use Carbon\CarbonImmutable;
@@ -16,6 +17,7 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
@@ -40,12 +42,14 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @property-read Collection<int,Tag> $tags
  * @property-read Collection<int,Email> $emails
  * @property-read Emailable $emailMessage
+ * @property-read Collection<int,Offering> $contributions
+ * @property-read Collection<int,Offering> $previousYearContributions
  */
 #[ScopedBy([LastnameScope::class, ActiveMemberScope::class])]
 final class Member extends Model
 {
-    /** @use HasFactory<\Database\Factories\MemberFactory> */
-    use HasFactory, HasTags;
+    use HasFactory;
+    use HasTags;
 
     /**
      * The name of the table associated with the Tag model.
@@ -87,6 +91,27 @@ final class Member extends Model
             ->as('message')
             ->withPivot('status', 'sent_at', 'error_message', 'id')
             ->withTimestamps();
+    }
+
+    /**
+     * The contributions made by the member.
+     *
+     * @return HasMany<Offering, $this>
+     */
+    public function contributions(): HasMany
+    {
+        return $this->hasMany(Offering::class, 'donor_id');
+    }
+
+    /**
+     * The contributions made by the member in the previous year.
+     *
+     * @return HasMany<Offering, $this>
+     */
+    public function previousYearContributions(): HasMany
+    {
+        return $this->contributions()
+            ->withoutGlobalScope(CurrentYearScope::class);
     }
 
     /**

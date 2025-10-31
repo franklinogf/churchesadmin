@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Models\Church;
 use App\Models\TenantUser;
+use Bavix\Wallet\Services\FormatterServiceInterface;
 use Carbon\CarbonImmutable;
 
 if (! function_exists('serverDate')) {
@@ -65,5 +66,28 @@ if (! function_exists('app_url_subdomain')) {
         $url = config()->string('app.url');
 
         return str($url)->before('://').'://'.$subdomain.'.'.str($url)->after('://');
+    }
+}
+
+if (! function_exists('format_to_currency')) {
+    /**
+     * Format a integer to decimal into currency format.
+     */
+    function format_to_currency(int|string $amount, string $currency = 'USD'): string
+    {
+        $formatter = new NumberFormatter('en_US', NumberFormatter::CURRENCY);
+        $floatValue = format_to_float($amount);
+
+        return $formatter->formatCurrency($floatValue, $currency);
+    }
+}
+
+if (! function_exists('format_to_float')) {
+    /**
+     * Format a integer to decimal float.
+     */
+    function format_to_float(int|string $amount, int $decimals = 2): float
+    {
+        return (float) app(FormatterServiceInterface::class)->floatValue($amount, $decimals);
     }
 }

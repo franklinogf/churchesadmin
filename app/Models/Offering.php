@@ -30,6 +30,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property-read Transaction $transaction
  * @property-read OfferingType|Missionary $offering_type
  * @property-read Member $donor
+ * @property-read CurrentYear $currentYear
  */
 #[ScopedBy([CurrentYearScope::class])]
 #[ObservedBy([TransactionalObserver::class])]
@@ -66,6 +67,16 @@ final class Offering extends Model
     public function donor(): BelongsTo
     {
         return $this->belongsTo(Member::class, 'donor_id');
+    }
+
+    /**
+     * The current year associated with the offering.
+     *
+     * @return BelongsTo<CurrentYear,$this>
+     */
+    public function currentYear(): BelongsTo
+    {
+        return $this->belongsTo(CurrentYear::class, 'current_year_id');
     }
 
     /**

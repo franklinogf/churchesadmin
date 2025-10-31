@@ -137,6 +137,12 @@ export function AppSidebar() {
             icon: FileStackIcon,
             permissionNeeded: TenantPermission.ACTIVITY_LOGS_MANAGE,
           },
+          {
+            title: t('Contributions'),
+            href: route('reports.contributions'),
+            icon: FileStackIcon,
+            // permissionNeeded: TenantPermission.ACTIVITY_LOGS_MANAGE,
+          },
         ],
       },
       {

@@ -348,5 +348,10 @@
     "If you close the current fiscal year, all financial data will be archived and a new fiscal year will be created.": "Si cierras el año fiscal actual, todos los datos financieros se archivarán y se creará un nuevo año fiscal.",
     "The next fiscal year will be :year": "El próximo año fiscal será :year",
     "Close Fiscal Year": "Cerrar Año Fiscal",
-    "Are you sure you want to close the fiscal year? This action cannot be undone.": "¿Estás seguro de que quieres cerrar el año fiscal? Esta acción no se puede deshacer."
+    "Are you sure you want to close the fiscal year? This action cannot be undone.": "¿Estás seguro de que quieres cerrar el año fiscal? Esta acción no se puede deshacer.",
+    "Contributions": "Contribuciones",
+    "Contributions of the fiscal year :year": "Contribuciones del año fiscal :year",
+    "Fiscal Year": "Año Fiscal",
+    "Contribution": "Contribución",
+    "The selected year is the current fiscal year, is not allowed to send reports for the current year. Please select a previous fiscal year to view contributions.": "El año seleccionado es el año fiscal actual, no está permitido enviar informes para el año actual. Por favor selecciona un año fiscal anterior para ver las contribuciones."
 }

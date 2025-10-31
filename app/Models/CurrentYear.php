@@ -24,11 +24,39 @@ final class CurrentYear extends Model
     /** @use HasFactory<\Database\Factories\CurrentYearFactory> */
     use HasFactory;
 
+    /**
+     * Get the current year model.
+     */
     public static function current(): static
     {
         return self::query()
             ->where('is_current', true)
             ->firstOrFail();
+    }
+
+    /**
+     * Get the previous year model.
+     */
+    public static function previous(): ?static
+    {
+        $current = self::current();
+        $previousYear = (int) $current->year - 1;
+
+        return self::query()
+            ->where('year', $previousYear)
+            ->first();
+    }
+
+    /**
+     * Get the previous year of an specific model.
+     */
+    public function previousYear(): ?self
+    {
+        $previousYear = (int) $this->year - 1;
+
+        return self::query()
+            ->where('year', $previousYear)
+            ->first();
     }
 
     /**

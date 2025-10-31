@@ -349,5 +349,10 @@
     "If you close the current fiscal year, all financial data will be archived and a new fiscal year will be created.": "If you close the current fiscal year, all financial data will be archived and a new fiscal year will be created.",
     "The next fiscal year will be :year": "The next fiscal year will be :year",
     "Close Fiscal Year": "Close Fiscal Year",
-    "Are you sure you want to close the fiscal year? This action cannot be undone.": "Are you sure you want to close the fiscal year? This action cannot be undone."
+    "Are you sure you want to close the fiscal year? This action cannot be undone.": "Are you sure you want to close the fiscal year? This action cannot be undone.",
+    "Contributions": "Contributions",
+    "Contributions of the fiscal year :year": "Contributions of the fiscal year :year",
+    "Fiscal Year": "Fiscal Year",
+    "Contribution": "Contribution",
+    "The selected year is the current fiscal year, is not allowed to send reports for the current year. Please select a previous fiscal year to view contributions.": "The selected year is the current fiscal year, is not allowed to send reports for the current year. Please select a previous fiscal year to view contributions."
 }
