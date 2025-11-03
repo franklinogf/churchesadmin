@@ -39,5 +39,6 @@ Route::get('checks/pdf', ChecksPdfController::class)->name('checks.pdf.multiple'
 Route::get('checks/{check}/pdf', CheckPdfController::class)->name('checks.pdf');
 
 Route::get('reports/contributions', ContributionController::class)->name('reports.contributions');
+Route::post('report/contributions', [ContributionPdfController::class, 'email'])->name('reports.contributions.email');
 Route::get('contributions/{member}/pdf', [ContributionPdfController::class, 'single'])->name('reports.contributions.pdf');
 Route::get('contributions/pdf', [ContributionPdfController::class, 'multiple'])->name('reports.contributions.pdf.multiple');

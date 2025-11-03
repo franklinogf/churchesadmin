@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Pdf;
 
+use App\Enums\FlashMessageKey;
 use App\Http\Controllers\Controller;
+use App\Mail\ContributionReportMail;
 use App\Models\CurrentYear;
 use App\Models\Member;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Mail;
 
 final class ContributionPdfController extends Controller
 {
@@ -24,7 +28,7 @@ final class ContributionPdfController extends Controller
 
         $year = CurrentYear::query()->ofYear($validated['year'])->firstOrFail();
 
-        $contribution = $this->getContributionsForMember($member, $year);
+        $contribution = $member->getContributionsForYear($year);
 
         $title = __('Contributions Report for year :year', ['year' => $year->year]);
 
@@ -53,7 +57,7 @@ final class ContributionPdfController extends Controller
             ->whereIn('id', $validated['members'])
             ->get();
 
-        $contributions = $members->map(fn (Member $member): array => $this->getContributionsForMember($member, $year));
+        $contributions = $members->map(fn (Member $member): array => $member->getContributionsForYear($year));
 
         $title = __('Contributions Report for year :year', ['year' => $year->year]);
 
@@ -66,12 +70,25 @@ final class ContributionPdfController extends Controller
             ->stream('contributions_'.$year->year.'.pdf');
     }
 
-    private function getContributionsForMember(Member $member, CurrentYear $year): array
+    public function email(Request $request): RedirectResponse
     {
-        return [
-            'name' => "$member->last_name $member->name",
-            'contributions' => $member->getPreviousYearContributions($year),
-            'contributionAmount' => format_to_currency($member->getPreviousYearContributionsAmount($year)),
-        ];
+        /**
+         * @var array{year:string,memberIds:int[]} $validated
+         */
+        $validated = $request->validate([
+            'year' => ['required', 'integer', 'exists:current_years,year'],
+            'memberIds' => ['required', 'array'],
+            'memberIds.*' => ['integer', 'exists:members,id'],
+        ]);
+        $members = Member::query()
+            ->whereIn('id', $validated['memberIds'])
+            ->get();
+
+        foreach ($members as $member) {
+            Mail::to($member->email)->queue(new ContributionReportMail($member, $validated['year']));
+        }
+
+        return to_route('reports.contributions')->with(FlashMessageKey::SUCCESS->value, 'Contribution reports are being emailed.');
+
     }
 }

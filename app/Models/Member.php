@@ -144,6 +144,15 @@ final class Member extends Model
         })->map(fn (SupportCollection $group): string => format_to_currency($group->sum('transaction.amount')));
     }
 
+    public function getContributionsForYear(string|int|CurrentYear $year): array
+    {
+        return [
+            'name' => "$this->last_name $this->name",
+            'contributions' => $this->getPreviousYearContributions($year),
+            'contributionAmount' => format_to_currency($this->getPreviousYearContributionsAmount($year)),
+        ];
+    }
+
     /**
      * Get the attributes that should be cast.
      *

@@ -34,7 +34,9 @@ final class ContributionController extends Controller
             'name' => "$member->last_name $member->name",
             'email' => $member->email,
             'contributionAmount' => format_to_currency($member->getPreviousYearContributionsAmount($selectedYear->year)),
-        ]);
+        ])->filter(fn (array $data): bool => $data['contributionAmount'] !== format_to_currency(0))
+            ->sortBy('name')
+            ->toArray();
 
         $years = CurrentYear::query()
             ->orderByDesc('year')

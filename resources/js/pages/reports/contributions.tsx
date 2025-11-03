@@ -6,7 +6,6 @@ import { SelectField } from '@/components/forms/inputs/SelectField';
 import { PageTitle } from '@/components/PageTitle';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-import { SessionName } from '@/enums/SessionName';
 import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import type { SelectOption } from '@/types';
@@ -32,6 +31,7 @@ interface ContributionsPageProps {
 export default function ContributionsPage({ contributions, year, years }: ContributionsPageProps) {
   const { t } = useTranslations();
   const [selectedContributions, setSelectedContributions] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const dataColumns: ColumnDef<ContributionsRecord>[] = [
     selectionHeader as ColumnDef<ContributionsRecord>,
@@ -72,13 +72,15 @@ export default function ContributionsPage({ contributions, year, years }: Contri
 
   const handleSendEmail = () => {
     router.post(
-      route('session', {
-        name: SessionName.CONTRIBUTIONS_REPORT_YEAR,
-        value: {
-          member_ids: selectedContributions,
-        },
-        redirect_to: 'communication.emails.create',
-      }),
+      route('reports.contributions.email'),
+      {
+        year: year.year,
+        memberIds: selectedContributions,
+      },
+      {
+        onStart: () => setIsLoading(true),
+        onFinish: () => setIsLoading(false),
+      },
     );
   };
 
@@ -105,11 +107,11 @@ export default function ContributionsPage({ contributions, year, years }: Contri
         </div>
 
         <div className="flex gap-2">
-          <Button variant="outline" size="sm" disabled={selectedContributions.length === 0 || year.isCurrent} onClick={handlePrintPdf}>
+          <Button variant="outline" size="sm" disabled={isLoading || selectedContributions.length === 0 || year.isCurrent} onClick={handlePrintPdf}>
             <PrinterIcon className="size-4" />
             {t('Export PDF')}
           </Button>
-          <Button variant="outline" size="sm" disabled={selectedContributions.length === 0 || year.isCurrent} onClick={handleSendEmail}>
+          <Button variant="outline" size="sm" disabled={isLoading || selectedContributions.length === 0 || year.isCurrent} onClick={handleSendEmail}>
             <MailIcon className="size-4" />
             {t('Send Email')}
           </Button>
