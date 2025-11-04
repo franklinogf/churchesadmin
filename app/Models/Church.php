@@ -32,6 +32,8 @@ use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
  * @property-read array<string,mixed>|null $data
  * @property-read CarbonImmutable $created_at
  * @property-read CarbonImmutable $updated_at
+ * @property-read string|null $logoPath
+ * @property-read string $domain
  */
 final class Church extends BaseTenant implements HasMedia, TenantWithDatabase, Wallet, WalletFloat
 {
@@ -87,6 +89,18 @@ final class Church extends BaseTenant implements HasMedia, TenantWithDatabase, W
 
         return Attribute::make(
             get: fn (): ?string => $logo === '' ? null : $logo,
+        );
+    }
+
+    /**
+     * Get the church domain.
+     *
+     * @return Attribute<string,null>
+     */
+    protected function domain(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): string => $this->domains->first()->domain ?? '',
         );
     }
 

@@ -35,7 +35,6 @@ final class EntriesExpensesPdfController extends Controller
             ->get()
             ->groupBy(fn (Offering $offering): string => match ($offering->offering_type_type) {
                 'offering_type' => $offering->offeringType->name ?? '',
-                /** @phpstan-ignore-next-line */
                 'missionary' => "{$offering->offeringType->name} {$offering->offeringType->last_name}",
                 default => '',
             })

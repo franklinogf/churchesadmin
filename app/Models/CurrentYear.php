@@ -62,6 +62,9 @@ final class CurrentYear extends Model
 
     /**
      * Scope a query to only include a specific year.
+     *
+     * @param  Builder<self>  $query
+     * @return Builder<self>
      */
     protected function scopeOfYear(Builder $query, string $year): Builder
     {

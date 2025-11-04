@@ -63,7 +63,7 @@ final class WalletController extends Controller
         ]);
 
         $currentYear = $user->currentYear;
-        $prevYear = CurrentYear::where('year', $currentYear->year - 1)->first();
+        $prevYear = CurrentYear::where('year', ((int) $currentYear->year) - 1)->first();
 
         $initialRow = null;
 

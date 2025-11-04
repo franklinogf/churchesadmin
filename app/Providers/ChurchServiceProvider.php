@@ -31,9 +31,7 @@ final class ChurchServiceProvider extends ServiceProvider
         ];
         InitializeTenancyBySubdomain::$onFail = fn () => abort(404);
 
-        RootUrlBootstrapper::$rootUrlOverride = function (Church $tenant): string {
-            return 'https://'.$tenant->domains->first()->domain.'/';
-        };
+        RootUrlBootstrapper::$rootUrlOverride = fn (Church $tenant): string => 'https://'.$tenant->domain.'/';
 
     }
 }

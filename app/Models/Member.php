@@ -50,7 +50,9 @@ use Illuminate\Support\Collection as SupportCollection;
 #[ScopedBy([LastnameScope::class, ActiveMemberScope::class])]
 final class Member extends Model
 {
+    /** @use HasFactory<\Database\Factories\MemberFactory> */
     use HasFactory;
+
     use HasTags;
 
     /**
@@ -116,6 +118,9 @@ final class Member extends Model
             ->withoutGlobalScope(CurrentYearScope::class);
     }
 
+    /**
+     * Get the total amount of contributions for the previous year.
+     */
     public function getPreviousYearContributionsAmount(string|int|null|CurrentYear $year = null): int
     {
         if ($year !== null) {
@@ -130,6 +135,12 @@ final class Member extends Model
         return $this->previousYearContributions->sum('transaction.amount');
     }
 
+    /**
+     * Get the contributions for the previous year, grouped by offering type.
+     *
+     *
+     * @return SupportCollection<string, string>
+     */
     public function getPreviousYearContributions(string|int|null|CurrentYear $year = null): SupportCollection
     {
         $previousYearContributions = $this->previousYearContributions()->with('offeringType', 'transaction');
@@ -141,9 +152,15 @@ final class Member extends Model
         return $previousYearContributions->get()->groupBy(fn (Offering $contribution): string => match ($contribution->offering_type_type) {
             ModelMorphName::OFFERING_TYPE->value => $contribution->offeringType->name,
             ModelMorphName::MISSIONARY->value => "{$contribution->offeringType->name} {$contribution->offeringType->last_name}",
+            default => 'Unknown',
         })->map(fn (SupportCollection $group): string => format_to_currency($group->sum('transaction.amount')));
     }
 
+    /**
+     * Get the contributions data for the previous year.
+     *
+     * @return array{name: string, contributions: SupportCollection<string, string>, contributionAmount: string}
+     */
     public function getContributionsForYear(string|int|CurrentYear $year): array
     {
         return [
