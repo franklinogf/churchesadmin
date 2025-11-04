@@ -25,14 +25,14 @@ final class ContributionController extends Controller
 
         $members = Member::query()->get();
 
-        $contributions = ! $selectedYear ? [] : $members->map(fn (Member $member): array => [
+        $contributions = $selectedYear ? $members->map(fn (Member $member): array => [
             'id' => $member->id,
             'name' => "$member->last_name $member->name",
             'email' => $member->email,
             'contributionAmount' => format_to_currency($member->getPreviousYearContributionsAmount($selectedYear->year)),
         ])->filter(fn (array $data): bool => $data['contributionAmount'] !== format_to_currency(0))
             ->sortBy('name')
-            ->toArray();
+            ->toArray() : [];
 
         $years = CurrentYear::query()
             ->where('is_current', false)
@@ -40,7 +40,7 @@ final class ContributionController extends Controller
             ->get(['year']);
 
         return Inertia::render('reports/contributions', [
-            'year' => ! $selectedYear ? null : new CurrentYearResource($selectedYear),
+            'year' => $selectedYear ? new CurrentYearResource($selectedYear) : null,
             'years' => $years->isEmpty() ? [] : SelectOption::create($years, 'year', 'year'),
             'contributions' => $contributions,
         ]);
