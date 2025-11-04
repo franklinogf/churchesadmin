@@ -23,9 +23,9 @@ type ContributionsRecord = {
 };
 
 interface ContributionsPageProps {
-  contributions: ContributionsRecord[] | null;
+  contributions: ContributionsRecord[];
   year: CurrentYear | null;
-  years: SelectOption[] | null;
+  years: SelectOption[];
 }
 
 export default function ContributionsPage({ contributions, year, years }: ContributionsPageProps) {
@@ -84,7 +84,7 @@ export default function ContributionsPage({ contributions, year, years }: Contri
     );
   };
 
-  if (!year || !years || !contributions) {
+  if (years.length === 0) {
     return (
       <AppLayout title={t('Contributions')} breadcrumbs={[{ title: t('Reports'), href: route('reports') }, { title: t('Contributions') }]}>
         <PageTitle>{t('Contributions')}</PageTitle>

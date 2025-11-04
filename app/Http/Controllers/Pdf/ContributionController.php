@@ -23,17 +23,9 @@ final class ContributionController extends Controller
         ? CurrentYear::previous()
         : CurrentYear::query()->where('year', $selectedYear)->first();
 
-        if (! $selectedYear) {
-            return Inertia::render('reports/contributions', [
-                'year' => null,
-                'years' => null,
-                'contributions' => null,
-            ]);
-        }
-
         $members = Member::query()->get();
 
-        $contributions = $members->map(fn (Member $member): array => [
+        $contributions = ! $selectedYear ? [] : $members->map(fn (Member $member): array => [
             'id' => $member->id,
             'name' => "$member->last_name $member->name",
             'email' => $member->email,
@@ -48,8 +40,8 @@ final class ContributionController extends Controller
             ->get(['year']);
 
         return Inertia::render('reports/contributions', [
-            'year' => new CurrentYearResource($selectedYear),
-            'years' => SelectOption::create($years, 'year', 'year'),
+            'year' => ! $selectedYear ? null : new CurrentYearResource($selectedYear),
+            'years' => $years->isEmpty() ? [] : SelectOption::create($years, 'year', 'year'),
             'contributions' => $contributions,
         ]);
     }
