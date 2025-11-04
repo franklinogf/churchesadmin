@@ -87,6 +87,9 @@ it('has needed enums', function (): void {
         'EXPENSES_UPDATE',
         'EXPENSES_DELETE',
         'ACTIVITY_LOGS_MANAGE',
+        'SETTINGS_MANAGE',
+        'SETTINGS_CLOSE_YEAR',
+        'SETTINGS_CHANGE_LANGUAGE',
 
     ]);
 
