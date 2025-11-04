@@ -23,9 +23,9 @@ type ContributionsRecord = {
 };
 
 interface ContributionsPageProps {
-  contributions: ContributionsRecord[];
-  year: CurrentYear;
-  years: SelectOption[];
+  contributions: ContributionsRecord[] | null;
+  year: CurrentYear | null;
+  years: SelectOption[] | null;
 }
 
 export default function ContributionsPage({ contributions, year, years }: ContributionsPageProps) {
@@ -64,7 +64,7 @@ export default function ContributionsPage({ contributions, year, years }: Contri
 
   const handlePrintPdf = () => {
     const url = route('reports.contributions.pdf.multiple', {
-      year: year.year,
+      year: year?.year,
       members: selectedContributions,
     });
     window.open(url, '_blank');
@@ -74,7 +74,7 @@ export default function ContributionsPage({ contributions, year, years }: Contri
     router.post(
       route('reports.contributions.email'),
       {
-        year: year.year,
+        year: year?.year,
         memberIds: selectedContributions,
       },
       {
@@ -84,14 +84,24 @@ export default function ContributionsPage({ contributions, year, years }: Contri
     );
   };
 
+  if (!year || !years || !contributions) {
+    return (
+      <AppLayout title={t('Contributions')} breadcrumbs={[{ title: t('Reports'), href: route('reports') }, { title: t('Contributions') }]}>
+        <PageTitle>{t('Contributions')}</PageTitle>
+        <Alert className="text-muted-foreground my-4" variant="warning">
+          <AlertDescription>{t('No closed fiscal years found. Please close a fiscal year to view contributions reports.')}</AlertDescription>
+        </Alert>
+      </AppLayout>
+    );
+  }
   return (
     <AppLayout title={t('Contributions')} breadcrumbs={[{ title: t('Reports'), href: route('reports') }, { title: t('Contributions') }]}>
-      <PageTitle description={t('Contributions of the fiscal year :year', { year: year.year })}>{t('Contributions')}</PageTitle>
+      <PageTitle description={t('Contributions of the fiscal year :year', { year: year?.year || '' })}>{t('Contributions')}</PageTitle>
       <small className="text-muted-foreground text-center">
-        ({year.startDate} - {year.endDate})
+        ({year?.startDate} - {year?.endDate})
       </small>
 
-      {year.isCurrent && (
+      {year?.isCurrent && (
         <Alert className="text-muted-foreground my-4" variant="warning">
           <AlertDescription>
             {t(
@@ -103,22 +113,22 @@ export default function ContributionsPage({ contributions, year, years }: Contri
 
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div className="flex-1 sm:max-w-xs">
-          <SelectField label={t('Fiscal Year')} value={year.year} onChange={handleYearChange} options={years} />
+          <SelectField label={t('Fiscal Year')} value={year?.year} onChange={handleYearChange} options={years ?? []} />
         </div>
 
         <div className="flex gap-2">
-          <Button variant="outline" size="sm" disabled={isLoading || selectedContributions.length === 0 || year.isCurrent} onClick={handlePrintPdf}>
+          <Button variant="outline" size="sm" disabled={isLoading || selectedContributions.length === 0 || year?.isCurrent} onClick={handlePrintPdf}>
             <PrinterIcon className="size-4" />
             {t('Export PDF')}
           </Button>
-          <Button variant="outline" size="sm" disabled={isLoading || selectedContributions.length === 0 || year.isCurrent} onClick={handleSendEmail}>
+          <Button variant="outline" size="sm" disabled={isLoading || selectedContributions.length === 0 || year?.isCurrent} onClick={handleSendEmail}>
             <MailIcon className="size-4" />
             {t('Send Email')}
           </Button>
         </div>
       </div>
 
-      <DataTable data={contributions} columns={dataColumns} rowId="id" onSelectedRowsChange={setSelectedContributions} />
+      <DataTable data={contributions ?? []} columns={dataColumns} rowId="id" onSelectedRowsChange={setSelectedContributions} />
     </AppLayout>
   );
 }

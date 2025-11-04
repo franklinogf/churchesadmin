@@ -354,5 +354,6 @@
     "Fiscal Year": "Año Fiscal",
     "Contribution": "Contribución",
     "The selected year is the current fiscal year, is not allowed to send reports for the current year. Please select a previous fiscal year to view contributions.": "El año seleccionado es el año fiscal actual, no se permite enviar informes para el año actual. Por favor, seleccione un año fiscal anterior para ver las contribuciones.",
-    "Send Email": "Enviar Correo"
+    "Send Email": "Enviar Correo",
+    "No closed fiscal years found. Please close a fiscal year to view contributions reports.": "No se encontraron años fiscales cerrados. Por favor, cierra un año fiscal para ver los informes de contribuciones."
 }

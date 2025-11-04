@@ -206,6 +206,7 @@ export type TranslationKey =
   | 'No Role'
   | 'No changes'
   | 'No check layout selected for this wallet'
+  | 'No closed fiscal years found. Please close a fiscal year to view contributions reports.'
   | 'No data'
   | 'No data available'
   | 'No error message available'

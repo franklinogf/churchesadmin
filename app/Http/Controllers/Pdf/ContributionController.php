@@ -24,7 +24,11 @@ final class ContributionController extends Controller
         : CurrentYear::query()->where('year', $selectedYear)->first();
 
         if (! $selectedYear) {
-            abort(404, 'Fiscal year not found.');
+            return Inertia::render('reports/contributions', [
+                'year' => null,
+                'years' => null,
+                'contributions' => null,
+            ]);
         }
 
         $members = Member::query()->get();
@@ -39,6 +43,7 @@ final class ContributionController extends Controller
             ->toArray();
 
         $years = CurrentYear::query()
+            ->where('is_current', false)
             ->orderByDesc('year')
             ->get(['year']);
 
