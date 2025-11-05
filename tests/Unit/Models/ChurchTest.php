@@ -13,6 +13,7 @@ test('to array', function (): void {
         'name' => 'Test Church',
         'locale' => LanguageCode::ENGLISH->value,
         'active' => true,
+        'domain' => 'test.localhost',
     ])->fresh();
 
     expect(array_keys($church->toArray()))->toBe([
@@ -20,6 +21,7 @@ test('to array', function (): void {
         'name',
         'locale',
         'active',
+        'domain',
         'data',
         'created_at',
         'updated_at',
@@ -33,6 +35,7 @@ test('casts are correct', function (): void {
         'name' => 'Test Church',
         'locale' => LanguageCode::ENGLISH->value,
         'active' => true,
+        'domain' => 'test.localhost',
     ])->fresh();
 
     expect($church->active)->toBeBool();

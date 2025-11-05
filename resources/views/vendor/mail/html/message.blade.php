@@ -1,7 +1,7 @@
 <x-mail::layout>
     {{-- Header --}}
     <x-slot:header>
-        <x-mail::header :url="tenancy()->initialized ? create_tenant_url(tenant(), 'home') : config('app.url')">
+        <x-mail::header :url="tenancy()->initialized ? app_url_subdomain(tenant('domain')) : config('app.url')">
             {{ tenancy()->initialized ? tenant('name') : config('app.name') }}
         </x-mail::header>
     </x-slot:header>

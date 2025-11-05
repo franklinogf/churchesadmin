@@ -88,10 +88,10 @@ trait RefreshDatabaseWithTenant
             File::deleteDirectory(public_path("public-{$tenantId}".($token ? "-{$token}" : '')));
 
             // Create the tenant and associated domain if they don't exist.
-            $t = Church::create(['id' => $tenantId, 'name' => $this->tenantName, 'locale' => LanguageCode::ENGLISH->value, 'active' => true]);
-            if ($t->domains()->doesntExist()) {
-                $t->createDomain($tenantId);
-            }
+            $t = Church::create(['id' => $tenantId, 'domain' => $tenantId, 'name' => $this->tenantName, 'locale' => LanguageCode::ENGLISH->value, 'active' => true]);
+            // if ($t->domains()->doesntExist()) {
+            //     $t->createDomain($tenantId);
+            // }
 
             return $t;
         });

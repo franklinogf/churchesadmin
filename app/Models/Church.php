@@ -15,8 +15,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Laravel\Pennant\Concerns\HasFeatures;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Stancl\Tenancy\Contracts\SingleDomainTenant;
 use Stancl\Tenancy\Database\Concerns\HasDatabase;
-use Stancl\Tenancy\Database\Concerns\HasDomains;
 use Stancl\Tenancy\Database\Concerns\MaintenanceMode;
 use Stancl\Tenancy\Database\Contracts\TenantWithDatabase;
 use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
@@ -35,10 +35,10 @@ use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
  * @property-read string|null $logoPath
  * @property-read string $domain
  */
-final class Church extends BaseTenant implements HasMedia, TenantWithDatabase, Wallet, WalletFloat
+final class Church extends BaseTenant implements HasMedia, SingleDomainTenant, TenantWithDatabase, Wallet, WalletFloat
 {
     /** @use HasFactory<\Database\Factories\ChurchFactory> */
-    use HasDatabase, HasDomains, HasFactory, HasFeatures, HasWalletFloat, HasWallets, InteractsWithMedia, MaintenanceMode;
+    use HasDatabase, HasFactory, HasFeatures, HasWalletFloat, HasWallets, InteractsWithMedia, MaintenanceMode;
 
     /**
      * Set the custom columns for the tenant model.
@@ -54,6 +54,7 @@ final class Church extends BaseTenant implements HasMedia, TenantWithDatabase, W
             'name',
             'locale',
             'active',
+            'domain',
         ]);
     }
 
@@ -89,18 +90,6 @@ final class Church extends BaseTenant implements HasMedia, TenantWithDatabase, W
 
         return Attribute::make(
             get: fn (): ?string => $logo === '' ? null : $logo,
-        );
-    }
-
-    /**
-     * Get the church domain.
-     *
-     * @return Attribute<string,null>
-     */
-    protected function domain(): Attribute
-    {
-        return Attribute::make(
-            get: fn (): string => $this->domains->first()->domain ?? '',
         );
     }
 

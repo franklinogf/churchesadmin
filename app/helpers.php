@@ -42,15 +42,11 @@ if (! function_exists('create_tenant_url')) {
         }
 
         try {
-
-            $domain = $church->domains()->first();
-            if (! $domain) {
-                return null;
-            }
+            $domain = $church->domain;
 
             $url = config()->string('app.url');
 
-            return tenant_route($domain->domain.'.'.str($url)->after('://'), $routeName, $routeParams);
+            return tenant_route($domain.'.'.str($url)->after('://'), $routeName, $routeParams);
         } catch (Exception) {
             return null;
         }
