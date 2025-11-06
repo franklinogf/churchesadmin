@@ -32,7 +32,7 @@ final class MissionaryController extends Controller
 
         $missionaries = Missionary::latest()->get();
 
-        return Inertia::render('missionaries/index', [
+        return Inertia::render('main/missionaries/index', [
             'missionaries' => MissionaryResource::collection($missionaries),
         ]);
     }
@@ -47,7 +47,7 @@ final class MissionaryController extends Controller
         $offeringFrequencies = OfferingFrequency::options();
         $genders = Gender::options();
 
-        return Inertia::render('missionaries/create', [
+        return Inertia::render('main/missionaries/create', [
             'offeringFrequencies' => $offeringFrequencies,
             'genders' => $genders,
         ]);
@@ -85,7 +85,7 @@ final class MissionaryController extends Controller
         $offeringFrequencies = OfferingFrequency::options();
         $genders = Gender::options();
 
-        return Inertia::render('missionaries/edit', [
+        return Inertia::render('main/missionaries/edit', [
             'missionary' => new MissionaryResource($missionary),
             'offeringFrequencies' => $offeringFrequencies,
             'genders' => $genders,

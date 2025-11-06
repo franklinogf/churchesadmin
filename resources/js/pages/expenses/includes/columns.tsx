@@ -15,7 +15,7 @@ import { ViewExpenseModal } from '../components/ViewExpenseModal';
 export const columns: ColumnDef<Expense>[] = [
   {
     enableHiding: false,
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Wallet" />,
+    header: ({ column }) => <DataTableColumnHeader justify="center" column={column} title="Wallet" />,
     accessorKey: 'transaction',
     cell: ({ row }) => (
       <DatatableCell justify="center">
@@ -25,7 +25,7 @@ export const columns: ColumnDef<Expense>[] = [
   },
   {
     enableHiding: false,
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Expense type" />,
+    header: ({ column }) => <DataTableColumnHeader justify="center" column={column} title="Expense type" />,
     accessorKey: 'expenseType',
     cell: ({ row }) => (
       <DatatableCell justify="center">
@@ -35,7 +35,7 @@ export const columns: ColumnDef<Expense>[] = [
   },
   {
     enableHiding: true,
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Member" />,
+    header: ({ column }) => <DataTableColumnHeader justify="center" column={column} title="Member" />,
     accessorKey: 'member',
     cell: ({ row }) => {
       const { member } = row.original;
@@ -46,7 +46,7 @@ export const columns: ColumnDef<Expense>[] = [
   {
     enableHiding: false,
     accessorKey: 'amount',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Amount" />,
+    header: ({ column }) => <DataTableColumnHeader justify="end" column={column} title="Amount" />,
     cell: function CellComponent({ row }) {
       const { formatCurrency, toPositive } = useCurrency();
       return <DatatableCell justify="end">{formatCurrency(toPositive(row.original.transaction.amountFloat))}</DatatableCell>;
@@ -54,7 +54,7 @@ export const columns: ColumnDef<Expense>[] = [
   },
   {
     accessorKey: 'date',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Date" />,
+    header: ({ column }) => <DataTableColumnHeader justify="center" column={column} title="Date" />,
     cell: ({ row }) => <DatatableCell justify="center">{row.original.date}</DatatableCell>,
   },
   {

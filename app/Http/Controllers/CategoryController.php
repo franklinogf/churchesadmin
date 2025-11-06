@@ -29,7 +29,7 @@ final class CategoryController extends Controller
 
         $categories = Tag::whereType(TagType::CATEGORY->value)->orderBy('created_at', 'desc')->get();
 
-        return Inertia::render('categories/index', [
+        return Inertia::render('main/categories/index', [
             'categories' => TagResource::collection($categories),
         ]);
     }

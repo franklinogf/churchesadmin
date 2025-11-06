@@ -44,7 +44,7 @@ final class MemberController extends Controller
             ->latest()
             ->get();
 
-        return Inertia::render('members/index', ['members' => MemberResource::collection($members)]);
+        return Inertia::render('main/members/index', ['members' => MemberResource::collection($members)]);
     }
 
     /**
@@ -64,7 +64,7 @@ final class MemberController extends Controller
         $skills = Tag::getWithType(TagType::SKILL->value);
         $categories = Tag::getWithType(TagType::CATEGORY->value);
 
-        return Inertia::render('members/create', [
+        return Inertia::render('main/members/create', [
             'genders' => $genders,
             'civilStatuses' => $civilStatuses,
             'skills' => TagResource::collection($skills),
@@ -149,7 +149,7 @@ final class MemberController extends Controller
         $categories = Tag::getWithType(TagType::CATEGORY->value);
         $deactivationCodes = DeactivationCode::all();
 
-        return Inertia::render('members/edit', [
+        return Inertia::render('main/members/edit', [
             'member' => new MemberResource($member),
             'genders' => $genders,
             'civilStatuses' => $civilStatuses,

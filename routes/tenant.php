@@ -40,6 +40,7 @@ Route::middleware([
         Route::get('dashboard', DashboardController::class)->name('dashboard');
 
         require __DIR__.'/tenant/main.php';
+        require __DIR__.'/tenant/reports.php';
         require __DIR__.'/tenant/codes.php';
         require __DIR__.'/tenant/accounting.php';
         require __DIR__.'/tenant/settings.php';

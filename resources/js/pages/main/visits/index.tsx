@@ -35,20 +35,20 @@ export default function VisitsIndex({ visits }: VisitsIndexProps) {
       },
       {
         enableHiding: false,
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Phone" />,
+        header: ({ column }) => <DataTableColumnHeader justify="center" column={column} title="Phone" />,
         accessorKey: 'phone',
         cell: ({ row }) => <DatatableCell justify="center">{row.original.phone}</DatatableCell>,
       },
       {
         enableHiding: false,
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Email" />,
+        header: ({ column }) => <DataTableColumnHeader justify="center" column={column} title="Email" />,
         accessorKey: 'email',
         cell: ({ row }) => <DatatableCell justify="center">{row.original.email}</DatatableCell>,
       },
       {
         sortingFn: sortDate,
         enableHiding: false,
-        header: ({ column }) => <DataTableColumnHeader column={column} title="First visit" />,
+        header: ({ column }) => <DataTableColumnHeader justify="center" column={column} title="First visit" />,
         accessorKey: 'firstVisitDate',
         cell: ({ row }) => <DatatableCell justify="center">{row.original.firstVisitDate}</DatatableCell>,
       },

@@ -29,7 +29,7 @@ final class SkillController extends Controller
 
         $skills = Tag::whereType(TagType::SKILL->value)->orderByDesc('order_column')->get();
 
-        return Inertia::render('skills/index', [
+        return Inertia::render('main/skills/index', [
             'skills' => TagResource::collection($skills),
         ]);
     }

@@ -37,7 +37,7 @@ final class UserController extends Controller
             ->whereNotIn('id', [$user->id])
             ->with('roles', 'permissions')->latest()->get();
 
-        return Inertia::render('users/index', ['users' => UserResource::collection($users)]);
+        return Inertia::render('main/users/index', ['users' => UserResource::collection($users)]);
     }
 
     /**
@@ -54,7 +54,7 @@ final class UserController extends Controller
 
         $permissions = Permission::all();
 
-        return Inertia::render('users/create', [
+        return Inertia::render('main/users/create', [
             'permissions' => PermissionResource::collection($permissions),
             'roles' => RoleResource::collection($roles),
         ]);
@@ -101,7 +101,7 @@ final class UserController extends Controller
 
         $permissions = Permission::all();
 
-        return Inertia::render('users/edit', [
+        return Inertia::render('main/users/edit', [
             'user' => new UserResource($user),
             'permissions' => PermissionResource::collection($permissions),
             'roles' => RoleResource::collection($roles),

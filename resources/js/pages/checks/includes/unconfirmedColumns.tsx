@@ -25,7 +25,7 @@ export const unconfirmedColumns: ColumnDef<Check>[] = [
   },
   {
     enableHiding: false,
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Date" />,
+    header: ({ column }) => <DataTableColumnHeader justify="center" column={column} title="Date" />,
     accessorKey: 'date',
     cell: ({ row }) => {
       const { date } = row.original;
@@ -34,7 +34,7 @@ export const unconfirmedColumns: ColumnDef<Check>[] = [
   },
   {
     enableHiding: false,
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Number" />,
+    header: ({ column }) => <DataTableColumnHeader justify="center" column={column} title="Number" />,
     accessorKey: 'checkNumber',
     cell: function CellComponent({ row }) {
       const { checkNumber } = row.original;
@@ -47,7 +47,7 @@ export const unconfirmedColumns: ColumnDef<Check>[] = [
     },
   },
   {
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Type" />,
+    header: ({ column }) => <DataTableColumnHeader justify="center" column={column} title="Type" />,
     accessorKey: 'type',
     cell: function CellComponent({ row }) {
       const { t } = useTranslations();
@@ -60,12 +60,12 @@ export const unconfirmedColumns: ColumnDef<Check>[] = [
     },
   },
   {
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Expense type" />,
+    header: ({ column }) => <DataTableColumnHeader justify="end" column={column} title="Expense type" />,
     accessorKey: 'expenseType',
     cell: function CellComponent({ row }) {
       const { expenseType } = row.original;
       return (
-        <DatatableCell justify="center">
+        <DatatableCell justify="end">
           <Badge>{expenseType.name}</Badge>
         </DatatableCell>
       );

@@ -20,7 +20,7 @@ export const confirmedColumns: ColumnDef<Check>[] = [
   },
   {
     enableHiding: false,
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Date" />,
+    header: ({ column }) => <DataTableColumnHeader justify="center" column={column} title="Date" />,
     accessorKey: 'date',
     cell: ({ row }) => {
       const { date } = row.original;
@@ -29,7 +29,7 @@ export const confirmedColumns: ColumnDef<Check>[] = [
   },
   {
     enableHiding: false,
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Number" />,
+    header: ({ column }) => <DataTableColumnHeader justify="center" column={column} title="Number" />,
     accessorKey: 'checkNumber',
     cell: function CellComponent({ row }) {
       const { checkNumber } = row.original;
@@ -42,7 +42,7 @@ export const confirmedColumns: ColumnDef<Check>[] = [
     },
   },
   {
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Type" />,
+    header: ({ column }) => <DataTableColumnHeader justify="center" column={column} title="Type" />,
     accessorKey: 'type',
     cell: function CellComponent({ row }) {
       const { t } = useTranslations();
@@ -55,7 +55,7 @@ export const confirmedColumns: ColumnDef<Check>[] = [
     },
   },
   {
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Expense type" />,
+    header: ({ column }) => <DataTableColumnHeader justify="center" column={column} title="Expense type" />,
     accessorKey: 'expenseType',
     cell: function CellComponent({ row }) {
       const { expenseType } = row.original;
@@ -68,13 +68,13 @@ export const confirmedColumns: ColumnDef<Check>[] = [
   },
   {
     enableHiding: false,
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Amount" />,
+    header: ({ column }) => <DataTableColumnHeader justify="end" column={column} title="Amount" />,
     accessorKey: 'transaction.amountFloat',
     cell: function CellComponent({ row }) {
       const { formatCurrency, toPositive } = useCurrency();
 
       const { transaction } = row.original;
-      return <DatatableCell justify="center">{formatCurrency(toPositive(transaction.amountFloat))}</DatatableCell>;
+      return <DatatableCell justify="end">{formatCurrency(toPositive(transaction.amountFloat))}</DatatableCell>;
     },
   },
 ];

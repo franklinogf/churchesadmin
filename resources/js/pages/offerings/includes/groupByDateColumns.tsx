@@ -17,7 +17,7 @@ export const groupByDateColumns: ColumnDef<OfferingGroupedByDate>[] = [
   },
   {
     enableHiding: false,
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Cash" />,
+    header: ({ column }) => <DataTableColumnHeader justify="end" column={column} title="Cash" />,
     accessorKey: 'cash',
     cell: function CellComponent({ row }) {
       const { formatCurrency } = useCurrency();
@@ -26,7 +26,7 @@ export const groupByDateColumns: ColumnDef<OfferingGroupedByDate>[] = [
   },
   {
     enableHiding: false,
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Check" />,
+    header: ({ column }) => <DataTableColumnHeader justify="end" column={column} title="Check" />,
     accessorKey: 'check',
     cell: function CellComponent({ row }) {
       const { formatCurrency } = useCurrency();
@@ -35,7 +35,7 @@ export const groupByDateColumns: ColumnDef<OfferingGroupedByDate>[] = [
   },
   {
     enableHiding: false,
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Total" />,
+    header: ({ column }) => <DataTableColumnHeader justify="end" column={column} title="Total" />,
     accessorKey: 'total',
     cell: function CellComponent({ row }) {
       const { formatCurrency } = useCurrency();

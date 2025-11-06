@@ -47,4 +47,4 @@ Route::delete('visits/{visit}/force-delete', [VisitController::class, 'forceDele
     ->withTrashed()
     ->name('visits.forceDelete');
 
-require __DIR__.'/reports.php';
+// require __DIR__.'/reports.php';
