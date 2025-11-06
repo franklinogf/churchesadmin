@@ -18,7 +18,7 @@ final class CurrentYearFactory extends Factory
      */
     public function definition(): array
     {
-        $year = fake()->year();
+        $year = fake()->unique()->year();
 
         return [
             'year' => $year,
