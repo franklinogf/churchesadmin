@@ -21,7 +21,7 @@ it('can be rendered if authenticated user has permission', function (): void {
         ->get(route('categories.index'))
         ->assertStatus(200)
         ->assertInertia(fn (Assert $page): Assert => $page
-            ->component('categories/index')
+            ->component('main/categories/index')
             ->has('categories', 10)
         );
 });

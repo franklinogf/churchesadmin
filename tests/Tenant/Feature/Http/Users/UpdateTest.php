@@ -9,6 +9,7 @@ use Inertia\Testing\AssertableInertia as Assert;
 
 use function Pest\Laravel\from;
 use function Pest\Laravel\get;
+use function Pest\Laravel\travel;
 
 it('cannot be rendered if not authenticated', function (): void {
     get(route('users.edit', ['user' => TenantUser::factory()->create()]))
@@ -18,7 +19,7 @@ it('cannot be rendered if not authenticated', function (): void {
 describe('if user has permission', function (): void {
     beforeEach(function (): void {
         asUserWithPermission(TenantPermission::USERS_MANAGE, TenantPermission::USERS_UPDATE);
-        $this->travel(1)->days();
+        travel(1)->days();
     });
 
     it('can be rendered if authenticated', function (): void {
@@ -27,7 +28,7 @@ describe('if user has permission', function (): void {
         get(route('users.edit', ['user' => $user]))
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page): Assert => $page
-                ->component('users/edit')
+                ->component('main/users/edit')
                 ->has('permissions')
                 ->has('roles')
             );

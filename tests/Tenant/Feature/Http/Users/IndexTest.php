@@ -24,7 +24,7 @@ it('can be rendered if authenticated user has permission', function (): void {
         ->get(route('users.index'))
         ->assertStatus(200)
         ->assertInertia(fn (Assert $page): Assert => $page
-            ->component('users/index')
+            ->component('main/users/index')
             ->has('users', 3)
         );
 });

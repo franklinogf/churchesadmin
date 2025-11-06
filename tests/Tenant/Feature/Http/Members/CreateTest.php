@@ -27,7 +27,7 @@ describe('if user has permission', function (): void {
         get(route('members.create'))
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page): Assert => $page
-                ->component('members/create')
+                ->component('main/members/create')
                 ->has('genders')
                 ->has('civilStatuses')
                 ->has('skills')

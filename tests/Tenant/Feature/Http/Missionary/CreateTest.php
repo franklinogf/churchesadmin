@@ -27,7 +27,7 @@ describe('if user has permission', function (): void {
         get(route('missionaries.create'))
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page): Assert => $page
-                ->component('missionaries/create')
+                ->component('main/missionaries/create')
                 ->has('offeringFrequencies')
                 ->has('genders')
             );

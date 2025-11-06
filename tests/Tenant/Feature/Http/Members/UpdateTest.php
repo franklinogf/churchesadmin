@@ -29,7 +29,7 @@ describe('if user has permission', function (): void {
         get(route('members.edit', ['member' => $member]))
             ->assertStatus(200)
             ->assertInertia(fn (Assert $page): Assert => $page
-                ->component('members/edit')
+                ->component('main/members/edit')
                 ->has('member')
                 ->has('genders')
                 ->has('civilStatuses')

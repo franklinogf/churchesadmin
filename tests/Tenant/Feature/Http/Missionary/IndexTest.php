@@ -15,7 +15,7 @@ it('can be rendered if authenticated user has permission', function (): void {
         ->get(route('missionaries.index'))
         ->assertStatus(200)
         ->assertInertia(fn (Assert $page): Assert => $page
-            ->component('missionaries/index')
+            ->component('main/missionaries/index')
             ->has('missionaries', 3)
         );
 });
@@ -33,7 +33,7 @@ it('only shows not trashed missionaries', function (): void {
         ->get(route('missionaries.index'))
         ->assertStatus(200)
         ->assertInertia(fn (Assert $page): Assert => $page
-            ->component('missionaries/index')
+            ->component('main/missionaries/index')
             ->has('missionaries', 3)
         );
 });
