@@ -2,8 +2,18 @@
     "agents": [
         "copilot"
     ],
-    "editors": [
-        "vscode"
+    "guidelines": true,
+    "herd_mcp": true,
+    "mcp": true,
+    "packages": [
+        "filament/filament"
     ],
-    "guidelines": []
+    "sail": false,
+    "skills": [
+        "pennant-development",
+        "pest-testing",
+        "inertia-react-development",
+        "tailwindcss-development",
+        "adding-translations"
+    ]
 }
