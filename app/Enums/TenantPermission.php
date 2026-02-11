@@ -91,6 +91,12 @@ enum TenantPermission: string
     case EXPENSES_UPDATE = 'expenses.update';
     case EXPENSES_DELETE = 'expenses.delete';
     case ACTIVITY_LOGS_MANAGE = 'activity_logs.manage';
+    case CALENDAR_EVENTS_MANAGE = 'calendar_events.manage';
+    case CALENDAR_EVENTS_CREATE = 'calendar_events.create';
+    case CALENDAR_EVENTS_UPDATE = 'calendar_events.update';
+    case CALENDAR_EVENTS_DELETE = 'calendar_events.delete';
+    case CALENDAR_EVENTS_EXPORT = 'calendar_events.export';
+    case CALENDAR_EVENTS_EMAIL = 'calendar_events.email';
     case SETTINGS_MANAGE = 'settings.manage';
     case SETTINGS_CLOSE_YEAR = 'settings.close_year';
     case SETTINGS_CHANGE_LANGUAGE = 'settings.change_language';

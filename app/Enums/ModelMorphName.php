@@ -18,6 +18,7 @@ enum ModelMorphName: string
     case EXPENSE = 'expense';
     case OFFERING = 'offering';
     case CHECK = 'check';
+    case CALENDAR_EVENT = 'calendar_event';
 
     public function label(): string
     {
@@ -34,6 +35,7 @@ enum ModelMorphName: string
             self::EXPENSE => __('enum.model_morph_name.expense'),
             self::OFFERING => __('enum.model_morph_name.offering'),
             self::CHECK => __('enum.model_morph_name.check'),
+            self::CALENDAR_EVENT => __('enum.model_morph_name.calendar_event'),
         };
     }
 
@@ -52,6 +54,7 @@ enum ModelMorphName: string
             self::EXPENSE => 'Expenses',
             self::OFFERING => 'Offerings',
             self::CHECK => 'Checks',
+            self::CALENDAR_EVENT => 'Calendar Events',
         };
     }
 }

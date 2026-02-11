@@ -28,6 +28,7 @@ return [
         'expense' => 'Gasto',
         'offering' => 'Ofrenda',
         'check' => 'Cheque',
+        'calendar_event' => 'Evento de Calendario',
     ],
     'wallet_name' => [
         'primary' => 'Principal',
@@ -188,6 +189,14 @@ return [
             'delete' => 'Eliminar Visitas',
             'force_delete' => 'Forzar Eliminación de Visitas',
             'restore' => 'Restaurar Visitas',
+        ],
+        'calendar_events' => [
+            'manage' => 'Gestionar Eventos del Calendario',
+            'create' => 'Crear Eventos del Calendario',
+            'update' => 'Actualizar Eventos del Calendario',
+            'delete' => 'Eliminar Eventos del Calendario',
+            'export' => 'Exportar Eventos del Calendario',
+            'email' => 'Enviar Eventos del Calendario por Correo',
         ],
         'settings' => [
             'manage' => 'Gestionar Configuraciones',

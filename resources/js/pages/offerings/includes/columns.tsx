@@ -107,7 +107,7 @@ export const columns: ColumnDef<Offering>[] = [
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem
-            variant="destructive"
+            // variant="destructive"
             onClick={() => {
               openConfirmation({
                 title: t('Are you sure you want to delete this :model?', { model: t('Offering') }),

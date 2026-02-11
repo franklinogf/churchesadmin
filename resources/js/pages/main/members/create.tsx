@@ -1,6 +1,7 @@
+import type { Option } from '@/components/custom-ui/MultiSelect';
 import { AddressFormSkeleton } from '@/components/forms/AddressFormSkeleton';
 import { Form } from '@/components/forms/Form';
-import { DatetimeField } from '@/components/forms/inputs/DatetimeField';
+import { DateField } from '@/components/forms/inputs/DateField';
 import { FieldError } from '@/components/forms/inputs/FieldError';
 import { FieldsGrid } from '@/components/forms/inputs/FieldsGrid';
 import { InputField } from '@/components/forms/inputs/InputField';
@@ -16,13 +17,22 @@ import AppLayout from '@/layouts/app-layout';
 import { getMultiselecOptionsLabels } from '@/lib/mutliselect';
 import type { BreadcrumbItem, SelectOption } from '@/types';
 import { type AddressFormData } from '@/types/models/address';
-import { type MemberFormData } from '@/types/models/member';
 import type { Tag } from '@/types/models/tag';
 import type { Visit } from '@/types/models/visit';
 import { useForm } from '@inertiajs/react';
 import { useMemo } from 'react';
 
-type CreateForm = MemberFormData & {
+type CreateForm = {
+  name: string;
+  last_name: string;
+  email: string;
+  phone: string;
+  dob: string | null;
+  baptism_date: string | null;
+  gender: string;
+  civil_status: string;
+  skills: Option[];
+  categories: Option[];
   address: AddressFormData;
   visit_id: string | null;
 };
@@ -42,8 +52,8 @@ export default function Create({ genders, civilStatuses, skills, categories, vis
     last_name: visit?.lastName || '',
     email: visit?.email || '',
     phone: visit?.phone || '',
-    dob: '',
-    baptism_date: '',
+    dob: null,
+    baptism_date: null,
     gender: Gender.MALE,
     civil_status: CivilStatus.SINGLE,
     skills: [],
@@ -110,17 +120,10 @@ export default function Create({ genders, civilStatuses, skills, categories, vis
             <PhoneField label={t('Phone')} value={data.phone} onChange={(value) => setData('phone', value)} error={errors.phone} />
           </FieldsGrid>
 
-          <DatetimeField
-            hideTime
-            max={new Date()}
-            label={t('Date of birth')}
-            value={data.dob}
-            onChange={(value) => setData('dob', value)}
-            error={errors.dob}
-          />
+          <DateField maxDate="today" label={t('Date of birth')} value={data.dob} onChange={(value) => setData('dob', value)} error={errors.dob} />
 
-          <DatetimeField
-            hideTime
+          <DateField
+            maxDate="today"
             label={t('Baptism date')}
             value={data.baptism_date}
             onChange={(value) => setData('baptism_date', value)}

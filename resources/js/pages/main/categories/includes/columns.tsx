@@ -50,7 +50,7 @@ export const columns: ColumnDef<Tag>[] = [
 
             {userCan(TenantPermission.CATEGORIES_DELETE) && (
               <DropdownMenuItem
-                variant="destructive"
+                // variant="destructive"
                 onSelect={() => {
                   openConfirmation({
                     title: t('Are you sure you want to delete this :model?', { model: t('Category') }),

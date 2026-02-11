@@ -1,6 +1,6 @@
 import { AddressFormSkeleton } from '@/components/forms/AddressFormSkeleton';
 import { Form } from '@/components/forms/Form';
-import { DatetimeField } from '@/components/forms/inputs/DatetimeField';
+import { DateField } from '@/components/forms/inputs/DateField';
 import { FieldsGrid } from '@/components/forms/inputs/FieldsGrid';
 import { InputField } from '@/components/forms/inputs/InputField';
 import { PhoneField } from '@/components/forms/inputs/PhoneField';
@@ -16,8 +16,7 @@ type CreateForm = {
   last_name: string;
   phone: string;
   email: string;
-  first_visit_date: string;
-} & {
+  first_visit_date: string | null;
   address: AddressFormData;
 };
 export default function VisitsCreate() {
@@ -63,9 +62,8 @@ export default function VisitsCreate() {
           <InputField label={t('Email')} type="email" value={data.email} onChange={(value) => setData('email', value)} error={errors.email} />
         </FieldsGrid>
 
-        <DatetimeField
-          hideTime
-          max={new Date()}
+        <DateField
+          maxDate="today"
           label={t('First visit date')}
           value={data.first_visit_date}
           onChange={(value) => setData('first_visit_date', value)}

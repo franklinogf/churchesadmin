@@ -1,4 +1,3 @@
-import { type Option } from '@/components/custom-ui/MultiSelect';
 import { type CivilStatus } from '@/enums/CivilStatus';
 import { type Gender } from '@/enums/Gender';
 import { type AddressRelationship } from '@/types/models/address';
@@ -31,16 +30,3 @@ export interface Member {
   emailMessage?: EmailPivot;
   emails?: Email[];
 }
-
-export type MemberFormData = {
-  name: string;
-  last_name: string;
-  email: string;
-  phone: string;
-  dob: string;
-  baptism_date: string;
-  gender: string;
-  civil_status: string;
-  skills: Option[];
-  categories: Option[];
-};

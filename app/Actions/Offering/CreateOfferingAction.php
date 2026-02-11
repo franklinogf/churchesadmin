@@ -36,7 +36,7 @@ final readonly class CreateOfferingAction
         }
 
         try {
-            return DB::transaction(function () use ($data, $wallet) {
+            return DB::transaction(function () use ($data, $wallet): Offering {
                 $transaction = $this->walletDepositAction->handle($wallet,
                     new TransactionDto(
                         amount: $data['amount'],

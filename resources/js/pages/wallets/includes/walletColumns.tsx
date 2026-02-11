@@ -114,7 +114,7 @@ export const walletColumns: ColumnDef<Wallet>[] = [
                 </DropdownMenuItem>
               ) : (
                 <DropdownMenuItem
-                  variant="destructive"
+                  //   variant="destructive"
                   onClick={() => {
                     openConfirmation({
                       title: t('Are you sure you want to deactivate this :model?', { model: t('Wallet') }),

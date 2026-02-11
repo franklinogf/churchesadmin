@@ -1,6 +1,7 @@
+import type { Option } from '@/components/custom-ui/MultiSelect';
 import { AddressFormSkeleton } from '@/components/forms/AddressFormSkeleton';
 import { Form } from '@/components/forms/Form';
-import { DatetimeField } from '@/components/forms/inputs/DatetimeField';
+import { DateField } from '@/components/forms/inputs/DateField';
 import { FieldsGrid } from '@/components/forms/inputs/FieldsGrid';
 import { InputField } from '@/components/forms/inputs/InputField';
 import { MultiSelectField } from '@/components/forms/inputs/MultiSelectField';
@@ -21,13 +22,23 @@ import useConfirmationStore from '@/stores/confirmationStore';
 import type { BreadcrumbItem, SelectOption } from '@/types';
 import { type AddressFormData } from '@/types/models/address';
 import { type DeactivationCode } from '@/types/models/deactivation-code';
-import { type Member, type MemberFormData } from '@/types/models/member';
+import { type Member } from '@/types/models/member';
 import { type Tag } from '@/types/models/tag';
 import { router, useForm } from '@inertiajs/react';
 import { CheckCircleIcon, XCircleIcon } from 'lucide-react';
 import { useState } from 'react';
 
-type EditForm = MemberFormData & {
+type EditForm = {
+  name: string;
+  last_name: string;
+  email: string;
+  phone: string;
+  dob: string | null;
+  baptism_date: string | null;
+  gender: string;
+  civil_status: string;
+  skills: Option[];
+  categories: Option[];
   address: AddressFormData;
 };
 
@@ -50,8 +61,8 @@ export default function Edit({ member, genders, civilStatuses, skills, categorie
     last_name: member.lastName,
     email: member.email ?? '',
     phone: member.phone ?? '',
-    dob: member.dob ?? '',
-    baptism_date: member.baptismDate ?? '',
+    dob: member.dob,
+    baptism_date: member.baptismDate,
     gender: member.gender,
     civil_status: member.civilStatus,
     skills: convertTagsToMultiselectOptions(member.skills),
@@ -104,18 +115,11 @@ export default function Edit({ member, genders, civilStatuses, skills, categorie
               <PhoneField label="Phone" value={data.phone} onChange={(value) => setData('phone', value)} error={errors.phone} />
             </FieldsGrid>
 
-            <DatetimeField
-              hideTime
-              max={new Date()}
-              label="Date of Birth"
-              value={data.dob}
-              onChange={(value) => setData('dob', value)}
-              error={errors.dob}
-            />
+            <DateField maxDate="today" label="Date of Birth" value={data.dob} onChange={(value) => setData('dob', value)} error={errors.dob} />
 
-            <DatetimeField
-              hideTime
-              label="Baptism date"
+            <DateField
+              maxDate="today"
+              label={t('Baptism date')}
               value={data.baptism_date}
               onChange={(value) => setData('baptism_date', value)}
               error={errors.baptism_date}
@@ -124,7 +128,7 @@ export default function Edit({ member, genders, civilStatuses, skills, categorie
             <FieldsGrid>
               <SelectField
                 required
-                label="Gender"
+                label={t('Gender')}
                 value={data.gender}
                 onChange={(value) => setData('gender', value)}
                 options={genders}
@@ -132,7 +136,7 @@ export default function Edit({ member, genders, civilStatuses, skills, categorie
               />
               <SelectField
                 required
-                label="Civil Status"
+                label={t('Civil status')}
                 value={data.civil_status}
                 onChange={(value) => setData('civil_status', value)}
                 options={civilStatuses}
@@ -212,7 +216,7 @@ export default function Edit({ member, genders, civilStatuses, skills, categorie
 
                   {member.active && (
                     <p className="text-muted-foreground text-sm">
-                      {t('This member is currently active and will appear in member lists and reports.')}
+                      {t('This member is currently active and will appear in member lists and reports')}
                     </p>
                   )}
 

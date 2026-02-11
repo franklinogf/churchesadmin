@@ -1,6 +1,6 @@
 import { AddressFormSkeleton } from '@/components/forms/AddressFormSkeleton';
 import { Form } from '@/components/forms/Form';
-import { DatetimeField } from '@/components/forms/inputs/DatetimeField';
+import { DateField } from '@/components/forms/inputs/DateField';
 import { FieldsGrid } from '@/components/forms/inputs/FieldsGrid';
 import { InputField } from '@/components/forms/inputs/InputField';
 import { PhoneField } from '@/components/forms/inputs/PhoneField';
@@ -17,8 +17,7 @@ type EditForm = {
   last_name: string;
   phone: string;
   email: string;
-  first_visit_date: string;
-} & {
+  first_visit_date: string | null;
   address: AddressFormData;
 };
 export default function VisitsEdit({ visit }: { visit: Visit }) {
@@ -28,7 +27,7 @@ export default function VisitsEdit({ visit }: { visit: Visit }) {
     last_name: visit.lastName,
     email: visit.email ?? '',
     phone: visit.phone ?? '',
-    first_visit_date: visit.firstVisitDate ?? '',
+    first_visit_date: visit.firstVisitDate,
     address: {
       address_1: visit.address?.address1 ?? '',
       address_2: visit.address?.address2 ?? '',
@@ -64,9 +63,8 @@ export default function VisitsEdit({ visit }: { visit: Visit }) {
           <InputField label={t('Email')} type="email" value={data.email} onChange={(value) => setData('email', value)} error={errors.email} />
         </FieldsGrid>
 
-        <DatetimeField
-          hideTime
-          max={new Date()}
+        <DateField
+          maxDate="today"
           label={t('First visit date')}
           value={data.first_visit_date}
           onChange={(value) => setData('first_visit_date', value)}

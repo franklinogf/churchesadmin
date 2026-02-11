@@ -19,7 +19,7 @@ export function PageTitle({ children, className, backLink, labelClassName, descr
       {description && <p className="text-muted-foreground">{description}</p>}
       {backLink && (
         <Button variant="outline" size="sm" asChild>
-          <Link href={backLink}>{t('Ir atrás')}</Link>
+          <Link href={backLink}>{t('Go back')}</Link>
         </Button>
       )}
     </header>

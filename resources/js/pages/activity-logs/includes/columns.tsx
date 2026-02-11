@@ -136,7 +136,7 @@ export const columns: ColumnDef<ActivityLog>[] = [
                   <div>
                     <div className="font-medium">{t('Old:')}</div>
                     <div className="prose">
-                      <pre className="rounded p-2 break-words whitespace-pre-wrap">
+                      <pre className="rounded p-2 wrap-break-word whitespace-pre-wrap">
                         {Object.entries(properties.old)
                           .map(([key, value]) => `${cleanProperty(key)}: ${value}`)
                           .join('\n')}
@@ -149,7 +149,7 @@ export const columns: ColumnDef<ActivityLog>[] = [
                   <div>
                     <div className="font-medium">{t('New:')}</div>
                     <div className="prose">
-                      <pre className="rounded break-words whitespace-pre-wrap">
+                      <pre className="rounded p-2 wrap-break-word whitespace-pre-wrap">
                         {Object.entries(properties.attributes)
                           .map(([key, value]) => `${cleanProperty(key)}: ${value}`)
                           .join('\n')}

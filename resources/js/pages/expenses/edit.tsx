@@ -1,6 +1,6 @@
 import { Form } from '@/components/forms/Form';
 import { CurrencyField } from '@/components/forms/inputs/CurrencyField';
-import { DatetimeField } from '@/components/forms/inputs/DatetimeField';
+import { DateField } from '@/components/forms/inputs/DateField';
 import { FieldsGrid } from '@/components/forms/inputs/FieldsGrid';
 import { InputField } from '@/components/forms/inputs/InputField';
 import { SelectField } from '@/components/forms/inputs/SelectField';
@@ -68,12 +68,11 @@ export default function Create({ wallets, memberOptions, expenseTypesOptions, wa
         <Form isSubmitting={processing} className="w-full max-w-2xl" onSubmit={handleSubmit}>
           <div className="space-y-4 py-2">
             <FieldsGrid className="grow">
-              <DatetimeField
-                hideTime
+              <DateField
                 required
                 label={t('Date of Expense')}
                 value={data.date}
-                onChange={(value) => setData('date', value)}
+                onChange={(value) => value && setData('date', value)}
                 error={errors.date}
               />
               <div className="flex flex-col">
