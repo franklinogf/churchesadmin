@@ -105,7 +105,7 @@ export const unconfirmedColumns: ColumnDef<Check>[] = [
 
           {/* {userCan(UserPermission.DELETE_CATEGORIES) && ( */}
           <DropdownMenuItem
-            variant="destructive"
+            // variant="destructive"
             onClick={() => {
               openConfirmation({
                 title: t('Are you sure you want to delete this :model?', { model: t('Check') }),

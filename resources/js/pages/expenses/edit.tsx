@@ -1,6 +1,6 @@
 import { Form } from '@/components/forms/Form';
 import { CurrencyField } from '@/components/forms/inputs/CurrencyField';
-import { DateField } from '@/components/forms/inputs/DateField'
+import { DateField } from '@/components/forms/inputs/DateField';
 import { FieldsGrid } from '@/components/forms/inputs/FieldsGrid';
 import { InputField } from '@/components/forms/inputs/InputField';
 import { SelectField } from '@/components/forms/inputs/SelectField';

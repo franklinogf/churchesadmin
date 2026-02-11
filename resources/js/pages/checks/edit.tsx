@@ -1,7 +1,7 @@
 import { Form } from '@/components/forms/Form';
 import { ComboboxField } from '@/components/forms/inputs/ComboboxField';
 import { CurrencyField } from '@/components/forms/inputs/CurrencyField';
-import { DatetimeField } from '@/components/forms/inputs/DatetimeField';
+import { DateField } from '@/components/forms/inputs/DateField';
 import { FieldsGrid } from '@/components/forms/inputs/FieldsGrid';
 import { InputField } from '@/components/forms/inputs/InputField';
 import { SelectField } from '@/components/forms/inputs/SelectField';
@@ -96,7 +96,7 @@ export default function ChecksEdit({ walletOptions, memberOptions, checkTypesOpt
           </FieldsGrid>
           <CurrencyField label={t('Amount')} required value={data.amount} onChange={(value) => setData('amount', value)} error={errors.amount} />
 
-          <DatetimeField hideTime required label={t('Date')} value={data.date} onChange={(value) => setData('date', value)} error={errors.date} />
+          <DateField required label={t('Date')} value={data.date} onChange={(value) => value && setData('date', value)} error={errors.date} />
 
           <InputField label={t('Note')} value={data.note} onChange={(value) => setData('note', value)} error={errors.note} />
         </Form>

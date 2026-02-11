@@ -110,7 +110,7 @@ export default function VisitsIndex({ visit, memberOptions, followUpTypeOptions 
                   {t('Edit')}
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                  variant="destructive"
+                  //   variant="destructive"
                   onSelect={() => {
                     openConfirmation({
                       title: t('Are you sure you want to delete this :model?', { model: t('Follow Up') }),

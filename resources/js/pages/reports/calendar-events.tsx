@@ -28,17 +28,17 @@ export default function CalendarEventsReport({ events, columns }: CalendarEvents
       {
         enableHiding: false,
         accessorKey: 'title',
-        header: ({ column }) => <DataTableColumnHeader column={column} title={t('Event title')} />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={'Event title'} />,
         cell: ({ row }) => row.original.title,
       },
       {
         enableHiding: false,
         accessorKey: 'location',
-        header: ({ column }) => <DataTableColumnHeader column={column} title={t('Location')} />,
+        header: ({ column }) => <DataTableColumnHeader column={column} title={'Location'} />,
         cell: ({ row }) => row.original.location || '-',
       },
     ],
-    [t],
+    [],
   );
 
   return (
@@ -53,7 +53,7 @@ export default function CalendarEventsReport({ events, columns }: CalendarEvents
       <FormErrorList errors={usePage().props.errors} />
       <PdfGeneratorProvider columns={columns} route="calendar-events.pdf.show">
         <OpenPdfButton />
-        <section className="grid h-[400px] grid-cols-1 gap-4 md:grid-cols-2">
+        <section className="grid h-100 grid-cols-1 gap-4 md:grid-cols-2">
           <PdfControls />
           <PdfPreview />
         </section>

@@ -109,7 +109,7 @@ export const columns: ColumnDef<Member>[] = [
           )}
           {userCan(TenantPermission.MEMBERS_DELETE) && (
             <DropdownMenuItem
-              variant="destructive"
+              //   variant="destructive"
               onClick={() => {
                 openConfirmation({
                   title: t('Are you sure you want to delete this :model?', { model: t('Member') }),

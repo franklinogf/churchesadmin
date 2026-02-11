@@ -1,18 +1,5 @@
 import type { CalendarEvent } from '@/types/models/calendar-event';
-import {
-  addDays,
-  addMonths,
-  endOfMonth,
-  endOfWeek,
-  format,
-  isSameDay,
-  isSameMonth,
-  isWithinInterval,
-  parse,
-  startOfMonth,
-  startOfWeek,
-  subMonths,
-} from 'date-fns';
+import { addDays, addMonths, endOfMonth, endOfWeek, format, isSameDay, isSameMonth, startOfMonth, startOfWeek, subMonths } from 'date-fns';
 
 export interface CalendarDay {
   date: Date;
@@ -106,8 +93,13 @@ export function formatEventTime(event: CalendarEvent): string {
   const end = new Date(event.endAt);
 
   // Check if it's an all-day event (time is 00:00:00)
-  const isAllDay = start.getHours() === 0 && start.getMinutes() === 0 && start.getSeconds() === 0 &&
-    end.getHours() === 0 && end.getMinutes() === 0 && end.getSeconds() === 0;
+  const isAllDay =
+    start.getHours() === 0 &&
+    start.getMinutes() === 0 &&
+    start.getSeconds() === 0 &&
+    end.getHours() === 0 &&
+    end.getMinutes() === 0 &&
+    end.getSeconds() === 0;
 
   if (isAllDay) {
     if (isSameDay(start, end)) {
@@ -248,9 +240,7 @@ export function calculateEventLayout(events: CalendarEvent[]): Map<number, { col
   if (events.length === 0) return layout;
 
   // Sort events by start time
-  const sortedEvents = [...events].sort((a, b) =>
-    new Date(a.startAt).getTime() - new Date(b.startAt).getTime()
-  );
+  const sortedEvents = [...events].sort((a, b) => new Date(a.startAt).getTime() - new Date(b.startAt).getTime());
 
   // Track columns and overlapping groups
   const columns: CalendarEvent[][] = [];
@@ -260,17 +250,15 @@ export function calculateEventLayout(events: CalendarEvent[]): Map<number, { col
     let placed = false;
     for (let i = 0; i < columns.length; i++) {
       const column = columns[i];
-      const hasOverlap = column.some((existingEvent) => doEventsOverlap(event, existingEvent));
+      const hasOverlap = column?.some((existingEvent) => doEventsOverlap(event, existingEvent));
 
       if (!hasOverlap) {
-        column.push(event);
+        column?.push(event);
         placed = true;
 
         // Find how many columns this event group needs
         const eventIndex = events.indexOf(event);
-        const totalColumns = columns.filter((col) =>
-          col.some((e) => doEventsOverlap(e, event))
-        ).length + 1;
+        const totalColumns = columns.filter((col) => col.some((e) => doEventsOverlap(e, event))).length + 1;
 
         layout.set(eventIndex, { column: i, totalColumns });
         break;
@@ -289,9 +277,7 @@ export function calculateEventLayout(events: CalendarEvent[]): Map<number, { col
   columns.forEach((column) => {
     column.forEach((event) => {
       const eventIndex = events.indexOf(event);
-      const overlappingColumns = columns.filter((col) =>
-        col.some((e) => doEventsOverlap(e, event))
-      );
+      const overlappingColumns = columns.filter((col) => col.some((e) => doEventsOverlap(e, event)));
       const current = layout.get(eventIndex);
       if (current) {
         layout.set(eventIndex, { ...current, totalColumns: overlappingColumns.length });

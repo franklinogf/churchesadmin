@@ -16,6 +16,7 @@ export type TranslationKey =
   | 'Active members appear in member lists and reports'
   | 'Activity Logs'
   | 'Add :model'
+  | 'Add event'
   | 'Address'
   | 'Address line 1'
   | 'Address line 2'
