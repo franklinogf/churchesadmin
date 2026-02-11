@@ -28,6 +28,7 @@ return [
         'expense' => 'Expense',
         'offering' => 'Offering',
         'check' => 'Check',
+        'calendar_event' => 'Calendar Event',
     ],
     'wallet_name' => [
         'primary' => 'Primary',
@@ -193,6 +194,14 @@ return [
             'manage' => 'Manage Settings',
             'close_year' => 'Close Fiscal Year',
             'change_language' => 'Change Language',
+        ],
+        'calendar_events' => [
+            'manage' => 'Manage Calendar Events',
+            'create' => 'Create Calendar Events',
+            'update' => 'Update Calendar Events',
+            'delete' => 'Delete Calendar Events',
+            'export' => 'Export Calendar Events',
+            'email' => 'Email Calendar Events',
         ],
     ],
 ];

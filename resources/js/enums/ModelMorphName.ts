@@ -12,4 +12,5 @@ export enum ModelMorphName {
   EXPENSE = 'expense',
   OFFERING = 'offering',
   CHECK = 'check',
+  CALENDAR_EVENT = 'calendar_event',
 }

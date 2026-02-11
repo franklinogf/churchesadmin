@@ -2,10 +2,12 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\CalendarEventController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\MemberStatusController;
 use App\Http\Controllers\MissionaryController;
+use App\Http\Controllers\Pdf\CalendarEventPdfController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VisitController;
@@ -47,4 +49,12 @@ Route::delete('visits/{visit}/force-delete', [VisitController::class, 'forceDele
     ->withTrashed()
     ->name('visits.forceDelete');
 
-// require __DIR__.'/reports.php';
+// Calendar Events routes
+Route::resource('calendar-events', CalendarEventController::class)
+    ->except(['show', 'create', 'edit']);
+
+// Calendar Events PDF export routes
+Route::get('calendar-events-pdf', [CalendarEventPdfController::class, 'index'])
+    ->name('calendar-events.pdf.index');
+Route::get('calendar-events-pdf/generate', [CalendarEventPdfController::class, 'show'])
+    ->name('calendar-events.pdf.show');

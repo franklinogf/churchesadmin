@@ -8,6 +8,7 @@ import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
 import {
   BanknoteIcon,
+  CalendarIcon,
   CogIcon,
   CoinsIcon,
   FileStackIcon,
@@ -69,6 +70,12 @@ export function AppSidebar() {
             href: route('visits.index'),
             icon: Users2Icon,
             permissionNeeded: TenantPermission.VISITS_MANAGE,
+          },
+          {
+            title: t('Calendar'),
+            href: route('calendar-events.index'),
+            icon: CalendarIcon,
+            permissionNeeded: TenantPermission.CALENDAR_EVENTS_MANAGE,
           },
         ],
       },

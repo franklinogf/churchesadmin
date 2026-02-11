@@ -8,7 +8,6 @@ use App\Enums\PdfFormat;
 use App\Enums\PdfOrientation;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
-use InvalidArgumentException;
 
 final class GeneratePdfRequest extends FormRequest
 {
@@ -76,12 +75,7 @@ final class GeneratePdfRequest extends FormRequest
      */
     public function getPdfOrientation(): PdfOrientation
     {
-        $enum = $this->enum('orientation', PdfOrientation::class, PdfOrientation::PORTRAIT);
-        if (! $enum instanceof PdfOrientation) {
-            throw new InvalidArgumentException('Invalid orientation provided.');
-        }
-
-        return $enum;
+        return $this->enum('orientation', PdfOrientation::class, PdfOrientation::PORTRAIT);
     }
 
     /**
@@ -89,11 +83,6 @@ final class GeneratePdfRequest extends FormRequest
      */
     public function getPdfFormat(): PdfFormat
     {
-        $enum = $this->enum('format', PdfFormat::class, PdfFormat::A4);
-        if (! $enum instanceof PdfFormat) {
-            throw new InvalidArgumentException('Invalid format provided.');
-        }
-
-        return $enum;
+        return $this->enum('format', PdfFormat::class, PdfFormat::A4);
     }
 }

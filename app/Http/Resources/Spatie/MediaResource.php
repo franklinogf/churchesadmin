@@ -26,7 +26,7 @@ final class MediaResource extends JsonResource
             'name' => $this->name,
             'fileName' => $this->file_name,
             'fileSize' => $this->size,
-            'fileSizeFormatted' => $this->human_readable_size, /** @phpstan-ignore-line */
+            'fileSizeFormatted' => $this->human_readable_size,
             'fileType' => $this->mime_type,
             'modelType' => $this->model_type,
             'modelId' => $this->model_id,

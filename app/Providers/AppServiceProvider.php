@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Enums\ModelMorphName;
+use App\Models\CalendarEvent;
 use App\Models\Check;
 use App\Models\CheckLayout;
 use App\Models\Church;
@@ -87,7 +88,7 @@ final class AppServiceProvider extends ServiceProvider
         CarbonImmutable::macro('inUserTimezone', function (): CarbonImmutable {
             /** @var TenantUser|User|null $currentUser */
             $currentUser = Auth::user();
-            if ($currentUser instanceof User) {
+            if (! $currentUser instanceof User) {
                 /** @var CarbonImmutable $this */
                 return $this->setTimezone(config()->string('app.timezone_display'));
             }
@@ -121,6 +122,7 @@ final class AppServiceProvider extends ServiceProvider
             ModelMorphName::EXPENSE->value => Expense::class,
             ModelMorphName::OFFERING->value => Offering::class,
             ModelMorphName::CHECK->value => Check::class,
+            ModelMorphName::CALENDAR_EVENT->value => CalendarEvent::class,
 
         ]);
     }
