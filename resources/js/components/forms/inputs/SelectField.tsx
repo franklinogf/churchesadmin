@@ -1,7 +1,6 @@
-import { FieldContainer } from '@/components/forms/inputs/FieldContainer';
-import { FieldError } from '@/components/forms/inputs/FieldError';
 import { FieldLabel } from '@/components/forms/inputs/FieldLabel';
 import { Button } from '@/components/ui/button';
+import { Field, FieldError } from '@/components/ui/field';
 import { Select, SelectContent, SelectItem, SelectSeparator, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useTranslations } from '@/hooks/use-translations';
 import { cn } from '@/lib/utils';
@@ -46,7 +45,7 @@ export function SelectField({
   const { t } = useTranslations();
   const id = useId();
   return (
-    <FieldContainer className={className}>
+    <Field className={className}>
       <FieldLabel disabled={disabled} id={id} label={label} required={required} />
       <Select required={required} name={id} disabled={disabled} value={value} onValueChange={onChange}>
         <SelectTrigger
@@ -76,13 +75,13 @@ export function SelectField({
                 className="w-full"
                 variant="secondary"
               >
-                {t('Deseleccionar')}
+                {t('Deselect')}
               </Button>
             </>
           )}
         </SelectContent>
       </Select>
-      <FieldError error={error} />
-    </FieldContainer>
+      <FieldError>{error}</FieldError>
+    </Field>
   );
 }

@@ -1,7 +1,6 @@
 import { PhoneInput } from '@/components/custom-ui/PhoneInput';
-import { FieldContainer } from '@/components/forms/inputs/FieldContainer';
-import { FieldError } from '@/components/forms/inputs/FieldError';
 import { FieldLabel } from '@/components/forms/inputs/FieldLabel';
+import { Field, FieldError } from '@/components/ui/field';
 import { useId } from 'react';
 interface PhoneFieldProps {
   error?: string;
@@ -17,7 +16,7 @@ interface PhoneFieldProps {
 export function PhoneField({ error, label, disabled, className, placeholder, value, onChange, required }: PhoneFieldProps) {
   const id = useId();
   return (
-    <FieldContainer className={className}>
+    <Field className={className}>
       <FieldLabel disabled={disabled} id={id} label={label} required={required} />
       <PhoneInput
         countrySelectProps={{ id: `${id}-country` }}
@@ -31,7 +30,7 @@ export function PhoneField({ error, label, disabled, className, placeholder, val
           onChange?.(value);
         }}
       />
-      <FieldError error={error} />
-    </FieldContainer>
+      <FieldError>{error}</FieldError>
+    </Field>
   );
 }

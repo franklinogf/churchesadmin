@@ -1,7 +1,6 @@
 import { CountryDropdown } from '@/components/custom-ui/CountryDropdown';
-import { FieldContainer } from '@/components/forms/inputs/FieldContainer';
-import { FieldError } from '@/components/forms/inputs/FieldError';
 import { FieldLabel } from '@/components/forms/inputs/FieldLabel';
+import { Field, FieldError } from '@/components/ui/field';
 
 interface CountryFieldProps {
   disabled?: boolean;
@@ -17,7 +16,7 @@ interface CountryFieldProps {
 
 export function CountryField({ error, label, disabled, className, value, onChange, placeholder, clearable, required }: CountryFieldProps) {
   return (
-    <FieldContainer className={className}>
+    <Field className={className}>
       <FieldLabel required={required} disabled={disabled} label={label} />
       <CountryDropdown
         placeholder={placeholder}
@@ -27,7 +26,7 @@ export function CountryField({ error, label, disabled, className, value, onChang
         }}
         clearable={clearable}
       />
-      <FieldError error={error} />
-    </FieldContainer>
+      <FieldError>{error}</FieldError>
+    </Field>
   );
 }

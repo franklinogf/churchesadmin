@@ -1,6 +1,5 @@
-import { FieldContainer } from '@/components/forms/inputs/FieldContainer';
-import { FieldError } from '@/components/forms/inputs/FieldError';
 import { FieldLabel } from '@/components/forms/inputs/FieldLabel';
+import { Field, FieldError } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
 import { useId } from 'react';
@@ -35,7 +34,7 @@ export function CurrencyField({
 }: CurrencyFieldProps) {
   const id = useId();
   return (
-    <FieldContainer className={className}>
+    <Field className={className}>
       <FieldLabel disabled={disabled} id={id} label={label} required={required} />
       <CurrencyInput
         id={id}
@@ -63,7 +62,7 @@ export function CurrencyField({
         {...props}
       />
 
-      <FieldError error={error} />
-    </FieldContainer>
+      <FieldError>{error}</FieldError>
+    </Field>
   );
 }

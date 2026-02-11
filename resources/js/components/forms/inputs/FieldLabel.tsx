@@ -1,4 +1,4 @@
-import { Label } from '@/components/ui/label';
+import { FieldLabel as FieldLabelUi } from '@/components/ui/field';
 import { cn } from '@/lib/utils';
 import { RequiredFieldIcon } from '../RequiredFieldIcon';
 
@@ -18,11 +18,11 @@ export function FieldLabel({
   if (!label) return null;
 
   return (
-    <Label
+    <FieldLabelUi
       asChild={id === undefined}
       aria-disabled={disabled}
       className={cn(
-        'flex gap-x-0.5',
+        'flex max-w-fit gap-x-0.5',
         {
           'text-muted-foreground/80': disabled,
         },
@@ -41,6 +41,6 @@ export function FieldLabel({
           {required && <RequiredFieldIcon className="self-start" />}
         </>
       )}
-    </Label>
+    </FieldLabelUi>
   );
 }
