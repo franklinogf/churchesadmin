@@ -27,3 +27,7 @@ public/public*
 lang/php_*.json
 herd.yml
 /notes
+
+resources/js/wayfinder
+resources/js/actions
+resources/js/routes

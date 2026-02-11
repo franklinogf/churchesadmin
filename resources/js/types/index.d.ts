@@ -2,6 +2,7 @@ import { type LanguageCode } from '@/enums';
 
 import type { ChurchFeature } from '@/enums/ChurchFeature';
 import { type UserPermission } from '@/enums/user';
+import type { RouteDefinition } from '@/wayfinder';
 import { type LucideIcon } from 'lucide-react';
 import type { Church } from './models/church';
 import type { AuthenticatedUser } from './models/user';
@@ -19,7 +20,7 @@ export interface BreadcrumbItem {
 type BaseNavMenu = { title: string };
 
 export type NavItem = BaseNavMenu & {
-  href: string;
+  href: string | RouteDefinition<'get'>;
   icon?: LucideIcon | null;
   isActive?: boolean;
   permissionNeeded?: UserPermission;
