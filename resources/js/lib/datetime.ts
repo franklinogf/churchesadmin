@@ -74,3 +74,8 @@ export function genDays({
 export function genYears({ startYear, endYear }: { startYear: number; endYear: number }) {
   return Array.from({ length: endYear - startYear + 1 }, (_, i) => startYear + i);
 }
+
+export const parseLocalDate = (dateString: string) => {
+  const [year, month, day] = dateString.split('-').map(Number);
+  return new Date(year!, month! - 1, day);
+};

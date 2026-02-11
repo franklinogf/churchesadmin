@@ -1,7 +1,7 @@
 import { Form } from '@/components/forms/Form';
 import { ComboboxField } from '@/components/forms/inputs/ComboboxField';
 import { CurrencyField } from '@/components/forms/inputs/CurrencyField';
-import { DatetimeField } from '@/components/forms/inputs/DatetimeField';
+import { DateField } from '@/components/forms/inputs/DateField';
 import { FieldsGrid } from '@/components/forms/inputs/FieldsGrid';
 import { InputField } from '@/components/forms/inputs/InputField';
 import { MultipleComboboxField } from '@/components/forms/inputs/MultipleComboboxField';
@@ -60,7 +60,7 @@ export default function Create({ walletsOptions, paymentMethods, membersOptions,
   });
 
   function handleSubmit() {
-    post(route('offerings.store'));
+    post(route('offerings.store'), { preserveScroll: true });
   }
 
   function handleAddOffering() {
@@ -120,13 +120,12 @@ export default function Create({ walletsOptions, paymentMethods, membersOptions,
             options={membersOptions}
           />
           <FieldsGrid>
-            <DatetimeField
-              hideTime
-              max={maxDate()}
+            <DateField
+              maxDate={maxDate()}
               required
               label={t('Date of Offering')}
               value={data.date}
-              onChange={(value) => setData('date', value)}
+              onChange={(value) => value && setData('date', value)}
               error={errors.date}
             />
           </FieldsGrid>
