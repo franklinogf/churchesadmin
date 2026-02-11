@@ -3,7 +3,6 @@ import { type LanguageCode } from '@/enums';
 import type { ChurchFeature } from '@/enums/ChurchFeature';
 import { type UserPermission } from '@/enums/user';
 import { type LucideIcon } from 'lucide-react';
-import type { Config } from 'ziggy-js';
 import type { Church } from './models/church';
 import type { AuthenticatedUser } from './models/user';
 
@@ -32,7 +31,6 @@ export type NavGroup = BaseNavMenu & {
 
 export interface SharedData {
   auth: Auth;
-  ziggy: Config & { location: string };
   sidebarOpen: boolean;
   flash: {
     success: string | null;

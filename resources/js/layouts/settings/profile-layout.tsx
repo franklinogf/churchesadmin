@@ -3,17 +3,12 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { useTranslations } from '@/hooks/use-translations';
 import { cn } from '@/lib/utils';
-import { type NavItem, type SharedData } from '@/types';
-import { Link, usePage } from '@inertiajs/react';
+import { type NavItem } from '@/types';
+import { Link } from '@inertiajs/react';
 import { useMemo, type PropsWithChildren } from 'react';
 
 export default function SettingsLayout({ children }: PropsWithChildren) {
   const { t } = useTranslations();
-  const {
-    props: {
-      ziggy: { location },
-    },
-  } = usePage<SharedData>();
   const sidebarNavItems: NavItem[] = useMemo(
     () => [
       {
@@ -53,7 +48,7 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
                 variant="ghost"
                 asChild
                 className={cn('w-full justify-start', {
-                  'bg-muted': location === item.href,
+                  'bg-muted': false,
                 })}
               >
                 <Link href={item.href} prefetch>

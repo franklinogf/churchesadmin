@@ -59,8 +59,8 @@ This application is a Laravel application and its main Laravel ecosystems packag
 - laravel/pennant (PENNANT) - v1
 - laravel/prompts (PROMPTS) - v0
 - laravel/reverb (REVERB) - v1
+- laravel/wayfinder (WAYFINDER) - v0
 - livewire/livewire (LIVEWIRE) - v3
-- tightenco/ziggy (ZIGGY) - v2
 - larastan/larastan (LARASTAN) - v3
 - laravel/mcp (MCP) - v0
 - laravel/pint (PINT) - v1
@@ -80,6 +80,7 @@ This application is a Laravel application and its main Laravel ecosystems packag
 This project has domain-specific skills available. You MUST activate the relevant skill whenever you work in that domain—don't wait until you're stuck.
 
 - `pennant-development` — Manages feature flags with Laravel Pennant. Activates when creating, checking, or toggling feature flags; showing or hiding features conditionally; implementing A/B testing; working with @feature directive; or when the user mentions feature flags, feature toggles, Pennant, conditional features, rollouts, or gradually enabling features.
+- `wayfinder-development` — Activates whenever referencing backend routes in frontend components. Use when importing from @/actions or @/routes, calling Laravel routes from TypeScript, or working with Wayfinder route functions.
 - `pest-testing` — Tests applications using the Pest 3 PHP framework. Activates when writing tests, creating unit or feature tests, adding assertions, testing Livewire components, architecture testing, debugging test failures, working with datasets or mocking; or when the user mentions test, spec, TDD, expects, assertion, coverage, or needs to verify functionality works.
 - `inertia-react-development` — Develops Inertia.js v2 React client-side applications. Activates when creating React pages, forms, or navigation; using &lt;Link&gt;, &lt;Form&gt;, useForm, or router; working with deferred props, prefetching, or polling; or when user mentions React with Inertia, React pages, React forms, or React navigation.
 - `tailwindcss-development` — Styles applications using Tailwind CSS v4 utilities. Activates when adding styles, restyling components, working with gradients, spacing, layout, flex, grid, responsive design, dark mode, colors, typography, or borders; or when the user mentions CSS, styling, classes, Tailwind, restyle, hero section, cards, buttons, or any visual/UI changes.
@@ -305,6 +306,18 @@ protected function isAccessible(User $user, ?string $path = null): bool
 - This application uses Laravel Pennant for feature flag management, providing a flexible system for controlling feature availability across different organizations and user types.
 - IMPORTANT: Always use `search-docs` tool for version-specific Pennant documentation and updated code examples.
 - IMPORTANT: Activate `pennant-development` every time you're working with a Pennant or feature-flag-related task.
+
+=== wayfinder/core rules ===
+
+# Laravel Wayfinder
+
+Wayfinder generates TypeScript functions for Laravel routes. Import from `@/actions/` (controllers) or `@/routes/` (named routes).
+
+- IMPORTANT: Activate `wayfinder-development` skill whenever referencing backend routes in frontend components.
+- Invokable Controllers: `import StorePost from '@/actions/.../StorePostController'; StorePost()`.
+- Parameter Binding: Detects route keys (`{post:slug}`) — `show({ slug: "my-post" })`.
+- Query Merging: `show(1, { mergeQuery: { page: 2, sort: null } })` merges with current URL, `null` removes params.
+- Inertia: Use `.form()` with `<Form>` component or `form.submit(store())` with useForm.
 
 === pint/core rules ===
 

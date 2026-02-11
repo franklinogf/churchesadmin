@@ -5,17 +5,12 @@ import { TenantPermission } from '@/enums/TenantPermission';
 import { useTranslations } from '@/hooks/use-translations';
 import { useUser } from '@/hooks/use-user';
 import { cn } from '@/lib/utils';
-import { type NavItem, type SharedData } from '@/types';
-import { Link, usePage } from '@inertiajs/react';
+import { type NavItem } from '@/types';
+import { Link } from '@inertiajs/react';
 import { useMemo, type PropsWithChildren } from 'react';
 
 export default function SettingsLayout({ children }: PropsWithChildren) {
   const { t } = useTranslations();
-  const {
-    props: {
-      ziggy: { location },
-    },
-  } = usePage<SharedData>();
   const { can: userCan } = useUser();
 
   const sidebarNavItems: NavItem[] = useMemo<NavItem[]>(
@@ -66,7 +61,7 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
                 variant="ghost"
                 asChild
                 className={cn('w-full justify-start', {
-                  'bg-muted': location === item.href,
+                  'bg-muted': false,
                 })}
               >
                 <Link href={item.href} prefetch>
