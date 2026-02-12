@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
+use App\Enums\CalendarEventColorEnum;
 use App\Models\CalendarEvent;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Foundation\Http\FormRequest;
@@ -31,6 +32,7 @@ final class StoreCalendarEventRequest extends FormRequest
             'title' => ['required', 'string', 'min:1', 'max:255'],
             'description' => ['nullable', 'string'],
             'location' => ['nullable', 'string', 'max:255'],
+            'color' => ['required', Rule::enum(CalendarEventColorEnum::class)],
             'start_at' => ['required', Rule::date()->nowOrFuture()],
             'end_at' => ['required', Rule::date()->after('start_at')],
         ];

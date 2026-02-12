@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Carbon\CarbonImmutable;
+use App\Enums\CalendarEventColorEnum;
+use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -17,12 +18,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read string $title
  * @property-read string|null $description
  * @property-read string|null $location
- * @property-read CarbonImmutable $start_at
- * @property-read CarbonImmutable $end_at
+ * @property-read CalendarEventColorEnum $color
+ * @property-read CarbonInterface $start_at
+ * @property-read CarbonInterface $end_at
  * @property-read int $created_by
- * @property-read CarbonImmutable $created_at
- * @property-read CarbonImmutable $updated_at
- * @property-read CarbonImmutable|null $deleted_at
+ * @property-read CarbonInterface $created_at
+ * @property-read CarbonInterface $updated_at
+ * @property-read CarbonInterface|null $deleted_at
  * @property-read TenantUser $creator
  */
 final class CalendarEvent extends Model
@@ -50,6 +52,7 @@ final class CalendarEvent extends Model
         return [
             'start_at' => 'immutable_datetime',
             'end_at' => 'immutable_datetime',
+            'color' => CalendarEventColorEnum::class,
         ];
     }
 }

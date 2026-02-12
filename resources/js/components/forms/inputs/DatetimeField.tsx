@@ -27,15 +27,26 @@ interface DatetimeFieldProps {
   presetHours?: boolean;
   maxDate?: Date | 'today';
   minDate?: Date | 'today';
+  use24HourFormat?: boolean;
 }
 
-const generateTimeSlots = () => {
-  return Array.from({ length: 96 }).map((_, i) => {
+const generateTimeSlots = (use24HourFormat: boolean) => {
+  const values = Array.from({ length: 96 }).map((_, i) => {
     const hour = Math.floor(i / 4)
       .toString()
       .padStart(2, '0');
     const minute = ((i % 4) * 15).toString().padStart(2, '0');
     return `${hour}:${minute}`;
+  });
+
+  return values.map((value) => {
+    const [hour, minute] = value.split(':').map(Number);
+    const date = new Date();
+    date.setHours(hour!, minute, 0, 0);
+    return {
+      value,
+      label: format(date, use24HourFormat ? 'HH:mm' : 'hh:mm aa'),
+    };
   });
 };
 
@@ -51,6 +62,7 @@ export function DatetimeField({
   presetHours,
   maxDate,
   minDate,
+  use24HourFormat = false,
 }: DatetimeFieldProps) {
   const { getCurrentDateLocale } = useLocaleDate();
   const { t } = useTranslations();
@@ -58,9 +70,9 @@ export function DatetimeField({
   const timeId = useId();
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState(value ?? undefined);
-  const [time, setTime] = useState<string | undefined>(date ? format(date, 'HH:mm') : undefined);
+  const [time, setTime] = useState<string | undefined>(date ? format(date, use24HourFormat ? 'HH:mm' : 'hh:mm aa') : undefined);
 
-  const TIME_SLOTS = generateTimeSlots();
+  const TIME_SLOTS = generateTimeSlots(use24HourFormat);
 
   const handleDateChange = (selectedDate: Date | null) => {
     setDate(selectedDate ?? undefined);
@@ -137,8 +149,8 @@ export function DatetimeField({
             <SelectContent>
               <ScrollArea className="h-60">
                 {TIME_SLOTS.map((slot) => (
-                  <SelectItem key={slot} value={slot}>
-                    {slot}
+                  <SelectItem key={slot.value} value={slot.value}>
+                    {slot.label}
                   </SelectItem>
                 ))}
               </ScrollArea>

@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Controllers\CalendarEventController;
+use App\Http\Controllers\CalendarEventRescheduleController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\MemberStatusController;
@@ -52,6 +53,8 @@ Route::delete('visits/{visit}/force-delete', [VisitController::class, 'forceDele
 // Calendar Events routes
 Route::resource('calendar-events', CalendarEventController::class)
     ->except(['show', 'create', 'edit']);
+Route::patch('calendar-events/{calendarEvent}/reschedule', CalendarEventRescheduleController::class)
+    ->name('calendar-events.reschedule');
 
 // Calendar Events PDF export routes
 Route::get('calendar-events-pdf', [CalendarEventPdfController::class, 'index'])

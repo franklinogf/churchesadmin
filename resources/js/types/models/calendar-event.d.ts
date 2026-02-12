@@ -1,3 +1,6 @@
+import type { CalendarEventColorEnum } from '@/enums/CalendarEventColorEnum';
+import type { User } from '@/types/models/user';
+
 export type CalendarEventMorphClass = 'calendar_event';
 
 export interface CalendarEvent {
@@ -5,13 +8,11 @@ export interface CalendarEvent {
   title: string;
   description: string | null;
   location: string | null;
+  color: CalendarEventColorEnum;
   startAt: string;
   endAt: string;
-  createdBy: number;
+  createdBy: User['id'];
   createdAt: string;
   updatedAt: string;
-  creator?: {
-    id: number;
-    name: string;
-  };
+  creator?: User;
 }
