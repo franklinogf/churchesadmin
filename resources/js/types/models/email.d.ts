@@ -7,7 +7,7 @@ import type { User } from '@/types/models/user';
 import type { Visit } from '@/types/models/visit';
 
 export interface EmailBase {
-  id: string;
+  id: number;
   subject: string;
   body: string;
   senderId: string;

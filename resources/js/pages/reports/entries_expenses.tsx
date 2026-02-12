@@ -1,3 +1,5 @@
+import EntriesExpensesPdfController from '@/actions/App/Http/Controllers/Pdf/EntriesExpensesPdfController';
+import ReportController from '@/actions/App/Http/Controllers/ReportController';
 import { PageTitle } from '@/components/PageTitle';
 import { FormErrorList } from '@/components/forms/form-error-list';
 import { FieldsGrid } from '@/components/forms/inputs/FieldsGrid';
@@ -28,33 +30,31 @@ export default function EntriesExpensesReport() {
   const handlePrintPdf = () => {
     const formattedStartDate = format(startDate, 'yyyy-MM-dd');
     const formattedEndDate = format(endDate, 'yyyy-MM-dd');
-    const url = route('reports.entries_expenses.pdf', {
-      startDate: formattedStartDate,
-      endDate: formattedEndDate,
-    });
+    const url = EntriesExpensesPdfController.show({
+      query: {
+        startDate: formattedStartDate,
+        endDate: formattedEndDate,
+      },
+    }).url;
     window.open(url, '_blank');
   };
 
   const handleMonthChange = (date: Date, setDate: React.Dispatch<React.SetStateAction<Date>>) => (month: string) => {
-    setDate((prevDate) => {
-      const newDate = new Date(prevDate);
-      newDate.setMonth(parseInt(month, 10));
-      return newDate;
-    });
+    const newDate = new Date(date);
+    newDate.setMonth(parseInt(month, 10));
+    setDate(newDate);
   };
 
   const handleYearChange = (date: Date, setDate: React.Dispatch<React.SetStateAction<Date>>) => (year: string) => {
-    setDate((prevDate) => {
-      const newDate = new Date(prevDate);
-      newDate.setFullYear(parseInt(year, 10));
-      return newDate;
-    });
+    const newDate = new Date(date);
+    newDate.setFullYear(parseInt(year, 10));
+    setDate(newDate);
   };
 
   return (
     <AppLayout
       title={t('Entries and Expenses Report')}
-      breadcrumbs={[{ title: t('Reports'), href: route('reports') }, { title: t('Entries and Expenses Report') }]}
+      breadcrumbs={[{ title: t('Reports'), href: ReportController().url }, { title: t('Entries and Expenses Report') }]}
     >
       <PageTitle>{t('Entries and Expenses Report')}</PageTitle>
       <FormErrorList errors={usePage().props.errors} />
@@ -70,7 +70,7 @@ export default function EntriesExpensesReport() {
                 <SelectField
                   label={t('Month')}
                   value={startDate.getMonth().toString()}
-                  onChange={handleMonthChange(startDate, setStartDate)}
+                  onValueChange={handleMonthChange(startDate, setStartDate)}
                   options={months.map((month) => ({
                     value: month.toString(),
                     label: new Date(0, month).toLocaleString('default', { month: 'long' }),
@@ -80,7 +80,7 @@ export default function EntriesExpensesReport() {
                 <SelectField
                   label={t('Year')}
                   value={startDate.getFullYear().toString()}
-                  onChange={handleYearChange(startDate, setStartDate)}
+                  onValueChange={handleYearChange(startDate, setStartDate)}
                   options={years.map((year) => ({ value: year.toString(), label: year.toString() }))}
                 />
               </FieldsGrid>
@@ -92,7 +92,7 @@ export default function EntriesExpensesReport() {
                 <SelectField
                   label={t('Month')}
                   value={endDate.getMonth().toString()}
-                  onChange={handleMonthChange(endDate, setEndDate)}
+                  onValueChange={handleMonthChange(endDate, setEndDate)}
                   options={months.map((month) => ({
                     value: month.toString(),
                     label: new Date(0, month).toLocaleString('default', { month: 'long' }),
@@ -102,7 +102,7 @@ export default function EntriesExpensesReport() {
                 <SelectField
                   label={t('Year')}
                   value={endDate.getFullYear().toString()}
-                  onChange={handleYearChange(endDate, setEndDate)}
+                  onValueChange={handleYearChange(endDate, setEndDate)}
                   options={years.map((year) => ({ value: year.toString(), label: year.toString() }))}
                 />
               </FieldsGrid>

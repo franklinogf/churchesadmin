@@ -1,3 +1,4 @@
+import OfferingController from '@/actions/App/Http/Controllers/OfferingController';
 import { DatatableActionsDropdown } from '@/components/custom-ui/datatable/data-table-actions-dropdown';
 import { DatatableCell } from '@/components/custom-ui/datatable/DatatableCell';
 import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTableColumnHeader';
@@ -101,13 +102,13 @@ export const columns: ColumnDef<Offering>[] = [
       return (
         <DatatableActionsDropdown>
           <DropdownMenuItem asChild>
-            <Link href={route('offerings.edit', { offering: row.original.id })}>
+            <Link href={OfferingController.edit({ offering: row.original.id })}>
               <Edit2Icon className="size-3" />
               <span>{t('Edit')}</span>
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem
-            // variant="destructive"
+            variant="destructive"
             onClick={() => {
               openConfirmation({
                 title: t('Are you sure you want to delete this :model?', { model: t('Offering') }),
@@ -116,7 +117,7 @@ export const columns: ColumnDef<Offering>[] = [
                 actionVariant: 'destructive',
                 cancelLabel: t('Cancel'),
                 onAction: () => {
-                  router.delete(route('offerings.destroy', row.original.id));
+                  router.visit(OfferingController.destroy(row.original.id));
                 },
               });
             }}

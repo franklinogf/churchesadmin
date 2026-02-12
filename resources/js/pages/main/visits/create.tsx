@@ -1,3 +1,4 @@
+import VisitController from '@/actions/App/Http/Controllers/VisitController';
 import { AddressFormSkeleton } from '@/components/forms/AddressFormSkeleton';
 import { Form } from '@/components/forms/Form';
 import { DateField } from '@/components/forms/inputs/DateField';
@@ -21,7 +22,7 @@ type CreateForm = {
 };
 export default function VisitsCreate() {
   const { t } = useTranslations();
-  const { data, setData, post, errors, processing } = useForm<CreateForm>({
+  const { data, setData, submit, errors, processing } = useForm<CreateForm>({
     name: '',
     last_name: '',
     email: '',
@@ -38,13 +39,13 @@ export default function VisitsCreate() {
   });
 
   function handleSubmit() {
-    post(route('visits.store'), { preserveScroll: true });
+    submit(VisitController.store(), { preserveScroll: true });
   }
 
   return (
     <AppLayout
       title={t('Add :model', { model: t('Visit') })}
-      breadcrumbs={[{ title: t('Visits'), href: route('visits.index') }, { title: t('Add :model', { model: t('Visit') }) }]}
+      breadcrumbs={[{ title: t('Visits'), href: VisitController.index().url }, { title: t('Add :model', { model: t('Visit') }) }]}
     >
       <PageTitle>{t('Add :model', { model: t('Visit') })}</PageTitle>
 

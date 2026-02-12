@@ -1,3 +1,4 @@
+import CheckController from '@/actions/App/Http/Controllers/CheckController';
 import { selectionHeader } from '@/components/custom-ui/datatable/columns';
 import { DatatableActionsDropdown } from '@/components/custom-ui/datatable/data-table-actions-dropdown';
 import { DatatableCell } from '@/components/custom-ui/datatable/DatatableCell';
@@ -96,7 +97,7 @@ export const unconfirmedColumns: ColumnDef<Check>[] = [
         <DatatableActionsDropdown>
           {/* {userCan(UserPermission.UPDATE_CATEGORIES) && ( */}
           <DropdownMenuItem asChild>
-            <Link href={route('checks.edit', check.id)}>
+            <Link href={CheckController.edit(check.id)}>
               <Edit2Icon className="size-3" />
               <span>{t('Edit')}</span>
             </Link>
@@ -105,7 +106,7 @@ export const unconfirmedColumns: ColumnDef<Check>[] = [
 
           {/* {userCan(UserPermission.DELETE_CATEGORIES) && ( */}
           <DropdownMenuItem
-            // variant="destructive"
+            variant="destructive"
             onClick={() => {
               openConfirmation({
                 title: t('Are you sure you want to delete this :model?', { model: t('Check') }),
@@ -114,7 +115,7 @@ export const unconfirmedColumns: ColumnDef<Check>[] = [
                 actionVariant: 'destructive',
                 cancelLabel: t('Cancel'),
                 onAction: () => {
-                  router.delete(route('checks.destroy', check.id), {
+                  router.visit(CheckController.destroy(check.id), {
                     preserveState: true,
                     preserveScroll: true,
                   });

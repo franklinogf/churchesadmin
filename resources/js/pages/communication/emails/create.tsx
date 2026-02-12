@@ -1,3 +1,7 @@
+import EmailController from '@/actions/App/Http/Controllers/Communication/EmailController';
+import EmailListMemberController from '@/actions/App/Http/Controllers/Communication/EmailListMemberController';
+import EmailListMissionaryController from '@/actions/App/Http/Controllers/Communication/EmailListMissionaryController';
+import EmailListVisitorController from '@/actions/App/Http/Controllers/Communication/EmailListVisitorController';
 import { Form } from '@/components/forms/Form';
 import { FileField } from '@/components/forms/inputs/FileField';
 import { InputField } from '@/components/forms/inputs/InputField';
@@ -22,31 +26,31 @@ type EmailForm = {
 
 export default function Create({ recipientsAmount, recipientsType }: Props) {
   const { t, tChoice } = useTranslations();
-  const { data, setData, errors, processing, post, progress } = useForm<EmailForm>({
+  const { data, setData, errors, processing, submit, progress } = useForm<EmailForm>({
     subject: '',
     body: ``,
     media: [],
   });
 
   function handleSubmit() {
-    post(route('communication.emails.store'));
+    submit(EmailController.store());
   }
   const breadcrumbTitle =
     recipientsType === ModelMorphName.MEMBER ? t('Members') : recipientsType === ModelMorphName.MISSIONARY ? t('Missionaries') : t('Visitors');
   const breadcrumbHref =
     recipientsType === ModelMorphName.MEMBER
-      ? route('communication.emails.members')
+      ? EmailListMemberController()
       : recipientsType === ModelMorphName.MISSIONARY
-        ? route('communication.emails.missionaries')
-        : route('communication.emails.visitors');
+        ? EmailListMissionaryController()
+        : EmailListVisitorController();
   return (
     <AppLayout
       title={t('New :model', { model: t('Email') })}
       breadcrumbs={[
-        { title: t('Email'), href: route('communication.emails.index') },
+        { title: t('Email'), href: EmailController.index().url },
         {
           title: breadcrumbTitle,
-          href: breadcrumbHref,
+          href: breadcrumbHref.url,
         },
         { title: t('New :model', { model: t('Email') }) },
       ]}

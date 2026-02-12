@@ -1,3 +1,4 @@
+import CalendarEventController from '@/actions/App/Http/Controllers/CalendarEventController';
 import { PageTitle } from '@/components/PageTitle';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -88,7 +89,7 @@ export default function CalendarEventsIndex({ events }: CalendarEventsIndexProps
   };
 
   const handleDelete = (event: CalendarEvent) => {
-    router.delete(route('calendar-events.destroy', event.id));
+    router.visit(CalendarEventController.destroy(event.id));
   };
 
   // Get header text based on view mode

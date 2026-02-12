@@ -4,37 +4,27 @@ import AppLayout from '@/layouts/app-layout';
 import type { Email } from '@/types/models/email';
 import { Link } from '@inertiajs/react';
 
+import EmailListMemberController from '@/actions/App/Http/Controllers/Communication/EmailListMemberController';
+import EmailListMissionaryController from '@/actions/App/Http/Controllers/Communication/EmailListMissionaryController';
+import EmailListVisitorController from '@/actions/App/Http/Controllers/Communication/EmailListVisitorController';
 import { DataTable } from '@/components/custom-ui/datatable/data-table';
-import { DatatableActionsDropdown } from '@/components/custom-ui/datatable/data-table-actions-dropdown';
-import { DatatableBadgeCell, DatatableCell } from '@/components/custom-ui/datatable/DatatableCell';
-import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTableColumnHeader';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
-import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { TenantPermission } from '@/enums/TenantPermission';
 import { useUser } from '@/hooks/use-user';
 import type { SharedData } from '@/types';
 import { useEcho } from '@laravel/echo-react';
-import { type ColumnDef } from '@tanstack/react-table';
-import { Users2Icon, UsersIcon } from 'lucide-react';
-import { useMemo, useState } from 'react';
+import { UsersIcon } from 'lucide-react';
+import { useState } from 'react';
+import { columns } from './_components/index-columns';
 
 interface EmailsPageProps extends SharedData {
   emails: Email[];
 }
-export default function EmailsPage({ emails: initialEmails, auth: { user }, church }: EmailsPageProps) {
+export default function EmailsPage({ emails: initialEmails, church }: EmailsPageProps) {
   const { t } = useTranslations();
   const [emails, setEmails] = useState<Email[]>(initialEmails);
   const { can: userCan } = useUser();
-
-  const recipientTypes = [
-    { label: t('Members'), route: 'communication.emails.members', permissionNeeded: TenantPermission.EMAILS_SEND_TO_MEMBERS },
-    { label: t('Missionaries'), route: 'communication.emails.missionaries', permissionNeeded: TenantPermission.EMAILS_SEND_TO_MISSIONARIES },
-    { label: t('Visitors'), route: 'communication.emails.visitors', permissionNeeded: TenantPermission.EMAILS_SEND_TO_VISITORS },
-  ];
 
   useEcho<{ email: Email }>(`${church?.id}.emails`, 'EmailStatusUpdatedEvent', (e) => {
     setEmails((prevEmails) => {
@@ -52,85 +42,11 @@ export default function EmailsPage({ emails: initialEmails, auth: { user }, chur
     });
   });
 
-  const columns: ColumnDef<Email>[] = useMemo(
-    () => [
-      {
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Sender" />,
-        accessorKey: 'sender',
-        enableHiding: false,
-        enableColumnFilter: false,
-        cell: ({ row }) => <DatatableCell>{user.id === row.original.senderId ? t('You') : row.original.sender?.name}</DatatableCell>,
-      },
-      {
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Subject" />,
-        accessorKey: 'subject',
-        enableHiding: false,
-        enableColumnFilter: false,
-      },
-      {
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Status" />,
-        accessorKey: 'status',
-        enableHiding: false,
-        meta: { filterVariant: 'select', translationPrefix: 'enum.email_status.' },
-        cell: ({ row }) => (
-          <DatatableCell justify="center">
-            <Badge variant={row.original.status === 'sent' ? 'success' : row.original.status === 'failed' ? 'destructive' : 'secondary'}>
-              {t(`enum.email_status.${row.original.status}`)}
-            </Badge>
-          </DatatableCell>
-        ),
-      },
-      {
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Sent at" />,
-        accessorKey: 'sentAt',
-        enableHiding: false,
-        enableColumnFilter: false,
-        cell: ({ row }) => <DatatableCell justify="center">{row.original.sentAt ?? t('Not sent yet')}</DatatableCell>,
-      },
-      {
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Recipients type" />,
-        accessorKey: 'recipientsType',
-        enableHiding: false,
-        meta: { filterVariant: 'select', translationPrefix: 'enum.model_morph_name.' },
-        cell: ({ row }) => (
-          <DatatableCell justify="center">
-            <Badge>{t(`enum.model_morph_name.${row.original.recipientsType}`)}</Badge>
-          </DatatableCell>
-        ),
-      },
-      {
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Attachments" />,
-        accessorKey: 'attachmentsCount',
-        enableColumnFilter: false,
-        cell: ({ row }) => <DatatableBadgeCell>{row.original.attachmentsCount}</DatatableBadgeCell>,
-      },
-      {
-        id: 'actions',
-        enableHiding: false,
-        enableSorting: false,
-        size: 0,
-        cell: function CellComponent({ row }) {
-          const [open, setOpen] = useState(false);
-          return (
-            <>
-              <ErrorMessageDialog email={row.original} open={open} setOpen={setOpen} />
-              <DatatableActionsDropdown>
-                <DropdownMenuItem asChild>
-                  <Link href={route('communication.emails.show', row.original.id)}>
-                    <Users2Icon className="size-4" />
-                    <span>{t('View recipients')}</span>
-                  </Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem onSelect={() => setOpen(true)}>{t('View error')}</DropdownMenuItem>
-              </DatatableActionsDropdown>
-            </>
-          );
-        },
-      },
-    ],
-
-    [t, user.id],
-  );
+  const recipientTypes = [
+    { label: t('Members'), route: EmailListMemberController(), permissionNeeded: TenantPermission.EMAILS_SEND_TO_MEMBERS },
+    { label: t('Missionaries'), route: EmailListMissionaryController(), permissionNeeded: TenantPermission.EMAILS_SEND_TO_MISSIONARIES },
+    { label: t('Visitors'), route: EmailListVisitorController(), permissionNeeded: TenantPermission.EMAILS_SEND_TO_VISITORS },
+  ];
 
   const filteredRecipientTypes = recipientTypes.filter((type) => {
     return !type.permissionNeeded || userCan(type.permissionNeeded);
@@ -148,7 +64,7 @@ export default function EmailsPage({ emails: initialEmails, auth: { user }, chur
         <CardContent className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
           {filteredRecipientTypes.map(({ label, route: url }) => (
             <Button key={label} variant="outline" asChild>
-              <Link href={route(url)}>
+              <Link href={url}>
                 <UsersIcon className="size-4" />
                 {label}
               </Link>
@@ -159,32 +75,5 @@ export default function EmailsPage({ emails: initialEmails, auth: { user }, chur
 
       <DataTable data={emails} columns={columns} visibilityState={{ attachmentsCount: false }} />
     </AppLayout>
-  );
-}
-
-function ErrorMessageDialog({ email, open, setOpen }: { email: Email; open: boolean; setOpen: (open: boolean) => void }) {
-  const { t } = useTranslations();
-  return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="sm:max-w-[600px]">
-        <DialogHeader>
-          <DialogTitle>{t('Error message')}</DialogTitle>
-          <DialogDescription>{t('Email error if any')}</DialogDescription>
-        </DialogHeader>
-
-        <ScrollArea className="max-h-[400px] overflow-hidden">
-          <div className="prose dark:prose-invert prose-sky">
-            <pre className="max-w-full text-balance">{email.errorMessage ?? t('No error message available')}</pre>
-          </div>
-          <ScrollBar orientation="horizontal" />
-        </ScrollArea>
-
-        <DialogFooter>
-          <DialogClose asChild>
-            <Button variant="outline">{t('Close')}</Button>
-          </DialogClose>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
   );
 }

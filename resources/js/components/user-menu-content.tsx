@@ -1,3 +1,5 @@
+import AuthenticatedSessionController from '@/actions/App/Http/Controllers/Auth/AuthenticatedSessionController';
+import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
 import { DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
 import { UserInfo } from '@/components/user-info';
 import { useMobileNavigation } from '@/hooks/use-mobile-navigation';
@@ -24,7 +26,7 @@ export function UserMenuContent({ user }: UserMenuContentProps) {
       <DropdownMenuSeparator />
       <DropdownMenuGroup>
         <DropdownMenuItem asChild>
-          <Link className="block w-full" href={route('settings')} as="button" onClick={cleanup}>
+          <Link className="block w-full" href={ProfileController.edit()} as="button" onClick={cleanup}>
             <Settings className="mr-2" />
             {t('Settings')}
           </Link>
@@ -32,7 +34,7 @@ export function UserMenuContent({ user }: UserMenuContentProps) {
       </DropdownMenuGroup>
       <DropdownMenuSeparator />
       <DropdownMenuItem asChild>
-        <Link className="block w-full" method="post" href={route('logout')} as="button" onClick={cleanup}>
+        <Link className="block w-full" method="post" href={AuthenticatedSessionController.destroy()} as="button" onClick={cleanup}>
           <LogOut className="mr-2" />
           {t('Log Out')}
         </Link>

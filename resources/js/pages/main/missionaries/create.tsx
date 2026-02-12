@@ -1,3 +1,4 @@
+import MissionaryController from '@/actions/App/Http/Controllers/MissionaryController';
 import { AddressFormSkeleton } from '@/components/forms/AddressFormSkeleton';
 import { Form } from '@/components/forms/Form';
 import { CurrencyField } from '@/components/forms/inputs/CurrencyField';
@@ -38,7 +39,7 @@ type CreateForm = {
 export default function Create({ genders, offeringFrequencies }: CreatePageProps) {
   const { t } = useTranslations();
 
-  const { data, setData, post, errors, processing } = useForm<CreateForm>({
+  const { data, setData, submit, errors, processing } = useForm<CreateForm>({
     name: '',
     last_name: '',
     email: '',
@@ -58,13 +59,13 @@ export default function Create({ genders, offeringFrequencies }: CreatePageProps
   });
 
   const handleSubmit = () => {
-    post(route('missionaries.store'), { preserveScroll: true });
+    submit(MissionaryController.store(), { preserveScroll: true });
   };
 
   const breadcrumbs: BreadcrumbItem[] = [
     {
       title: t('Missionaries'),
-      href: route('missionaries.index'),
+      href: MissionaryController.index().url,
     },
     {
       title: t('Create :model', { model: t('Missionary') }),
@@ -93,7 +94,7 @@ export default function Create({ genders, offeringFrequencies }: CreatePageProps
               required
               label={t('Gender')}
               value={data.gender}
-              onChange={(value) => setData('gender', value)}
+              onValueChange={(value) => setData('gender', value)}
               options={genders}
               error={errors.gender}
             />
@@ -104,14 +105,14 @@ export default function Create({ genders, offeringFrequencies }: CreatePageProps
               placeholder="0.00"
               label={t('Offering')}
               value={data.offering}
-              onChange={(value) => setData('offering', value)}
+              onValueChange={(value) => value !== undefined && setData('offering', value)}
               error={errors.offering}
             />
             <SelectField
               clearable
               label={t('Offering Frequency')}
               value={data.offering_frequency}
-              onChange={(value) => setData('offering_frequency', value)}
+              onValueChange={(value) => setData('offering_frequency', value)}
               options={offeringFrequencies}
               error={errors.offering_frequency}
             />

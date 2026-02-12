@@ -1,104 +1,90 @@
-import { Head, Link, useForm, usePage } from '@inertiajs/react';
-import { LoaderCircle } from 'lucide-react';
-import { type FormEventHandler } from 'react';
+import { Form, Head, Link, usePage } from '@inertiajs/react';
 
-import InputError from '@/components/input-error';
 import TextLink from '@/components/text-link';
-import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthLayout from '@/layouts/auth-layout';
 
+import AuthenticatedSessionController from '@/actions/App/Http/Controllers/Auth/AuthenticatedSessionController';
+import PasswordResetLinkController from '@/actions/App/Http/Controllers/Auth/PasswordResetLinkController';
+import LoginLinkController from '@/actions/App/Http/Controllers/LoginLinkController';
+import { InputField } from '@/components/forms/inputs/InputField';
+import { SubmitButton } from '@/components/forms/SubmitButton';
+import { FieldGroup } from '@/components/ui/field';
 import { TenantRole } from '@/enums/TenantRole';
+import { useTranslations } from '@/hooks/use-translations';
 import type { SharedData } from '@/types';
-
-type LoginForm = {
-  email: string;
-  password: string;
-  remember: boolean;
-};
 
 export default function Login() {
   const { environment } = usePage<SharedData>().props;
-  const { data, setData, post, processing, errors, reset } = useForm<LoginForm>({
-    email: '',
-    password: '',
-    remember: false,
-  });
-
-  const submit: FormEventHandler = (e) => {
-    e.preventDefault();
-    post(route('login'), {
-      onFinish: () => reset('password'),
-    });
-  };
+  const { t } = useTranslations();
 
   return (
-    <AuthLayout title="Log in to your account" description="Enter your email and password below to log in">
-      <Head title="Log in" />
+    <AuthLayout title={t('Log in to your account')} description={t('Enter your email and password below to log in')}>
+      <Head title={t('Log in')} />
       {environment !== 'production' && (
         <div className="mb-6 flex flex-col gap-2">
-          <Link method="post" href={route('loginLink')} data={{ role: TenantRole.SUPER_ADMIN }}>
+          <Link method="post" href={LoginLinkController()} data={{ role: TenantRole.SUPER_ADMIN }}>
             Log in as super admin
           </Link>
-          <Link method="post" href={route('loginLink')} data={{ role: TenantRole.ADMIN }}>
+          <Link method="post" href={LoginLinkController()} data={{ role: TenantRole.ADMIN }}>
             Log in as admin
           </Link>
-          <Link method="post" href={route('loginLink')} data={{ role: TenantRole.SECRETARY }}>
+          <Link method="post" href={LoginLinkController()} data={{ role: TenantRole.SECRETARY }}>
             Log in as secretary
           </Link>
         </div>
       )}
-      <form className="flex flex-col gap-6" onSubmit={submit}>
-        <div className="grid gap-6">
-          <div className="grid gap-2">
-            <Label htmlFor="email">Email address</Label>
-            <Input
-              id="email"
+      <Form
+        resetOnError={['password']}
+        disableWhileProcessing
+        transform={(data) => ({
+          ...data,
+          remember: data.remember === 'on' ? true : false,
+        })}
+        action={AuthenticatedSessionController.store()}
+      >
+        {({ processing, errors }) => (
+          <FieldGroup>
+            <InputField
+              label={t('Email')}
               type="email"
+              name="email"
               required
               autoFocus
               tabIndex={1}
               autoComplete="email"
-              value={data.email}
-              onChange={(e) => setData('email', e.target.value)}
-              placeholder="email@example.com"
+              placeholder={t('email@example.com')}
+              error={errors.email}
             />
-            <InputError message={errors.email} />
-          </div>
 
-          <div className="grid gap-2">
-            <div className="flex items-center">
-              <Label htmlFor="password">Password</Label>
-              <TextLink href={route('password.request')} className="ml-auto text-sm" tabIndex={5}>
-                Forgot password?
+            <div className="grid gap-2">
+              <InputField
+                label={t('Password')}
+                type="password"
+                name="password"
+                required
+                tabIndex={2}
+                autoComplete="current-password"
+                placeholder={t('Password')}
+                error={errors.password}
+              />
+              <TextLink href={PasswordResetLinkController.create()} className="ml-auto text-sm" tabIndex={5}>
+                {t('Forgot your password?')}
               </TextLink>
             </div>
-            <Input
-              id="password"
-              type="password"
-              required
-              tabIndex={2}
-              autoComplete="current-password"
-              value={data.password}
-              onChange={(e) => setData('password', e.target.value)}
-              placeholder="Password"
-            />
-            <InputError message={errors.password} />
-          </div>
 
-          <div className="flex items-center space-x-3">
-            <Checkbox id="remember" name="remember" checked={data.remember} onClick={() => setData('remember', !data.remember)} tabIndex={3} />
-            <Label htmlFor="remember">Remember me</Label>
-          </div>
+            <div className="flex items-center space-x-3">
+              <Checkbox id="remember" name="remember" tabIndex={3} />
+              <Label htmlFor="remember">{t('Remember me')}</Label>
+            </div>
 
-          <Button type="submit" className="mt-4 w-full" tabIndex={4} disabled={processing}>
-            {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
-            Log in
-          </Button>
-        </div>
-      </form>
+            <SubmitButton className="w-full" tabIndex={4} isSubmitting={processing}>
+              {t('Log in')}
+            </SubmitButton>
+          </FieldGroup>
+        )}
+      </Form>
     </AuthLayout>
   );
 }

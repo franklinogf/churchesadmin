@@ -1,3 +1,4 @@
+import OfferingTypeController from '@/actions/App/Http/Controllers/OfferingTypeController';
 import { DatatableActionsDropdown } from '@/components/custom-ui/datatable/data-table-actions-dropdown';
 import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTableColumnHeader';
 import { OfferingTypeForm } from '@/components/forms/offering-type-form';
@@ -38,7 +39,7 @@ export const columns: ColumnDef<OfferingType>[] = [
               </DropdownMenuItem>
 
               <DropdownMenuItem
-                // variant="destructive"
+                variant="destructive"
                 onClick={() => {
                   openConfirmation({
                     title: t('Are you sure you want to delete this :model?', { model: t('Offering type') }),
@@ -47,7 +48,7 @@ export const columns: ColumnDef<OfferingType>[] = [
                     actionVariant: 'destructive',
                     cancelLabel: t('Cancel'),
                     onAction: () => {
-                      router.delete(route('codes.offeringTypes.destroy', offeringType.id), {
+                      router.visit(OfferingTypeController.destroy(offeringType.id), {
                         preserveScroll: true,
                       });
                     },

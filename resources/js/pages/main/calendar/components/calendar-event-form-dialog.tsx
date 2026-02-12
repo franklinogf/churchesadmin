@@ -1,3 +1,4 @@
+import CalendarEventController from '@/actions/App/Http/Controllers/CalendarEventController';
 import { DatetimeField } from '@/components/forms/inputs/DatetimeField';
 import { InputField } from '@/components/forms/inputs/InputField';
 import { TextareaField } from '@/components/forms/inputs/TextareaField';
@@ -35,7 +36,7 @@ export function CalendarEventFormDialog({ mode, event, open, setOpen, prefilledD
   const { t } = useTranslations();
   const { can: userCan } = useUser();
   const openConfirmation = useConfirmationStore((state) => state.openConfirmation);
-  const { data, setData, post, put, errors, reset, processing, transform } = useForm<CalendarEventFormData>({
+  const { data, setData, submit, errors, reset, processing, transform } = useForm<CalendarEventFormData>({
     title: '',
     description: '',
     location: '',
@@ -79,14 +80,14 @@ export function CalendarEventFormDialog({ mode, event, open, setOpen, prefilledD
     }));
 
     if (mode === 'edit' && event) {
-      put(route('calendar-events.update', event.id), {
+      submit(CalendarEventController.update(event.id), {
         only: ['events'],
         onSuccess: () => {
           setOpen(false);
         },
       });
     } else {
-      post(route('calendar-events.store'), {
+      submit(CalendarEventController.store(), {
         preserveState: 'errors',
         onSuccess: () => {
           setOpen(false);
@@ -124,7 +125,7 @@ export function CalendarEventFormDialog({ mode, event, open, setOpen, prefilledD
         <TextareaField
           label={t('Event description')}
           value={data.description}
-          onChange={(value) => setData('description', value)}
+          onChange={(e) => setData('description', e.target.value)}
           error={errors.description}
         />
 

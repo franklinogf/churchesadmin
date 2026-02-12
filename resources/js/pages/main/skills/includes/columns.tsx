@@ -1,3 +1,4 @@
+import SkillController from '@/actions/App/Http/Controllers/SkillController';
 import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTableColumnHeader';
 import { SkillForm } from '@/components/forms/skill-form';
 import { Button } from '@/components/ui/button';
@@ -56,7 +57,7 @@ export const columns: ColumnDef<Tag>[] = [
               )}
               {userCan(TenantPermission.SKILLS_DELETE) && (
                 <DropdownMenuItem
-                  //   variant="destructive"
+                  variant="destructive"
                   onClick={() => {
                     openConfirmation({
                       title: t('Are you sure you want to delete this :model?', { model: t('Skill') }),
@@ -65,7 +66,7 @@ export const columns: ColumnDef<Tag>[] = [
                       actionVariant: 'destructive',
                       cancelLabel: t('Cancel'),
                       onAction: () => {
-                        router.delete(route('skills.destroy', skill.id), {
+                        router.visit(SkillController.destroy(skill.id), {
                           preserveState: true,
                           preserveScroll: true,
                         });

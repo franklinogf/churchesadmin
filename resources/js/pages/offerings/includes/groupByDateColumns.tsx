@@ -1,3 +1,4 @@
+import OfferingController from '@/actions/App/Http/Controllers/OfferingController';
 import { DatatableActionsDropdown } from '@/components/custom-ui/datatable/data-table-actions-dropdown';
 import { DatatableCell } from '@/components/custom-ui/datatable/DatatableCell';
 import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTableColumnHeader';
@@ -53,7 +54,7 @@ export const groupByDateColumns: ColumnDef<OfferingGroupedByDate>[] = [
       return (
         <DatatableActionsDropdown>
           <DropdownMenuItem asChild>
-            <Link href={route('offerings.index', { date: row.original.date })}>
+            <Link href={OfferingController.index({ query: { date: row.original.date } })}>
               <FilesIcon className="size-3" />
               <span>{t('Offerings')}</span>
             </Link>

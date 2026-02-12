@@ -1,3 +1,4 @@
+import ExpenseController from '@/actions/App/Http/Controllers/ExpenseController';
 import { Form } from '@/components/forms/Form';
 import { CurrencyField } from '@/components/forms/inputs/CurrencyField';
 import { DateField } from '@/components/forms/inputs/DateField';
@@ -35,7 +36,7 @@ export default function Create({ wallets, memberOptions, expenseTypesOptions, wa
   const { t } = useTranslations();
   const { formatCurrency, toPositive } = useCurrency();
 
-  const { data, setData, put, errors, processing } = useForm<Required<CreateForm>>({
+  const { data, setData, submit, errors, processing } = useForm<Required<CreateForm>>({
     wallet_id: expense.transaction.wallet?.id.toString() || '',
     expense_type_id: expense.expenseType.id.toString(),
     member_id: expense.member?.id.toString() || '',
@@ -45,7 +46,7 @@ export default function Create({ wallets, memberOptions, expenseTypesOptions, wa
   });
 
   function handleSubmit() {
-    put(route('expenses.update', expense.id), {
+    submit(ExpenseController.update(expense.id), {
       preserveScroll: true,
     });
   }
@@ -54,7 +55,7 @@ export default function Create({ wallets, memberOptions, expenseTypesOptions, wa
   const breadcrumbs: BreadcrumbItem[] = [
     {
       title: t('Expenses'),
-      href: route('expenses.index'),
+      href: ExpenseController.index().url,
     },
     {
       title: t('Edit :model', { model: t('Expense') }),
@@ -80,7 +81,7 @@ export default function Create({ wallets, memberOptions, expenseTypesOptions, wa
                   required
                   label={t('Wallet')}
                   value={data.wallet_id}
-                  onChange={(value) => setData('wallet_id', value)}
+                  onValueChange={(value) => setData('wallet_id', value)}
                   error={errors.wallet_id}
                   options={walletOptions}
                 />
@@ -97,7 +98,7 @@ export default function Create({ wallets, memberOptions, expenseTypesOptions, wa
               <SelectField
                 label={t('Member')}
                 value={data.member_id}
-                onChange={(value) => setData('member_id', value)}
+                onValueChange={(value) => setData('member_id', value)}
                 error={errors.member_id}
                 options={memberOptions}
               />
@@ -105,12 +106,18 @@ export default function Create({ wallets, memberOptions, expenseTypesOptions, wa
                 required
                 label={t('Expense type')}
                 value={data.expense_type_id}
-                onChange={(value) => setData('expense_type_id', value)}
+                onValueChange={(value) => setData('expense_type_id', value)}
                 error={errors.expense_type_id}
                 options={expenseTypesOptions}
               />
 
-              <CurrencyField required label={t('Amount')} value={data.amount} onChange={(value) => setData('amount', value)} error={errors.amount} />
+              <CurrencyField
+                required
+                label={t('Amount')}
+                value={data.amount}
+                onValueChange={(value) => value !== undefined && setData('amount', value)}
+                error={errors.amount}
+              />
             </FieldsGrid>
             <InputField label={t('Note')} value={data.note} onChange={(value) => setData('note', value)} error={errors.note} />
           </div>

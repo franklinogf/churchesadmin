@@ -1,3 +1,4 @@
+import DeactivationCodeController from '@/actions/App/Http/Controllers/DeactivationCodeController';
 import { DatatableActionsDropdown } from '@/components/custom-ui/datatable/data-table-actions-dropdown';
 import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTableColumnHeader';
 import { DeactivationCodeForm } from '@/components/forms/deactivation-code-form';
@@ -38,7 +39,7 @@ export const columns: ColumnDef<DeactivationCode>[] = [
               </DropdownMenuItem>
 
               <DropdownMenuItem
-                // variant="destructive"
+                variant="destructive"
                 onClick={() => {
                   openConfirmation({
                     title: t('Are you sure you want to delete this :model?', { model: t('Deactivation code') }),
@@ -47,7 +48,7 @@ export const columns: ColumnDef<DeactivationCode>[] = [
                     actionVariant: 'destructive',
                     cancelLabel: t('Cancel'),
                     onAction: () => {
-                      router.delete(route('codes.deactivationCodes.destroy', deactivationCode.id), {
+                      router.visit(DeactivationCodeController.destroy(deactivationCode.id), {
                         preserveScroll: true,
                       });
                     },

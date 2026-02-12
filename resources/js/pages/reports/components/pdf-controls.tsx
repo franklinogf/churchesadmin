@@ -19,7 +19,7 @@ export function PdfControls() {
               label={'Format'}
               value={format}
               options={formatOptions}
-              onChange={(value) => {
+              onValueChange={(value) => {
                 setFormat(value as PdfFormat);
               }}
             />
@@ -28,7 +28,7 @@ export function PdfControls() {
               label={'Orientation'}
               value={orientation}
               options={orientationOptions}
-              onChange={(value) => {
+              onValueChange={(value) => {
                 setOrientation(value as PdfOrientation);
               }}
             />
@@ -41,8 +41,8 @@ export function PdfControls() {
                 <SwitchField
                   label={col.label}
                   key={col.name}
-                  value={isColumnSelected(col.name)}
-                  onChange={(value) => {
+                  checked={isColumnSelected(col.name)}
+                  onCheckedChange={(value) => {
                     toggleColumnSelection(col.name, value);
                   }}
                 />

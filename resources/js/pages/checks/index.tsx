@@ -7,6 +7,10 @@ import { PageTitle } from '@/components/PageTitle';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 
+import CheckController from '@/actions/App/Http/Controllers/CheckController';
+import ConfirmMultipleCheckController from '@/actions/App/Http/Controllers/ConfirmMultipleCheckController';
+import GenerateCheckNumberController from '@/actions/App/Http/Controllers/GenerateCheckNumberController';
+import ChecksPdfController from '@/actions/App/Http/Controllers/Pdf/ChecksPdfController';
 import { DatatableFallback } from '@/components/fallbacks/data-table-fallback';
 import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
@@ -39,7 +43,7 @@ export default function Index({ unconfirmedChecks, confirmedChecks, flash, nextC
   const [confirmedSelectedRows, setConfirmedSelectedRows] = useState<string[]>([]);
   const [unconfirmedAction, setUnconfirmedAction] = useState<UnconfirmedFormAction | null>(null);
 
-  const { data, setData, errors, patch, processing, transform } = useForm<GenerateCheckNumberForm>({
+  const { data, setData, errors, submit, processing, transform } = useForm<GenerateCheckNumberForm>({
     checks: [],
     initial_check_number: nextCheckNumber.toString(),
   });
@@ -49,7 +53,7 @@ export default function Index({ unconfirmedChecks, confirmedChecks, flash, nextC
 
     setUnconfirmedAction(UnconfirmedFormAction.GENERATE);
 
-    patch(route('checks.generate-check-number'));
+    submit(GenerateCheckNumberController());
   }
 
   function confirmChecks() {
@@ -57,7 +61,7 @@ export default function Index({ unconfirmedChecks, confirmedChecks, flash, nextC
     transform((data) => ({
       checks: data.checks,
     }));
-    patch(route('checks.confirm-multiple'), {
+    submit(ConfirmMultipleCheckController(), {
       preserveState: false,
     });
   }
@@ -74,19 +78,19 @@ export default function Index({ unconfirmedChecks, confirmedChecks, flash, nextC
   }, []);
 
   const handlePrintConfirmedChecks = () => {
-    window.open(route('checks.pdf.multiple', { checks: confirmedSelectedRows }), '_blank');
+    window.open(ChecksPdfController({ query: { checks: confirmedSelectedRows } }).url, '_blank');
   };
 
   const unconfirmedSelected = data.checks.length > 0;
 
   return (
-    <AppLayout title={t('Checks')} breadcrumbs={[{ title: t('Checks'), href: route('checks.index') }]}>
+    <AppLayout title={t('Checks')} breadcrumbs={[{ title: t('Checks'), href: CheckController.index().url }]}>
       <PageTitle>{t('Checks')}</PageTitle>
       <section className="mx-auto mt-4 w-full max-w-5xl space-y-16">
         <div>
           <header className="mt-8 flex items-center justify-between space-y-2">
             <Button size="sm">
-              <Link href={route('checks.create')}>{t('New :model', { model: t('Check') })}</Link>
+              <Link href={CheckController.create()}>{t('New :model', { model: t('Check') })}</Link>
             </Button>
 
             <div className="space-y-2">

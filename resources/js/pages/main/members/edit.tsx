@@ -1,3 +1,5 @@
+import MemberController from '@/actions/App/Http/Controllers/MemberController';
+import MemberStatusController from '@/actions/App/Http/Controllers/MemberStatusController';
 import type { Option } from '@/components/custom-ui/MultiSelect';
 import { AddressFormSkeleton } from '@/components/forms/AddressFormSkeleton';
 import { Form } from '@/components/forms/Form';
@@ -56,7 +58,7 @@ export default function Edit({ member, genders, civilStatuses, skills, categorie
   const { openConfirmation } = useConfirmationStore();
   const [deactivateDialogOpen, setDeactivateDialogOpen] = useState(false);
   const [selectedDeactivationCode, setSelectedDeactivationCode] = useState<string>('');
-  const { data, setData, put, errors, processing, transform } = useForm<EditForm>({
+  const { data, setData, submit, errors, processing, transform } = useForm<EditForm>({
     name: member.name,
     last_name: member.lastName,
     email: member.email ?? '',
@@ -84,12 +86,12 @@ export default function Edit({ member, genders, civilStatuses, skills, categorie
   }));
 
   const handleSubmit = () => {
-    put(route('members.update', member.id), { preserveScroll: true });
+    submit(MemberController.update(member.id), { preserveScroll: true });
   };
   const breadcrumbs: BreadcrumbItem[] = [
     {
       title: t('Members'),
-      href: route('members.index'),
+      href: MemberController.index().url,
     },
     {
       title: t('Edit :model', { model: t('Member') }),
@@ -130,7 +132,7 @@ export default function Edit({ member, genders, civilStatuses, skills, categorie
                 required
                 label={t('Gender')}
                 value={data.gender}
-                onChange={(value) => setData('gender', value)}
+                onValueChange={(value) => setData('gender', value)}
                 options={genders}
                 error={errors.gender}
               />
@@ -138,7 +140,7 @@ export default function Edit({ member, genders, civilStatuses, skills, categorie
                 required
                 label={t('Civil status')}
                 value={data.civil_status}
-                onChange={(value) => setData('civil_status', value)}
+                onValueChange={(value) => setData('civil_status', value)}
                 options={civilStatuses}
                 error={errors.civil_status}
               />
@@ -254,7 +256,7 @@ export default function Edit({ member, genders, civilStatuses, skills, categorie
                             <SelectField
                               label={t('Deactivation code')}
                               value={selectedDeactivationCode}
-                              onChange={setSelectedDeactivationCode}
+                              onValueChange={setSelectedDeactivationCode}
                               options={deactivationCodes.map((code) => ({ value: code.id.toString(), label: code.name }))}
                               required
                             />
@@ -267,9 +269,8 @@ export default function Edit({ member, genders, civilStatuses, skills, categorie
                               variant="destructive"
                               onClick={() => {
                                 if (selectedDeactivationCode) {
-                                  router.patch(
-                                    route('members.deactivate', member.id),
-                                    { deactivation_code_id: selectedDeactivationCode },
+                                  router.visit(
+                                    MemberStatusController.destroy(member.id, { query: { deactivation_code_id: selectedDeactivationCode } }),
                                     {
                                       preserveState: true,
                                       preserveScroll: true,
@@ -305,14 +306,10 @@ export default function Edit({ member, genders, civilStatuses, skills, categorie
                             actionVariant: 'default',
                             cancelLabel: t('Cancel'),
                             onAction: () => {
-                              router.patch(
-                                route('members.activate', member.id),
-                                {},
-                                {
-                                  preserveState: true,
-                                  preserveScroll: true,
-                                },
-                              );
+                              router.visit(MemberStatusController.update(member.id), {
+                                preserveState: true,
+                                preserveScroll: true,
+                              });
                             },
                           });
                         }}

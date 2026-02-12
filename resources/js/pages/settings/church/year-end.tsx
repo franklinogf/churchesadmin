@@ -1,6 +1,7 @@
 import { type BreadcrumbItem } from '@/types';
 import { useMemo } from 'react';
 
+import TenantYearEndController from '@/actions/App/Http/Controllers/Settings/TenantYearEndController';
 import HeadingSmall from '@/components/heading-small';
 import {
   AlertDialog,
@@ -47,7 +48,7 @@ export default function YearEnd({ currentYear }: { currentYear: number }) {
               <AlertDialogFooter>
                 <AlertDialogCancel>{t('Cancel')}</AlertDialogCancel>
                 <AlertDialogAction asChild>
-                  <Link href={route('church.general.year-end.update')} method="post">
+                  <Link href={TenantYearEndController.update()} method="post">
                     {t('Close Fiscal Year')}
                   </Link>
                 </AlertDialogAction>

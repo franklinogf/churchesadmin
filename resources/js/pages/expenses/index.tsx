@@ -2,6 +2,7 @@ import { DataTable } from '@/components/custom-ui/datatable/data-table';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 
+import ExpenseController from '@/actions/App/Http/Controllers/ExpenseController';
 import { PageTitle } from '@/components/PageTitle';
 import { useTranslations } from '@/hooks/use-translations';
 import type { Expense } from '@/types/models/expense';
@@ -20,7 +21,7 @@ export default function Index({ expenses }: IndexPageProps) {
       <DataTable
         headerButton={
           <Button asChild>
-            <Link href={route('expenses.create')}>{t('New :model', { model: t('Expense') })}</Link>
+            <Link href={ExpenseController.create()}>{t('New :model', { model: t('Expense') })}</Link>
           </Button>
         }
         data={expenses}

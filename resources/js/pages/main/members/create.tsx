@@ -1,3 +1,6 @@
+import MemberController from '@/actions/App/Http/Controllers/MemberController';
+import VisitController from '@/actions/App/Http/Controllers/VisitController';
+import VisitFollowUpController from '@/actions/App/Http/Controllers/VisitFollowUpController';
 import type { Option } from '@/components/custom-ui/MultiSelect';
 import { AddressFormSkeleton } from '@/components/forms/AddressFormSkeleton';
 import { Form } from '@/components/forms/Form';
@@ -46,7 +49,7 @@ interface CreatePageProps {
 }
 export default function Create({ genders, civilStatuses, skills, categories, visit }: CreatePageProps) {
   const { t } = useTranslations();
-  const { data, setData, post, errors, processing, transform } = useForm<CreateForm>({
+  const { data, setData, submit, errors, processing, transform } = useForm<CreateForm>({
     visit_id: visit?.id.toString() || null,
     name: visit?.name || '',
     last_name: visit?.lastName || '',
@@ -75,7 +78,7 @@ export default function Create({ genders, civilStatuses, skills, categories, vis
   }));
 
   const handleSubmit = () => {
-    post(route('members.store'), { preserveScroll: true });
+    submit(MemberController.store(), { preserveScroll: true });
   };
 
   const breadcrumbs: BreadcrumbItem[] = useMemo(
@@ -84,15 +87,15 @@ export default function Create({ genders, civilStatuses, skills, categories, vis
         ? [
             {
               title: t('Visits'),
-              href: route('visits.index'),
+              href: VisitController.index().url,
             },
-            { title: visit.name, href: route('visits.follow-ups.index', visit.id) },
+            { title: visit.name, href: VisitFollowUpController.index(visit.id).url },
             { title: t('Transfer to member') },
           ]
         : [
             {
               title: t('Members'),
-              href: route('members.index'),
+              href: MemberController.index().url,
             },
             {
               title: t('Add :model', { model: t('Member') }),
@@ -135,7 +138,7 @@ export default function Create({ genders, civilStatuses, skills, categories, vis
               required
               label={t('Gender')}
               value={data.gender}
-              onChange={(value) => setData('gender', value)}
+              onValueChange={(value) => setData('gender', value)}
               options={genders}
               error={errors.gender}
             />
@@ -143,7 +146,7 @@ export default function Create({ genders, civilStatuses, skills, categories, vis
               required
               label={t('Civil status')}
               value={data.civil_status}
-              onChange={(value) => setData('civil_status', value)}
+              onValueChange={(value) => setData('civil_status', value)}
               options={civilStatuses}
               error={errors.civil_status}
             />

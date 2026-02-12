@@ -32,6 +32,9 @@ jobs:
           composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
           npm ci
 
+      - name: Build Assets
+        run: npm run build
+
       - name: Run Rector
         run: composer test:refactor
 

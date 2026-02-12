@@ -1,3 +1,6 @@
+import MemberController from '@/actions/App/Http/Controllers/MemberController';
+import VisitController from '@/actions/App/Http/Controllers/VisitController';
+import VisitFollowUpController from '@/actions/App/Http/Controllers/VisitFollowUpController';
 import { DataTable } from '@/components/custom-ui/datatable/data-table';
 import { DatatableActionsDropdown } from '@/components/custom-ui/datatable/data-table-actions-dropdown';
 import { DatatableCell } from '@/components/custom-ui/datatable/DatatableCell';
@@ -60,19 +63,19 @@ export default function VisitsIndex({ visits }: VisitsIndexProps) {
           return (
             <DatatableActionsDropdown>
               <DropdownMenuItem asChild>
-                <Link href={route('visits.edit', row.original.id)} className="w-full">
+                <Link href={VisitController.edit(row.original.id).url} className="w-full">
                   <Edit2Icon className="size-4" />
                   {t('Edit')}
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link href={route('visits.follow-ups.index', row.original.id)} className="w-full">
+                <Link href={VisitFollowUpController.index(row.original.id).url} className="w-full">
                   <FileEditIcon className="size-4" />
                   {t('Follow Ups')}
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem asChild>
-                <Link href={route('members.create', { visit: row.original.id })} className="w-full">
+                <Link href={MemberController.create({ query: { visit: row.original.id } })} className="w-full">
                   <UserPlusIcon className="size-4" />
                   {t('Transfer to member')}
                 </Link>
@@ -92,7 +95,7 @@ export default function VisitsIndex({ visits }: VisitsIndexProps) {
       <DataTable
         headerButton={
           <Button asChild size="sm">
-            <Link href={route('visits.create')}>{t('Add :model', { model: t('Visit') })}</Link>
+            <Link href={VisitController.create()}>{t('Add :model', { model: t('Visit') })}</Link>
           </Button>
         }
         data={visits}

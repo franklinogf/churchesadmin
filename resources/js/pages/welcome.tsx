@@ -3,6 +3,7 @@ import { NavigationMenu, NavigationMenuItem, NavigationMenuLink, NavigationMenuL
 import type { SharedData } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
 
+import HomeController from '@/actions/App/Http/Controllers/Root/HomeController';
 import { useTranslations } from '@/hooks/use-translations';
 import { DollarSignIcon, GlobeIcon, TvIcon, UsersIcon } from 'lucide-react';
 import { motion } from 'motion/react';
@@ -45,7 +46,7 @@ export default function Welcome({ demoLink }: { demoLink: string | null }) {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="bg-gradient-to-r from-blue-50 to-indigo-50 px-6 py-20"
+            className="bg-linear-to-r from-blue-50 to-indigo-50 px-6 py-20"
           >
             <div className="mx-auto max-w-4xl text-center">
               <h2 className="mb-6 text-3xl font-bold text-gray-800">{t('Try ChurchesAdmin Today')}</h2>
@@ -173,7 +174,7 @@ function CtaButton() {
   const { t } = useTranslations();
   return (
     <Button variant="brand">
-      <Link href={route('root.home')} prefetch>
+      <Link href={HomeController()} prefetch>
         {t('Schedule a demo')}
       </Link>
     </Button>

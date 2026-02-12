@@ -3,16 +3,15 @@ import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import type { Member } from '@/types/models/member';
 
-import { selectionHeader } from '@/components/custom-ui/datatable/columns';
-import { DatatableBadgeCell } from '@/components/custom-ui/datatable/DatatableCell';
-import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTableColumnHeader';
+import EmailController from '@/actions/App/Http/Controllers/Communication/EmailController';
+import SessionController from '@/actions/App/Http/Controllers/SessionController';
 import { Button } from '@/components/ui/button';
 import { ModelMorphName } from '@/enums/ModelMorphName';
 import { SessionName } from '@/enums/SessionName';
 import { router } from '@inertiajs/react';
-import { type ColumnDef } from '@tanstack/react-table';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { EmailHeader } from './_components/EmailHeader';
+import { columns } from './_components/members-columns';
 
 interface Props {
   members: Member[];
@@ -21,61 +20,25 @@ interface Props {
 export default function Index({ members }: Props) {
   const [selectedMembers, setSelectedMembers] = useState<string[]>([]);
   const { t } = useTranslations();
-  const columns: ColumnDef<Member>[] = useMemo(
-    () => [
-      selectionHeader as ColumnDef<Member>,
-      {
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Name" />,
-        accessorKey: 'name',
-        enableHiding: false,
-        enableColumnFilter: false,
-      },
-      {
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Last name" />,
-        accessorKey: 'lastName',
-        enableHiding: false,
-        enableColumnFilter: false,
-      },
-      {
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Gender" />,
-        accessorKey: 'gender',
-        filterFn: 'equalsString',
-        meta: { filterVariant: 'select', translationPrefix: 'enum.gender.' },
-        cell: function CellComponent({ row }) {
-          const { t } = useTranslations();
-          return <DatatableBadgeCell className="w-24">{t(`enum.gender.${row.original.gender}`)}</DatatableBadgeCell>;
-        },
-      },
-      {
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Civil status" />,
-        accessorKey: 'civilStatus',
-        filterFn: 'equalsString',
-        meta: { filterVariant: 'select', translationPrefix: 'enum.civil_status.' },
-        cell: function CellComponent({ row }) {
-          const { t } = useTranslations();
-          return <DatatableBadgeCell className="w-24">{t(`enum.civil_status.${row.original.civilStatus}`)}</DatatableBadgeCell>;
-        },
-      },
-    ],
-    [],
-  );
 
   function handleNewEmail() {
-    router.post(
-      route('session', {
-        name: SessionName.EMAIL_RECIPIENTS,
-        value: {
-          type: ModelMorphName.MEMBER,
-          ids: selectedMembers,
+    router.visit(
+      SessionController({
+        query: {
+          name: SessionName.EMAIL_RECIPIENTS,
+          value: {
+            type: ModelMorphName.MEMBER,
+            ids: selectedMembers,
+          },
+          redirect_to: 'communication.emails.create',
         },
-        redirect_to: 'communication.emails.create',
       }),
     );
   }
   return (
     <AppLayout
       title={t('Send email to :name', { name: t('Members') })}
-      breadcrumbs={[{ title: t('Communication') }, { title: t('Emails'), href: route('communication.emails.index') }, { title: t('Members') }]}
+      breadcrumbs={[{ title: t('Communication') }, { title: t('Emails'), href: EmailController.index().url }, { title: t('Members') }]}
     >
       <EmailHeader name={t('Members')} />
 

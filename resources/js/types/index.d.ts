@@ -2,8 +2,8 @@ import { type LanguageCode } from '@/enums';
 
 import type { ChurchFeature } from '@/enums/ChurchFeature';
 import { type UserPermission } from '@/enums/user';
+import type { RouteDefinition } from '@/wayfinder';
 import { type LucideIcon } from 'lucide-react';
-import type { Config } from 'ziggy-js';
 import type { Church } from './models/church';
 import type { AuthenticatedUser } from './models/user';
 
@@ -20,7 +20,7 @@ export interface BreadcrumbItem {
 type BaseNavMenu = { title: string };
 
 export type NavItem = BaseNavMenu & {
-  href: string;
+  href: string | RouteDefinition<'get'>;
   icon?: LucideIcon | null;
   isActive?: boolean;
   permissionNeeded?: UserPermission;
@@ -32,7 +32,6 @@ export type NavGroup = BaseNavMenu & {
 
 export interface SharedData {
   auth: Auth;
-  ziggy: Config & { location: string };
   sidebarOpen: boolean;
   flash: {
     success: string | null;
@@ -62,3 +61,9 @@ export type Locale = `${LanguageCode}`;
 export type LanguageTranslations = Record<Locale, string | undefined>;
 
 export type PdfColumn = { name: string; label: string; selected: boolean };
+
+export type InputBaseProps = {
+  label?: string;
+  error?: string;
+  description?: string;
+};
