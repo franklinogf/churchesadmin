@@ -60,7 +60,6 @@ final class CategoryController extends Controller
     public function update(UpdateCategoryRequest $request, Tag $tag, UpdateTagAction $action): RedirectResponse
     {
         Gate::authorize('update', $tag);
-        dd($request->validated());
 
         $action->handle($tag, [
             'name' => $request->string('name')->value(),
