@@ -18,7 +18,7 @@ use Spatie\Permission\Traits\HasRoles;
 /**
  * Model used for authentication in the Tenant environment and admin panel.
  *
- * @property-read int $id
+ * @property-read string $id
  * @property-read string $name
  * @property-read string $email
  * @property-read string $password
