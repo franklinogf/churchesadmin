@@ -1,22 +1,11 @@
-import { FieldLabel } from '@/components/forms/inputs/FieldLabel';
-import { Field, FieldError } from '@/components/ui/field';
-import { Input } from '@/components/ui/input';
+import { Field, FieldError, FieldLabel } from '@/components/ui/field';
+import { InputGroup, InputGroupAddon, InputGroupInput } from '@/components/ui/input-group';
 import { cn } from '@/lib/utils';
-import { useId } from 'react';
+import type { InputBaseProps } from '@/types';
+import { useId, type ComponentProps } from 'react';
 import CurrencyInput from 'react-currency-input-field';
 
-interface CurrencyFieldProps {
-  onChange?: (value: string) => void;
-  error?: string;
-  label?: string;
-  fieldClassName?: string;
-  required?: boolean;
-  disabled?: boolean;
-  className?: string;
-  value?: string;
-  placeholder?: string;
-  allowNegativeValue?: boolean;
-}
+type CurrencyFieldProps = InputBaseProps & Omit<ComponentProps<typeof CurrencyInput>, 'onFocus' | 'customInput'>;
 
 export function CurrencyField({
   required,
@@ -24,43 +13,35 @@ export function CurrencyField({
   label,
   disabled,
   className,
-  value,
-  onChange,
-  fieldClassName,
   placeholder = '0.00',
+  decimalScale = 2,
   allowNegativeValue = false,
-
   ...props
 }: CurrencyFieldProps) {
   const id = useId();
   return (
-    <Field className={className}>
-      <FieldLabel disabled={disabled} id={id} label={label} required={required} />
-      <CurrencyInput
-        id={id}
-        disabled={disabled}
-        required={required}
-        className={cn(
-          {
+    <Field data-disabled={disabled} data-invalid={!!error} className={className}>
+      <FieldLabel htmlFor={id}>{label}</FieldLabel>
+      <InputGroup>
+        <CurrencyInput
+          id={id}
+          disabled={disabled}
+          required={required}
+          className={cn({
             'border-red-600 ring-offset-red-600 focus-visible:ring-red-600 dark:border-red-400 dark:ring-offset-red-400 dark:focus-visible:ring-red-400':
               error,
-          },
-          fieldClassName,
-        )}
-        onFocus={(e) => {
-          e.target.select();
-        }}
-        customInput={Input}
-        allowNegativeValue={allowNegativeValue}
-        value={value}
-        prefix="$"
-        decimalScale={2}
-        onValueChange={(value) => {
-          onChange?.(value ?? '');
-        }}
-        placeholder={placeholder}
-        {...props}
-      />
+          })}
+          onFocus={(e) => {
+            e.target.select();
+          }}
+          customInput={InputGroupInput}
+          allowNegativeValue={allowNegativeValue}
+          decimalScale={decimalScale}
+          placeholder={placeholder}
+          {...props}
+        />
+        <InputGroupAddon>$</InputGroupAddon>
+      </InputGroup>
 
       <FieldError>{error}</FieldError>
     </Field>

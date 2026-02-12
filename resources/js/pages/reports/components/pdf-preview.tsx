@@ -2,9 +2,9 @@ import { usePdfGenerator } from '@/contexts/pdf-generator-context';
 import { useTranslations } from '@/hooks/use-translations';
 import { Loader2Icon } from 'lucide-react';
 
-export function PdfPreview() {
+export function PdfPreview({ route }: { route: string }) {
   const { t } = useTranslations();
-  const { isLoading, routeSrc, setIsLoading } = usePdfGenerator();
+  const { isLoading, setIsLoading } = usePdfGenerator();
 
   return (
     <div className="relative h-full w-full rounded-lg border">
@@ -14,7 +14,7 @@ export function PdfPreview() {
           <span className="text-gray-600">{t('Loading preview')}</span>
         </div>
       )}
-      <iframe className="h-full w-full rounded-lg border" src={routeSrc} onLoad={() => setIsLoading(false)} />
+      <iframe className="h-full w-full rounded-lg border" src={route} onLoad={() => setIsLoading(false)} />
     </div>
   );
 }

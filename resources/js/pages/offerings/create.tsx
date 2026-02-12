@@ -1,3 +1,4 @@
+import OfferingController from '@/actions/App/Http/Controllers/OfferingController';
 import { Form } from '@/components/forms/Form';
 import { ComboboxField } from '@/components/forms/inputs/ComboboxField';
 import { CurrencyField } from '@/components/forms/inputs/CurrencyField';
@@ -42,7 +43,7 @@ interface CreateForm {
 export default function Create({ walletsOptions, paymentMethods, membersOptions, missionariesOptions, offeringTypesOptions }: CreatePageProps) {
   const { t } = useTranslations();
   const { maxDate } = useLocaleDate();
-  const { data, setData, post, errors, processing } = useForm<Required<CreateForm>>({
+  const { data, setData, submit, errors, processing } = useForm<Required<CreateForm>>({
     date: formatDate(new Date(), 'yyyy-MM-dd'),
     donor_id: '',
     offerings: [
@@ -60,7 +61,7 @@ export default function Create({ walletsOptions, paymentMethods, membersOptions,
   });
 
   function handleSubmit() {
-    post(route('offerings.store'), { preserveScroll: true });
+    submit(OfferingController.store(), { preserveScroll: true });
   }
 
   function handleAddOffering() {
@@ -100,7 +101,7 @@ export default function Create({ walletsOptions, paymentMethods, membersOptions,
   const breadcrumbs: BreadcrumbItem[] = [
     {
       title: t('Offerings'),
-      href: route('offerings.index'),
+      href: OfferingController.index().url,
     },
     {
       title: t('New :model', { model: t('Offering') }),
@@ -149,7 +150,7 @@ export default function Create({ walletsOptions, paymentMethods, membersOptions,
                     required
                     label={t('Wallet')}
                     value={offering.wallet_id}
-                    onChange={(value) => {
+                    onValueChange={(value) => {
                       handleUpdateOffering(index, 'wallet_id', value);
                     }}
                     error={errors[`offerings.${index}.wallet_id` as keyof typeof data]}
@@ -159,7 +160,7 @@ export default function Create({ walletsOptions, paymentMethods, membersOptions,
                     required
                     label={t('Payment method')}
                     value={offering.payment_method}
-                    onChange={(value) => {
+                    onValueChange={(value) => {
                       handleUpdateOffering(index, 'payment_method', value);
                     }}
                     error={errors[`offerings.${index}.payment_method` as keyof typeof data]}

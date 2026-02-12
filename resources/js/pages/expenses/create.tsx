@@ -1,3 +1,4 @@
+import ExpenseController from '@/actions/App/Http/Controllers/ExpenseController';
 import { Form } from '@/components/forms/Form';
 import { CurrencyField } from '@/components/forms/inputs/CurrencyField';
 import { DateField } from '@/components/forms/inputs/DateField';
@@ -50,13 +51,13 @@ export default function Create({ wallets, memberOptions, expenseTypes, expenseTy
     date: formatDate(new Date(), 'yyyy-MM-dd'),
   };
 
-  const { data, setData, post, errors, processing } = useForm<Required<CreateForm>>({
+  const { data, setData, submit, errors, processing } = useForm<Required<CreateForm>>({
     expenses: [initialExpense],
   });
   const totalExpenses = data.expenses.reduce((acc, expense) => acc + parseFloat(expense.amount || '0'), 0);
 
   function handleSubmit() {
-    post(route('expenses.store'), {
+    submit(ExpenseController.store(), {
       preserveScroll: true,
     });
   }
@@ -116,7 +117,7 @@ export default function Create({ wallets, memberOptions, expenseTypes, expenseTy
   const breadcrumbs: BreadcrumbItem[] = [
     {
       title: t('Expenses'),
-      href: route('expenses.index'),
+      href: ExpenseController.index().url,
     },
     {
       title: t('New :model', { model: t('Expense') }),
@@ -154,7 +155,7 @@ export default function Create({ wallets, memberOptions, expenseTypes, expenseTy
                         required
                         label={t('Wallet')}
                         value={expense.wallet_id}
-                        onChange={(value) => {
+                        onValueChange={(value) => {
                           handleUpdateExpense(index, 'wallet_id', value);
                         }}
                         error={errors[`expenses.${index}.wallet_id` as keyof typeof data]}
@@ -171,7 +172,7 @@ export default function Create({ wallets, memberOptions, expenseTypes, expenseTy
                     <SelectField
                       label={t('Member')}
                       value={expense.member_id}
-                      onChange={(value) => {
+                      onValueChange={(value) => {
                         handleUpdateExpense(index, 'member_id', value);
                       }}
                       error={errors[`expenses.${index}.member_id` as keyof typeof data]}
@@ -181,7 +182,7 @@ export default function Create({ wallets, memberOptions, expenseTypes, expenseTy
                       required
                       label={t('Expense type')}
                       value={expense.expense_type_id}
-                      onChange={(value) => {
+                      onValueChange={(value) => {
                         handleUpdateExpense(index, 'expense_type_id', value);
                       }}
                       error={errors[`expenses.${index}.expense_type_id` as keyof typeof data]}
@@ -192,7 +193,7 @@ export default function Create({ wallets, memberOptions, expenseTypes, expenseTy
                       required
                       label={t('Amount')}
                       value={expense.amount}
-                      onChange={(value) => {
+                      onValueChange={(value) => {
                         handleUpdateExpense(index, 'amount', value);
                       }}
                       error={errors[`expenses.${index}.amount` as keyof typeof data]}
@@ -221,7 +222,7 @@ export default function Create({ wallets, memberOptions, expenseTypes, expenseTy
                 <TableHeader>
                   <TableRow>
                     <TableHead>{t('Wallet')}</TableHead>
-                    <TableHead className="w-[100px] text-right">{t('Available funds')}</TableHead>
+                    <TableHead className="w-25 text-right">{t('Available funds')}</TableHead>
                     <TableHead className="text-right">{t('Expenses')}</TableHead>
                   </TableRow>
                 </TableHeader>

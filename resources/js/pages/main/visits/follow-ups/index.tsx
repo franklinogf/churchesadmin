@@ -1,3 +1,5 @@
+import VisitController from '@/actions/App/Http/Controllers/VisitController';
+import VisitFollowUpController from '@/actions/App/Http/Controllers/VisitFollowUpController';
 import { DataTable } from '@/components/custom-ui/datatable/data-table';
 import { DatatableActionsDropdown } from '@/components/custom-ui/datatable/data-table-actions-dropdown';
 import { DatatableCell } from '@/components/custom-ui/datatable/DatatableCell';
@@ -110,7 +112,7 @@ export default function VisitsIndex({ visit, memberOptions, followUpTypeOptions 
                   {t('Edit')}
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                  //   variant="destructive"
+                  variant="destructive"
                   onSelect={() => {
                     openConfirmation({
                       title: t('Are you sure you want to delete this :model?', { model: t('Follow Up') }),
@@ -119,7 +121,7 @@ export default function VisitsIndex({ visit, memberOptions, followUpTypeOptions 
                       actionVariant: 'destructive',
                       cancelLabel: t('Cancel'),
                       onAction: () => {
-                        router.delete(route('follow-ups.destroy', row.original.id), {
+                        router.visit(VisitFollowUpController.destroy(row.original.id), {
                           preserveState: true,
                           preserveScroll: true,
                         });
@@ -142,7 +144,11 @@ export default function VisitsIndex({ visit, memberOptions, followUpTypeOptions 
   return (
     <AppLayout
       title={t(':name follow ups', { name: `${visit.name} ${visit.lastName}` })}
-      breadcrumbs={[{ title: t('Visits'), href: route('visits.index') }, { title: `${visit.name} ${visit.lastName}` }, { title: t('Follow Ups') }]}
+      breadcrumbs={[
+        { title: t('Visits'), href: VisitController.index().url },
+        { title: `${visit.name} ${visit.lastName}` },
+        { title: t('Follow Ups') },
+      ]}
     >
       <PageTitle>{t(':name follow ups', { name: `${visit.name} ${visit.lastName}` })}</PageTitle>
       <FollowUpForm membersOptions={memberOptions} followUpTypeOptions={followUpTypeOptions} visit={visit} open={open} setOpen={setOpen} />

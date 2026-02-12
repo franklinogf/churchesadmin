@@ -61,3 +61,9 @@ export type Locale = `${LanguageCode}`;
 export type LanguageTranslations = Record<Locale, string | undefined>;
 
 export type PdfColumn = { name: string; label: string; selected: boolean };
+
+export type InputBaseProps = {
+  label?: string;
+  error?: string;
+  description?: string;
+};

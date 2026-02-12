@@ -29,6 +29,8 @@ import {
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
+import EmailController from '@/actions/App/Http/Controllers/Communication/EmailController';
+import EmailRetryController from '@/actions/App/Http/Controllers/Communication/EmailRetryController';
 import { EmailStatus } from '@/enums/EmailStatus';
 import type { Member } from '@/types/models/member';
 import type { Missionary } from '@/types/models/missionary';
@@ -154,7 +156,7 @@ export default function EmailsPage({ email: initialEmail, church }: EmailsPagePr
   return (
     <AppLayout
       title={t('Emails')}
-      breadcrumbs={[{ title: t('Communication') }, { title: t('Emails'), href: route('communication.emails.index') }, { title: email.subject }]}
+      breadcrumbs={[{ title: t('Communication') }, { title: t('Emails'), href: EmailController.index().url }, { title: email.subject }]}
     >
       <header className="mb-6 flex flex-col items-center gap-2">
         <PageTitle
@@ -176,7 +178,7 @@ export default function EmailsPage({ email: initialEmail, church }: EmailsPagePr
 
           <div className="col-span-full flex justify-end">
             <Button asChild variant="secondary" size="sm" className="mt-2 ml-auto">
-              <Link onClick={handleRetryEmail} method="post" href={route('communication.emails.retry', { email: email.id })}>
+              <Link onClick={handleRetryEmail} method="post" href={EmailRetryController({ email: email.id })}>
                 {t('Retry sending failed emails')}
               </Link>
             </Button>
@@ -209,7 +211,7 @@ function EmailDetailButton({ email }: { email: Email }) {
           </DialogDescription>
         </DialogHeader>
         <section className="flex flex-col gap-4">
-          <ScrollArea className="max-h-[400px]">
+          <ScrollArea className="max-h-100">
             <div className="prose dark:prose-invert" dangerouslySetInnerHTML={{ __html: email.body }}></div>
           </ScrollArea>
           {email.attachments && email.attachments.length > 0 ? (
@@ -251,13 +253,13 @@ function ErrorMessageDialog({
   const { t } = useTranslations();
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent className="sm:max-w-[600px]">
+      <DialogContent className="sm:max-w-150">
         <DialogHeader>
           <DialogTitle>{t('Error message')}</DialogTitle>
           <DialogDescription>{t('Email error if any')}</DialogDescription>
         </DialogHeader>
         <div className="flex flex-col gap-4">
-          <ScrollArea className="max-h-[400px] overflow-hidden">
+          <ScrollArea className="max-h-100 overflow-hidden">
             <div className="prose dark:prose-invert">
               <pre className="max-w-full text-balance">{recipient.emailMessage?.errorMessage ?? t('No error message available')}</pre>
             </div>

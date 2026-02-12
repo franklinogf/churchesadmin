@@ -1,3 +1,4 @@
+import CategoryController from '@/actions/App/Http/Controllers/CategoryController';
 import { DatatableActionsDropdown } from '@/components/custom-ui/datatable/data-table-actions-dropdown';
 import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTableColumnHeader';
 import { CategoryForm } from '@/components/forms/category-form';
@@ -50,7 +51,7 @@ export const columns: ColumnDef<Tag>[] = [
 
             {userCan(TenantPermission.CATEGORIES_DELETE) && (
               <DropdownMenuItem
-                // variant="destructive"
+                variant="destructive"
                 onSelect={() => {
                   openConfirmation({
                     title: t('Are you sure you want to delete this :model?', { model: t('Category') }),
@@ -59,7 +60,7 @@ export const columns: ColumnDef<Tag>[] = [
                     actionVariant: 'destructive',
                     cancelLabel: t('Cancel'),
                     onAction: () => {
-                      router.delete(route('categories.destroy', category.id), {
+                      router.visit(CategoryController.destroy(category.id), {
                         preserveState: true,
                         preserveScroll: true,
                       });

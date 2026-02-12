@@ -2,6 +2,7 @@ import { DataTable } from '@/components/custom-ui/datatable/data-table';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 
+import OfferingController from '@/actions/App/Http/Controllers/OfferingController';
 import { PageTitle } from '@/components/PageTitle';
 import { useLocaleDate } from '@/hooks/use-locale-date';
 import { useTranslations } from '@/hooks/use-translations';
@@ -20,7 +21,7 @@ export default function Index({ offerings, date }: IndexPageProps) {
   const { t } = useTranslations();
   const { formatLocaleDate } = useLocaleDate();
 
-  const breadcrumbs: BreadcrumbItem[] = [{ title: t('Offerings'), href: route('offerings.index') }];
+  const breadcrumbs: BreadcrumbItem[] = [{ title: t('Offerings'), href: OfferingController.index().url }];
 
   if (date !== null) {
     breadcrumbs.push({
@@ -34,7 +35,7 @@ export default function Index({ offerings, date }: IndexPageProps) {
         <DataTable
           headerButton={
             <Button asChild>
-              <Link href={route('offerings.create')}>{t('New :model', { model: t('Offering') })}</Link>
+              <Link href={OfferingController.create()}>{t('New :model', { model: t('Offering') })}</Link>
             </Button>
           }
           data={offerings as Offering[]}
@@ -46,7 +47,7 @@ export default function Index({ offerings, date }: IndexPageProps) {
         <DataTable
           headerButton={
             <Button asChild>
-              <Link href={route('offerings.create')}>{t('New :model', { model: t('Offering') })}</Link>
+              <Link href={OfferingController.create()}>{t('New :model', { model: t('Offering') })}</Link>
             </Button>
           }
           data={offerings as OfferingGroupedByDate[]}

@@ -1,3 +1,4 @@
+import UserController from '@/actions/App/Http/Controllers/UserController';
 import { DataTable } from '@/components/custom-ui/datatable/data-table';
 import { PageTitle } from '@/components/PageTitle';
 import { Button } from '@/components/ui/button';
@@ -23,7 +24,7 @@ export default function Index({ users }: IndexPageProps) {
         headerButton={
           userCan(TenantPermission.USERS_CREATE) && (
             <Button asChild>
-              <Link href={route('users.create')}>{t('Add :model', { model: t('User') })}</Link>
+              <Link href={UserController.create()}>{t('Add :model', { model: t('User') })}</Link>
             </Button>
           )
         }

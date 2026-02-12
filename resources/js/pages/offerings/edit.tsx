@@ -1,3 +1,4 @@
+import OfferingController from '@/actions/App/Http/Controllers/OfferingController';
 import { Form } from '@/components/forms/Form';
 import { ComboboxField } from '@/components/forms/inputs/ComboboxField';
 import { CurrencyField } from '@/components/forms/inputs/CurrencyField';
@@ -41,7 +42,7 @@ export default function Edit({ walletsOptions, paymentMethods, membersOptions, m
   const { t } = useTranslations();
   const { formatLocaleDate } = useLocaleDate();
 
-  const { data, setData, put, errors, processing } = useForm<Required<CreateForm>>({
+  const { data, setData, submit, errors, processing } = useForm<Required<CreateForm>>({
     date: formatDate(parseISO(offering.date), 'yyyy-MM-dd'),
     donor_id: offering.donor?.id?.toString() ?? '',
     wallet_id: offering.transaction.wallet?.id.toString() ?? '',
@@ -55,17 +56,17 @@ export default function Edit({ walletsOptions, paymentMethods, membersOptions, m
   });
 
   function handleSubmit() {
-    put(route('offerings.update', offering.id));
+    submit(OfferingController.update(offering.id));
   }
 
   const breadcrumbs: BreadcrumbItem[] = [
     {
       title: t('Offerings'),
-      href: route('offerings.index'),
+      href: OfferingController.index().url,
     },
     {
       title: formatLocaleDate(offering.date, { dateStyle: 'long' }) ?? '',
-      href: route('offerings.index', { date: offering.date }),
+      href: OfferingController.index({ query: { date: offering.date } }).url,
     },
     {
       title: t('Edit :model', { model: t('Offering') }),
@@ -101,7 +102,7 @@ export default function Edit({ walletsOptions, paymentMethods, membersOptions, m
                 required
                 label={t('Wallet')}
                 value={data.wallet_id}
-                onChange={(value) => {
+                onValueChange={(value) => {
                   setData('wallet_id', value);
                 }}
                 error={errors.wallet_id}
@@ -111,7 +112,7 @@ export default function Edit({ walletsOptions, paymentMethods, membersOptions, m
                 required
                 label={t('Payment method')}
                 value={data.payment_method}
-                onChange={(value) => {
+                onValueChange={(value) => {
                   setData('payment_method', value);
                 }}
                 error={errors.payment_method}
@@ -134,9 +135,7 @@ export default function Edit({ walletsOptions, paymentMethods, membersOptions, m
                 required
                 label={t('Amount')}
                 value={data.amount}
-                onChange={(value) => {
-                  setData('amount', value);
-                }}
+                onValueChange={(value) => value !== undefined && setData('amount', value)}
                 error={errors.amount}
               />
             </FieldsGrid>

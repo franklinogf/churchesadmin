@@ -1,3 +1,5 @@
+import PasswordController from '@/actions/App/Http/Controllers/Settings/PasswordController';
+import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
 import Heading from '@/components/heading';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
@@ -13,17 +15,17 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
     () => [
       {
         title: t('Profile'),
-        href: route('profile.edit'),
+        href: ProfileController.edit(),
         icon: null,
       },
       {
         title: t('Password'),
-        href: route('password.edit'),
+        href: PasswordController.edit(),
         icon: null,
       },
       {
         title: t('Appearance'),
-        href: route('appearance'),
+        href: '/settings/appearance',
         icon: null,
       },
     ],

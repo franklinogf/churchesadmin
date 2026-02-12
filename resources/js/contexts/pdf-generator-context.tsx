@@ -18,6 +18,12 @@ export const orientationOptions: SelectOption[] = orientations.map((orientation)
 export type PdfOrientation = (typeof orientations)[number];
 export type PdfFormat = (typeof formats)[number];
 
+type RouteSrc = {
+  format: PdfFormat;
+  orientation: PdfOrientation;
+  rows: string[];
+  unSelectedColumns: string[];
+};
 interface PdfGeneratorContextProps {
   columns: PdfColumn[];
   routeName: string;
@@ -30,7 +36,7 @@ interface PdfGeneratorContextProps {
   isColumnSelected: (columnName: string) => boolean;
   toggleColumnSelection: (columnName: string, isSelected: boolean) => void;
   isLoading: boolean;
-  routeSrc: string;
+  routeSrc: RouteSrc | undefined;
   formatOptions: SelectOption[];
   orientationOptions: SelectOption[];
   setIsLoading: (loading: boolean) => void;
@@ -58,16 +64,16 @@ export function PdfGeneratorProvider({
   const [orientation, setOrientation] = useState<PdfOrientation>(initialOrientation);
   const [rows, setRows] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [routeSrc, setRouteSrc] = useState(route(routeName));
+  const [routeSrc, setRouteSrc] = useState<RouteSrc>();
 
   const rawIframeSrc = useMemo(() => {
-    return route(routeName, {
+    return {
       format,
       orientation,
       rows,
       unSelectedColumns,
-    });
-  }, [format, orientation, rows, unSelectedColumns, routeName]);
+    };
+  }, [format, orientation, rows, unSelectedColumns]);
 
   useEffect(() => {
     setIsLoading(true);

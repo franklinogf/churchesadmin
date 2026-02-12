@@ -5,6 +5,7 @@ import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { TenantPermission } from '@/enums/TenantPermission';
 import { useUser } from '@/hooks/use-user';
 
+import MissionaryController from '@/actions/App/Http/Controllers/MissionaryController';
 import { DatatableActionsDropdown } from '@/components/custom-ui/datatable/data-table-actions-dropdown';
 import { useTranslations } from '@/hooks/use-translations';
 import useConfirmationStore from '@/stores/confirmationStore';
@@ -56,14 +57,14 @@ export const columns: ColumnDef<Missionary>[] = [
       return (
         <DatatableActionsDropdown>
           <DropdownMenuItem asChild>
-            <Link href={route('missionaries.show', row.original.id)}>
+            <Link href={MissionaryController.show(row.original.id).url}>
               <User2Icon className="size-3" />
               <span>{t('View')}</span>
             </Link>
           </DropdownMenuItem>
           {userCan(TenantPermission.MISSIONARIES_UPDATE) && (
             <DropdownMenuItem asChild>
-              <Link href={route('missionaries.edit', row.original.id)}>
+              <Link href={MissionaryController.edit(row.original.id).url}>
                 <Edit2Icon className="size-3" />
                 <span>{t('Edit')}</span>
               </Link>
@@ -71,7 +72,7 @@ export const columns: ColumnDef<Missionary>[] = [
           )}
           {userCan(TenantPermission.MISSIONARIES_DELETE) && (
             <DropdownMenuItem
-              //   variant="destructive"
+              variant="destructive"
               onClick={() => {
                 openConfirmation({
                   title: t('Are you sure you want to delete this :model?', { model: t('Missionary') }),
@@ -80,7 +81,7 @@ export const columns: ColumnDef<Missionary>[] = [
                   actionVariant: 'destructive',
                   cancelLabel: t('Cancel'),
                   onAction: () => {
-                    router.delete(route('missionaries.destroy', row.original.id));
+                    router.visit(MissionaryController.destroy(row.original.id).url);
                   },
                 });
               }}

@@ -1,8 +1,10 @@
 import { type BreadcrumbItem, type SelectOption, type SharedData } from '@/types';
 import { Transition } from '@headlessui/react';
 import { Link, router, useForm, usePage } from '@inertiajs/react';
-import { useMemo, type FormEventHandler } from 'react';
+import { useMemo, type SubmitEventHandler } from 'react';
 
+import EmailVerificationNotificationController from '@/actions/App/Http/Controllers/Auth/EmailVerificationNotificationController';
+import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
 import { ComboboxField } from '@/components/forms/inputs/ComboboxField';
 import { CountryField } from '@/components/forms/inputs/CountryField';
 import { InputField } from '@/components/forms/inputs/InputField';
@@ -34,17 +36,17 @@ export default function Profile({ mustVerifyEmail, status, timezones, country, w
   const { hasRole } = useUser();
   const { auth } = usePage<SharedData>().props;
 
-  const { data, setData, patch, errors, processing, recentlySuccessful } = useForm<Required<ProfileForm>>({
+  const { data, setData, submit, errors, processing, recentlySuccessful } = useForm<Required<ProfileForm>>({
     name: auth.user.name,
     email: auth.user.email,
     timezone: country === auth.user.timezoneCountry ? auth.user.timezone : '',
     timezone_country: country,
     current_year_id: auth.user.currentYearId.toString(),
   });
-  const submit: FormEventHandler = (e) => {
+  const handleSubmit: SubmitEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
 
-    patch(route('profile.update'), {
+    submit(ProfileController.update(), {
       preserveScroll: true,
     });
   };
@@ -52,7 +54,7 @@ export default function Profile({ mustVerifyEmail, status, timezones, country, w
     () => [
       {
         title: t('Profile Settings'),
-        href: route('profile.edit'),
+        href: ProfileController.edit().url,
       },
     ],
     [t],
@@ -63,7 +65,7 @@ export default function Profile({ mustVerifyEmail, status, timezones, country, w
         <div className="space-y-6">
           <HeadingSmall title={t('Profile information')} description={t('Update your name and email address')} />
 
-          <form onSubmit={submit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <InputField
               label={t('Name')}
               value={data.name}
@@ -88,7 +90,7 @@ export default function Profile({ mustVerifyEmail, status, timezones, country, w
                 <p className="text-muted-foreground -mt-4 text-sm">
                   {t('Your email address is unverified.')}{' '}
                   <Link
-                    href={route('verification.send')}
+                    href={EmailVerificationNotificationController.store()}
                     method="post"
                     as="button"
                     className="text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current! dark:decoration-neutral-500"
@@ -107,7 +109,7 @@ export default function Profile({ mustVerifyEmail, status, timezones, country, w
               label={t('Country')}
               value={data.timezone_country}
               onChange={(country) => {
-                router.get(route('profile.edit'), { country }, { preserveScroll: true, only: ['timezones', 'country'] });
+                router.visit(ProfileController.edit({ query: { country } }), { preserveScroll: true, only: ['timezones', 'country'] });
                 setData('timezone_country', country);
                 setData('timezone', ''); // Reset timezone when country changes
               }}
@@ -128,7 +130,7 @@ export default function Profile({ mustVerifyEmail, status, timezones, country, w
                 <SelectField
                   label={t('Current year')}
                   value={data.current_year_id}
-                  onChange={(value) => setData('current_year_id', value)}
+                  onValueChange={(value) => setData('current_year_id', value)}
                   required
                   error={errors.current_year_id}
                   options={workingYears}

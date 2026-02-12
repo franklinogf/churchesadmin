@@ -1,3 +1,6 @@
+import TenantGeneralController from '@/actions/App/Http/Controllers/Settings/TenantGeneralController';
+import TenantLanguageController from '@/actions/App/Http/Controllers/Settings/TenantLanguageController';
+import TenantYearEndController from '@/actions/App/Http/Controllers/Settings/TenantYearEndController';
 import Heading from '@/components/heading';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
@@ -17,16 +20,16 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
     () => [
       {
         title: t('General'),
-        href: route('church.general.edit'),
+        href: TenantGeneralController.edit(),
       },
       {
         title: t('Language'),
-        href: route('church.language.edit'),
+        href: TenantLanguageController.edit(),
         permissionNeeded: TenantPermission.SETTINGS_CHANGE_LANGUAGE,
       },
       {
         title: t('Year End Closing'),
-        href: route('church.general.year-end.edit'),
+        href: TenantYearEndController.edit(),
         permissionNeeded: TenantPermission.SETTINGS_CLOSE_YEAR,
       },
       //   {

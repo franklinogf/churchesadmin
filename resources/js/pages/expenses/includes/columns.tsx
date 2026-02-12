@@ -1,3 +1,4 @@
+import ExpenseController from '@/actions/App/Http/Controllers/ExpenseController';
 import { DatatableActionsDropdown } from '@/components/custom-ui/datatable/data-table-actions-dropdown';
 import { DatatableCell } from '@/components/custom-ui/datatable/DatatableCell';
 import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTableColumnHeader';
@@ -79,7 +80,7 @@ export const columns: ColumnDef<Expense>[] = [
           {/* {userCan(UserPermission.UPDATE_SKILLS) && ( */}
 
           <DropdownMenuItem asChild>
-            <Link href={route('expenses.edit', expense.id)}>
+            <Link href={ExpenseController.edit(expense.id)}>
               <Edit2Icon className="size-3" />
               <span>{t('Edit')}</span>
             </Link>
@@ -88,7 +89,7 @@ export const columns: ColumnDef<Expense>[] = [
           {/* )} */}
 
           <DropdownMenuItem
-            // variant="destructive"
+            variant="destructive"
             onClick={() => {
               openConfirmation({
                 title: t('Are you sure you want to delete this :model?', { model: t('Expense') }),
@@ -97,7 +98,7 @@ export const columns: ColumnDef<Expense>[] = [
                 actionVariant: 'destructive',
                 cancelLabel: t('Cancel'),
                 onAction: () => {
-                  router.delete(route('expenses.destroy', expense.id), {
+                  router.visit(ExpenseController.destroy(expense.id), {
                     preserveScroll: true,
                   });
                 },

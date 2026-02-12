@@ -1,3 +1,4 @@
+import WalletController from '@/actions/App/Http/Controllers/WalletController';
 import { DataTable } from '@/components/custom-ui/datatable/data-table';
 import { PageTitle } from '@/components/PageTitle';
 import { Badge } from '@/components/ui/badge';
@@ -17,7 +18,7 @@ export default function Show({ wallet, initialRow }: { wallet: MakeRequired<Wall
     () => [
       {
         title: t('Wallets'),
-        href: route('wallets.index'),
+        href: WalletController.index().url,
       },
       {
         title: wallet.name,

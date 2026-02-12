@@ -1,8 +1,9 @@
 import { type BreadcrumbItem } from '@/types';
 import { Transition } from '@headlessui/react';
 import { useForm } from '@inertiajs/react';
-import { useMemo, type FormEventHandler } from 'react';
+import { useMemo, type SubmitEvent } from 'react';
 
+import TenantGeneralController from '@/actions/App/Http/Controllers/Settings/TenantGeneralController';
 import { FileField } from '@/components/forms/inputs/FileField';
 import { InputField } from '@/components/forms/inputs/InputField';
 import { SubmitButton } from '@/components/forms/SubmitButton';
@@ -19,15 +20,15 @@ type GeneralForm = {
 
 export default function Language({ church }: { church: Church }) {
   const { t } = useTranslations();
-  const { data, setData, post, errors, processing, recentlySuccessful } = useForm<Required<GeneralForm>>({
+  const { data, setData, submit, errors, processing, recentlySuccessful } = useForm<Required<GeneralForm>>({
     name: church.name,
     logo: null,
   });
 
-  const submitGeneral: FormEventHandler = (e) => {
+  const handleSubmit = (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    post(route('church.general.update'), {
+    submit(TenantGeneralController.update(), {
       preserveScroll: true,
     });
   };
@@ -40,7 +41,7 @@ export default function Language({ church }: { church: Church }) {
         <div className="space-y-6">
           <HeadingSmall title={t('General information')} description={t('Update the church information')} />
 
-          <form onSubmit={submitGeneral} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
             <InputField
               required
               className="max-w-xs"

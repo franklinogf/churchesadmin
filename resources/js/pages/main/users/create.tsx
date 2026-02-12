@@ -1,3 +1,4 @@
+import UserController from '@/actions/App/Http/Controllers/UserController';
 import { type Option } from '@/components/custom-ui/MultiSelect';
 import { Form } from '@/components/forms/Form';
 import { FieldsGrid } from '@/components/forms/inputs/FieldsGrid';
@@ -32,7 +33,7 @@ export default function Edit({ permissions, roles }: EditPageProps) {
   const { t } = useTranslations();
 
   // const userPermissions = user.permissions?.map((permission) => permission.name);
-  const { data, setData, errors, post, processing, transform } = useForm<CreateForm>({
+  const { data, setData, errors, submit, processing, transform } = useForm<CreateForm>({
     name: '',
     email: '',
     password: '',
@@ -47,13 +48,16 @@ export default function Edit({ permissions, roles }: EditPageProps) {
   }));
 
   function handleSubmit() {
-    post(route('users.store'));
+    submit(UserController.store());
   }
   const selectedRoles = data.roles.map((role) => role.value);
   const selectedRolesPermissions = getUniquePermissions(roles, selectedRoles);
 
   return (
-    <AppLayout title={t('Users')} breadcrumbs={[{ title: t('Users'), href: route('users.index') }, { title: t('Add :model', { model: t('User') }) }]}>
+    <AppLayout
+      title={t('Users')}
+      breadcrumbs={[{ title: t('Users'), href: UserController.index().url }, { title: t('Add :model', { model: t('User') }) }]}
+    >
       <PageTitle>{t('Add :model', { model: t('User') })}</PageTitle>
       <div className="mt-2 flex w-full items-center justify-center">
         <Form className="w-full max-w-2xl" onSubmit={handleSubmit} isSubmitting={processing}>
@@ -109,8 +113,8 @@ export default function Edit({ permissions, roles }: EditPageProps) {
                       disabled={existsOnRoles}
                       key={permission.id}
                       label={permission.label ?? ''}
-                      value={value}
-                      onChange={(checked) => {
+                      checked={value}
+                      onCheckedChange={(checked) => {
                         if (checked) {
                           setData('additional_permissions', [...data.additional_permissions, permission.name.toString()]);
                         } else {

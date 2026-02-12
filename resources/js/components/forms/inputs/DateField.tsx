@@ -7,13 +7,13 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { useLocaleDate } from '@/hooks/use-locale-date';
 import { useTranslations } from '@/hooks/use-translations';
 import { parseLocalDate } from '@/lib/datetime';
+import type { InputBaseProps } from '@/types';
 import { format } from 'date-fns';
 import { ChevronDownIcon } from 'lucide-react';
 import { useId, useState } from 'react';
 
-interface DatetimeFieldProps {
-  error?: string;
-  label?: string;
+interface DateFieldProps extends Omit<InputBaseProps, 'description'> {
+  name?: string;
   className?: string;
   value?: string | null;
   required?: boolean;
@@ -23,13 +23,15 @@ interface DatetimeFieldProps {
   minDate?: Date | 'today';
 }
 
-export function DateField({ label, error, className, disabled, value, onChange, required, maxDate, minDate }: DatetimeFieldProps) {
+export function DateField({ label, error, className, disabled, value, onChange, required, maxDate, minDate, name }: DateFieldProps) {
   const { getCurrentDateLocale } = useLocaleDate();
   const { t } = useTranslations();
   const id = useId();
   const [open, setOpen] = useState(false);
+  const [date, setDate] = useState<string | null>(value ?? null);
 
   const handleDateChange = (selectedDate: Date | null) => {
+    setDate(selectedDate ? format(selectedDate, 'yyyy-MM-dd') : null);
     onChange?.(selectedDate ? format(selectedDate, 'yyyy-MM-dd') : null);
   };
 
@@ -41,12 +43,13 @@ export function DateField({ label, error, className, disabled, value, onChange, 
     };
   }
   return (
-    <Field className={className}>
+    <Field data-disabled={disabled} data-invalid={!!error} className={className}>
+      {name && <input type="hidden" name={name} value={date ?? ''} />}
       <FieldLabel id={id} disabled={disabled} label={label} required={required} />
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button disabled={disabled} variant="outline" id={id} className="w-full justify-between font-normal">
-            {value ? format(parseLocalDate(value), 'PPP', { locale: getCurrentDateLocale() }) : t('Select a date')}
+            {date ? format(parseLocalDate(date), 'PPP', { locale: getCurrentDateLocale() }) : t('Select a date')}
             <ChevronDownIcon />
           </Button>
         </PopoverTrigger>
@@ -57,9 +60,9 @@ export function DateField({ label, error, className, disabled, value, onChange, 
             locale={getCurrentDateLocale()}
             mode="single"
             className="w-full"
-            selected={value ? parseLocalDate(value) : undefined}
+            selected={date ? parseLocalDate(date) : undefined}
             captionLayout="dropdown"
-            defaultMonth={value ? parseLocalDate(value) : undefined}
+            defaultMonth={date ? parseLocalDate(date) : undefined}
             onSelect={(newDate) => {
               handleDateChange(newDate || null);
               setOpen(false);

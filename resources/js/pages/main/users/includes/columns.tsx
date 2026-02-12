@@ -1,3 +1,4 @@
+import UserController from '@/actions/App/Http/Controllers/UserController';
 import { DatatableActionsDropdown } from '@/components/custom-ui/datatable/data-table-actions-dropdown';
 import { DatatableCell } from '@/components/custom-ui/datatable/DatatableCell';
 import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTableColumnHeader';
@@ -59,7 +60,7 @@ export const columns: ColumnDef<User>[] = [
         <DatatableActionsDropdown>
           {userCan(TenantPermission.USERS_UPDATE) && (
             <DropdownMenuItem asChild>
-              <Link href={route('users.edit', user.id)}>
+              <Link href={UserController.edit(user.id)}>
                 <Edit2Icon className="size-3" />
                 <span>{t('Edit')}</span>
               </Link>
@@ -67,7 +68,7 @@ export const columns: ColumnDef<User>[] = [
           )}
           {userCan(TenantPermission.USERS_DELETE) && (
             <DropdownMenuItem
-              //   variant="destructive"
+              variant="destructive"
               onClick={() => {
                 openConfirmation({
                   title: t('Are you sure you want to delete this :model?', { model: t('User') }),
@@ -76,7 +77,7 @@ export const columns: ColumnDef<User>[] = [
                   actionVariant: 'destructive',
                   cancelLabel: t('Cancel'),
                   onAction: () => {
-                    router.delete(route('users.destroy', user.id), {
+                    router.visit(UserController.destroy(user.id), {
                       preserveState: true,
                       preserveScroll: true,
                     });
