@@ -8,7 +8,9 @@ use App\Models\ExpenseType;
 use App\Models\Member;
 use Bavix\Wallet\Models\Transaction;
 use Carbon\CarbonImmutable;
-use Pest\Expectation;
+use Pest\Mixins\Expectation;
+
+// use Pest\Expectation;
 
 test('to array', function (): void {
     $check = Check::factory()->create()->fresh();
