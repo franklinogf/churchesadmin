@@ -29,8 +29,8 @@ final class CalendarEventResource extends JsonResource
             'startAt' => $this->start_at->toISOString(),
             'endAt' => $this->end_at->toISOString(),
             'createdBy' => $this->created_by,
-            'createdAt' => $this->created_at->inUserTimezone()->formatAsDatetime(),
-            'updatedAt' => $this->updated_at->inUserTimezone()->formatAsDatetime(),
+            'createdAt' => $this->created_at,
+            'updatedAt' => $this->updated_at,
             'creator' => $this->whenLoaded('creator'),
         ];
     }

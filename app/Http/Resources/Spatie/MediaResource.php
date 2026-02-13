@@ -33,8 +33,8 @@ final class MediaResource extends JsonResource
             'order' => $this->order_column,
             'url' => $this->getFullUrl(),
             'collectionName' => $this->collection_name,
-            'createdAt' => $this->created_at?->inUserTimezone()->formatAsDatetime(),
-            'updatedAt' => $this->updated_at?->inUserTimezone()->formatAsDatetime(),
+            'createdAt' => $this->created_at,
+            'updatedAt' => $this->updated_at,
         ];
     }
 }

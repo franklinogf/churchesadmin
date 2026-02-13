@@ -19,8 +19,8 @@
                 **{{ __('Location') }}:** {{ $event->location }}
             @endif
 
-            **{{ __('Start') }}:** {{ $event->start_at->inUserTimezone()->format('l, F j, Y - g:i A') }}
-            **{{ __('End') }}:** {{ $event->end_at->inUserTimezone()->format('l, F j, Y - g:i A') }}
+            **{{ __('Start') }}:** {{ $event->start_at->format('l, F j, Y - g:i A') }}
+            **{{ __('End') }}:** {{ $event->end_at->format('l, F j, Y - g:i A') }}
         </x-mail::panel>
     @endforeach
 

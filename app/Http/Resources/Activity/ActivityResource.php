@@ -39,8 +39,8 @@ final class ActivityResource extends JsonResource
             'causerType' => $this->causer_type,
             'causerId' => $this->causer_id,
             'properties' => $this->properties,
-            'createdAt' => $this->created_at?->inUserTimezone()->formatAsDatetime(),
-            'updatedAt' => $this->updated_at?->inUserTimezone()->formatAsDatetime(),
+            'createdAt' => $this->created_at,
+            'updatedAt' => $this->updated_at,
 
             'causer' => $this->whenLoaded('causer', fn (): ?UserResource => $this->causer ? new UserResource($this->causer) : null),
             'subject' => $this->whenLoaded('subject', fn (): CheckResource|ExpenseResource|MemberResource|MissionaryResource|OfferingResource|UserResource|VisitResource|null => $this->subject ?

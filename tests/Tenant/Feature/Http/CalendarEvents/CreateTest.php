@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Enums\CalendarEventColorEnum;
 use App\Enums\TenantPermission;
 
 use function Pest\Laravel\assertDatabaseHas;
@@ -29,6 +30,7 @@ describe('if user has permission', function (): void {
             'title' => 'Sunday Service',
             'description' => 'Weekly Sunday morning service',
             'location' => 'Main Sanctuary',
+            'color' => CalendarEventColorEnum::RED->value,
             'start_at' => now()->addDay()->setTime(9, 0)->toISOString(),
             'end_at' => now()->addDay()->setTime(11, 0)->toISOString(),
         ];
@@ -43,12 +45,14 @@ describe('if user has permission', function (): void {
             'title' => 'Sunday Service',
             'description' => 'Weekly Sunday morning service',
             'location' => 'Main Sanctuary',
+            'color' => CalendarEventColorEnum::RED->value,
         ]);
     });
 
     it('can store a calendar event without optional fields', function (): void {
         $eventData = [
             'title' => 'Prayer Meeting',
+            'color' => CalendarEventColorEnum::GREEN->value,
             'start_at' => now()->addDay()->setTime(19, 0)->toISOString(),
             'end_at' => now()->addDay()->setTime(20, 0)->toISOString(),
         ];
@@ -63,6 +67,7 @@ describe('if user has permission', function (): void {
             'title' => 'Prayer Meeting',
             'description' => null,
             'location' => null,
+            'color' => CalendarEventColorEnum::GREEN->value,
         ]);
     });
 
@@ -75,6 +80,7 @@ describe('if user has permission', function (): void {
     it('validates that end date is after or equal to start date', function (): void {
         $eventData = [
             'title' => 'Invalid Event',
+            'color' => CalendarEventColorEnum::YELLOW->value,
             'start_at' => now()->addDay()->setTime(9, 0)->toISOString(),
             'end_at' => now()->setTime(10, 0)->toISOString(), // End is before start
         ];
@@ -89,6 +95,7 @@ describe('if user has permission', function (): void {
             'title' => 'Church Picnic',
             'description' => 'Annual church picnic',
             'location' => 'Central Park',
+            'color' => CalendarEventColorEnum::YELLOW->value,
             'start_at' => now()->addDays(7)->setTime(0, 0)->toISOString(),
             'end_at' => now()->addDays(7)->setTime(23, 45)->toISOString(),
         ];
@@ -101,6 +108,7 @@ describe('if user has permission', function (): void {
 
         assertDatabaseHas('calendar_events', [
             'title' => 'Church Picnic',
+            'color' => CalendarEventColorEnum::YELLOW->value,
         ]);
     });
 });
@@ -113,6 +121,7 @@ describe('if user does not have permission', function (): void {
     it('cannot store a calendar event', function (): void {
         $eventData = [
             'title' => 'Sunday Service',
+            'color' => CalendarEventColorEnum::RED->value,
             'start_at' => now()->addDay()->setTime(9, 0)->toISOString(),
             'end_at' => now()->addDay()->setTime(11, 0)->toISOString(),
         ];

@@ -22,12 +22,12 @@ final class EmailableResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'sentAt' => $this->sent_at?->inUserTimezone()->formatAsDatetime(),
+            'sentAt' => $this->sent_at,
             'status' => $this->status->value,
             'replyTo' => $this->email->reply_to,
             'errorMessage' => $this->error_message,
-            'createdAt' => $this->created_at->inUserTimezone()->formatAsDatetime(),
-            'updatedAt' => $this->updated_at->inUserTimezone()->formatAsDatetime(),
+            'createdAt' => $this->created_at,
+            'updatedAt' => $this->updated_at,
         ];
     }
 }

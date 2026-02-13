@@ -80,27 +80,27 @@ final class AppServiceProvider extends ServiceProvider
     {
         Date::use(CarbonImmutable::class);
 
-        CarbonImmutable::macro('inAppTimezone', function (): CarbonImmutable {
-            /** @var CarbonImmutable $this */
-            return $this->setTimezone(config()->string('app.timezone_display'));
-        });
+        // CarbonImmutable::macro('inAppTimezone', function (): CarbonImmutable {
+        //     /** @var CarbonImmutable $this */
+        //     return $this->setTimezone(config()->string('app.timezone_display'));
+        // });
 
-        CarbonImmutable::macro('inUserTimezone', function (): CarbonImmutable {
-            /** @var TenantUser|User|null $currentUser */
-            $currentUser = Auth::user();
-            if (! $currentUser instanceof User) {
-                /** @var CarbonImmutable $this */
-                return $this->setTimezone(config()->string('app.timezone_display'));
-            }
+        // CarbonImmutable::macro('inUserTimezone', function (): CarbonImmutable {
+        //     /** @var TenantUser|User|null $currentUser */
+        //     $currentUser = Auth::user();
+        //     if (! $currentUser instanceof User) {
+        //         /** @var CarbonImmutable $this */
+        //         return $this->setTimezone(config()->string('app.timezone_display'));
+        //     }
 
-            /** @var CarbonImmutable $this */
-            return $this->setTimezone($currentUser->timezone ?? config()->string('app.timezone_display'));
-        });
+        //     /** @var CarbonImmutable $this */
+        //     return $this->setTimezone($currentUser->timezone ?? config()->string('app.timezone_display'));
+        // });
 
-        CarbonImmutable::macro('formatAsDatetime', function (): string {
-            /** @var CarbonImmutable $this */
-            return $this->format('Y-m-d H:i:s');
-        });
+        // CarbonImmutable::macro('formatAsDatetime', function (): string {
+        //     /** @var CarbonImmutable $this */
+        //     return $this->format('Y-m-d H:i:s');
+        // });
     }
 
     private function configureModels(): void

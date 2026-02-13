@@ -28,11 +28,11 @@ final class FollowUpResource extends JsonResource
             'memberId' => $this->member_id,
             'member' => new MemberResource($this->whenLoaded('member')),
             'type' => $this->type->value,
-            'followUpAt' => $this->follow_up_at->inUserTimezone()->formatAsDatetime(),
+            'followUpAt' => $this->follow_up_at,
             'notes' => $this->notes,
-            'createdAt' => $this->created_at->inUserTimezone()->formatAsDatetime(),
-            'updatedAt' => $this->updated_at->inUserTimezone()->formatAsDatetime(),
-            'deletedAt' => $this->deleted_at?->inUserTimezone()->formatAsDatetime(),
+            'createdAt' => $this->created_at,
+            'updatedAt' => $this->updated_at,
+            'deletedAt' => $this->deleted_at,
         ];
     }
 }

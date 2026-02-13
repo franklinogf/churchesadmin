@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Enums\CalendarEventColorEnum;
 use App\Enums\TenantPermission;
 use App\Models\CalendarEvent;
 
@@ -14,8 +15,9 @@ it('cannot update a calendar event if not authenticated', function (): void {
 
     $eventData = [
         'title' => 'Updated Service',
-        'start_at' => $event->start_at->format('Y-m-d H:i:s'),
-        'end_at' => $event->end_at->format('Y-m-d H:i:s'),
+        'color' => $event->color->value,
+        'start_at' => $event->start_at->toISOString(),
+        'end_at' => $event->end_at->toISOString(),
     ];
 
     put(route('calendar-events.update', $event), $eventData)
@@ -32,14 +34,16 @@ describe('if user has permission', function (): void {
             'title' => 'Original Title',
             'description' => 'Original Description',
             'location' => 'Original Location',
+            'color' => CalendarEventColorEnum::GREEN->value,
         ]);
 
         $eventData = [
             'title' => 'Updated Title',
             'description' => 'Updated Description',
             'location' => 'Updated Location',
-            'start_at' => $event->start_at->format('Y-m-d H:i:s'),
-            'end_at' => $event->end_at->format('Y-m-d H:i:s'),
+            'color' => CalendarEventColorEnum::RED->value,
+            'start_at' => $event->start_at->toISOString(),
+            'end_at' => $event->end_at->toISOString(),
         ];
 
         from(route('calendar-events.index'))
@@ -53,6 +57,7 @@ describe('if user has permission', function (): void {
             'title' => 'Updated Title',
             'description' => 'Updated Description',
             'location' => 'Updated Location',
+            'color' => CalendarEventColorEnum::RED->value,
         ]);
     });
 
@@ -64,8 +69,9 @@ describe('if user has permission', function (): void {
 
         $eventData = [
             'title' => $event->title,
-            'start_at' => $newStartAt->format('Y-m-d H:i:s'),
-            'end_at' => $newEndAt->format('Y-m-d H:i:s'),
+            'color' => $event->color->value,
+            'start_at' => $newStartAt->toISOString(),
+            'end_at' => $newEndAt->toISOString(),
         ];
 
         from(route('calendar-events.index'))
@@ -98,8 +104,9 @@ describe('if user does not have permission', function (): void {
 
         $eventData = [
             'title' => 'Updated Title',
-            'start_at' => $event->start_at->format('Y-m-d H:i:s'),
-            'end_at' => $event->end_at->format('Y-m-d H:i:s'),
+            'color' => $event->color->value,
+            'start_at' => $event->start_at->toISOString(),
+            'end_at' => $event->end_at->toISOString(),
         ];
 
         put(route('calendar-events.update', $event), $eventData)
