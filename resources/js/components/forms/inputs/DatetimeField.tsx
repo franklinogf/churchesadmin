@@ -21,6 +21,7 @@ interface DatetimeFieldProps {
   timeLabel?: string;
   className?: string;
   value?: Date | null;
+  defaultValue?: Date | null;
   required?: boolean;
   onChange?: (value: Date | null) => void;
   disabled?: boolean;
@@ -28,6 +29,7 @@ interface DatetimeFieldProps {
   maxDate?: Date | 'today';
   minDate?: Date | 'today';
   use24HourFormat?: boolean;
+  name?: string;
 }
 
 const generateTimeSlots = (use24HourFormat: boolean) => {
@@ -63,14 +65,16 @@ export function DatetimeField({
   maxDate,
   minDate,
   use24HourFormat = false,
+  name,
+  defaultValue,
 }: DatetimeFieldProps) {
   const { getCurrentDateLocale } = useLocaleDate();
   const { t } = useTranslations();
   const dateId = useId();
   const timeId = useId();
   const [open, setOpen] = useState(false);
-  const [date, setDate] = useState(value ?? undefined);
-  const [time, setTime] = useState<string | undefined>(date ? format(date, use24HourFormat ? 'HH:mm' : 'hh:mm aa') : undefined);
+  const [date, setDate] = useState(value ?? defaultValue ?? undefined);
+  const [time, setTime] = useState<string | undefined>(date ? format(date, 'hh:mm') : undefined);
 
   const TIME_SLOTS = generateTimeSlots(use24HourFormat);
 
@@ -104,6 +108,7 @@ export function DatetimeField({
 
   return (
     <FieldGroup className={cn('flex-row', className)}>
+      {name && <input type="hidden" name={name} value={date ? date.toISOString() : ''} />}
       <Field>
         <FieldLabel id={dateId} disabled={disabled} label={label} required={required} />
         <Popover open={open} onOpenChange={setOpen}>
