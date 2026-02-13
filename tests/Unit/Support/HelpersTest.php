@@ -6,16 +6,17 @@ namespace Tests\Unit\Support;
 
 use App\Models\Church;
 use App\Models\TenantUser;
-use Bavix\Wallet\Services\FormatterService;
-use Bavix\Wallet\Services\FormatterServiceInterface;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
+function createMockUrl(string $url): string
+{
+    return "https://{$url}";
+}
 beforeEach(function (): void {
-    config()->set('app.url', 'https://central.test');
+    config()->set('app.url', createMockUrl('central.test'));
     config()->set('app.timezone', 'UTC');
-    app()->instance(FormatterServiceInterface::class, new FormatterService());
 });
 
 describe('serverDate helper', function (): void {
@@ -58,7 +59,7 @@ describe('create_tenant_url helper', function (): void {
 
         $url = create_tenant_url($church, 'dashboard');
 
-        expect($url)->toBe('https://demo.central.test/dashboard');
+        expect($url)->toBe(createMockUrl('demo.central.test/dashboard'));
     });
 
     it('includes route parameters when generating the url', function (): void {
@@ -69,7 +70,7 @@ describe('create_tenant_url helper', function (): void {
 
         $url = create_tenant_url($church, 'impersonate', ['token' => 'abc123']);
 
-        expect($url)->toBe('https://demo.central.test/impersonate/abc123');
+        expect($url)->toBe(createMockUrl('demo.central.test/impersonate/abc123'));
     });
 
     it('returns null when the church is not provided', function (): void {
@@ -90,7 +91,7 @@ describe('app_url_subdomain helper', function (): void {
     it('creates fully qualified urls using the provided subdomain', function (): void {
         $url = app_url_subdomain('reports');
 
-        expect($url)->toBe('https://reports.central.test');
+        expect($url)->toBe(createMockUrl('reports.central.test'));
     });
 });
 
