@@ -1,40 +1,28 @@
+import { Field, FieldContent, FieldDescription, FieldError, FieldLabel } from '@/components/ui/field';
 import { Switch } from '@/components/ui/switch';
-import { useId } from 'react';
-import { FieldContainer } from './FieldContainer';
-import { FieldError } from './FieldError';
-import { FieldLabel } from './FieldLabel';
+import type { InputBaseProps } from '@/types';
+import { useId, type ComponentProps } from 'react';
 
-interface SwitchFieldProps {
-  label: string;
-  disabled?: boolean;
-  value?: boolean;
-  error?: string;
-  description?: string;
-  onChange?: (checked: boolean) => void;
-}
-export function SwitchField({ label, disabled, value, error, description, onChange }: SwitchFieldProps) {
+type SwitchFieldProps = InputBaseProps & ComponentProps<typeof Switch>;
+
+export function SwitchField({ label, disabled, error, description, name, defaultChecked, className, ...props }: SwitchFieldProps) {
   const id = useId();
   return (
-    <FieldContainer>
-      <div className="space-y-0.5">
-        <div className="flex items-center space-x-2">
-          <Switch
-            aria-describedby={description ? `${id}-description` : undefined}
-            name={id}
-            disabled={disabled}
-            checked={value}
-            onCheckedChange={onChange}
-            id={id}
-          />
-          <FieldLabel disabled={disabled} id={id} label={label} />
-        </div>
-        {description && (
-          <p className="text-muted-foreground text-sm" id={`${id}-description`}>
-            {description}
-          </p>
-        )}
-      </div>
-      <FieldError error={error} />
-    </FieldContainer>
+    <Field orientation="horizontal" data-disabled={disabled} data-invalid={!!error} className={className}>
+      <FieldContent>
+        <FieldLabel htmlFor={id}>{label}</FieldLabel>
+        <FieldDescription>{description}</FieldDescription>
+        <FieldError>{error}</FieldError>
+      </FieldContent>
+      <Switch
+        aria-invalid={!!error}
+        name={name}
+        aria-describedby={description ? `${id}-description` : undefined}
+        disabled={disabled}
+        defaultChecked={defaultChecked}
+        id={id}
+        {...props}
+      />
+    </Field>
   );
 }

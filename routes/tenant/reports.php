@@ -11,9 +11,10 @@ use App\Http\Controllers\Pdf\ContributionPdfController;
 use App\Http\Controllers\Pdf\EntriesExpensesPdfController;
 use App\Http\Controllers\Pdf\MemberPdfController;
 use App\Http\Controllers\Pdf\MissionaryPdfController;
+use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 
-Route::inertia('/reports', 'reports/index')->name('reports');
+Route::get('/reports', ReportController::class)->name('reports');
 
 Route::get('/reports/entries_expenses', [EntriesExpensesPdfController::class, 'index'])->name('reports.entries_expenses');
 Route::get('/reports/entries_expenses/pdf', [EntriesExpensesPdfController::class, 'show'])

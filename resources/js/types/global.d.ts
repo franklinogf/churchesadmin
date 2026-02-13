@@ -1,8 +1,4 @@
-import type { route as routeFn } from 'ziggy-js';
-
-declare global {
-  const route: typeof routeFn;
-}
+import '@tanstack/react-table';
 
 declare module '@tanstack/react-table' {
   //allows us to define custom properties for our columns

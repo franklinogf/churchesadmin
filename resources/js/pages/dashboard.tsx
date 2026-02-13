@@ -22,7 +22,7 @@ export default function Dashboard({ expenses, offerings, persons, wallets }: Das
           <OfferingsChart data={offerings} />
           <PersonsChart data={persons} />
         </div>
-        <div className="border-sidebar-border/70 dark:border-sidebar-border relative min-h-[100vh] flex-1 overflow-hidden rounded-xl border md:min-h-min">
+        <div className="border-sidebar-border/70 dark:border-sidebar-border relative min-h-screen flex-1 overflow-hidden rounded-xl border md:min-h-min">
           <WalletsChart data={wallets} />
         </div>
       </div>

@@ -1,3 +1,4 @@
+import MemberController from '@/actions/App/Http/Controllers/MemberController';
 import { DataTable } from '@/components/custom-ui/datatable/data-table';
 import { PageTitle } from '@/components/PageTitle';
 import { Button } from '@/components/ui/button';
@@ -29,7 +30,7 @@ export default function Index({ members }: IndexProps) {
         headerButton={
           userCan(TenantPermission.MEMBERS_CREATE) && (
             <Button asChild>
-              <Link href={route('members.create')}>{t('Add :model', { model: t('Member') })}</Link>
+              <Link href={MemberController.create()}>{t('Add :model', { model: t('Member') })}</Link>
             </Button>
           )
         }

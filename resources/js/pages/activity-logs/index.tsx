@@ -1,3 +1,6 @@
+import ActivityLogController from '@/actions/App/Http/Controllers/ActivityLogController';
+import ActivityLogPdfController from '@/actions/App/Http/Controllers/Pdf/ActivityLogPdfController';
+import ReportController from '@/actions/App/Http/Controllers/ReportController';
 import { DataTable } from '@/components/custom-ui/datatable/data-table';
 import { PageTitle } from '@/components/PageTitle';
 import { Button } from '@/components/ui/button';
@@ -12,7 +15,6 @@ import { router } from '@inertiajs/react';
 import { FileText, X } from 'lucide-react';
 import { useState } from 'react';
 import { columns } from './includes/columns';
-
 interface IndexProps {
   activityLogs: ActivityLog[];
   logNames: string[];
@@ -34,7 +36,7 @@ export default function Index({ activityLogs, logNames, filters }: IndexProps) {
   const [endDate, setEndDate] = useState<string>(filters.end_date || INITIAL_FILTERS.end_date);
   const [selectedLogName, setSelectedLogName] = useState<string>(filters.log_name || INITIAL_FILTERS.log_name);
 
-  const breadcrumbs: BreadcrumbItem[] = [{ title: t('Reports'), href: route('reports') }, { title: t('Activity Logs') }];
+  const breadcrumbs: BreadcrumbItem[] = [{ title: t('Reports'), href: ReportController().url }, { title: t('Activity Logs') }];
 
   const applyFilters = () => {
     const params: Record<string, string> = {};
@@ -51,7 +53,7 @@ export default function Index({ activityLogs, logNames, filters }: IndexProps) {
       params.end_date = endDate;
     }
 
-    router.get(route('activity-logs.index'), params, {
+    router.visit(ActivityLogController.index({ query: params }), {
       preserveState: true,
       replace: true,
     });
@@ -62,14 +64,10 @@ export default function Index({ activityLogs, logNames, filters }: IndexProps) {
     setStartDate(INITIAL_FILTERS.start_date);
     setEndDate(INITIAL_FILTERS.end_date);
 
-    router.get(
-      route('activity-logs.index'),
-      {},
-      {
-        preserveState: true,
-        replace: true,
-      },
-    );
+    router.visit(ActivityLogController.index(), {
+      preserveState: true,
+      replace: true,
+    });
   };
 
   const handleExportPdf = () => {
@@ -87,7 +85,7 @@ export default function Index({ activityLogs, logNames, filters }: IndexProps) {
       params.end_date = endDate;
     }
 
-    const exportUrl = route('reports.activity_logs.pdf', params);
+    const exportUrl = ActivityLogPdfController.show({ query: params }).url;
     window.open(exportUrl, '_blank');
   };
 

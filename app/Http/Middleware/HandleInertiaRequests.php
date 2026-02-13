@@ -12,7 +12,6 @@ use App\Http\Resources\User\AuthUserResource;
 use App\Models\Church;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
-use Tighten\Ziggy\Ziggy;
 
 final class HandleInertiaRequests extends Middleware
 {
@@ -55,10 +54,6 @@ final class HandleInertiaRequests extends Middleware
                 'user' => $request->user()
                     ? new AuthUserResource($request->user())
                     : null,
-            ],
-            'ziggy' => fn (): array => [
-                ...(new Ziggy)->toArray(),
-                'location' => $request->url(),
             ],
             'sidebarOpen' => ! $request->hasCookie('sidebar_state') || $request->cookie('sidebar_state') === 'true',
             'flash' => $this->getFlashMessages($request),

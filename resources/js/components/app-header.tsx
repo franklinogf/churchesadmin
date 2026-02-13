@@ -54,7 +54,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
           <div className="lg:hidden">
             <Sheet>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="mr-2 h-[34px] w-[34px]">
+                <Button variant="ghost" size="icon" className="mr-2 h-8.5 w-8.5">
                   <Menu className="h-5 w-5" />
                 </Button>
               </SheetTrigger>
@@ -78,7 +78,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                       {rightNavItems.map((item) => (
                         <a
                           key={item.title}
-                          href={item.href}
+                          href={item.href.toString()}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="flex items-center space-x-2 font-medium"
@@ -121,7 +121,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
           <div className="ml-auto flex items-center space-x-2">
             <div className="relative flex items-center space-x-1">
               <Button variant="ghost" size="icon" className="group h-9 w-9 cursor-pointer">
-                <Search className="!size-5 opacity-80 group-hover:opacity-100" />
+                <Search className="size-5! opacity-80 group-hover:opacity-100" />
               </Button>
               <div className="hidden lg:flex">
                 {rightNavItems.map((item) => (
@@ -129,7 +129,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                     <Tooltip>
                       <TooltipTrigger>
                         <a
-                          href={item.href}
+                          href={item.href.toString()}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="group text-accent-foreground ring-offset-background hover:bg-accent hover:text-accent-foreground focus-visible:ring-ring ml-1 inline-flex h-9 w-9 items-center justify-center rounded-md bg-transparent p-0 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50"

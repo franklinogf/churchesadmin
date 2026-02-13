@@ -23,8 +23,8 @@ final class ExpenseTypeResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'defaultAmount' => $this->default_amount,
-            'createdAt' => $this->created_at->inUserTimezone()->formatAsDatetime(),
-            'updatedAt' => $this->updated_at->inUserTimezone()->formatAsDatetime(),
+            'createdAt' => $this->created_at,
+            'updatedAt' => $this->updated_at,
         ];
     }
 }

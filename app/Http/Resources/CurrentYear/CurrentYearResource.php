@@ -23,11 +23,11 @@ final class CurrentYearResource extends JsonResource
         return [
             'id' => $this->id,
             'year' => $this->year,
-            'startDate' => $this->start_date?->inUserTimezone()?->toFormattedDateString(),
-            'endDate' => $this->end_date?->inUserTimezone()?->toFormattedDateString(),
+            'startDate' => $this->start_date?->toFormattedDateString(),
+            'endDate' => $this->end_date?->toFormattedDateString(),
             'isCurrent' => $this->is_current,
-            'createdAt' => $this->created_at->inUserTimezone()->toFormattedDateString(),
-            'updatedAt' => $this->updated_at->inUserTimezone()->toFormattedDateString(),
+            'createdAt' => $this->created_at->toFormattedDateString(),
+            'updatedAt' => $this->updated_at->toFormattedDateString(),
             'previousYear' => $this->previousYear(),
         ];
     }

@@ -1,3 +1,4 @@
+import CheckLayoutController from '@/actions/App/Http/Controllers/CheckLayoutController';
 import { Form } from '@/components/forms/Form';
 import { FieldsGrid } from '@/components/forms/inputs/FieldsGrid';
 import { InputField } from '@/components/forms/inputs/InputField';
@@ -7,7 +8,7 @@ import { useForm } from '@inertiajs/react';
 
 export function CreateCheckLayoutForm({ walletId }: { walletId?: number }) {
   const { t } = useTranslations();
-  const { data, setData, processing, post } = useForm('create-check-layout', {
+  const { data, setData, processing, submit } = useForm('create-check-layout', {
     wallet_id: walletId?.toString() ?? '',
     name: '',
     width: '',
@@ -15,7 +16,7 @@ export function CreateCheckLayoutForm({ walletId }: { walletId?: number }) {
     image: null as File | null,
   });
   function handleCreateLayout() {
-    post(route('check-layout.store'), { preserveState: false });
+    submit(CheckLayoutController.store(), { preserveState: false });
   }
   return (
     <Form isSubmitting={processing} submitLabel={t('Create layout')} onSubmit={handleCreateLayout}>

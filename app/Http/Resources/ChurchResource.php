@@ -23,8 +23,8 @@ final class ChurchResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'locale' => $this->locale,
-            'createdAt' => $this->created_at->inUserTimezone()->formatAsDatetime(),
-            'updatedAt' => $this->updated_at->inUserTimezone()->formatAsDatetime(),
+            'createdAt' => $this->created_at,
+            'updatedAt' => $this->updated_at,
             'logo' => $this->logo,
             'active' => $this->active,
         ];

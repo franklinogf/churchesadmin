@@ -23,7 +23,7 @@ final class AuthUserResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
-            'emailVerifiedAt' => $this->email_verified_at?->inUserTimezone()->formatAsDatetime(),
+            'emailVerifiedAt' => $this->email_verified_at,
             'timezone' => $this->timezone,
             'timezoneCountry' => $this->timezone_country,
             'roles' => $this->getRoleNames(),

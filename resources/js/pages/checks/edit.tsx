@@ -1,3 +1,4 @@
+import CheckController from '@/actions/App/Http/Controllers/CheckController';
 import { Form } from '@/components/forms/Form';
 import { ComboboxField } from '@/components/forms/inputs/ComboboxField';
 import { CurrencyField } from '@/components/forms/inputs/CurrencyField';
@@ -35,7 +36,7 @@ type EditForm = {
 export default function ChecksEdit({ walletOptions, memberOptions, checkTypesOptions, expenseTypesOptions, check }: EditPageProps) {
   const { toPositive } = useCurrency();
   const { t } = useTranslations();
-  const { data, setData, put, errors, processing } = useForm<EditForm>({
+  const { data, setData, submit, errors, processing } = useForm<EditForm>({
     wallet_id: walletOptions[0]?.value.toString() ?? '',
     member_id: memberOptions[0]?.value.toString() ?? '',
     amount: toPositive(check.transaction.amountFloat),
@@ -46,13 +47,13 @@ export default function ChecksEdit({ walletOptions, memberOptions, checkTypesOpt
   });
 
   function handleSubmit() {
-    put(route('checks.update', check.id));
+    submit(CheckController.update(check.id));
   }
 
   return (
     <AppLayout
       title={t('Edit :model', { model: t('Check') })}
-      breadcrumbs={[{ title: t('Checks'), href: route('checks.index') }, { title: t('Edit :model', { model: t('Check') }) }]}
+      breadcrumbs={[{ title: t('Checks'), href: CheckController.index().url }, { title: t('Edit :model', { model: t('Check') }) }]}
     >
       <PageTitle>{t('Edit :model', { model: t('Check') })}</PageTitle>
 
@@ -81,7 +82,7 @@ export default function ChecksEdit({ walletOptions, memberOptions, checkTypesOpt
               required
               label={t('Wallet')}
               value={data.wallet_id}
-              onChange={(value) => setData('wallet_id', value)}
+              onValueChange={(value) => setData('wallet_id', value)}
               options={walletOptions}
               error={errors.wallet_id}
             />
@@ -89,12 +90,18 @@ export default function ChecksEdit({ walletOptions, memberOptions, checkTypesOpt
               required
               label={t('Type')}
               value={data.type}
-              onChange={(value) => setData('type', value)}
+              onValueChange={(value) => setData('type', value)}
               options={checkTypesOptions}
               error={errors.type}
             />
           </FieldsGrid>
-          <CurrencyField label={t('Amount')} required value={data.amount} onChange={(value) => setData('amount', value)} error={errors.amount} />
+          <CurrencyField
+            label={t('Amount')}
+            required
+            value={data.amount}
+            onValueChange={(value) => value !== undefined && setData('amount', value)}
+            error={errors.amount}
+          />
 
           <DateField required label={t('Date')} value={data.date} onChange={(value) => value && setData('date', value)} error={errors.date} />
 

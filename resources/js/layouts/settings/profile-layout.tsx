@@ -1,34 +1,31 @@
+import PasswordController from '@/actions/App/Http/Controllers/Settings/PasswordController';
+import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileController';
 import Heading from '@/components/heading';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { useTranslations } from '@/hooks/use-translations';
 import { cn } from '@/lib/utils';
-import { type NavItem, type SharedData } from '@/types';
-import { Link, usePage } from '@inertiajs/react';
+import { type NavItem } from '@/types';
+import { Link } from '@inertiajs/react';
 import { useMemo, type PropsWithChildren } from 'react';
 
 export default function SettingsLayout({ children }: PropsWithChildren) {
   const { t } = useTranslations();
-  const {
-    props: {
-      ziggy: { location },
-    },
-  } = usePage<SharedData>();
   const sidebarNavItems: NavItem[] = useMemo(
     () => [
       {
         title: t('Profile'),
-        href: route('profile.edit'),
+        href: ProfileController.edit(),
         icon: null,
       },
       {
         title: t('Password'),
-        href: route('password.edit'),
+        href: PasswordController.edit(),
         icon: null,
       },
       {
         title: t('Appearance'),
-        href: route('appearance'),
+        href: '/settings/appearance',
         icon: null,
       },
     ],
@@ -53,7 +50,7 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
                 variant="ghost"
                 asChild
                 className={cn('w-full justify-start', {
-                  'bg-muted': location === item.href,
+                  'bg-muted': false,
                 })}
               >
                 <Link href={item.href} prefetch>

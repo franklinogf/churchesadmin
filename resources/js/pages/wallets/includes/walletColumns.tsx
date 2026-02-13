@@ -1,3 +1,5 @@
+import WalletCheckLayoutController from '@/actions/App/Http/Controllers/WalletCheckLayoutController';
+import WalletController from '@/actions/App/Http/Controllers/WalletController';
 import { DatatableActionsDropdown } from '@/components/custom-ui/datatable/data-table-actions-dropdown';
 import { DatatableCellBoolean } from '@/components/custom-ui/datatable/datatable-cell-boolean';
 import { DatatableCell } from '@/components/custom-ui/datatable/DatatableCell';
@@ -74,13 +76,13 @@ export const walletColumns: ColumnDef<Wallet>[] = [
           <WalletForm open={isEditing} wallet={wallet} setOpen={setIsEditing} />
           <DatatableActionsDropdown>
             <DropdownMenuItem asChild>
-              <Link href={route('wallets.show', wallet.id)}>
+              <Link href={WalletController.show(wallet.id)}>
                 <WalletIcon className="size-3" />
                 <span>{t('Transactions')}</span>
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <Link href={route('wallets.check.edit', wallet.id)}>
+              <Link href={WalletCheckLayoutController.edit(wallet.id)}>
                 <FilePenIcon className="size-3" />
                 <span>{t('Check layout')}</span>
               </Link>
@@ -102,7 +104,7 @@ export const walletColumns: ColumnDef<Wallet>[] = [
                       actionLabel: t('Activate'),
                       cancelLabel: t('Cancel'),
                       onAction: () => {
-                        router.put(route('wallets.restore', wallet.id), {
+                        router.put(WalletController.restore(wallet.id), {
                           preserveScroll: true,
                         });
                       },
@@ -114,7 +116,7 @@ export const walletColumns: ColumnDef<Wallet>[] = [
                 </DropdownMenuItem>
               ) : (
                 <DropdownMenuItem
-                  //   variant="destructive"
+                  variant="destructive"
                   onClick={() => {
                     openConfirmation({
                       title: t('Are you sure you want to deactivate this :model?', { model: t('Wallet') }),
@@ -123,7 +125,7 @@ export const walletColumns: ColumnDef<Wallet>[] = [
                       actionVariant: 'destructive',
                       cancelLabel: t('Cancel'),
                       onAction: () => {
-                        router.delete(route('wallets.destroy', wallet.id), {
+                        router.delete(WalletController.destroy(wallet.id), {
                           preserveScroll: true,
                         });
                       },

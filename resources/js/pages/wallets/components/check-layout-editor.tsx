@@ -1,6 +1,7 @@
 import type { CheckFieldName, CheckLayout, CheckLayoutField, CheckLayoutPosition } from '@/types/models/check-layout';
 import { DragDropProvider, KeyboardSensor, PointerSensor } from '@dnd-kit/react';
 
+import CheckLayoutController from '@/actions/App/Http/Controllers/CheckLayoutController';
 import { FormErrorList } from '@/components/forms/form-error-list';
 import { FieldsGrid } from '@/components/forms/inputs/FieldsGrid';
 import { InputField } from '@/components/forms/inputs/InputField';
@@ -31,7 +32,7 @@ export function CheckLayoutEditor({ checkLayout }: { checkLayout: CheckLayout })
     memo: t('Memo'),
   };
   const [fieldsMap, setFieldsMap] = useState<Record<CheckFieldName, string>>(initialFieldsMap);
-  const { data, setData, put, processing, recentlySuccessful, errors } = useForm<CheckLayoutForm>({
+  const { data, setData, submit, processing, recentlySuccessful, errors } = useForm<CheckLayoutForm>({
     fields: checkLayout.fields || [],
     width: checkLayout.width,
     height: checkLayout.height,
@@ -71,9 +72,9 @@ export function CheckLayoutEditor({ checkLayout }: { checkLayout: CheckLayout })
     }));
   }
 
-  function submit(e: React.FormEvent) {
+  function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    put(route('check-layout.update', [checkLayout.id]), {
+    submit(CheckLayoutController.update(checkLayout.id), {
       preserveScroll: true,
       onSuccess: () => {},
     });
@@ -81,7 +82,7 @@ export function CheckLayoutEditor({ checkLayout }: { checkLayout: CheckLayout })
 
   return (
     <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-      <form onSubmit={submit} className="col-span-2 space-y-6">
+      <form onSubmit={handleSubmit} className="col-span-2 space-y-6">
         <p className="text-muted-foreground mb-4 text-sm">{t('You can edit the layout by dragging the fields to the desired position')}</p>
         <FormErrorList errors={errors} />
         <FieldsGrid>

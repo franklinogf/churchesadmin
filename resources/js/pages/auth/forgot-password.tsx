@@ -1,61 +1,36 @@
-// Components
-import { Head, useForm } from '@inertiajs/react';
-import { LoaderCircle } from 'lucide-react';
-import { type FormEventHandler } from 'react';
+import { Form, Head } from '@inertiajs/react';
 
-import InputError from '@/components/input-error';
+import AuthenticatedSessionController from '@/actions/App/Http/Controllers/Auth/AuthenticatedSessionController';
+import PasswordResetLinkController from '@/actions/App/Http/Controllers/Auth/PasswordResetLinkController';
+import { InputField } from '@/components/forms/inputs/InputField';
+import { SubmitButton } from '@/components/forms/SubmitButton';
 import TextLink from '@/components/text-link';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { FieldGroup } from '@/components/ui/field';
+import { useTranslations } from '@/hooks/use-translations';
 import AuthLayout from '@/layouts/auth-layout';
 
 export default function ForgotPassword({ status }: { status?: string }) {
-  const { data, setData, post, processing, errors } = useForm<Required<{ email: string }>>({
-    email: '',
-  });
-
-  const submit: FormEventHandler = (e) => {
-    e.preventDefault();
-
-    post(route('password.email'));
-  };
-
+  const { t } = useTranslations();
   return (
-    <AuthLayout title="Forgot password" description="Enter your email to receive a password reset link">
-      <Head title="Forgot password" />
+    <AuthLayout title={t('Forgot password')} description={t('Enter your email to receive a password reset link')}>
+      <Head title={t('Forgot password')} />
 
       {status && <div className="mb-4 text-center text-sm font-medium text-green-600">{status}</div>}
 
       <div className="space-y-6">
-        <form onSubmit={submit}>
-          <div className="grid gap-2">
-            <Label htmlFor="email">Email address</Label>
-            <Input
-              id="email"
-              type="email"
-              name="email"
-              autoComplete="off"
-              value={data.email}
-              autoFocus
-              onChange={(e) => setData('email', e.target.value)}
-              placeholder="email@example.com"
-            />
+        <Form disableWhileProcessing action={PasswordResetLinkController.store()}>
+          {({ processing, errors }) => (
+            <FieldGroup>
+              <InputField type="email" name="email" autoComplete="off" autoFocus placeholder={t('email@example.com')} error={errors.email} />
 
-            <InputError message={errors.email} />
-          </div>
-
-          <div className="my-6 flex items-center justify-start">
-            <Button className="w-full" disabled={processing}>
-              {processing && <LoaderCircle className="h-4 w-4 animate-spin" />}
-              Email password reset link
-            </Button>
-          </div>
-        </form>
+              <SubmitButton isSubmitting={processing}>{t('Email password reset link')}</SubmitButton>
+            </FieldGroup>
+          )}
+        </Form>
 
         <div className="text-muted-foreground space-x-1 text-center text-sm">
-          <span>Or, return to</span>
-          <TextLink href={route('login')}>log in</TextLink>
+          <span>{t('Or, return to')}</span>
+          <TextLink href={AuthenticatedSessionController.create()}>{t('log in')}</TextLink>
         </div>
       </div>
     </AuthLayout>

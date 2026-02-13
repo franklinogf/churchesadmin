@@ -43,8 +43,8 @@ final class MemberResource extends JsonResource
             'categories' => TagRelationshipResource::collection($this->tagsWithType(TagType::CATEGORY->value)),
             'categoriesCount' => $this->whenCounted('categories', $this->tagsWithType(TagType::CATEGORY->value)->count()),
             'address' => new AddressRelationshipResource($this->whenLoaded('address')),
-            'createdAt' => $this->created_at->inUserTimezone()->formatAsDatetime(),
-            'updatedAt' => $this->updated_at->inUserTimezone()->formatAsDatetime(),
+            'createdAt' => $this->created_at,
+            'updatedAt' => $this->updated_at,
             'emails' => EmailResource::collection($this->whenLoaded('emails')),
             'emailMessage' => $this->whenPivotLoadedAs('emailMessage', 'emailables', fn (): EmailableResource => new EmailableResource($this->emailMessage)),
         ];

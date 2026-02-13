@@ -1,3 +1,4 @@
+import UserController from '@/actions/App/Http/Controllers/UserController';
 import { type Option } from '@/components/custom-ui/MultiSelect';
 import { Form } from '@/components/forms/Form';
 import { InputField } from '@/components/forms/inputs/InputField';
@@ -32,7 +33,7 @@ export default function Edit({ user, permissions, roles }: EditPageProps) {
   const { hasRole } = useUser();
 
   const userPermissions = user.permissions?.map((permission) => permission.name);
-  const { data, setData, errors, put, processing, transform } = useForm<EditForm>({
+  const { data, setData, errors, submit, processing, transform } = useForm<EditForm>({
     name: user.name,
     email: user.email,
     roles: convertRolesToMultiselectOptions(user.roles || []),
@@ -45,7 +46,7 @@ export default function Edit({ user, permissions, roles }: EditPageProps) {
   }));
 
   function handleSubmit() {
-    put(route('users.update', user.id));
+    submit(UserController.update(user.id));
   }
   const selectedRoles = data.roles.map((role) => role.value);
   const selectedRolesPermissions = getUniquePermissions(roles, selectedRoles);
@@ -53,7 +54,7 @@ export default function Edit({ user, permissions, roles }: EditPageProps) {
   return (
     <AppLayout
       title={t('Users')}
-      breadcrumbs={[{ title: t('Users'), href: route('users.index') }, { title: t('Edit :model', { model: t('User') }) }]}
+      breadcrumbs={[{ title: t('Users'), href: UserController.index().url }, { title: t('Edit :model', { model: t('User') }) }]}
     >
       <PageTitle>{t('Edit :model', { model: t('User') })}</PageTitle>
       <div className="mt-2 flex w-full items-center justify-center">
@@ -95,8 +96,8 @@ export default function Edit({ user, permissions, roles }: EditPageProps) {
                         disabled={existsOnRoles}
                         key={permission.id}
                         label={permission.label ?? ''}
-                        value={value}
-                        onChange={(checked) => {
+                        checked={value}
+                        onCheckedChange={(checked) => {
                           if (checked) {
                             setData('additional_permissions', [...data.additional_permissions, permission.name.toString()]);
                           } else {

@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { TenantPermission } from '@/enums/TenantPermission';
 import AppLayout from '@/layouts/app-layout';
 
+import MissionaryController from '@/actions/App/Http/Controllers/MissionaryController';
 import { useTranslations } from '@/hooks/use-translations';
 import { useUser } from '@/hooks/use-user';
 import { type Missionary } from '@/types/models/missionary';
@@ -25,7 +26,7 @@ export default function Index({ missionaries }: IndexPageProps) {
         headerButton={
           userCan(TenantPermission.MISSIONARIES_CREATE) && (
             <Button asChild>
-              <Link href={route('missionaries.create')}>{t('Add :model', { model: t('Missionary') })}</Link>
+              <Link href={MissionaryController.create()}>{t('Add :model', { model: t('Missionary') })}</Link>
             </Button>
           )
         }

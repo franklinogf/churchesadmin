@@ -1,3 +1,4 @@
+import VisitController from '@/actions/App/Http/Controllers/VisitController';
 import { AddressFormSkeleton } from '@/components/forms/AddressFormSkeleton';
 import { Form } from '@/components/forms/Form';
 import { DateField } from '@/components/forms/inputs/DateField';
@@ -22,7 +23,7 @@ type EditForm = {
 };
 export default function VisitsEdit({ visit }: { visit: Visit }) {
   const { t } = useTranslations();
-  const { data, setData, put, errors, processing } = useForm<EditForm>({
+  const { data, setData, submit, errors, processing } = useForm<EditForm>({
     name: visit.name,
     last_name: visit.lastName,
     email: visit.email ?? '',
@@ -39,13 +40,13 @@ export default function VisitsEdit({ visit }: { visit: Visit }) {
   });
 
   function handleSubmit() {
-    put(route('visits.update', visit.id), { preserveScroll: true });
+    submit(VisitController.update(visit.id), { preserveScroll: true });
   }
 
   return (
     <AppLayout
       title={t('Edit :model', { model: t('Visit') })}
-      breadcrumbs={[{ title: t('Visits'), href: route('visits.index') }, { title: t('Edit :model', { model: t('Visit') }) }]}
+      breadcrumbs={[{ title: t('Visits'), href: VisitController.index().url }, { title: t('Edit :model', { model: t('Visit') }) }]}
     >
       <PageTitle>{t('Edit :model', { model: t('Visit') })}</PageTitle>
 

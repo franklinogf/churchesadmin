@@ -26,8 +26,8 @@ final class CheckLayoutResource extends JsonResource
             'height' => $this->height,
             'fields' => $this->fields,
             'imageUrl' => $this->imageUrl,
-            'createdAt' => $this->created_at->inUserTimezone()->formatAsDatetime(),
-            'updatedAt' => $this->updated_at->inUserTimezone()->formatAsDatetime(),
+            'createdAt' => $this->created_at,
+            'updatedAt' => $this->updated_at,
         ];
     }
 }

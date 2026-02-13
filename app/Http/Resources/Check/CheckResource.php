@@ -31,8 +31,8 @@ final class CheckResource extends JsonResource
             'checkNumber' => $this->check_number,
             'date' => $this->date->format('Y-m-d'),
             'type' => $this->type,
-            'createdAt' => $this->created_at->inUserTimezone()->formatAsDatetime(),
-            'updatedAt' => $this->updated_at->inUserTimezone()->formatAsDatetime(),
+            'createdAt' => $this->created_at,
+            'updatedAt' => $this->updated_at,
         ];
     }
 }

@@ -1,23 +1,17 @@
-import { FieldLabel } from '@/components/forms/inputs/FieldLabel';
 import { Button } from '@/components/ui/button';
-import { Field, FieldError } from '@/components/ui/field';
+import { Field, FieldError, FieldLabel } from '@/components/ui/field';
 import { Select, SelectContent, SelectItem, SelectSeparator, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useTranslations } from '@/hooks/use-translations';
 import { cn } from '@/lib/utils';
-import { type SelectOption } from '@/types';
-import React, { useId } from 'react';
+import { type InputBaseProps, type SelectOption } from '@/types';
+import React, { useId, type ComponentProps } from 'react';
 
-interface DefaultSelectFieldProps {
-  required?: boolean;
-  error?: string;
-  label?: string;
-  disabled?: boolean;
-  className?: string;
-  placeholder?: string;
-  clearable?: boolean;
-  value?: string;
-  onChange?: (value: string) => void;
-}
+type DefaultSelectFieldProps = InputBaseProps &
+  ComponentProps<typeof Select> & {
+    clearable?: boolean;
+    placeholder?: string;
+    className?: string;
+  };
 
 type SelectFieldPropsWithItems = DefaultSelectFieldProps & {
   options: SelectOption[];
@@ -37,17 +31,17 @@ export function SelectField({
   placeholder,
   options,
   children,
-  value,
   clearable = false,
-  onChange,
   required,
+  onValueChange,
+  ...props
 }: SelectFieldProps) {
   const { t } = useTranslations();
   const id = useId();
   return (
-    <Field className={className}>
-      <FieldLabel disabled={disabled} id={id} label={label} required={required} />
-      <Select required={required} name={id} disabled={disabled} value={value} onValueChange={onChange}>
+    <Field data-disabled={disabled} data-invalid={!!error} className={className}>
+      <FieldLabel htmlFor={id}>{label}</FieldLabel>
+      <Select required={required} disabled={disabled} {...props} onValueChange={onValueChange}>
         <SelectTrigger
           id={id}
           className={cn('w-full', {
@@ -70,7 +64,7 @@ export function SelectField({
               <Button
                 size="sm"
                 onClick={() => {
-                  onChange?.('');
+                  onValueChange?.('');
                 }}
                 className="w-full"
                 variant="secondary"

@@ -1,3 +1,4 @@
+import MemberController from '@/actions/App/Http/Controllers/MemberController';
 import { DatatableActionsDropdown } from '@/components/custom-ui/datatable/data-table-actions-dropdown';
 import { DatatableCell } from '@/components/custom-ui/datatable/DatatableCell';
 import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTableColumnHeader';
@@ -94,14 +95,14 @@ export const columns: ColumnDef<Member>[] = [
       return (
         <DatatableActionsDropdown>
           <DropdownMenuItem asChild>
-            <Link href={route('members.show', row.original.id)}>
+            <Link href={MemberController.show(row.original.id)}>
               <User2Icon className="size-3" />
               <span>{t('View')}</span>
             </Link>
           </DropdownMenuItem>
           {userCan(TenantPermission.MEMBERS_UPDATE) && (
             <DropdownMenuItem asChild>
-              <Link href={route('members.edit', row.original.id)}>
+              <Link href={MemberController.edit(row.original.id)}>
                 <Edit2Icon className="size-3" />
                 <span>{t('Edit')}</span>
               </Link>
@@ -109,7 +110,7 @@ export const columns: ColumnDef<Member>[] = [
           )}
           {userCan(TenantPermission.MEMBERS_DELETE) && (
             <DropdownMenuItem
-              //   variant="destructive"
+              variant="destructive"
               onClick={() => {
                 openConfirmation({
                   title: t('Are you sure you want to delete this :model?', { model: t('Member') }),
@@ -118,7 +119,7 @@ export const columns: ColumnDef<Member>[] = [
                   actionVariant: 'destructive',
                   cancelLabel: t('Cancel'),
                   onAction: () => {
-                    router.delete(route('members.destroy', row.original.id), {
+                    router.visit(MemberController.destroy(row.original.id), {
                       preserveState: true,
                       preserveScroll: true,
                     });

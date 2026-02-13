@@ -1,5 +1,7 @@
 import AppLayout from '@/layouts/app-layout';
 
+import WalletCheckLayoutController from '@/actions/App/Http/Controllers/WalletCheckLayoutController';
+import WalletController from '@/actions/App/Http/Controllers/WalletController';
 import { CreateCheckLayoutForm } from '@/components/forms/create-check-layout-form';
 import { SelectField } from '@/components/forms/inputs/SelectField';
 import { PageTitle } from '@/components/PageTitle';
@@ -28,11 +30,14 @@ export default function CheckLayout({ checkLayouts, wallet, checkLayout }: Check
   const [activeLayout, setActiveLayout] = useState(checkLayout?.id.toString() || NEW_LAYOUT);
 
   function handleChangeActiveLayout(value: string) {
-    router.get(route('wallets.check.edit', [wallet.id]), { layout: value }, { replace: true });
+    router.visit(WalletCheckLayoutController.edit(wallet.id, { mergeQuery: { layout: value } }), { replace: true });
     setActiveLayout(value);
   }
 
-  const breadcrumbs: BreadcrumbItem[] = useMemo(() => [{ title: t('Wallets'), href: route('wallets.index') }, { title: t('Check layout') }], [t]);
+  const breadcrumbs: BreadcrumbItem[] = useMemo(
+    () => [{ title: t('Wallets'), href: WalletController.index().url }, { title: t('Check layout') }],
+    [t],
+  );
   const isWalletLayout = wallet.checkLayout?.id.toString() === activeLayout;
 
   return (
@@ -62,13 +67,13 @@ export default function CheckLayout({ checkLayouts, wallet, checkLayout }: Check
                   className="grow"
                   label={t('Select the layout you want to use for this wallet or create a new one')}
                   value={activeLayout}
-                  onChange={handleChangeActiveLayout}
+                  onValueChange={handleChangeActiveLayout}
                   options={[{ value: NEW_LAYOUT, label: t('Create a new :model', { model: t('Check layout') }) }, ...checkLayouts]}
                 />
                 {activeLayout !== NEW_LAYOUT && (
                   <Button disabled={isWalletLayout} variant="outline" className="self-end" asChild>
                     <Link
-                      href={route('wallets.check.update', [wallet.id])}
+                      href={WalletCheckLayoutController.update(wallet.id)}
                       method="put"
                       data={{ check_layout_id: activeLayout }}
                       preserveScroll

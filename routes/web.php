@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\Root\HomeController;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
-use Inertia\Response;
 
 foreach (config('tenancy.identification.central_domains') as $domain) {
     Route::domain($domain)->group(function (): void {
@@ -17,11 +16,7 @@ foreach (config('tenancy.identification.central_domains') as $domain) {
         Route::get('/', fn (): RedirectResponse => to_route('root.home', app()->getLocale()))->name('root.index');
         Route::name('root.')
             ->group(function (): void {
-                Route::get('/', function (): Response {
-                    $url = app_url_subdomain('demo');
-
-                    return Inertia::render('welcome', ['demoLink' => $url]);
-                })->name('home');
+                Route::get('/', HomeController::class)->name('home');
 
             });
     });

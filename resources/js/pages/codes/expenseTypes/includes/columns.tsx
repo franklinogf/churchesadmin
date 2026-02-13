@@ -1,3 +1,4 @@
+import ExpenseTypeController from '@/actions/App/Http/Controllers/ExpenseTypeController';
 import { DatatableActionsDropdown } from '@/components/custom-ui/datatable/data-table-actions-dropdown';
 import { DatatableCell } from '@/components/custom-ui/datatable/DatatableCell';
 import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTableColumnHeader';
@@ -50,7 +51,7 @@ export const columns: ColumnDef<ExpenseType>[] = [
             </DropdownMenuItem>
 
             <DropdownMenuItem
-              //   variant="destructive"
+              variant="destructive"
               onClick={() => {
                 openConfirmation({
                   title: t('Are you sure you want to delete this :model?', { model: t('Expense type') }),
@@ -59,7 +60,7 @@ export const columns: ColumnDef<ExpenseType>[] = [
                   actionVariant: 'destructive',
                   cancelLabel: t('Cancel'),
                   onAction: () => {
-                    router.delete(route('codes.expenseTypes.destroy', expenseType.id), {
+                    router.visit(ExpenseTypeController.destroy(expenseType.id), {
                       preserveScroll: true,
                     });
                   },

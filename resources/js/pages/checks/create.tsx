@@ -7,6 +7,7 @@ import { SelectField } from '@/components/forms/inputs/SelectField';
 import { PageTitle } from '@/components/PageTitle';
 import AppLayout from '@/layouts/app-layout';
 
+import CheckController from '@/actions/App/Http/Controllers/CheckController';
 import { DateField } from '@/components/forms/inputs/DateField';
 import { useTranslations } from '@/hooks/use-translations';
 import type { SelectOption } from '@/types';
@@ -32,7 +33,7 @@ type CreateForm = {
 
 export default function ChecksCreate({ walletOptions, memberOptions, checkTypesOptions, expenseTypesOptions }: CreatePageProps) {
   const { t } = useTranslations();
-  const { data, setData, post, errors, processing } = useForm<CreateForm>({
+  const { data, setData, submit, errors, processing } = useForm<CreateForm>({
     wallet_id: walletOptions[0]?.value.toString() ?? '',
     member_id: memberOptions[0]?.value.toString() ?? '',
     amount: '',
@@ -43,13 +44,13 @@ export default function ChecksCreate({ walletOptions, memberOptions, checkTypesO
   });
 
   function handleSubmit() {
-    post(route('checks.store'));
+    submit(CheckController.store());
   }
 
   return (
     <AppLayout
       title={t('Create :model', { model: t('Check') })}
-      breadcrumbs={[{ title: t('Checks'), href: route('checks.index') }, { title: t('Create :model', { model: t('Check') }) }]}
+      breadcrumbs={[{ title: t('Checks'), href: CheckController.index().url }, { title: t('Create :model', { model: t('Check') }) }]}
     >
       <PageTitle>{t('Create :model', { model: t('Check') })}</PageTitle>
 
@@ -78,7 +79,7 @@ export default function ChecksCreate({ walletOptions, memberOptions, checkTypesO
               required
               label={t('Wallet')}
               value={data.wallet_id}
-              onChange={(value) => setData('wallet_id', value)}
+              onValueChange={(value) => setData('wallet_id', value)}
               options={walletOptions}
               error={errors.wallet_id}
             />
@@ -86,12 +87,18 @@ export default function ChecksCreate({ walletOptions, memberOptions, checkTypesO
               required
               label={t('Type')}
               value={data.type}
-              onChange={(value) => setData('type', value)}
+              onValueChange={(value) => setData('type', value)}
               options={checkTypesOptions}
               error={errors.type}
             />
           </FieldsGrid>
-          <CurrencyField label={t('Amount')} required value={data.amount} onChange={(value) => setData('amount', value)} error={errors.amount} />
+          <CurrencyField
+            label={t('Amount')}
+            required
+            value={data.amount}
+            onValueChange={(value) => value !== undefined && setData('amount', value)}
+            error={errors.amount}
+          />
 
           <DateField required label={t('Date')} value={data.date} onChange={(value) => value && setData('date', value)} error={errors.date} />
 

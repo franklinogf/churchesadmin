@@ -1,3 +1,6 @@
+import TenantGeneralController from '@/actions/App/Http/Controllers/Settings/TenantGeneralController';
+import TenantLanguageController from '@/actions/App/Http/Controllers/Settings/TenantLanguageController';
+import TenantYearEndController from '@/actions/App/Http/Controllers/Settings/TenantYearEndController';
 import Heading from '@/components/heading';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
@@ -5,33 +8,28 @@ import { TenantPermission } from '@/enums/TenantPermission';
 import { useTranslations } from '@/hooks/use-translations';
 import { useUser } from '@/hooks/use-user';
 import { cn } from '@/lib/utils';
-import { type NavItem, type SharedData } from '@/types';
-import { Link, usePage } from '@inertiajs/react';
+import { type NavItem } from '@/types';
+import { Link } from '@inertiajs/react';
 import { useMemo, type PropsWithChildren } from 'react';
 
 export default function SettingsLayout({ children }: PropsWithChildren) {
   const { t } = useTranslations();
-  const {
-    props: {
-      ziggy: { location },
-    },
-  } = usePage<SharedData>();
   const { can: userCan } = useUser();
 
   const sidebarNavItems: NavItem[] = useMemo<NavItem[]>(
     () => [
       {
         title: t('General'),
-        href: route('church.general.edit'),
+        href: TenantGeneralController.edit(),
       },
       {
         title: t('Language'),
-        href: route('church.language.edit'),
+        href: TenantLanguageController.edit(),
         permissionNeeded: TenantPermission.SETTINGS_CHANGE_LANGUAGE,
       },
       {
         title: t('Year End Closing'),
-        href: route('church.general.year-end.edit'),
+        href: TenantYearEndController.edit(),
         permissionNeeded: TenantPermission.SETTINGS_CLOSE_YEAR,
       },
       //   {
@@ -66,7 +64,7 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
                 variant="ghost"
                 asChild
                 className={cn('w-full justify-start', {
-                  'bg-muted': location === item.href,
+                  'bg-muted': false,
                 })}
               >
                 <Link href={item.href} prefetch>
