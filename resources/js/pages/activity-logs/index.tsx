@@ -1,4 +1,3 @@
-import ActivityLogController from '@/actions/App/Http/Controllers/ActivityLogController';
 import ActivityLogPdfController from '@/actions/App/Http/Controllers/Pdf/ActivityLogPdfController';
 import ReportController from '@/actions/App/Http/Controllers/ReportController';
 import { DataTable } from '@/components/custom-ui/datatable/data-table';
@@ -53,7 +52,7 @@ export default function Index({ activityLogs, logNames, filters }: IndexProps) {
       params.end_date = endDate;
     }
 
-    router.visit(ActivityLogController.index({ query: params }), {
+    router.visit(ActivityLogPdfController.index({ query: params }), {
       preserveState: true,
       replace: true,
     });
@@ -64,7 +63,7 @@ export default function Index({ activityLogs, logNames, filters }: IndexProps) {
     setStartDate(INITIAL_FILTERS.start_date);
     setEndDate(INITIAL_FILTERS.end_date);
 
-    router.visit(ActivityLogController.index(), {
+    router.visit(ActivityLogPdfController.index(), {
       preserveState: true,
       replace: true,
     });
