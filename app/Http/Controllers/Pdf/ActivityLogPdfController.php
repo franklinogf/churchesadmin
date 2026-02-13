@@ -53,6 +53,11 @@ final class ActivityLogPdfController extends Controller
             ->stream('activity_logs_'.now()->format('Y_m_d_H_i_s').'.pdf');
     }
 
+    /**
+     * Generate a dynamic title for the PDF based on filters applied
+     *
+     * @param  Collection<int|string, mixed>  $logNames
+     */
     private function getTitle(Request $request, Collection $logNames): string
     {
         /**
@@ -67,13 +72,13 @@ final class ActivityLogPdfController extends Controller
             $startDate = $request->date('start_date')?->format('Y-m-d');
             $endDate = $request->date('end_date')?->format('Y-m-d');
 
-            if ($startDate && $endDate) {
-                $title .= ' ('.__(':start_date to :end_date', ['start_date' => $startDate, 'end_date' => $endDate]).')';
-            } elseif ($startDate !== '' && $startDate !== '0') {
-                $title .= ' ('.__('from :date', ['date' => $startDate]).')';
-            } elseif ($endDate !== '' && $endDate !== '0') {
-                $title .= ' ('.__('to :date', ['date' => $endDate]).')';
-            }
+            $title .= match (true) {
+                $startDate && $endDate => ' ('.__(':start_date to :end_date', ['start_date' => $startDate, 'end_date' => $endDate]).')',
+                $startDate !== null => ' ('.__('from :date', ['date' => $startDate]).')',
+                $endDate !== null => ' ('.__('to :date', ['date' => $endDate]).')',
+                default => '',
+            };
+
         }
 
         return $title;
