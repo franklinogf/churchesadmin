@@ -8,15 +8,15 @@ use App\Models\Church;
 use App\Models\TenantUser;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 
-function createMockUrl(string $url): string
-{
-    return "https://{$url}";
-}
-beforeEach(function (): void {
-    config()->set('app.url', createMockUrl('central.test'));
+$http = 'https://';
+beforeEach(function () use ($http): void {
+    URL::forceHttps();
+    config()->set('app.url', "{$http}central.test");
     config()->set('app.timezone', 'UTC');
+
 });
 
 describe('serverDate helper', function (): void {
@@ -50,8 +50,8 @@ describe('serverDate helper', function (): void {
     });
 });
 
-describe('create_tenant_url helper', function (): void {
-    it('builds tenant-aware urls for named routes', function (): void {
+describe('create_tenant_url helper', function () use ($http): void {
+    it('builds tenant-aware urls for named routes', function () use ($http): void {
         $church = Church::make([
             'id' => 'demo-church',
             'domain' => 'demo',
@@ -59,10 +59,11 @@ describe('create_tenant_url helper', function (): void {
 
         $url = create_tenant_url($church, 'dashboard');
 
-        expect($url)->toBe(createMockUrl('demo.central.test/dashboard'));
+        expect($url)->toBe("{$http}demo.central.test/dashboard");
     });
 
-    it('includes route parameters when generating the url', function (): void {
+    it('includes route parameters when generating the url', function () use ($http): void {
+
         $church = Church::make([
             'id' => 'demo-church',
             'domain' => 'demo',
@@ -70,7 +71,7 @@ describe('create_tenant_url helper', function (): void {
 
         $url = create_tenant_url($church, 'impersonate', ['token' => 'abc123']);
 
-        expect($url)->toBe(createMockUrl('demo.central.test/impersonate/abc123'));
+        expect($url)->toBe("{$http}demo.central.test/impersonate/abc123");
     });
 
     it('returns null when the church is not provided', function (): void {
@@ -87,11 +88,11 @@ describe('create_tenant_url helper', function (): void {
     });
 });
 
-describe('app_url_subdomain helper', function (): void {
-    it('creates fully qualified urls using the provided subdomain', function (): void {
+describe('app_url_subdomain helper', function () use ($http): void {
+    it('creates fully qualified urls using the provided subdomain', function () use ($http): void {
         $url = app_url_subdomain('reports');
 
-        expect($url)->toBe(createMockUrl('reports.central.test'));
+        expect($url)->toBe("{$http}reports.central.test");
     });
 });
 
