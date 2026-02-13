@@ -41,6 +41,10 @@ final class Emailable extends MorphPivot
 
     protected $table = 'emailables';
 
+    protected $attributes = [
+        'status' => EmailStatus::PENDING,
+    ];
+
     /**
      * Get the email associated with the emailable.
      *

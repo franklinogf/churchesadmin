@@ -406,5 +406,8 @@
     "Log out": "Log out",
     "Members report": "Members report",
     "Missionaries report": "Missionaries report",
-    "Select an option to generate a PDF": "Select an option to generate a PDF"
+    "Select an option to generate a PDF": "Select an option to generate a PDF",
+    "from :date": "from :date",
+    "to :date": "to :date",
+    ":start_date to :end_date": ":start_date to :end_date"
 }

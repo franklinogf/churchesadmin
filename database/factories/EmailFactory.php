@@ -28,7 +28,7 @@ final class EmailFactory extends Factory
             'recipients_type' => fake()->randomElement(ModelMorphName::cases()),
             'reply_to' => fake()->optional()->email(),
             'status' => fake()->randomElement(EmailStatus::cases()),
-            'sent_at' => fake()->optional()->dateTime(),
+            'sent_at' => fake()->optional()->dateTime(timezone: 'UTC'),
         ];
     }
 
@@ -36,7 +36,7 @@ final class EmailFactory extends Factory
     {
         return $this->state([
             'status' => EmailStatus::SENT,
-            'sent_at' => fake()->dateTime(),
+            'sent_at' => fake()->dateTime(timezone: 'UTC'),
         ]);
     }
 

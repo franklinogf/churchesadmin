@@ -28,7 +28,7 @@ final class EmailableFactory extends Factory
             'recipient_id' => $recipient->id,
             'recipient_type' => $recipient->getMorphClass(),
             'status' => fake()->randomElement(EmailStatus::cases()),
-            'sent_at' => fake()->optional()->dateTime(),
+            'sent_at' => fake()->optional()->dateTime(timezone: 'UTC'),
             'error_message' => fake()->optional()->sentence(),
         ];
     }
@@ -37,7 +37,7 @@ final class EmailableFactory extends Factory
     {
         return $this->state([
             'status' => EmailStatus::SENT,
-            'sent_at' => fake()->dateTime(),
+            'sent_at' => fake()->dateTime(timezone: 'UTC'),
         ]);
     }
 

@@ -57,3 +57,16 @@ it('throws exception when no current year exists', function (): void {
     expect(fn (): CurrentYear => CurrentYear::current())
         ->toThrow(Illuminate\Database\Eloquent\ModelNotFoundException::class);
 });
+
+it('can find previous year', function (): void {
+    // Clear any existing years first
+    CurrentYear::query()->delete();
+
+    CurrentYear::factory()->create(['year' => '2024', 'is_current' => true]);
+    $previousYear = CurrentYear::factory()->create(['year' => '2023', 'is_current' => false]);
+
+    $foundPrevious = CurrentYear::previous();
+
+    expect($foundPrevious->id)->toBe($previousYear->id);
+    expect($foundPrevious->year)->toBe('2023');
+});

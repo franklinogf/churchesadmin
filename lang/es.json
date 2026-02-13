@@ -406,5 +406,8 @@
     "Log out": "Cerrar sesión",
     "Members report": "Informe de miembros",
     "Missionaries report": "Informe de misioneros",
-    "Select an option to generate a PDF": "Seleccione una opción para generar un PDF"
+    "Select an option to generate a PDF": "Seleccione una opción para generar un PDF",
+    "from :date": "desde :date",
+    "to :date": "hasta :date",
+    ":start_date to :end_date": ":start_date hasta :end_date"
 }

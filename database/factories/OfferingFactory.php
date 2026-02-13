@@ -54,6 +54,18 @@ final class OfferingFactory extends Factory
         });
     }
 
+    public function prevYear(): static
+    {
+        $previousYear = CurrentYear::first() ?? CurrentYear::factory()->create();
+        $previousYear->update(['year' => $previousYear->year - 1]);
+
+        return $this->state(function (array $attributes) use ($previousYear): array {
+            return [
+                'transaction_id' => ChurchWallet::factory()->create()->depositFloat(fake()->randomFloat(2, 1, 100), ['type' => TransactionMetaType::OFFERING->value, 'year' => $previousYear->id])->id,
+            ];
+        });
+    }
+
     public function withOfferingType(Missionary|OfferingType $model): static
     {
         return $this->state(function (array $attributes) use ($model) {

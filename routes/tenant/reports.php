@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Http\Controllers\ActivityLogController;
 use App\Http\Controllers\Pdf\ActivityLogPdfController;
 use App\Http\Controllers\Pdf\CheckPdfController;
 use App\Http\Controllers\Pdf\ChecksPdfController;
@@ -29,7 +28,6 @@ Route::get('/reports/missionaries/pdf', [MissionaryPdfController::class, 'show']
     ->name('reports.missionaries.pdf');
 
 // Activity Logs
-Route::get('/activity-logs', [ActivityLogController::class, 'index'])->name('activity-logs.index');
 Route::get('/reports/activity-logs', [ActivityLogPdfController::class, 'index'])->name('reports.activity_logs');
 Route::get('/reports/activity-logs/pdf', [ActivityLogPdfController::class, 'show'])
     ->name('reports.activity_logs.pdf');
