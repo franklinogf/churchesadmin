@@ -18,7 +18,6 @@ use App\Models\Offering;
 use App\Models\OfferingType;
 use App\Models\Scopes\CurrentYearScope;
 use App\Models\TenantUser;
-use App\Models\User;
 use App\Models\Visit;
 use Bavix\Wallet\Models\Transaction;
 use Bavix\Wallet\WalletConfigure;
@@ -26,7 +25,6 @@ use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -79,28 +77,6 @@ final class AppServiceProvider extends ServiceProvider
     private function configureDates(): void
     {
         Date::use(CarbonImmutable::class);
-
-        // CarbonImmutable::macro('inAppTimezone', function (): CarbonImmutable {
-        //     /** @var CarbonImmutable $this */
-        //     return $this->setTimezone(config()->string('app.timezone_display'));
-        // });
-
-        // CarbonImmutable::macro('inUserTimezone', function (): CarbonImmutable {
-        //     /** @var TenantUser|User|null $currentUser */
-        //     $currentUser = Auth::user();
-        //     if (! $currentUser instanceof User) {
-        //         /** @var CarbonImmutable $this */
-        //         return $this->setTimezone(config()->string('app.timezone_display'));
-        //     }
-
-        //     /** @var CarbonImmutable $this */
-        //     return $this->setTimezone($currentUser->timezone ?? config()->string('app.timezone_display'));
-        // });
-
-        // CarbonImmutable::macro('formatAsDatetime', function (): string {
-        //     /** @var CarbonImmutable $this */
-        //     return $this->format('Y-m-d H:i:s');
-        // });
     }
 
     private function configureModels(): void
