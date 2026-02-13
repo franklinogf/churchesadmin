@@ -5,7 +5,9 @@ declare(strict_types=1);
 use App\Enums\CivilStatus;
 use App\Enums\Gender;
 use App\Models\Address;
+use App\Models\Email;
 use App\Models\Member;
+use App\Models\Offering;
 use Carbon\CarbonImmutable;
 
 test('to array', function (): void {
@@ -74,4 +76,37 @@ it('can be active or inactive', function (): void {
     expect($inactiveMember->active)->toBeFalse()->and(
         $inactiveMember->deactivation_code_id
     )->not->toBeNull();
+});
+
+it('can have emails', function (): void {
+    $member = Member::factory()
+        ->has(Email::factory()->count(3), 'emails')
+        ->create();
+
+    expect($member->emails)->toHaveCount(3);
+    expect($member->emails[0])->toBeInstanceOf(Email::class);
+    expect($member->emails[1])->toBeInstanceOf(Email::class);
+    expect($member->emails[2])->toBeInstanceOf(Email::class);
+});
+
+it('can have contributions', function (): void {
+    $member = Member::factory()
+        ->has(Offering::factory()->count(4), 'contributions')
+        ->create();
+
+    expect($member->contributions)->toHaveCount(4);
+    expect($member->contributions[0])->toBeInstanceOf(Offering::class);
+    expect($member->contributions[1])->toBeInstanceOf(Offering::class);
+    expect($member->contributions[2])->toBeInstanceOf(Offering::class);
+    expect($member->contributions[3])->toBeInstanceOf(Offering::class);
+});
+
+it('can have previous year contributions', function (): void {
+    $member = Member::factory()
+        ->has(Offering::factory()->prevYear()->count(2), 'previousYearContributions')
+        ->create();
+
+    expect($member->previousYearContributions)->toHaveCount(2);
+    expect($member->previousYearContributions[0])->toBeInstanceOf(Offering::class);
+    expect($member->previousYearContributions[1])->toBeInstanceOf(Offering::class);
 });

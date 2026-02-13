@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Models\Address;
+use App\Models\Email;
 use App\Models\FollowUp;
 use App\Models\Visit;
 use Carbon\CarbonImmutable;
@@ -91,4 +92,15 @@ it('can have null first visit date', function (): void {
     ]);
 
     expect($visit->first_visit_date)->toBeNull();
+});
+
+it('can have emails', function (): void {
+    $visit = Visit::factory()
+        ->has(Email::factory()->count(3), 'emails')
+        ->create();
+
+    expect($visit->emails)->toHaveCount(3);
+    expect($visit->emails[0])->toBeInstanceOf(Email::class);
+    expect($visit->emails[1])->toBeInstanceOf(Email::class);
+    expect($visit->emails[2])->toBeInstanceOf(Email::class);
 });

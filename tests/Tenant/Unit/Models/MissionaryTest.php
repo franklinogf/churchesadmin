@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Enums\Gender;
 use App\Enums\OfferingFrequency;
 use App\Models\Address;
+use App\Models\Email;
 use App\Models\Missionary;
 use App\Models\Offering;
 use Carbon\CarbonImmutable;
@@ -95,4 +96,15 @@ it('can have church name', function (): void {
     ]);
 
     expect($missionary->church)->toBe('Test Church Name');
+});
+
+it('can have emails', function (): void {
+    $missionary = Missionary::factory()
+        ->has(Email::factory()->count(3), 'emails')
+        ->create();
+
+    expect($missionary->emails)->toHaveCount(3);
+    expect($missionary->emails[0])->toBeInstanceOf(Email::class);
+    expect($missionary->emails[1])->toBeInstanceOf(Email::class);
+    expect($missionary->emails[2])->toBeInstanceOf(Email::class);
 });

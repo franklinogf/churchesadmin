@@ -8,6 +8,7 @@ use App\Models\Email;
 use App\Models\Member;
 use App\Models\Missionary;
 use App\Models\TenantUser;
+use App\Models\Visit;
 use Carbon\CarbonImmutable;
 
 test('to array', function (): void {
@@ -74,6 +75,20 @@ it('can have missionary recipients', function (): void {
 
     expect($email->missionaries)->toHaveCount(2);
     expect($email->missionaries[0])->toBeInstanceOf(Missionary::class);
+});
+it('can have visitor recipients', function (): void {
+    $email = Email::factory()->create();
+    $visitors = Visit::factory()->count(2)->create();
+
+    $visitors->each(function (Visit $visit) use ($email): void {
+        $email->visits()->attach($visit->id, [
+            'status' => EmailStatus::PENDING,
+            'sent_at' => null,
+        ]);
+    });
+
+    expect($email->visits)->toHaveCount(2);
+    expect($email->visits[0])->toBeInstanceOf(Visit::class);
 });
 
 it('implements media interface', function (): void {
