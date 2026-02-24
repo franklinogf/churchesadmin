@@ -24,7 +24,7 @@ it('has :dataset counterparts for all English translations keys (php files)', fu
 
         $missingKeys = array_diff($esKeys, $langKeys);
 
-        if (! empty($missingKeys)) {
+        if ($missingKeys !== []) {
             $errors[] = sprintf(
                 "File: %s\n  Missing keys (%d): %s",
                 $filename,
