@@ -95,7 +95,7 @@ if (! function_exists('display_date')) {
      */
     function display_date(?CarbonInterface $date, string $format = 'Y-m-d H:i:s'): ?string
     {
-        if (!$date instanceof \Carbon\CarbonInterface) {
+        if (! $date instanceof CarbonInterface) {
             return null;
         }
 
