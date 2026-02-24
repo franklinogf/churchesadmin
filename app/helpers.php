@@ -6,6 +6,7 @@ use App\Models\Church;
 use App\Models\TenantUser;
 use Bavix\Wallet\Services\FormatterServiceInterface;
 use Carbon\CarbonImmutable;
+use Carbon\CarbonInterface;
 
 if (! function_exists('serverDate')) {
     /**
@@ -85,5 +86,21 @@ if (! function_exists('format_to_float')) {
     function format_to_float(int|string $amount, int $decimals = 2): float
     {
         return (float) app(FormatterServiceInterface::class)->floatValue($amount, $decimals);
+    }
+}
+
+if (! function_exists('display_date')) {
+    /**
+     * Display a date in the application's display timezone.
+     */
+    function display_date(?CarbonInterface $date, string $format = 'Y-m-d H:i:s'): ?string
+    {
+        if (!$date instanceof \Carbon\CarbonInterface) {
+            return null;
+        }
+
+        return $date
+            ->timezone(config('app.timezone_display'))
+            ->format($format);
     }
 }
