@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fd53a018ceb60910c05fa71d32c88ec8",
+    "content-hash": "d70e24c72d30522d8c32c9720163a4b6",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -12216,6 +12216,62 @@
                 }
             ],
             "time": "2025-08-08T12:00:00+00:00"
+        },
+        {
+            "name": "franklinogf/laravel-utils",
+            "version": "v0.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/franklinogf/laravel-utils.git",
+                "reference": "226982f4de7cc089049bdc6b98202b16a5743f02"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/franklinogf/laravel-utils/zipball/226982f4de7cc089049bdc6b98202b16a5743f02",
+                "reference": "226982f4de7cc089049bdc6b98202b16a5743f02",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": "^11.0|^12.0",
+                "php": "^8.2.0"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.25",
+                "orchestra/testbench": "^10.6",
+                "pestphp/pest": "^4.1",
+                "pestphp/pest-plugin-type-coverage": "^4.0",
+                "phpstan/phpstan": "^2.1.32",
+                "rector/rector": "^2.2"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Franklinogf\\LaravelUtils\\Providers\\LaravelUtilsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Franklinogf\\LaravelUtils\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Franklin Gonzalez",
+                    "email": "franklinomarflores@gmail.com"
+                }
+            ],
+            "description": "A set of utilities for laravel projects",
+            "support": {
+                "issues": "https://github.com/franklinogf/laravel-utils/issues",
+                "source": "https://github.com/franklinogf/laravel-utils/tree/v0.2.0"
+            },
+            "time": "2026-02-20T21:38:45+00:00"
         },
         {
             "name": "hamcrest/hamcrest-php",
