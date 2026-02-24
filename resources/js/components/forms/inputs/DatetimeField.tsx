@@ -10,7 +10,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useLocaleDate } from '@/hooks/use-locale-date';
 import { useTranslations } from '@/hooks/use-translations';
 import { parseLocalDate } from '@/lib/datetime';
-import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import { ChevronDownIcon } from 'lucide-react';
 import { useId, useState } from 'react';
@@ -107,75 +106,76 @@ export function DatetimeField({
   }
 
   return (
-    <FieldGroup className={cn('flex-row', className)}>
+    <FieldGroup className={className}>
       {name && <input type="hidden" name={name} value={date ? date.toISOString() : ''} />}
-      <Field>
-        <FieldLabel id={dateId} disabled={disabled} label={label} required={required} />
-        <Popover open={open} onOpenChange={setOpen}>
-          <PopoverTrigger asChild>
-            <Button variant="outline" id={dateId} className="w-full justify-between font-normal">
-              {value ? format(value, 'PPP', { locale: getCurrentDateLocale() }) : t('Select a date')}
-              <ChevronDownIcon />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent className="w-content overflow-hidden p-0" align="start">
-            <Calendar
-              hidden={hidden}
-              disabled={disabled}
-              locale={getCurrentDateLocale()}
-              mode="single"
-              className="w-full"
-              selected={date}
-              captionLayout="dropdown"
-              defaultMonth={date}
-              onSelect={(newDate) => {
-                handleDateChange(newDate || null);
-                setOpen(false);
+      <FieldGroup className="flex-row">
+        <Field>
+          <FieldLabel id={dateId} disabled={disabled} label={label} required={required} />
+          <Popover open={open} onOpenChange={setOpen}>
+            <PopoverTrigger asChild>
+              <Button variant="outline" id={dateId} className="w-full justify-between font-normal">
+                {value ? format(value, 'PPP', { locale: getCurrentDateLocale() }) : t('Select a date')}
+                <ChevronDownIcon />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-content overflow-hidden p-0" align="start">
+              <Calendar
+                hidden={hidden}
+                disabled={disabled}
+                locale={getCurrentDateLocale()}
+                mode="single"
+                className="w-full"
+                selected={date}
+                captionLayout="dropdown"
+                defaultMonth={date}
+                onSelect={(newDate) => {
+                  handleDateChange(newDate || null);
+                  setOpen(false);
+                }}
+              />
+            </PopoverContent>
+          </Popover>
+        </Field>
+        <Field className="self-end">
+          <FieldLabel id={timeId} disabled={disabled} label={timeLabel} required={required} />
+          {presetHours ? (
+            <Select
+              disabled={disabled || !date}
+              value={time}
+              onValueChange={(e) => {
+                handleTimeChange(e);
               }}
+            >
+              <SelectTrigger className="w-30 font-normal focus:ring-0 focus:ring-offset-0">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <ScrollArea className="h-60">
+                  {TIME_SLOTS.map((slot) => (
+                    <SelectItem key={slot.value} value={slot.value}>
+                      {slot.label}
+                    </SelectItem>
+                  ))}
+                </ScrollArea>
+              </SelectContent>
+            </Select>
+          ) : (
+            <Input
+              id={timeId}
+              type="time"
+              disabled={disabled || !date}
+              step="15"
+              value={time}
+              onChange={(e) => {
+                const time = e.target.value;
+                handleTimeChange(time);
+              }}
+              className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
             />
-          </PopoverContent>
-        </Popover>
-
-        <FieldError>{error}</FieldError>
-      </Field>
-      <Field className="self-end">
-        <FieldLabel id={timeId} disabled={disabled} label={timeLabel} required={required} />
-        {presetHours ? (
-          <Select
-            disabled={disabled || !date}
-            value={time}
-            onValueChange={(e) => {
-              handleTimeChange(e);
-            }}
-          >
-            <SelectTrigger className="w-30 font-normal focus:ring-0 focus:ring-offset-0">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <ScrollArea className="h-60">
-                {TIME_SLOTS.map((slot) => (
-                  <SelectItem key={slot.value} value={slot.value}>
-                    {slot.label}
-                  </SelectItem>
-                ))}
-              </ScrollArea>
-            </SelectContent>
-          </Select>
-        ) : (
-          <Input
-            id={timeId}
-            type="time"
-            disabled={disabled || !date}
-            step="15"
-            value={time}
-            onChange={(e) => {
-              const time = e.target.value;
-              handleTimeChange(time);
-            }}
-            className="bg-background appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
-          />
-        )}
-      </Field>
+          )}
+        </Field>
+      </FieldGroup>
+      <FieldError>{error}</FieldError>
     </FieldGroup>
   );
 }
