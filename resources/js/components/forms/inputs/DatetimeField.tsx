@@ -73,7 +73,7 @@ export function DatetimeField({
   const timeId = useId();
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState(value ?? defaultValue ?? undefined);
-  const [time, setTime] = useState<string | undefined>(date ? format(date, 'hh:mm') : undefined);
+  const [time, setTime] = useState<string | undefined>(date ? format(date, 'HH:mm') : undefined);
 
   const TIME_SLOTS = generateTimeSlots(use24HourFormat);
 
