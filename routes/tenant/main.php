@@ -8,6 +8,7 @@ use App\Http\Controllers\MemberController;
 use App\Http\Controllers\MemberStatusController;
 use App\Http\Controllers\MissionaryController;
 use App\Http\Controllers\Pdf\CalendarEventPdfController;
+use App\Http\Controllers\SendCalendarEventToMembersController;
 use App\Http\Controllers\SkillController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VisitController;
@@ -52,6 +53,7 @@ Route::delete('visits/{visit}/force-delete', [VisitController::class, 'forceDele
 // Calendar Events routes
 Route::resource('calendar-events', CalendarEventController::class)
     ->except(['show', 'create', 'edit']);
+Route::post('calendar-events/{calendarEvent}', SendCalendarEventToMembersController::class)->name('calendar-events.email.members');
 
 // Calendar Events PDF export routes
 Route::get('calendar-events-pdf', [CalendarEventPdfController::class, 'index'])

@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { FieldGroup } from '@/components/ui/field';
 import { CalendarEventColorEnum } from '@/enums/CalendarEventColorEnum';
+import { useTranslations } from '@/hooks/use-translations';
 import type { CalendarEvent } from '@/types/models/calendar-event';
 import { useForm } from '@inertiajs/react';
 import { addMinutes, isToday, startOfDay } from 'date-fns';
@@ -22,9 +23,10 @@ interface CalendarForm {
   color: CalendarEventColorEnum;
 }
 export default function CalendarNewEventDialog() {
+  const { t } = useTranslations();
   const { newEventDialogOpen, setNewEventDialogOpen, date, setEvents } = useCalendarContext();
 
-  const { data, setData, reset, submit, setDefaults } = useForm<CalendarForm>({
+  const { data, setData, reset, submit, setDefaults, errors, processing } = useForm<CalendarForm>({
     title: '',
     location: '',
     description: '',
@@ -67,25 +69,58 @@ export default function CalendarNewEventDialog() {
     <Dialog open={newEventDialogOpen} onOpenChange={handleClose}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Create event</DialogTitle>
+          <DialogTitle>{t('Create event')}</DialogTitle>
           <DialogDescription hidden />
         </DialogHeader>
 
         <form onSubmit={handleSubmit}>
           <FieldGroup>
-            <InputField required label="Title" name="title" value={data.title} onChange={(value) => setData('title', value)} />
-            <InputField label="Location" name="location" value={data.location} onChange={(value) => setData('location', value)} />
-            <TextareaField label="Description" name="description" value={data.description} onChange={(e) => setData('description', e.target.value)} />
-            <DatetimeField required presetHours label="start_at" value={data.start_at} onChange={(value) => value && setData('start_at', value)} />
-            <DatetimeField required presetHours label="end_at" value={data.end_at} onChange={(value) => value && setData('end_at', value)} />
+            <InputField
+              required
+              label={t('Title')}
+              name="title"
+              value={data.title}
+              onChange={(value) => setData('title', value)}
+              error={errors.title}
+            />
+            <InputField
+              label={t('Location')}
+              name="location"
+              value={data.location}
+              onChange={(value) => setData('location', value)}
+              error={errors.location}
+            />
+            <TextareaField
+              label={t('Description')}
+              name="description"
+              value={data.description}
+              onChange={(e) => setData('description', e.target.value)}
+              error={errors.description}
+            />
+            <DatetimeField
+              required
+              presetHours
+              label={t('Start at')}
+              value={data.start_at}
+              onChange={(value) => value && setData('start_at', value)}
+              error={errors.start_at}
+            />
+            <DatetimeField
+              required
+              presetHours
+              label={t('End at')}
+              value={data.end_at}
+              onChange={(value) => value && setData('end_at', value)}
+              error={errors.end_at}
+            />
             <ColorPicker value={data.color} onChange={(value) => setData('color', value)} />
             <FieldGroup className="flex-row justify-end">
               <DialogClose asChild>
                 <Button variant="outline" type="button">
-                  Cancel
+                  {t('Cancel')}
                 </Button>
               </DialogClose>
-              <SubmitButton>Create Event</SubmitButton>
+              <SubmitButton isSubmitting={processing}>{t('Create Event')}</SubmitButton>
             </FieldGroup>
           </FieldGroup>
         </form>
