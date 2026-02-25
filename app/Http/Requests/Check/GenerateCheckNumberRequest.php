@@ -7,6 +7,7 @@ namespace App\Http\Requests\Check;
 use App\Models\Check;
 use Closure;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 
@@ -23,7 +24,7 @@ final class GenerateCheckNumberRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {

@@ -22,6 +22,7 @@ final class DeleteMemberAction
                 if ($member->address) {
                     $member->address->delete();
                 }
+
                 $member->tags()->detach();
                 $member->delete();
                 activity(ModelMorphName::MEMBER->activityLogName())
@@ -29,8 +30,8 @@ final class DeleteMemberAction
                     ->performedOn($member)
                     ->log('Member :subject.name deleted');
             });
-        } catch (Exception $th) {
-            throw new Exception('Failed to delete member: '.$th->getMessage(), $th->getCode(), $th);
+        } catch (Exception $exception) {
+            throw new Exception('Failed to delete member: '.$exception->getMessage(), $exception->getCode(), $exception);
         }
 
     }

@@ -10,7 +10,9 @@ use App\Models\Scopes\CurrentYearScope;
 use App\Observers\TransactionalObserver;
 use Bavix\Wallet\Models\Transaction;
 use Carbon\CarbonImmutable;
+use Database\Factories\CheckFactory;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -40,7 +42,7 @@ use Override;
 #[ObservedBy([TransactionalObserver::class])]
 final class Check extends Model
 {
-    /** @use HasFactory<\Database\Factories\CheckFactory> */
+    /** @use HasFactory<CheckFactory> */
     use HasFactory;
 
     /**
@@ -83,7 +85,8 @@ final class Check extends Model
      *
      * @param  Builder<Check>  $query
      */
-    public function scopeConfirmed(Builder $query): void
+    #[Scope]
+    protected function confirmed(Builder $query): void
     {
         $query->whereRelation('transaction', 'confirmed', true);
     }
@@ -93,7 +96,8 @@ final class Check extends Model
      *
      * @param  Builder<Check>  $query
      */
-    public function scopeUnconfirmed(Builder $query): void
+    #[Scope]
+    protected function unconfirmed(Builder $query): void
     {
         $query->whereRelation('transaction', 'confirmed', false);
     }

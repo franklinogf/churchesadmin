@@ -4,13 +4,15 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Code;
 
+use App\Models\ExpenseType;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 
 /**
- * @property-read \App\Models\ExpenseType $expenseType
+ * @property-read ExpenseType $expenseType
  */
 final class UpdateExpenseTypeRequest extends FormRequest
 {
@@ -25,7 +27,7 @@ final class UpdateExpenseTypeRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {

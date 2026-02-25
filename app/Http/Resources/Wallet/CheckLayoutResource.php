@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace App\Http\Resources\Wallet;
 
+use App\Models\CheckLayout;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Override;
 
 /**
- * @mixin \App\Models\CheckLayout
+ * @mixin CheckLayout
  */
 final class CheckLayoutResource extends JsonResource
 {

@@ -1,6 +1,15 @@
 {
     "preset": "laravel",
+    "notPath": [
+        "tests/TestCase.php"
+    ],
     "rules": {
+        "native_function_invocation": {
+            "include": [
+                "@compiler_optimized"
+            ],
+            "scope": "namespaced"
+        },
         "array_push": true,
         "backtick_to_shell_exec": true,
         "date_time_immutable": true,

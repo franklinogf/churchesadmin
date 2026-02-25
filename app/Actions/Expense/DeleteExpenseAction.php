@@ -24,16 +24,17 @@ final class DeleteExpenseAction
                 $wallet = $expense->transaction->wallet;
                 $expense->delete();
                 $expense->transaction->forceDelete();
+
                 $wallet->refreshBalance();
             });
 
-        } catch (QueryException $e) {
-            Log::error('Error deleting expense: '.$e->getMessage(), [
+        } catch (QueryException $queryException) {
+            Log::error('Error deleting expense: '.$queryException->getMessage(), [
                 'expense_id' => $expense->id,
                 'wallet_id' => $expense->transaction->wallet->id,
             ]);
 
-            throw new WalletException('An error occurred while deleting the expense', $e->getCode(), $e);
+            throw new WalletException('An error occurred while deleting the expense', $queryException->getCode(), $queryException);
         }
 
     }

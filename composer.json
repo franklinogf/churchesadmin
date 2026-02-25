@@ -39,6 +39,7 @@
         "stancl/tenancy": "dev-master"
     },
     "require-dev": {
+        "driftingly/rector-laravel": "^2.1",
         "fakerphp/faker": "^1.24.1",
         "franklinogf/laravel-utils": "^0.2.0",
         "larastan/larastan": "^3.9.2",
@@ -101,7 +102,7 @@
             "php artisan utils:ts-lang-keys",
             "npm run format:lang"
         ],
-        "lint": "pint -vv --diff=main",
+        "lint": "pint -vv",
         "refactor": "rector",
         "format": [
             "@refactor",

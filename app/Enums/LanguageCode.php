@@ -13,6 +13,7 @@ use Filament\Support\Contracts\HasLabel;
 enum LanguageCode: string implements HasColor, HasLabel
 {
     use EnumToArray, HasOptions;
+
     case ENGLISH = 'en';
     case SPANISH = 'es';
 

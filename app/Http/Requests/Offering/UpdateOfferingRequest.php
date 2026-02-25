@@ -5,15 +5,17 @@ declare(strict_types=1);
 namespace App\Http\Requests\Offering;
 
 use App\Enums\PaymentMethod;
+use App\Models\Offering;
 use App\Rules\SelectOptionWithModel;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 use Override;
 
 /**
- * @property-read \App\Models\Offering $offering
+ * @property-read Offering $offering
  */
 final class UpdateOfferingRequest extends FormRequest
 {
@@ -28,7 +30,7 @@ final class UpdateOfferingRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {

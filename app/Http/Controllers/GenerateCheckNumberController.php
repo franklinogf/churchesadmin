@@ -10,6 +10,8 @@ use App\Http\Requests\Check\GenerateCheckNumberRequest;
 use App\Models\Check;
 use Illuminate\Http\RedirectResponse;
 
+use function count;
+
 final class GenerateCheckNumberController extends Controller
 {
     /**

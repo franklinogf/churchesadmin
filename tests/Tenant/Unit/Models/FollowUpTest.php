@@ -60,6 +60,7 @@ it('can be restored after soft delete', function (): void {
     $followUp = FollowUp::factory()->create();
 
     $followUp->delete();
+
     expect($followUp->trashed())->toBeTrue();
 
     $followUp->restore();

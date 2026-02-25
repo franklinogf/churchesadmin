@@ -7,12 +7,13 @@ namespace App\Http\Resources\Expense;
 use App\Http\Resources\Codes\ExpenseTypeResource;
 use App\Http\Resources\Member\MemberResource;
 use App\Http\Resources\Wallet\TransactionResource;
+use App\Models\Expense;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Override;
 
 /**
- * @mixin \App\Models\Expense
+ * @mixin Expense
  */
 final class ExpenseResource extends JsonResource
 {

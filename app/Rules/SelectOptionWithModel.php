@@ -7,13 +7,16 @@ namespace App\Rules;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Database\Eloquent\Relations\Relation;
+use Illuminate\Translation\PotentiallyTranslatedString;
+
+use function is_string;
 
 final class SelectOptionWithModel implements ValidationRule
 {
     /**
      * Run the validation rule.
      *
-     * @param  Closure(string, ?string=): \Illuminate\Translation\PotentiallyTranslatedString  $fail
+     * @param  Closure(string, ?string=):PotentiallyTranslatedString  $fail
      * @param  array{model?:mixed,id?:mixed}  $value
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void

@@ -7,12 +7,13 @@ namespace App\Http\Resources\Check;
 use App\Http\Resources\Codes\ExpenseTypeResource;
 use App\Http\Resources\Member\MemberResource;
 use App\Http\Resources\Wallet\TransactionResource;
+use App\Models\Check;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Override;
 
 /**
- * @mixin \App\Models\Check
+ * @mixin Check
  */
 final class CheckResource extends JsonResource
 {

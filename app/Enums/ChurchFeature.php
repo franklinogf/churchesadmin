@@ -11,6 +11,7 @@ use Filament\Support\Contracts\HasLabel;
 enum ChurchFeature: string implements HasDescription, HasLabel
 {
     use EnumToArray;
+
     case TEST_FEATURE = 'test-feature';
     case ANOTHER_FEATURE = 'another-feature';
 

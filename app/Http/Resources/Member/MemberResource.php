@@ -10,12 +10,13 @@ use App\Http\Resources\Communication\Email\EmailableResource;
 use App\Http\Resources\Communication\Email\EmailResource;
 use App\Http\Resources\DeactivationCode\DeactivationCodeResource;
 use App\Http\Resources\Tag\TagRelationshipResource;
+use App\Models\Member;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Override;
 
 /**
- * @mixin \App\Models\Member
+ * @mixin Member
  */
 final class MemberResource extends JsonResource
 {

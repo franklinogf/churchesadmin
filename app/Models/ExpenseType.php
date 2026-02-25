@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Casts\AsUcWords;
 use Carbon\CarbonImmutable;
+use Database\Factories\ExpenseTypeFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Override;
@@ -19,7 +20,7 @@ use Override;
  */
 final class ExpenseType extends Model
 {
-    /** @use HasFactory<\Database\Factories\ExpenseTypeFactory> */
+    /** @use HasFactory<ExpenseTypeFactory> */
     use HasFactory;
 
     /**

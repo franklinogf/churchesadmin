@@ -10,6 +10,7 @@ use App\Enums\Traits\HasOptions;
 enum PaymentMethod: string
 {
     use EnumToArray, HasOptions;
+
     case CASH = 'cash';
     case CHECK = 'check';
 

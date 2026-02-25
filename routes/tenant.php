@@ -7,7 +7,9 @@ use App\Http\Controllers\ImpersonateUserController;
 use App\Http\Controllers\LoginLinkController;
 use App\Http\Controllers\SessionController;
 use Illuminate\Support\Facades\Route;
-use Stancl\Tenancy\Middleware;
+use Stancl\Tenancy\Middleware\InitializeTenancyBySubdomain;
+use Stancl\Tenancy\Middleware\PreventAccessFromUnwantedDomains;
+use Stancl\Tenancy\Middleware\ScopeSessions;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,9 +25,9 @@ use Stancl\Tenancy\Middleware;
 
 Route::middleware([
     'web',
-    Middleware\InitializeTenancyBySubdomain::class,
-    Middleware\PreventAccessFromUnwantedDomains::class,
-    Middleware\ScopeSessions::class,
+    InitializeTenancyBySubdomain::class,
+    PreventAccessFromUnwantedDomains::class,
+    ScopeSessions::class,
 ])->group(function (): void {
 
     Route::post('loginLink', LoginLinkController::class)->name('loginLink');

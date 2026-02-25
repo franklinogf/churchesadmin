@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Models\DeactivationCode;
+use App\Models\Member;
 
 test('to array', function (): void {
     $deactivationCode = DeactivationCode::factory()->create()->fresh();
@@ -17,7 +18,7 @@ test('to array', function (): void {
 
 it('can have members', function (): void {
     $deactivationCode = DeactivationCode::factory()->create();
-    $members = App\Models\Member::factory()->count(3)->inactive()->create([
+    $members = Member::factory()->count(3)->inactive()->create([
         'deactivation_code_id' => $deactivationCode->id,
     ]);
 

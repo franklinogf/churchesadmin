@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Carbon\CarbonImmutable;
+use Database\Factories\CurrentYearFactory;
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -23,7 +25,7 @@ use Override;
  */
 final class CurrentYear extends Model
 {
-    /** @use HasFactory<\Database\Factories\CurrentYearFactory> */
+    /** @use HasFactory<CurrentYearFactory> */
     use HasFactory;
 
     /**
@@ -67,7 +69,8 @@ final class CurrentYear extends Model
      * @param  Builder<self>  $query
      * @return Builder<self>
      */
-    protected function scopeOfYear(Builder $query, string $year): Builder
+    #[Scope]
+    protected function ofYear(Builder $query, string $year): Builder
     {
         return $query->where('year', $year);
     }

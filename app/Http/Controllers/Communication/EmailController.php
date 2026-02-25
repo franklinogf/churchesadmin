@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 
+use function count;
+
 final class EmailController extends Controller
 {
     public function index(): Response
@@ -52,8 +54,8 @@ final class EmailController extends Controller
         Gate::authorize('create', Email::class);
         try {
             $emailRecipients = $emailService->getEmailRecipients();
-        } catch (EmailException $e) {
-            return to_route('communication.emails.index')->with(FlashMessageKey::ERROR->value, $e->getMessage());
+        } catch (EmailException $emailException) {
+            return to_route('communication.emails.index')->with(FlashMessageKey::ERROR->value, $emailException->getMessage());
         }
 
         $recipientsAmount = count($emailRecipients['ids']);
@@ -81,8 +83,8 @@ final class EmailController extends Controller
                 $files
             );
 
-        } catch (EmailException $e) {
-            return to_route('communication.emails.index')->with(FlashMessageKey::ERROR->value, $e->getMessage());
+        } catch (EmailException $emailException) {
+            return to_route('communication.emails.index')->with(FlashMessageKey::ERROR->value, $emailException->getMessage());
         }
 
         return to_route('communication.emails.show', $email)->with(FlashMessageKey::SUCCESS->value, __('flash.message.email.will_be_sent'));

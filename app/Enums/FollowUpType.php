@@ -10,6 +10,7 @@ use App\Enums\Traits\HasOptions;
 enum FollowUpType: string
 {
     use EnumToArray, HasOptions;
+
     case CALL = 'call';
     case EMAIL = 'email';
     case IN_PERSON = 'in_person';

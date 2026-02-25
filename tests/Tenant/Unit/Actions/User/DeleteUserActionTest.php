@@ -10,5 +10,6 @@ it('can delete a user', function (): void {
 
     $action = new DeleteUserAction();
     $action->handle($user);
+
     expect(TenantUser::count())->toBe(0);
 });

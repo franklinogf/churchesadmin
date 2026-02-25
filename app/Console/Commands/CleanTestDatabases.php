@@ -58,7 +58,7 @@ final class CleanTestDatabases extends Command implements Isolatable
             $basename = basename($file);
             if (Str::startsWith($basename, $dbPrefix) && $basename !== "{$dbPrefix}.sqlite") {
                 File::delete($file);
-                $this->info("Deleted: $file");
+                $this->info("Deleted: {$file}");
             }
         }
 
@@ -72,11 +72,12 @@ final class CleanTestDatabases extends Command implements Isolatable
             if ($dbName === $dbPrefix) {
                 continue;
             }
-            DB::statement("DROP DATABASE `$dbName`");
-            $this->info("Dropped database: $dbName");
+
+            DB::statement("DROP DATABASE `{$dbName}`");
+            $this->info("Dropped database: {$dbName}");
         }
 
-        $this->info("Deleting storage folders for databases with prefix: $dbPrefix");
+        $this->info("Deleting storage folders for databases with prefix: {$dbPrefix}");
         // delete storage folder for the tenant
         /**
          * @var array<int,string> $storageFolders
@@ -86,6 +87,7 @@ final class CleanTestDatabases extends Command implements Isolatable
         foreach ($storageFolders as $folder) {
             File::deleteDirectory($folder);
         }
+
         /**
          * @var array<int,string> $publicFolders
          */
@@ -94,7 +96,7 @@ final class CleanTestDatabases extends Command implements Isolatable
         foreach ($publicFolders as $folder) {
             rmdir($folder);
 
-            $this->info("Deleted: $folder");
+            $this->info("Deleted: {$folder}");
         }
 
         $this->info('Cleanup complete.');

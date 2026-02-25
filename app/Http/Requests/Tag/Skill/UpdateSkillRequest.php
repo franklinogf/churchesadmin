@@ -5,13 +5,15 @@ declare(strict_types=1);
 namespace App\Http\Requests\Tag\Skill;
 
 use App\Enums\TagType;
+use App\Models\Tag;
 use CodeZero\UniqueTranslation\UniqueTranslationRule;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 
 /**
- * @property-read \App\Models\Tag $tag
+ * @property-read Tag $tag
  */
 final class UpdateSkillRequest extends FormRequest
 {
@@ -26,7 +28,7 @@ final class UpdateSkillRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {

@@ -94,6 +94,7 @@ final class HandleInertiaRequests extends Middleware
         if (! $church instanceof Church) {
             return [];
         }
+
         /**
          * @var array<string,bool>
          */

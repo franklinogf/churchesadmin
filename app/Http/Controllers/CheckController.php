@@ -81,12 +81,12 @@ final class CheckController extends Controller
         try {
             $action->handle($validated);
 
-        } catch (WalletException $e) {
+        } catch (WalletException $walletException) {
             return back()->with(
                 FlashMessageKey::ERROR->value,
-                $e->getMessage()
+                $walletException->getMessage()
             )->withErrors([
-                'amount' => $e->getMessage(),
+                'amount' => $walletException->getMessage(),
             ]);
         }
 
@@ -139,12 +139,12 @@ final class CheckController extends Controller
 
             $action->handle($check, $validated);
 
-        } catch (WalletException $e) {
+        } catch (WalletException $walletException) {
             return back()->with(
                 FlashMessageKey::ERROR->value,
-                $e->getMessage()
+                $walletException->getMessage()
             )->withErrors([
-                'amount' => $e->getMessage(),
+                'amount' => $walletException->getMessage(),
             ]);
         }
 
@@ -165,12 +165,12 @@ final class CheckController extends Controller
 
             $action->handle($check);
 
-        } catch (WalletException $e) {
+        } catch (WalletException $walletException) {
             return back()->with(
                 FlashMessageKey::ERROR->value,
-                $e->getMessage()
+                $walletException->getMessage()
             )->withErrors([
-                'amount' => $e->getMessage(),
+                'amount' => $walletException->getMessage(),
             ]);
         }
 

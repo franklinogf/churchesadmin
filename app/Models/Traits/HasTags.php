@@ -18,6 +18,7 @@ trait HasTags
             if (method_exists($deletedModel, 'isForceDeleting') && ! $deletedModel->isForceDeleting()) {
                 return;
             }
+
             // @phpstan-ignore-next-line
             $tags = $deletedModel->tags()->get();
             // @phpstan-ignore-next-line

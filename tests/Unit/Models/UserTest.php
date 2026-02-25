@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 use App\Models\User;
 use Filament\Panel;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
-uses(Illuminate\Foundation\Testing\RefreshDatabase::class);
+uses(RefreshDatabase::class);
 
 test('to array', function (): void {
     $user = User::factory()->create()->fresh();

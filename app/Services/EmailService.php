@@ -16,6 +16,8 @@ use Exception;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Log;
 
+use function count;
+
 final readonly class EmailService
 {
     /**
@@ -57,15 +59,15 @@ final readonly class EmailService
             dispatch(new SendEmailJob($email));
 
             return $email;
-        } catch (Exception $e) {
+        } catch (Exception $exception) {
             Log::driver('emails')->error('Failed to send email', [
-                'error' => $e->getMessage(),
+                'error' => $exception->getMessage(),
                 'user_id' => $user->id,
                 'data' => $data,
                 'email_recipients' => $emailRecipients ?? null,
             ]);
-            if ($e instanceof EmailException) {
-                throw $e;
+            if ($exception instanceof EmailException) {
+                throw $exception;
             }
 
             throw EmailException::unknownError();

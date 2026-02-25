@@ -55,13 +55,13 @@ final readonly class CreateOfferingAction
                     'offering_type_type' => $data['offering_type']['model'],
                 ]);
             });
-        } catch (QueryException $e) {
-            Log::error('Error creating offering transaction: '.$e->getMessage(), [
+        } catch (QueryException $queryException) {
+            Log::error('Error creating offering transaction: '.$queryException->getMessage(), [
                 'data' => $data,
                 'wallet_id' => $wallet->id,
             ]);
 
-            throw new WalletException('An error occurred while creating the offering', $e->getCode(), $e);
+            throw new WalletException('An error occurred while creating the offering', $queryException->getCode(), $queryException);
         }
     }
 }

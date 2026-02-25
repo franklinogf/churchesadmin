@@ -8,6 +8,7 @@ use App\Models\Address;
 use App\Models\Email;
 use App\Models\Member;
 use App\Models\Offering;
+use App\Models\Tag;
 use Carbon\CarbonImmutable;
 
 test('to array', function (): void {
@@ -60,12 +61,12 @@ it('has an address', function (): void {
 it('can have tags', function (): void {
     $member = Member::factory()
         ->hasAttached(
-            App\Models\Tag::factory()->count(2)
+            Tag::factory()->count(2)
         )->create();
 
     expect($member->tags)->toHaveCount(2);
-    expect($member->tags[0])->toBeInstanceOf(App\Models\Tag::class);
-    expect($member->tags[1])->toBeInstanceOf(App\Models\Tag::class);
+    expect($member->tags[0])->toBeInstanceOf(Tag::class);
+    expect($member->tags[1])->toBeInstanceOf(Tag::class);
 });
 
 it('can be active or inactive', function (): void {

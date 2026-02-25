@@ -10,6 +10,7 @@ use App\Enums\Traits\HasOptions;
 enum CheckType: string
 {
     use EnumToArray, HasOptions;
+
     case PAYMENT = 'payment';
     case REFUND = 'refund';
 

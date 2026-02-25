@@ -19,6 +19,8 @@ use Illuminate\Support\Collection;
 use Inertia\Inertia;
 use Inertia\Response;
 
+use function in_array;
+
 final class DashboardController extends Controller
 {
     /**

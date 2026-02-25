@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Enums\EmailStatus;
 use Carbon\CarbonImmutable;
+use Database\Factories\EmailableFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -30,7 +31,7 @@ use Override;
  */
 final class Emailable extends MorphPivot
 {
-    /** @use HasFactory<\Database\Factories\EmailableFactory> */
+    /** @use HasFactory<EmailableFactory> */
     use HasFactory;
 
     /**
@@ -75,7 +76,7 @@ final class Emailable extends MorphPivot
      * @return array<string, string>
      */
     #[Override]
-    public function casts(): array
+    protected function casts(): array
     {
         return [
             'sent_at' => 'datetime',
