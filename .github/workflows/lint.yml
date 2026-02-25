@@ -78,7 +78,7 @@ jobs:
 
       # ---- Generate Wayfinder routes ----
       - name: Generate Wayfinder routes
-        run: php artisan wayfinder:generate
+        run: php artisan wayfinder:generate --skip-routes
 
       # ---- Node setup ----
       - name: Setup pnpm
