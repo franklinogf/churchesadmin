@@ -22,9 +22,28 @@ interface CalendarEventsReportProps {
   columns: PdfColumn[];
 }
 
+interface CalendarEventsReportContentProps {
+  events: CalendarEvent[];
+  dataColumns: ColumnDef<CalendarEvent>[];
+}
+
+function CalendarEventsReportContent({ events, dataColumns }: CalendarEventsReportContentProps) {
+  const { routeSrc } = usePdfGenerator();
+
+  return (
+    <>
+      <OpenPdfButton route={CalendarEventPdfController.show({ query: { ...routeSrc } }).url} />
+      <section className="grid h-100 grid-cols-1 gap-4 md:grid-cols-2">
+        <PdfControls />
+        <PdfPreview route={CalendarEventPdfController.show({ query: { ...routeSrc } }).url} />
+      </section>
+      <PdfRowsTable data={events} columns={dataColumns} />
+    </>
+  );
+}
+
 export default function CalendarEventsReport({ events, columns }: CalendarEventsReportProps) {
   const { t } = useTranslations();
-  const { routeSrc } = usePdfGenerator();
   const dataColumns = useMemo<ColumnDef<CalendarEvent>[]>(
     () => [
       selectionHeader as ColumnDef<CalendarEvent>,
@@ -55,12 +74,7 @@ export default function CalendarEventsReport({ events, columns }: CalendarEvents
       <PageTitle>{t(':model report', { model: t('Calendar Events') })}</PageTitle>
       <FormErrorList errors={usePage().props.errors} />
       <PdfGeneratorProvider columns={columns} route={CalendarEventPdfController.index().url}>
-        <OpenPdfButton route={CalendarEventPdfController.show({ query: { ...routeSrc } }).url} />
-        <section className="grid h-100 grid-cols-1 gap-4 md:grid-cols-2">
-          <PdfControls />
-          <PdfPreview route={CalendarEventPdfController.show({ query: { ...routeSrc } }).url} />
-        </section>
-        <PdfRowsTable data={events} columns={dataColumns} />
+        <CalendarEventsReportContent events={events} dataColumns={dataColumns} />
       </PdfGeneratorProvider>
     </AppLayout>
   );

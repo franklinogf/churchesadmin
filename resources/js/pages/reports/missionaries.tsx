@@ -22,9 +22,28 @@ interface MissionariesReportProps {
   columns: PdfColumn[];
 }
 
+interface MissionariesReportContentProps {
+  missionaries: Missionary[];
+  dataColumns: ColumnDef<Missionary>[];
+}
+
+function MissionariesReportContent({ missionaries, dataColumns }: MissionariesReportContentProps) {
+  const { routeSrc } = usePdfGenerator();
+
+  return (
+    <>
+      <OpenPdfButton route={MissionaryPdfController.show({ query: { ...routeSrc } }).url} />
+      <section className="grid h-100 grid-cols-1 gap-4 md:grid-cols-2">
+        <PdfControls />
+        <PdfPreview route={MissionaryPdfController.show({ query: { ...routeSrc } }).url} />
+      </section>
+      <PdfRowsTable data={missionaries} columns={dataColumns} />
+    </>
+  );
+}
+
 export default function MissionariesReport({ missionaries, columns }: MissionariesReportProps) {
   const { t } = useTranslations();
-  const { routeSrc } = usePdfGenerator();
   const dataColumns = useMemo<ColumnDef<Missionary>[]>(
     () => [
       selectionHeader as ColumnDef<Missionary>,
@@ -46,12 +65,7 @@ export default function MissionariesReport({ missionaries, columns }: Missionari
       <PageTitle>{t(':model report', { model: t('Missionaries') })}</PageTitle>
       <FormErrorList errors={usePage().props.errors} />
       <PdfGeneratorProvider columns={columns} route="reports.missionaries.pdf">
-        <OpenPdfButton route={MissionaryPdfController.show({ query: { ...routeSrc } }).url} />
-        <section className="grid h-100 grid-cols-1 gap-4 md:grid-cols-2">
-          <PdfControls />
-          <PdfPreview route={MissionaryPdfController.show({ query: { ...routeSrc } }).url} />
-        </section>
-        <PdfRowsTable data={missionaries} columns={dataColumns} />
+        <MissionariesReportContent missionaries={missionaries} dataColumns={dataColumns} />
       </PdfGeneratorProvider>
     </AppLayout>
   );

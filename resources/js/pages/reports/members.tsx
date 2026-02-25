@@ -22,9 +22,28 @@ interface MembersReportProps {
   columns: PdfColumn[];
 }
 
+interface MembersReportContentProps {
+  members: Member[];
+  dataColumns: ColumnDef<Member>[];
+}
+
+function MembersReportContent({ members, dataColumns }: MembersReportContentProps) {
+  const { routeSrc } = usePdfGenerator();
+
+  return (
+    <>
+      <OpenPdfButton route={MemberPdfController.show({ query: { ...routeSrc } }).url} />
+      <section className="grid h-100 grid-cols-1 gap-4 md:grid-cols-2">
+        <PdfControls />
+        <PdfPreview route={MemberPdfController.show({ query: { ...routeSrc } }).url} />
+      </section>
+      <PdfRowsTable data={members} columns={dataColumns} />
+    </>
+  );
+}
+
 export default function MembersReport({ members, columns }: MembersReportProps) {
   const { t } = useTranslations();
-  const { routeSrc } = usePdfGenerator();
   const dataColumns = useMemo<ColumnDef<Member>[]>(
     () => [
       selectionHeader as ColumnDef<Member>,
@@ -46,12 +65,7 @@ export default function MembersReport({ members, columns }: MembersReportProps) 
       <PageTitle>{t(':model report', { model: t('Members') })}</PageTitle>
       <FormErrorList errors={usePage().props.errors} />
       <PdfGeneratorProvider columns={columns} route="reports.members.pdf">
-        <OpenPdfButton route={MemberPdfController.show({ query: { ...routeSrc } }).url} />
-        <section className="grid h-100 grid-cols-1 gap-4 md:grid-cols-2">
-          <PdfControls />
-          <PdfPreview route={MemberPdfController.show({ query: { ...routeSrc } }).url} />
-        </section>
-        <PdfRowsTable data={members} columns={dataColumns} />
+        <MembersReportContent members={members} dataColumns={dataColumns} />
       </PdfGeneratorProvider>
     </AppLayout>
   );
