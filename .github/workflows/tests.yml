@@ -31,7 +31,6 @@ jobs:
           - 3306:3306
     env:
       DB_CONNECTION: mysql
-      DB_HOST: mysql
       DB_PORT: 3306
       DB_DATABASE: testing
       DB_USERNAME: root
