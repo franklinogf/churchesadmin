@@ -89,5 +89,11 @@
         "@rollup/rollup-linux-x64-gnu": "4.9.5",
         "@tailwindcss/oxide-linux-x64-gnu": "^4.2.1",
         "lightningcss-linux-x64-gnu": "^1.31.1"
+    },
+    "pnpm": {
+        "overrides": {
+            "react": "$react",
+            "react-dom": "$react-dom"
+        }
     }
 }
