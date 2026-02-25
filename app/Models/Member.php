@@ -24,6 +24,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Collection as SupportCollection;
+use Override;
 
 /**
  * Member model.
@@ -188,7 +189,7 @@ final class Member extends Model
      *
      * @return array<string, string>
      */
-    #[\Override]
+    #[Override]
     protected function casts(): array
     {
 

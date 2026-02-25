@@ -12,6 +12,7 @@ use App\Http\Resources\DeactivationCode\DeactivationCodeResource;
 use App\Http\Resources\Tag\TagRelationshipResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Override;
 
 /**
  * @mixin \App\Models\Member
@@ -23,7 +24,7 @@ final class MemberResource extends JsonResource
      *
      * @return array<string, mixed>
      */
-    #[\Override]
+    #[Override]
     public function toArray(Request $request): array
     {
         return [

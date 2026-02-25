@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace App\Services\MediaLibrary;
 
+use Override;
 use Spatie\MediaLibrary\Support\UrlGenerator\DefaultUrlGenerator;
 
 final class TenantAwareUrlGenerator extends DefaultUrlGenerator
 {
-    #[\Override]
+    #[Override]
     public function getUrl(): string
     {
         $pathRelative = $this->getPathRelativeToRoot();

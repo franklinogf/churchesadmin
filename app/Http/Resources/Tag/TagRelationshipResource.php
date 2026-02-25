@@ -6,6 +6,7 @@ namespace App\Http\Resources\Tag;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Override;
 
 /** @mixin \App\Models\Tag */
 final class TagRelationshipResource extends JsonResource
@@ -15,7 +16,7 @@ final class TagRelationshipResource extends JsonResource
      *
      * @return array<string, mixed>
      */
-    #[\Override]
+    #[Override]
     public function toArray(Request $request): array
     {
         return [

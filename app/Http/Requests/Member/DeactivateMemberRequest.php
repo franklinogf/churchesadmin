@@ -8,6 +8,7 @@ use App\Enums\TenantPermission;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
+use Override;
 
 /**
  * @property-read \App\Models\Member $member
@@ -39,7 +40,7 @@ final class DeactivateMemberRequest extends FormRequest
      *
      * @return array<string, string>
      */
-    #[\Override]
+    #[Override]
     public function messages(): array
     {
         return [

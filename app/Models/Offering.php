@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Override;
 
 /**
  * @property-read int $id
@@ -84,7 +85,7 @@ final class Offering extends Model
      *
      * @return array<string,string>
      */
-    #[\Override]
+    #[Override]
     protected function casts(): array
     {
         return [

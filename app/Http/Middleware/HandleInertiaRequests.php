@@ -12,6 +12,7 @@ use App\Http\Resources\User\AuthUserResource;
 use App\Models\Church;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
+use Override;
 
 final class HandleInertiaRequests extends Middleware
 {
@@ -29,7 +30,7 @@ final class HandleInertiaRequests extends Middleware
      *
      * @see https://inertiajs.com/asset-versioning
      */
-    #[\Override]
+    #[Override]
     public function version(Request $request): ?string
     {
         return parent::version($request);
@@ -42,7 +43,7 @@ final class HandleInertiaRequests extends Middleware
      *
      * @return array<string, mixed>
      */
-    #[\Override]
+    #[Override]
     public function share(Request $request): array
     {
         /**

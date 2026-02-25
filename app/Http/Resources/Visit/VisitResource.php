@@ -10,6 +10,7 @@ use App\Http\Resources\Communication\Email\EmailResource;
 use App\Models\Visit;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Override;
 
 /**
  * @mixin Visit
@@ -21,7 +22,7 @@ final class VisitResource extends JsonResource
      *
      * @return array<string, mixed>
      */
-    #[\Override]
+    #[Override]
     public function toArray(Request $request): array
     {
         return [

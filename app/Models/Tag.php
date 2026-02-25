@@ -8,6 +8,7 @@ use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Override;
 use Spatie\Tags\Tag as SpatieTag;
 
 /**
@@ -38,7 +39,7 @@ final class Tag extends SpatieTag
         return $this->morphedByMany(Member::class, 'taggable', 'taggables');
     }
 
-    #[\Override]
+    #[Override]
     protected function casts(): array
     {
         return [

@@ -32,6 +32,7 @@ use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 use Laravel\Pennant\Feature;
+use Override;
 use Spatie\Translatable\Facades\Translatable;
 
 final class AppServiceProvider extends ServiceProvider
@@ -39,7 +40,7 @@ final class AppServiceProvider extends ServiceProvider
     /**
      * Register any application services.
      */
-    #[\Override]
+    #[Override]
     public function register(): void
     {
         //

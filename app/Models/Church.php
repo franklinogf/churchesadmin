@@ -13,6 +13,7 @@ use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Laravel\Pennant\Concerns\HasFeatures;
+use Override;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
 use Stancl\Tenancy\Contracts\SingleDomainTenant;
@@ -45,7 +46,7 @@ final class Church extends BaseTenant implements HasMedia, SingleDomainTenant, T
      *
      * @return array<int,string>
      */
-    #[\Override]
+    #[Override]
     public static function getCustomColumns(): array
     {
         /** @var array<int, string> $parentColumns */
@@ -94,7 +95,7 @@ final class Church extends BaseTenant implements HasMedia, SingleDomainTenant, T
         );
     }
 
-    #[\Override]
+    #[Override]
     protected function casts(): array
     {
         return [
