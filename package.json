@@ -11,7 +11,7 @@
         "test:lint": "eslint .",
         "test:format": "prettier --check resources/",
         "test:types": "tsc --noEmit",
-        "test": "npm run test:format && npm run test:types && npm run test:lint"
+        "test": "pnpm run test:format && pnpm run test:types && pnpm run test:lint"
     },
     "devDependencies": {
         "@eslint/js": "^9.39.3",
