@@ -2,7 +2,8 @@ name: tests
 
 on:
   push:
-    # Run on all branches for push events
+    branches-ignore:
+      - main
 
   pull_request:
     branches: [develop, main]
@@ -47,7 +48,6 @@ jobs:
         with:
           php-version: '8.4'
           tools: composer:v2
-          coverage: pcov
 
       - name: Cache Composer
         uses: actions/cache@v4
@@ -103,4 +103,4 @@ jobs:
           php artisan route:cache
 
       - name: Tests
-        run: ./vendor/bin/pest --colors=always --stop-on-failure --coverage --compact
+        run: ./vendor/bin/pest --colors=always

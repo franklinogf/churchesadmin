@@ -15,7 +15,7 @@
     ],
     "license": "MIT",
     "require": {
-        "php": "^8.2",
+        "php": "^8.4",
         "barryvdh/laravel-dompdf": "^3.1.1",
         "bavix/laravel-wallet": "^11.4.3",
         "codezero/laravel-unique-translation": "^4.3.1",
