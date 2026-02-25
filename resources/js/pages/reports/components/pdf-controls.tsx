@@ -39,6 +39,7 @@ export function PdfControls() {
             <div className="grid grid-cols-1 gap-2 overflow-y-auto md:grid-cols-2">
               {columns.map((col) => (
                 <SwitchField
+                  className="max-w-fit"
                   label={col.label}
                   key={col.name}
                   checked={isColumnSelected(col.name)}

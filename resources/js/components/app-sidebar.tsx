@@ -13,6 +13,7 @@ import OfferingTypeController from '@/actions/App/Http/Controllers/OfferingTypeC
 import ActivityLogPdfController from '@/actions/App/Http/Controllers/Pdf/ActivityLogPdfController';
 import ContributionController from '@/actions/App/Http/Controllers/Pdf/ContributionController';
 import EntriesExpensesPdfController from '@/actions/App/Http/Controllers/Pdf/EntriesExpensesPdfController';
+import ReportController from '@/actions/App/Http/Controllers/ReportController';
 import TenantGeneralController from '@/actions/App/Http/Controllers/Settings/TenantGeneralController';
 import SkillController from '@/actions/App/Http/Controllers/SkillController';
 import UserController from '@/actions/App/Http/Controllers/UserController';
@@ -150,7 +151,7 @@ export function AppSidebar() {
         items: [
           {
             title: t('General'),
-            href: '#', //route('reports'),
+            href: ReportController(),
             icon: FileStackIcon,
           },
           {

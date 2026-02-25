@@ -1,6 +1,7 @@
 import { wayfinder } from '@laravel/vite-plugin-wayfinder';
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
+// @ts-expect-error: Missing types
 import i18n from 'laravel-react-i18n/vite';
 import laravel from 'laravel-vite-plugin';
 import { defineConfig } from 'vite';
