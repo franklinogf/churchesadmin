@@ -2,7 +2,7 @@
 
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { cn } from '@/lib/utils';
-import { AnimatePresence, LayoutGroup, motion } from 'framer-motion';
+import { AnimatePresence, LayoutGroup, motion } from 'motion/react';
 import { useCalendarContext } from '../../calendar-context';
 import { calendarModeIconMap } from '../../calendar-mode-icon-map';
 import { type Mode, calendarModes } from '../../calendar-types';
