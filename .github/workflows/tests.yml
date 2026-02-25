@@ -103,4 +103,4 @@ jobs:
           DB_DATABASE: testing
           DB_USERNAME: root
           DB_PASSWORD: ""
-        run: ./vendor/bin/pest --colors=always --stop-on-failure --coverage --compact
+        run: ./vendor/bin/pest --parallel --colors=always --stop-on-failure --coverage --compact
