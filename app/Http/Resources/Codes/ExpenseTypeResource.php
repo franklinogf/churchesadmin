@@ -6,6 +6,7 @@ namespace App\Http\Resources\Codes;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Override;
 
 /**
  * @mixin \App\Models\ExpenseType
@@ -17,6 +18,7 @@ final class ExpenseTypeResource extends JsonResource
      *
      * @return array<string, mixed>
      */
+    #[Override]
     public function toArray(Request $request): array
     {
         return [

@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Override;
 use Spatie\Permission\Traits\HasRoles;
 
 /**
@@ -79,6 +80,7 @@ final class TenantUser extends Authenticatable implements MustVerifyEmail
      *
      * @return array<string, string>
      */
+    #[Override]
     protected function casts(): array
     {
         return [

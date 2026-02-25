@@ -8,6 +8,7 @@ use App\Casts\AsUcWords;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Override;
 
 /**
  * @property-read int $id
@@ -26,6 +27,7 @@ final class ExpenseType extends Model
      *
      * @return array<string, string>
      */
+    #[Override]
     protected function casts(): array
     {
 

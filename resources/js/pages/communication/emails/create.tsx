@@ -61,7 +61,7 @@ export default function Create({ recipientsAmount, recipientsType }: Props) {
           <Badge>{tChoice(':amount recipient selected|:amount recipients selected', recipientsAmount, { amount: recipientsAmount })}</Badge>
         </div>
       </header>
-      <section className="mx-auto max-w-4xl">
+      <section className="mx-auto w-full max-w-4xl">
         <Form progress={progress?.percentage} onSubmit={handleSubmit} submitLabel={t('Send email')} isSubmitting={processing}>
           <InputField required label={t('Subject')} value={data.subject} onChange={(value) => setData('subject', value)} error={errors.subject} />
           <RichTextField required label={t('Message')} value={data.body} onChange={(value) => setData('body', value)} />

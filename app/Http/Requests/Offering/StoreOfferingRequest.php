@@ -11,6 +11,7 @@ use Illuminate\Auth\Access\Response;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
+use Override;
 
 final class StoreOfferingRequest extends FormRequest
 {
@@ -47,6 +48,7 @@ final class StoreOfferingRequest extends FormRequest
      *
      * @return array<string, string>
      */
+    #[Override]
     public function attributes(): array
     {
         return [

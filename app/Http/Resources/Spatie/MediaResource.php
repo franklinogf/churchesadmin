@@ -6,6 +6,7 @@ namespace App\Http\Resources\Spatie;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Override;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 /**
@@ -18,6 +19,7 @@ final class MediaResource extends JsonResource
      *
      * @return array<string, mixed>
      */
+    #[Override]
     public function toArray(Request $request): array
     {
         return [

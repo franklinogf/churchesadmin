@@ -7,6 +7,7 @@ namespace App\Http\Resources\User;
 use App\Enums\TenantPermission;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Override;
 
 /**
  * @mixin \Spatie\Permission\Models\Permission
@@ -18,6 +19,7 @@ final class PermissionResource extends JsonResource
      *
      * @return array<string, mixed>
      */
+    #[Override]
     public function toArray(Request $request): array
     {
 

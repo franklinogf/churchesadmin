@@ -30,7 +30,7 @@ final class DeleteOfferingAction
                 'wallet_id' => $offering->transaction->wallet->id,
             ]);
 
-            throw new WalletException('An error occurred while deleting the offering');
+            throw new WalletException('An error occurred while deleting the offering', $e->getCode(), $e);
         }
     }
 }

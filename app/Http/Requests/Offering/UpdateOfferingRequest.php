@@ -10,6 +10,7 @@ use Illuminate\Auth\Access\Response;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
+use Override;
 
 /**
  * @property-read \App\Models\Offering $offering
@@ -52,6 +53,7 @@ final class UpdateOfferingRequest extends FormRequest
      *
      * @return array<string, string>
      */
+    #[Override]
     public function attributes(): array
     {
         return [

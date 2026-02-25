@@ -6,6 +6,7 @@ namespace App\Providers;
 
 use App\Models\Church;
 use Illuminate\Support\ServiceProvider;
+use Override;
 use Stancl\Tenancy\Bootstrappers\RootUrlBootstrapper;
 use Stancl\Tenancy\Bootstrappers\TenantConfigBootstrapper;
 use Stancl\Tenancy\Middleware\InitializeTenancyBySubdomain;
@@ -15,6 +16,7 @@ final class ChurchServiceProvider extends ServiceProvider
     /**
      * Register services.
      */
+    #[Override]
     public function register(): void
     {
         //

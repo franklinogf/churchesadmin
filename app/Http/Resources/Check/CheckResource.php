@@ -9,6 +9,7 @@ use App\Http\Resources\Member\MemberResource;
 use App\Http\Resources\Wallet\TransactionResource;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Override;
 
 /**
  * @mixin \App\Models\Check
@@ -20,6 +21,7 @@ final class CheckResource extends JsonResource
      *
      * @return array<string, mixed>
      */
+    #[Override]
     public function toArray(Request $request): array
     {
         return [

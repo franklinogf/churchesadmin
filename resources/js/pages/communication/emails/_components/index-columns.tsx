@@ -4,6 +4,7 @@ import { DatatableBadgeCell, DatatableCell } from '@/components/custom-ui/datata
 import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTableColumnHeader';
 import { Badge } from '@/components/ui/badge';
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
+import { useLocaleDate } from '@/hooks/use-locale-date';
 import { useTranslations } from '@/hooks/use-translations';
 import { useUser } from '@/hooks/use-user';
 import type { Email } from '@/types/models/email';
@@ -54,7 +55,8 @@ export const columns: ColumnDef<Email>[] = [
     enableColumnFilter: false,
     cell: function CellComponent({ row }) {
       const { t } = useTranslations();
-      return <DatatableCell justify="center">{row.original.sentAt ?? t('Not sent yet')}</DatatableCell>;
+      const { formatLocaleDate } = useLocaleDate();
+      return <DatatableCell justify="center">{row.original.sentAt ? formatLocaleDate(row.original.sentAt) : t('Not sent yet')}</DatatableCell>;
     },
   },
   {

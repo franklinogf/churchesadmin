@@ -7,6 +7,7 @@ namespace App\Http\Resources\Wallet;
 use Bavix\Wallet\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Override;
 
 /**
  * @mixin Transaction
@@ -18,6 +19,7 @@ final class TransactionResource extends JsonResource
      *
      * @return array<string, mixed>
      */
+    #[Override]
     public function toArray(Request $request): array
     {
 

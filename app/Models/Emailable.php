@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphPivot;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Override;
 
 /**
  * Emailable model.
@@ -70,6 +71,7 @@ final class Emailable extends MorphPivot
      *
      * @return array<string, string>
      */
+    #[Override]
     public function casts(): array
     {
         return [

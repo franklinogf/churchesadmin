@@ -7,6 +7,7 @@ namespace App\Http\Resources;
 use App\Models\CalendarEvent;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Override;
 
 /**
  * @mixin CalendarEvent
@@ -18,6 +19,7 @@ final class CalendarEventResource extends JsonResource
      *
      * @return array<string, mixed>
      */
+    #[Override]
     public function toArray(Request $request): array
     {
         return [

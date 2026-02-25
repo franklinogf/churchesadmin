@@ -7,6 +7,7 @@ namespace App\Http\Resources\Communication\Email;
 use App\Models\Emailable;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Override;
 
 /**
  * @mixin Emailable
@@ -18,6 +19,7 @@ final class EmailableResource extends JsonResource
      *
      * @return array<string, mixed>
      */
+    #[Override]
     public function toArray(Request $request): array
     {
         return [

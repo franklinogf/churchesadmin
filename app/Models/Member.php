@@ -21,7 +21,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Notifications\Notification;
 use Illuminate\Support\Collection as SupportCollection;
+use Override;
 
 /**
  * Member model.
@@ -51,7 +54,7 @@ use Illuminate\Support\Collection as SupportCollection;
 final class Member extends Model
 {
     /** @use HasFactory<\Database\Factories\MemberFactory> */
-    use HasFactory;
+    use HasFactory,Notifiable;
 
     use HasTags;
 
@@ -61,6 +64,17 @@ final class Member extends Model
     public static function getTagClassName(): string
     {
         return Tag::class;
+    }
+
+    /**
+     * Route notifications for the mail channel.
+     *
+     * @return array<string, string>
+     */
+    public function routeNotificationForMail(Notification $notification): array
+    {
+        // Return email address and name...
+        return [$this->email => "{$this->name} {$this->last_name}"];
     }
 
     /**
@@ -175,6 +189,7 @@ final class Member extends Model
      *
      * @return array<string, string>
      */
+    #[Override]
     protected function casts(): array
     {
 

@@ -2,7 +2,8 @@ name: linter
 
 on:
   push:
-    # Run on all branches for push events
+    branches-ignore:
+      - main
 
   pull_request:
     branches: [develop, main]
@@ -13,7 +14,8 @@ concurrency:
 
 jobs:
 
-  quality:
+  php:
+    name: PHP Quality
     runs-on: ubuntu-latest
 
     steps:
@@ -25,15 +27,23 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.4'
+          php-version: 8.4
+          tools: composer:v2
+          coverage: none
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache Composer
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: composer-
 
       - name: Install Dependencies
-        run: |
-          composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-          npm ci
-
-      - name: Build Assets
-        run: npm run build
+        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
 
       - name: Run Rector
         run: composer test:refactor
@@ -43,12 +53,73 @@ jobs:
 
       - name: Run Pint
         run: composer test:lint
+  js:
+    name: JS / TS Quality
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      # ---- PHP setup (needed for Wayfinder) ----
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.4
+          tools: composer:v2
+          coverage: none
+
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache Composer
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: composer-
+
+      - name: Install PHP Dependencies
+        run: composer install --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+      # ---- Generate Wayfinder routes ----
+      - name: Generate Wayfinder routes
+        run: php artisan wayfinder:generate --skip-routes
+
+      # ---- Node setup ----
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 10
+          run_install: false
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: 'pnpm'
+
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        run: echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - name: Cache pnpm store
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: pnpm-
+
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile --prefer-offline
 
       - name: Run Eslint
-        run: npm run test:lint
+        run: pnpm run test:lint
 
       - name: Run Prettier
-        run: npm run test:format
+        run: pnpm run test:format
 
       - name: Run Typescript
-        run: npm run test:types
+        run: pnpm run test:types

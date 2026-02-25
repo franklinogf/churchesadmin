@@ -8,6 +8,7 @@ use App\Http\Resources\Member\MemberResource;
 use App\Models\FollowUp;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Override;
 
 /**
  * @mixin FollowUp
@@ -19,6 +20,7 @@ final class FollowUpResource extends JsonResource
      *
      * @return array<string, mixed>
      */
+    #[Override]
     public function toArray(Request $request): array
     {
         return [

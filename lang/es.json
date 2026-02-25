@@ -409,5 +409,18 @@
     "Select an option to generate a PDF": "Seleccione una opción para generar un PDF",
     "from :date": "desde :date",
     "to :date": "hasta :date",
-    ":start_date to :end_date": ":start_date hasta :end_date"
+    ":start_date to :end_date": ":start_date hasta :end_date",
+    "Create event": "Crear evento",
+    "Event created successfully": "Evento creado con éxito",
+    "Title": "Título",
+    "Start at": "Inicio",
+    "End at": "Fin",
+    "Create Event": "Crear Evento",
+    "Are you sure you want to delete this event? This action cannot be undone.": "¿Estás seguro de que quieres eliminar este evento? Esta acción no se puede deshacer.",
+    "Manage event": "Gestionar evento",
+    "Update Event": "Actualizar Evento",
+    "Delete Event": "Eliminar Evento",
+    "Delete event": "Eliminar evento",
+    "Event sent to all members with an email address.": "Evento enviado a todos los miembros con una dirección de correo electrónico.",
+    "Send email to members": "Enviar correo a los miembros"
 }

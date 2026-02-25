@@ -33,7 +33,7 @@ final class DeleteExpenseAction
                 'wallet_id' => $expense->transaction->wallet->id,
             ]);
 
-            throw new WalletException('An error occurred while deleting the expense');
+            throw new WalletException('An error occurred while deleting the expense', $e->getCode(), $e);
         }
 
     }

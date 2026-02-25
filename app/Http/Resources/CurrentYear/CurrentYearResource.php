@@ -7,6 +7,7 @@ namespace App\Http\Resources\CurrentYear;
 use App\Models\CurrentYear;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Override;
 
 /**
  * @mixin CurrentYear
@@ -18,6 +19,7 @@ final class CurrentYearResource extends JsonResource
      *
      * @return array<string, mixed>
      */
+    #[Override]
     public function toArray(Request $request): array
     {
         return [

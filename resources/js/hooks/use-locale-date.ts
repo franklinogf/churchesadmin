@@ -15,13 +15,13 @@ export function useLocaleDate() {
     return dateLocales[currentLocale()] || enUS;
   }
 
-  function formatLocaleDate(
-    date: string | Date = new Date(),
-    { dateStyle }: { dateStyle: Intl.DateTimeFormatOptions['dateStyle'] } = {
-      dateStyle: 'medium',
-    },
-  ) {
-    return intlFormat(typeof date === 'string' ? parseISO(date) : date, { dateStyle }, { locale: currentLocale() });
+  const defaultFormatOptions: { dateStyle: Intl.DateTimeFormatOptions['dateStyle'] } = { dateStyle: 'medium' };
+
+  function formatLocaleDate(date?: string | Date, formatOptions: { dateStyle: Intl.DateTimeFormatOptions['dateStyle'] } = defaultFormatOptions) {
+    const targetDate = date ?? new Date();
+    const parsedDate = typeof targetDate === 'string' ? parseISO(targetDate) : targetDate;
+
+    return intlFormat(parsedDate, { dateStyle: formatOptions.dateStyle }, { locale: currentLocale() });
   }
 
   function maxDate() {

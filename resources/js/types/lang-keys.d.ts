@@ -1,8 +1,9 @@
-export type TranslationKey =
+export type TranslationKeys =
   | ':amount recipient selected|:amount recipients selected'
   | ':count persons'
   | ':model report'
   | ':name follow ups'
+  | ':start_date to :end_date'
   | 'A new verification link has been sent to the email address you provided during registration.'
   | 'A new verification link has been sent to your email address.'
   | 'A reset link will be sent if the account exists.'
@@ -32,6 +33,7 @@ export type TranslationKey =
   | 'Are you sure you want to close the fiscal year? This action cannot be undone.'
   | 'Are you sure you want to deactivate this :model?'
   | 'Are you sure you want to delete this :model?'
+  | 'Are you sure you want to delete this event? This action cannot be undone.'
   | "Arrastra y suelta tu foto aquí o haz <span class='filepond--label-action'>clic</span> para seleccionarla"
   | "Arrastra y suelta tus archivos o <span class='filepond--label-action'>Buscar</span>"
   | 'Assigned permissions'
@@ -84,7 +86,9 @@ export type TranslationKey =
   | 'Contributions of the fiscal year :year'
   | 'Country'
   | 'Create :model'
+  | 'Create Event'
   | 'Create a new :model'
+  | 'Create event'
   | 'Create layout'
   | 'Current balance'
   | 'Current password'
@@ -103,6 +107,8 @@ export type TranslationKey =
   | 'Default amount'
   | 'Delete'
   | 'Delete :model'
+  | 'Delete Event'
+  | 'Delete event'
   | 'Demo Login Credentials'
   | 'Description'
   | 'Deselect'
@@ -121,6 +127,7 @@ export type TranslationKey =
   | 'Emails'
   | 'End'
   | 'End Date'
+  | 'End at'
   | 'End date'
   | 'End date & time'
   | 'End time'
@@ -136,8 +143,10 @@ export type TranslationKey =
   | 'Error message'
   | 'Error submiting the form'
   | 'Event'
+  | 'Event created successfully'
   | 'Event description'
   | 'Event location'
+  | 'Event sent to all members with an email address.'
   | 'Event title'
   | 'Events'
   | 'Every month'
@@ -206,6 +215,7 @@ export type TranslationKey =
   | 'Main'
   | 'Manage :model'
   | 'Manage church information'
+  | 'Manage event'
   | 'Manage events and activities'
   | 'Manage the visits that comes to the church'
   | 'Manage your emails here'
@@ -321,6 +331,7 @@ export type TranslationKey =
   | 'Send a new email to the recipients you selected'
   | 'Send email'
   | 'Send email to :name'
+  | 'Send email to members'
   | 'Send schedule'
   | 'Sender'
   | 'Sent at'
@@ -334,6 +345,7 @@ export type TranslationKey =
   | 'Some recipients have failed to receive the email. Please check their error messages.'
   | 'Start'
   | 'Start Date'
+  | 'Start at'
   | 'Start date'
   | 'Start date & time'
   | 'Start time'
@@ -359,6 +371,7 @@ export type TranslationKey =
   | 'This wallet will be usable again'
   | "This wallet won't be usable until it is activated"
   | 'Timezone'
+  | 'Title'
   | 'Today'
   | 'Total'
   | 'Track assignments, support levels, communication logs, and prayer requests with ease.'
@@ -369,6 +382,7 @@ export type TranslationKey =
   | 'Unconfirmed Checks'
   | 'Unknown sender'
   | 'Update :model'
+  | 'Update Event'
   | "Update account's appearance settings"
   | 'Update password'
   | 'Update the church information'
@@ -571,5 +585,134 @@ export type TranslationKey =
   | 'file_uploader.file_type.allowed'
   | 'file_uploader.file_type.not_allowed'
   | 'file_uploader.idle'
+  | 'flash.alert'
+  | 'flash.error'
+  | 'flash.info'
+  | 'flash.message.activated'
+  | 'flash.message.archived'
+  | 'flash.message.check.confirmed'
+  | 'flash.message.check.number_exists'
+  | 'flash.message.check.number_generated'
+  | 'flash.message.created'
+  | 'flash.message.deactivated'
+  | 'flash.message.deleted'
+  | 'flash.message.email.invalid_recipient_type'
+  | 'flash.message.email.no_recipients_selected'
+  | 'flash.message.email.retry_empty_recipients'
+  | 'flash.message.email.retry_success'
+  | 'flash.message.email.unknown_error'
+  | 'flash.message.email.will_be_sent'
+  | 'flash.message.exported'
+  | 'flash.message.imported'
+  | 'flash.message.restored'
+  | 'flash.message.synced'
+  | 'flash.message.unarchived'
+  | 'flash.message.updated'
+  | 'flash.message.wallet.already_confirmed'
+  | 'flash.message.wallet.empty_balance'
+  | 'flash.message.wallet.insufficient_funds'
+  | 'flash.message.wallet.invalid_amount'
+  | 'flash.message.wallet.not_found'
+  | 'flash.message.wallet.transaction_failed'
+  | 'flash.notice'
+  | 'flash.success'
+  | 'flash.warning'
+  | 'from :date'
   | 'log in'
+  | 'notifications.calendar_event.greeting'
+  | 'notifications.calendar_event.line_1'
+  | 'notifications.calendar_event.line_2'
+  | 'notifications.calendar_event.line_3'
+  | 'notifications.calendar_event.line_4'
+  | 'notifications.calendar_event.line_5'
+  | 'notifications.calendar_event.line_6'
+  | 'notifications.calendar_event.line_7'
+  | 'notifications.calendar_event.subject'
+  | 'permission.confirm'
+  | 'permission.confirmed_check.confirm'
+  | 'permission.confirmed_check.delete'
+  | 'permission.confirmed_check.force_delete'
+  | 'permission.confirmed_check.update'
+  | 'permission.create'
+  | 'permission.delete'
+  | 'permission.force_delete'
+  | 'permission.restore'
+  | 'permission.unconfirmed_check.print'
+  | 'permission.update'
+  | 'permission.view'
+  | 'permission.view_any'
+  | 'to :date'
   | "“I love how we can manage both members and missionaries from the same place. It's truly built for the church.”";
+
+export type TranslationParams = {
+  ':amount recipient selected|:amount recipients selected': { amount: string | number };
+  ':count persons': { count: string | number };
+  ':model report': { model: string | number };
+  ':name follow ups': { name: string | number };
+  ':start_date to :end_date': { start_date: string | number; end_date: string | number };
+  'Add :model': { model: string | number };
+  'Are you sure you want to activate this :model?': { model: string | number };
+  'Are you sure you want to deactivate this :model?': { model: string | number };
+  'Are you sure you want to delete this :model?': { model: string | number };
+  'Calendar events will be sent to :count member(s).': { count: string | number };
+  'Contact us: :email | :phone': { email: string | number; phone: string | number };
+  'Contributions of the fiscal year :year': { year: string | number };
+  'Create :model': { model: string | number };
+  'Create a new :model': { model: string | number };
+  'Delete :model': { model: string | number };
+  'Edit :model': { model: string | number };
+  'Edit the details of this :model': { model: string | number };
+  'Here are the changes made to the :subject_type with the id :subject_id': { subject_type: string | number; subject_id: string | number };
+  'Manage :model': { model: string | number };
+  'New :model': { model: string | number };
+  'Only :name with an email address will be shown in the list.': { name: string | number };
+  'Page :index of :total': { index: string | number; total: string | number };
+  'Select the :name you want to send a message to': { name: string | number };
+  'Send email to :name': { name: string | number };
+  'Sent by :name on :date': { name: string | number; date: string | number };
+  'Sent to :name': { name: string | number };
+  'The current fiscal year is :year': { year: string | number };
+  'The next fiscal year will be :year': { year: string | number };
+  'Update :model': { model: string | number };
+  'Using the :name layout': { name: string | number };
+  'Wallet :name': { name: string | number };
+  'datatable.pagination.page_info': { current: string | number; total: string | number };
+  'datatable.pagination.selected_rows': { selected: string | number; total: string | number };
+  'datatable.pagination.total_rows': { total: string | number };
+  'flash.message.activated': { model: string | number };
+  'flash.message.archived': { model: string | number };
+  'flash.message.check.number_exists': { numbers: string | number };
+  'flash.message.created': { model: string | number };
+  'flash.message.deactivated': { model: string | number };
+  'flash.message.deleted': { model: string | number };
+  'flash.message.email.retry_success': { count: string | number };
+  'flash.message.exported': { model: string | number };
+  'flash.message.imported': { model: string | number };
+  'flash.message.restored': { model: string | number };
+  'flash.message.synced': { model: string | number };
+  'flash.message.unarchived': { model: string | number };
+  'flash.message.updated': { model: string | number };
+  'flash.message.wallet.empty_balance': { wallet: string | number };
+  'flash.message.wallet.insufficient_funds': { wallet: string | number };
+  'from :date': { date: string | number };
+  'notifications.calendar_event.greeting': { name: string | number };
+  'notifications.calendar_event.line_2': { title: string | number };
+  'notifications.calendar_event.line_3': { location: string | number };
+  'notifications.calendar_event.line_4': { start: string | number };
+  'notifications.calendar_event.line_5': { end: string | number };
+  'notifications.calendar_event.line_6': { description: string | number };
+  'notifications.calendar_event.line_7': { timezone: string | number };
+  'notifications.calendar_event.subject': { title: string | number };
+  'permission.confirm': { label: string | number };
+  'permission.create': { label: string | number };
+  'permission.delete': { label: string | number };
+  'permission.force_delete': { label: string | number };
+  'permission.restore': { label: string | number };
+  'permission.update': { label: string | number };
+  'permission.view': { label: string | number };
+  'permission.view_any': { label: string | number };
+  'to :date': { date: string | number };
+};
+
+export type TranslationWithParams = keyof TranslationParams;
+export type TranslationWithoutParams = Exclude<TranslationKeys, TranslationWithParams>;

@@ -6,7 +6,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSepara
 
 import { useTranslations } from '@/hooks/use-translations';
 import { cn } from '@/lib/utils';
-import type { TranslationKey } from '@/types/lang-keys';
+import type { TranslationKeys } from '@/types/lang-keys';
 import { cva, type VariantProps } from 'class-variance-authority';
 
 const headerVariants = cva('text', {
@@ -24,7 +24,7 @@ const headerVariants = cva('text', {
 
 type DataTableColumnHeaderProps<TData, TValue> = VariantProps<typeof headerVariants> & {
   column: Column<TData, TValue>;
-  title: TranslationKey;
+  title: TranslationKeys;
   className?: string;
 };
 

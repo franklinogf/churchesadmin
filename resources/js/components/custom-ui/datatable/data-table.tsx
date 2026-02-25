@@ -12,7 +12,7 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { useTranslations } from '@/hooks/use-translations';
-import type { TranslationKey } from '@/types/lang-keys';
+import type { TranslationKeys } from '@/types/lang-keys';
 import {
   type Column,
   type ColumnDef,
@@ -271,7 +271,7 @@ function ColumnSelectFilter<TData, TValue>({ column }: { column: Column<TData, T
           <div className="flex w-full items-center justify-between gap-2">
             <span>{getColumnLabel(column)}</span>
             {columnFilterValue !== 'all' && (
-              <Badge variant="secondary">{t(`${translationPrefix || ''}${columnFilterValue}` as TranslationKey)}</Badge>
+              <Badge variant="secondary">{t(`${translationPrefix || ''}${columnFilterValue}` as TranslationKeys)}</Badge>
             )}
           </div>
         </Button>
@@ -281,7 +281,7 @@ function ColumnSelectFilter<TData, TValue>({ column }: { column: Column<TData, T
           <DropdownMenuRadioItem value="all">{t('datatable.unselect_filter')}</DropdownMenuRadioItem>
           {sortedUniqueValues.map((value) => (
             <DropdownMenuRadioItem key={value} value={value}>
-              {t(`${translationPrefix || ''}${value}` as TranslationKey)}
+              {t(`${translationPrefix || ''}${value}` as TranslationKeys)}
             </DropdownMenuRadioItem>
           ))}
         </DropdownMenuRadioGroup>

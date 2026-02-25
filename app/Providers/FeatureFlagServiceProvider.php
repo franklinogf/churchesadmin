@@ -8,12 +8,14 @@ use App\Enums\ChurchFeature;
 use App\Models\Church;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Pennant\Feature;
+use Override;
 
 final class FeatureFlagServiceProvider extends ServiceProvider
 {
     /**
      * Register services.
      */
+    #[Override]
     public function register(): void
     {
         //

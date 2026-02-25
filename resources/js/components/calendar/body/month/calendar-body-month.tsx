@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
 import { eachDayOfInterval, endOfMonth, endOfWeek, format, isSameDay, isSameMonth, isWithinInterval, startOfMonth, startOfWeek } from 'date-fns';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion } from 'motion/react';
 import { useCalendarContext } from '../../calendar-context';
 import CalendarEvent from '../../calendar-event';
 
