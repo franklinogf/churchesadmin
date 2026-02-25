@@ -9,8 +9,6 @@ use App\Enums\PdfGeneratorColumnPosition;
 use App\Enums\PdfGeneratorColumnType;
 use App\Enums\PdfOrientation;
 use Illuminate\Support\Collection;
-use Spatie\LaravelPdf\Enums\Format;
-use Spatie\LaravelPdf\Enums\Orientation;
 
 use function in_array;
 

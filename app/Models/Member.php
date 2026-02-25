@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Casts\AsUcWords;
 use App\Enums\CivilStatus;
 use App\Enums\Gender;
 use App\Enums\ModelMorphName;

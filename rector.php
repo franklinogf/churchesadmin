@@ -11,18 +11,6 @@ use Rector\DeadCode\Rector\If_\RemoveAlwaysTrueIfConditionRector;
 use Rector\DeadCode\Rector\Stmt\RemoveUnreachableStatementRector;
 use Rector\EarlyReturn\Rector\Return_\ReturnBinaryOrToEarlyReturnRector;
 use Rector\Privatization\Rector\ClassMethod\PrivatizeFinalClassMethodRector;
-use Rector\TypeDeclarationDocblocks\Rector\Class_\AddReturnArrayDocblockFromDataProviderParamRector;
-use Rector\TypeDeclarationDocblocks\Rector\Class_\AddReturnDocblockDataProviderRector;
-use Rector\TypeDeclarationDocblocks\Rector\Class_\ClassMethodArrayDocblockParamFromLocalCallsRector;
-use Rector\TypeDeclarationDocblocks\Rector\Class_\DocblockVarArrayFromPropertyDefaultsRector;
-use Rector\TypeDeclarationDocblocks\Rector\Class_\DocblockVarFromParamDocblockInConstructorRector;
-use Rector\TypeDeclarationDocblocks\Rector\ClassMethod\AddParamArrayDocblockFromAssignsParamToParamReferenceRector;
-use Rector\TypeDeclarationDocblocks\Rector\ClassMethod\AddParamArrayDocblockFromDimFetchAccessRector;
-use Rector\TypeDeclarationDocblocks\Rector\ClassMethod\AddReturnDocblockForArrayDimAssignedObjectRector;
-use Rector\TypeDeclarationDocblocks\Rector\ClassMethod\AddReturnDocblockForCommonObjectDenominatorRector;
-use Rector\TypeDeclarationDocblocks\Rector\ClassMethod\AddReturnDocblockForJsonArrayRector;
-use Rector\TypeDeclarationDocblocks\Rector\ClassMethod\DocblockGetterReturnArrayFromPropertyDocblockVarRector;
-use Rector\TypeDeclarationDocblocks\Rector\ClassMethod\DocblockReturnArrayFromDirectArrayInstanceRector;
 use RectorLaravel\Set\LaravelSetProvider;
 
 return RectorConfig::configure()
@@ -52,24 +40,10 @@ return RectorConfig::configure()
         SeparateMultiUseImportsRector::class,
 
     ])
-    ->withImportNames()
+    ->withImportNames(removeUnusedImports: true)
     ->withSetProviders(LaravelSetProvider::class)
     ->withComposerBased(laravel: true/** other options */)
-    ->withRules([
-        AddReturnArrayDocblockFromDataProviderParamRector::class,
-        AddReturnDocblockDataProviderRector::class,
-        AddReturnDocblockForArrayDimAssignedObjectRector::class,
-        DocblockReturnArrayFromDirectArrayInstanceRector::class,
-        ClassMethodArrayDocblockParamFromLocalCallsRector::class,
-        DocblockVarFromParamDocblockInConstructorRector::class,
-        DocblockVarArrayFromPropertyDefaultsRector::class,
-        AddReturnDocblockForCommonObjectDenominatorRector::class,
-        AddReturnDocblockForJsonArrayRector::class,
-        AddParamArrayDocblockFromAssignsParamToParamReferenceRector::class,
-        DocblockGetterReturnArrayFromPropertyDocblockVarRector::class,
-        AddParamArrayDocblockFromDimFetchAccessRector::class,
-
-    ])
+    // ->withTypeCoverageDocblockLevel(1)
     ->withPreparedSets(
         deadCode: true,
         codeQuality: true,
@@ -77,4 +51,5 @@ return RectorConfig::configure()
         privatization: true,
         earlyReturn: true,
         codingStyle: true,
+        typeDeclarationDocblocks: true
     );

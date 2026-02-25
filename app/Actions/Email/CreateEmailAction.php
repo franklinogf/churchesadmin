@@ -9,8 +9,6 @@ use App\Enums\MediaCollectionName;
 use App\Enums\ModelMorphName;
 use App\Exceptions\EmailException;
 use App\Models\Email;
-use App\Models\Member;
-use App\Models\Missionary;
 use App\Models\TenantUser;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;

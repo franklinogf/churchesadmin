@@ -7,7 +7,6 @@ use App\Models\ChurchWallet;
 use Bavix\Wallet\Interfaces\Confirmable;
 use Bavix\Wallet\Interfaces\Wallet;
 use Bavix\Wallet\Interfaces\WalletFloat;
-use Bavix\Wallet\Models\Transaction;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 

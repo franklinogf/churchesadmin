@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Root;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Inertia\Response;
 
 final class HomeController extends Controller
