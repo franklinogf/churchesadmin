@@ -29,6 +29,13 @@ jobs:
           --health-retries=3
         ports:
           - 3306:3306
+    env:
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: testing
+      DB_USERNAME: root
+      DB_PASSWORD: ""
 
     steps:
       - name: Checkout
@@ -39,20 +46,45 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.4
+          php-version: '8.4'
           tools: composer:v2
-          coverage: xdebug
+          coverage: pcov
 
-      - name: Setup Node
+      - name: Cache Composer
+        uses: actions/cache@v4
+        with:
+          path: ~/.composer/cache
+          key: composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: composer-
+
+      - name: Install PHP Dependencies
+        run: composer install --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+      - name: Setup pnpm
         uses: pnpm/action-setup@v3
         with:
           version: 10
+          run_install: false
 
-      - name: Install Dependencies
-        run: composer install --no-interaction --prefer-dist --optimize-autoloader --no-progress
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: 'pnpm'
+
+      - name: Get pnpm store directory
+        id: pnpm-cache
+        run: echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+
+      - name: Cache pnpm store
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: pnpm-
 
       - name: Install Node Dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile --prefer-offline
 
       - name: Build Assets
         run: pnpm run build
@@ -66,11 +98,10 @@ jobs:
       - name: Run Migrations
         run: php artisan migrate --force
 
+      - name: Optimize Laravel
+        run: |
+          php artisan config:cache
+          php artisan route:cache
+
       - name: Tests
-        env:
-          DB_CONNECTION: mysql
-          DB_PORT: 3306
-          DB_DATABASE: testing
-          DB_USERNAME: root
-          DB_PASSWORD: ""
-        run: ./vendor/bin/pest --colors=always --stop-on-failure --coverage --compact
+        run: ./vendor/bin/pest --parallel --colors=always --stop-on-failure --coverage --compact
