@@ -27,13 +27,18 @@ jobs:
         with:
           php-version: '8.4'
 
+      - name: Setup Node
+        uses: pnpm/action-setup@v3
+        with:
+          version: 10
+
       - name: Install Dependencies
         run: |
           composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-          npm install
+          pnpm install --frozen-lockfile
 
       - name: Build Assets
-        run: npm run build
+        run: pnpm run build
 
       - name: Run Rector
         run: composer test:refactor
@@ -45,10 +50,10 @@ jobs:
         run: composer test:lint
 
       - name: Run Eslint
-        run: npm run test:lint
+        run: pnpm run test:lint
 
       - name: Run Prettier
-        run: npm run test:format
+        run: pnpm run test:format
 
       - name: Run Typescript
-        run: npm run test:types
+        run: pnpm run test:types

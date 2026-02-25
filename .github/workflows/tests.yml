@@ -44,19 +44,18 @@ jobs:
           coverage: xdebug
 
       - name: Setup Node
-        uses: actions/setup-node@v4
+        uses: pnpm/action-setup@v3
         with:
-          node-version: '22'
-          cache: 'npm'
-
-      - name: Install Node Dependencies
-        run: npm install
+          version: 10
 
       - name: Install Dependencies
         run: composer install --no-interaction --prefer-dist --optimize-autoloader --no-progress
 
+      - name: Install Node Dependencies
+        run: pnpm install --frozen-lockfile
+
       - name: Build Assets
-        run: npm run build
+        run: pnpm run build
 
       - name: Copy Environment File
         run: cp .env.example .env
