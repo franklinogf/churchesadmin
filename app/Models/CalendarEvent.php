@@ -47,6 +47,7 @@ final class CalendarEvent extends Model
      *
      * @return array<string, string>
      */
+    #[\Override]
     protected function casts(): array
     {
         return [

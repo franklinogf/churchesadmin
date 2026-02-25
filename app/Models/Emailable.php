@@ -70,6 +70,7 @@ final class Emailable extends MorphPivot
      *
      * @return array<string, string>
      */
+    #[\Override]
     public function casts(): array
     {
         return [

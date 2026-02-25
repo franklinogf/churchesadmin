@@ -94,6 +94,7 @@ final class Email extends Model implements HasMedia
      *
      * @return array<string, string>
      */
+    #[\Override]
     protected function casts(): array
     {
         return [

@@ -38,6 +38,7 @@ final class Tag extends SpatieTag
         return $this->morphedByMany(Member::class, 'taggable', 'taggables');
     }
 
+    #[\Override]
     protected function casts(): array
     {
         return [

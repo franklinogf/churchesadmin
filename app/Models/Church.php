@@ -45,6 +45,7 @@ final class Church extends BaseTenant implements HasMedia, SingleDomainTenant, T
      *
      * @return array<int,string>
      */
+    #[\Override]
     public static function getCustomColumns(): array
     {
         /** @var array<int, string> $parentColumns */
@@ -93,6 +94,7 @@ final class Church extends BaseTenant implements HasMedia, SingleDomainTenant, T
         );
     }
 
+    #[\Override]
     protected function casts(): array
     {
         return [

@@ -15,6 +15,7 @@ final class ChurchServiceProvider extends ServiceProvider
     /**
      * Register services.
      */
+    #[\Override]
     public function register(): void
     {
         //

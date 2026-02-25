@@ -46,6 +46,7 @@ final class CheckLayout extends Model implements HasMedia
      *
      * @return array<string,string>
      */
+    #[\Override]
     public function casts(): array
     {
         return [

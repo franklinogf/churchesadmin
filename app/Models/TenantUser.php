@@ -79,6 +79,7 @@ final class TenantUser extends Authenticatable implements MustVerifyEmail
      *
      * @return array<string, string>
      */
+    #[\Override]
     protected function casts(): array
     {
         return [
