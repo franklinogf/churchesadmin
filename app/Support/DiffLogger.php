@@ -251,7 +251,8 @@ final class DiffLogger
             '/^\d{4}\/\d{2}\/\d{2}$/',                          // 2023/12/25
             '/^\d{1,2}-\d{1,2}-\d{4}$/',                        // 1-5-2023
         ];
-        return array_any($patterns, fn($pattern): int|false => preg_match($pattern, $value));
+
+        return array_any($patterns, fn (string $pattern): int|false => preg_match($pattern, $value));
     }
 
     private function valuesAreEqual(mixed $a, mixed $b): bool
