@@ -9,6 +9,7 @@ use Override;
 
 final class TestModel extends Model
 {
+    #[Override]
     protected $fillable = ['id', 'name', 'title', 'description'];
 
     #[Override]

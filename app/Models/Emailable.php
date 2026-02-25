@@ -38,10 +38,13 @@ final class Emailable extends MorphPivot
      *
      * @var bool
      */
+    #[Override]
     public $incrementing = true;
 
+    #[Override]
     protected $table = 'emailables';
 
+    #[Override]
     protected $attributes = [
         'status' => EmailStatus::PENDING,
     ];

@@ -9,6 +9,7 @@ use Illuminate\Contracts\Console\Isolatable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
+use Override;
 
 final class CleanTestDatabases extends Command implements Isolatable
 {
@@ -17,6 +18,7 @@ final class CleanTestDatabases extends Command implements Isolatable
      *
      * @var string
      */
+    #[Override]
     protected $signature = 'test:cleanup {db-prefix=test_churchesadmin : The prefix for the test databases}';
 
     /**
@@ -24,6 +26,7 @@ final class CleanTestDatabases extends Command implements Isolatable
      *
      * @var string
      */
+    #[Override]
     protected $description = 'Delete all parallel test databases';
 
     /**

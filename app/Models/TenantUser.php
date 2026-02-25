@@ -43,6 +43,7 @@ final class TenantUser extends Authenticatable implements MustVerifyEmail
      *
      * @var string
      */
+    #[Override]
     protected $table = 'users';
 
     /**
@@ -50,6 +51,7 @@ final class TenantUser extends Authenticatable implements MustVerifyEmail
      *
      * @var list<string>
      */
+    #[Override]
     protected $hidden = [
         'password',
         'remember_token',
