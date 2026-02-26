@@ -102,14 +102,14 @@
             "php artisan utils:ts-lang-keys",
             "npm run format:lang"
         ],
-        "lint": "pint -vv",
+        "lint": "pint --parallel -vv",
         "refactor": "rector",
         "format": [
             "@refactor",
             "@lint"
         ],
         "test:refactor": "rector --dry-run",
-        "test:lint": "pint --bail",
+        "test:lint": "pint --parallel --bail",
         "test:types": [
             "phpstan analyse",
             "pest --type-coverage --compact --colors=always --min=100"
