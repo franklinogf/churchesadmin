@@ -2,6 +2,7 @@
     "agents": [
         "copilot"
     ],
+    "cloud": false,
     "guidelines": true,
     "herd_mcp": true,
     "mcp": true,
@@ -10,6 +11,7 @@
     ],
     "sail": false,
     "skills": [
+        "laravel-best-practices",
         "pennant-development",
         "wayfinder-development",
         "pest-testing",
