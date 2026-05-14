@@ -24,7 +24,6 @@ import { NavUser } from '@/components/nav-user';
 import { SidebarNav } from '@/components/sidebar-nav';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { TenantPermission } from '@/enums/TenantPermission';
-import { useTranslations } from '@/hooks/use-translations';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
 import {
@@ -42,58 +41,59 @@ import {
   WalletCardsIcon,
 } from 'lucide-react';
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import AppLogo from './app-logo';
 
 export function AppSidebar() {
-  const { t } = useTranslations();
+  const { t: tCommon } = useTranslation('common');
   const navs: { heading: string; items: NavItem[] }[] = useMemo(
     () => [
       {
-        heading: t('Main'),
+        heading: tCommon(($) => $.components.appSidebar.main),
         items: [
           {
-            title: t('Dashboard'),
+            title: tCommon(($) => $.components.appSidebar.dashboard),
             href: DashboardController(),
             icon: HomeIcon,
           },
           {
-            title: t('Skills'),
+            title: tCommon(($) => $.components.appSidebar.skills),
             href: SkillController.index(),
             icon: LayoutGridIcon,
             permissionNeeded: TenantPermission.SKILLS_MANAGE,
           },
           {
-            title: t('Categories'),
+            title: tCommon(($) => $.components.appSidebar.categories),
             href: CategoryController.index(),
             icon: LayoutGridIcon,
             permissionNeeded: TenantPermission.CATEGORIES_MANAGE,
           },
           {
-            title: t('Members'),
+            title: tCommon(($) => $.components.appSidebar.members),
             href: MemberController.index(),
             icon: Users2Icon,
             permissionNeeded: TenantPermission.MEMBERS_MANAGE,
           },
           {
-            title: t('Missionaries'),
+            title: tCommon(($) => $.components.appSidebar.missionaries),
             href: MissionaryController.index(),
             icon: Users2Icon,
             permissionNeeded: TenantPermission.MISSIONARIES_MANAGE,
           },
           {
-            title: t('Users'),
+            title: tCommon(($) => $.components.appSidebar.users),
             href: UserController.index(),
             icon: Users2Icon,
             permissionNeeded: TenantPermission.USERS_MANAGE,
           },
           {
-            title: t('Visitors'),
+            title: tCommon(($) => $.components.appSidebar.visitors),
             href: VisitController.index(),
             icon: Users2Icon,
             permissionNeeded: TenantPermission.VISITS_MANAGE,
           },
           {
-            title: t('Calendar'),
+            title: tCommon(($) => $.components.appSidebar.calendar),
             href: CalendarEventController.index(),
             icon: CalendarIcon,
             permissionNeeded: TenantPermission.CALENDAR_EVENTS_MANAGE,
@@ -101,45 +101,45 @@ export function AppSidebar() {
         ],
       },
       {
-        heading: t('Accounting'),
+        heading: tCommon(($) => $.components.appSidebar.accounting),
         items: [
           {
-            title: t('Wallets'),
+            title: tCommon(($) => $.components.appSidebar.wallets),
             href: WalletController.index(),
             icon: WalletCardsIcon,
           },
           {
-            title: t('Offerings'),
+            title: tCommon(($) => $.components.appSidebar.offerings),
             href: OfferingController.index(),
             icon: HandCoinsIcon,
           },
           {
-            title: t('Expenses'),
+            title: tCommon(($) => $.components.appSidebar.expenses),
             href: ExpenseController.index(),
             icon: CoinsIcon,
           },
           {
-            title: t('Checks'),
+            title: tCommon(($) => $.components.appSidebar.checks),
             href: CheckController.index(),
             icon: BanknoteIcon,
           },
         ],
       },
       {
-        heading: t('Codes'),
+        heading: tCommon(($) => $.components.appSidebar.codes),
         items: [
           {
-            title: t('Offering types'),
+            title: tCommon(($) => $.components.appSidebar.offeringTypes),
             href: OfferingTypeController.index(),
             icon: ListIcon,
           },
           {
-            title: t('Expense types'),
+            title: tCommon(($) => $.components.appSidebar.expenseTypes),
             href: ExpenseTypeController.index(),
             icon: ListIcon,
           },
           {
-            title: t('Deactivation codes'),
+            title: tCommon(($) => $.components.appSidebar.deactivationCodes),
             href: DeactivationCodeController.index(),
             icon: ListIcon,
             permissionNeeded: TenantPermission.DEACTIVATION_CODES_MANAGE,
@@ -147,26 +147,26 @@ export function AppSidebar() {
         ],
       },
       {
-        heading: t('Reports'),
+        heading: tCommon(($) => $.components.appSidebar.reports),
         items: [
           {
-            title: t('General'),
+            title: tCommon(($) => $.components.appSidebar.general),
             href: ReportController(),
             icon: FileStackIcon,
           },
           {
-            title: t('Entries and Expenses'),
+            title: tCommon(($) => $.components.appSidebar.entriesAndExpenses),
             href: EntriesExpensesPdfController.index(),
             icon: FileStackIcon,
           },
           {
-            title: t('Activity Logs'),
+            title: tCommon(($) => $.components.appSidebar.activityLogs),
             href: ActivityLogPdfController.index(),
             icon: FileStackIcon,
             permissionNeeded: TenantPermission.ACTIVITY_LOGS_MANAGE,
           },
           {
-            title: t('Contributions'),
+            title: tCommon(($) => $.components.appSidebar.contributions),
             href: ContributionController(),
             icon: FileStackIcon,
             // permissionNeeded: TenantPermission.ACTIVITY_LOGS_MANAGE,
@@ -174,10 +174,10 @@ export function AppSidebar() {
         ],
       },
       {
-        heading: t('Communication'),
+        heading: tCommon(($) => $.components.appSidebar.communication),
         items: [
           {
-            title: t('Emails'),
+            title: tCommon(($) => $.components.appSidebar.emails),
             href: EmailController.index(),
             icon: MailsIcon,
             permissionNeeded: TenantPermission.EMAILS_MANAGE,
@@ -185,12 +185,12 @@ export function AppSidebar() {
         ],
       },
     ],
-    [t],
+    [tCommon],
   );
 
   const footerNavItems: NavItem[] = [
     {
-      title: t('Church Settings'),
+      title: tCommon(($) => $.components.appSidebar.churchSettings),
       href: TenantGeneralController.edit(),
       icon: CogIcon,
       permissionNeeded: TenantPermission.SETTINGS_MANAGE,

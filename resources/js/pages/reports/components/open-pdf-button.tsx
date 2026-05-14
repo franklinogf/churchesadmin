@@ -1,12 +1,12 @@
 import { Button } from '@/components/ui/button';
-import { useTranslations } from '@/hooks/use-translations';
+import { useTranslation } from 'react-i18next';
 
 export const OpenPdfButton = ({ route }: { route: string }) => {
-  const { t } = useTranslations();
+  const { t: tPages } = useTranslation('pages');
   return (
     <div className="mb-1 flex justify-end">
       <Button size="sm" onClick={() => window.open(route)}>
-        {t('Open in new tab')}
+        {tPages(($) => $.reports.components.openPdfButton.openInNewTab)}
       </Button>
     </div>
   );

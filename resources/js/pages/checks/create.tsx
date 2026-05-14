@@ -9,10 +9,10 @@ import AppLayout from '@/layouts/app-layout';
 
 import CheckController from '@/actions/App/Http/Controllers/CheckController';
 import { DateField } from '@/components/forms/inputs/DateField';
-import { useTranslations } from '@/hooks/use-translations';
 import type { SelectOption } from '@/types';
 import { useForm } from '@inertiajs/react';
 import { formatDate } from 'date-fns';
+import { useTranslation } from 'react-i18next';
 
 interface CreatePageProps {
   walletOptions: SelectOption[];
@@ -32,7 +32,7 @@ type CreateForm = {
 };
 
 export default function ChecksCreate({ walletOptions, memberOptions, checkTypesOptions, expenseTypesOptions }: CreatePageProps) {
-  const { t } = useTranslations();
+  const { t: tPages } = useTranslation('pages');
   const { data, setData, submit, errors, processing } = useForm<CreateForm>({
     wallet_id: walletOptions[0]?.value.toString() ?? '',
     member_id: memberOptions[0]?.value.toString() ?? '',
@@ -49,10 +49,13 @@ export default function ChecksCreate({ walletOptions, memberOptions, checkTypesO
 
   return (
     <AppLayout
-      title={t('Create :model', { model: t('Check') })}
-      breadcrumbs={[{ title: t('Checks'), href: CheckController.index().url }, { title: t('Create :model', { model: t('Check') }) }]}
+      title={tPages(($) => $.checks.create.createModel, { model: tPages(($) => $.checks.create.check) })}
+      breadcrumbs={[
+        { title: tPages(($) => $.checks.create.checks), href: CheckController.index().url },
+        { title: tPages(($) => $.checks.create.createModel, { model: tPages(($) => $.checks.create.check) }) },
+      ]}
     >
-      <PageTitle>{t('Create :model', { model: t('Check') })}</PageTitle>
+      <PageTitle>{tPages(($) => $.checks.create.createModel, { model: tPages(($) => $.checks.create.check) })}</PageTitle>
 
       <div className="mx-auto mt-4 w-full max-w-2xl">
         <Form onSubmit={handleSubmit} isSubmitting={processing}>
@@ -60,7 +63,7 @@ export default function ChecksCreate({ walletOptions, memberOptions, checkTypesO
             <ComboboxField
               required
               value={data.member_id}
-              label={t('Member')}
+              label={tPages(($) => $.checks.create.member)}
               onChange={(value) => setData('member_id', value)}
               options={memberOptions}
               error={errors.member_id}
@@ -68,7 +71,7 @@ export default function ChecksCreate({ walletOptions, memberOptions, checkTypesO
             <ComboboxField
               required
               value={data.expense_type_id}
-              label={t('Expense type')}
+              label={tPages(($) => $.checks.create.expenseType)}
               onChange={(value) => setData('expense_type_id', value)}
               options={expenseTypesOptions}
               error={errors.expense_type_id}
@@ -77,7 +80,7 @@ export default function ChecksCreate({ walletOptions, memberOptions, checkTypesO
           <FieldsGrid>
             <SelectField
               required
-              label={t('Wallet')}
+              label={tPages(($) => $.checks.create.wallet)}
               value={data.wallet_id}
               onValueChange={(value) => setData('wallet_id', value)}
               options={walletOptions}
@@ -85,7 +88,7 @@ export default function ChecksCreate({ walletOptions, memberOptions, checkTypesO
             />
             <SelectField
               required
-              label={t('Type')}
+              label={tPages(($) => $.checks.create.type)}
               value={data.type}
               onValueChange={(value) => setData('type', value)}
               options={checkTypesOptions}
@@ -93,16 +96,27 @@ export default function ChecksCreate({ walletOptions, memberOptions, checkTypesO
             />
           </FieldsGrid>
           <CurrencyField
-            label={t('Amount')}
+            label={tPages(($) => $.checks.create.amount)}
             required
             value={data.amount}
             onValueChange={(value) => value !== undefined && setData('amount', value)}
             error={errors.amount}
           />
 
-          <DateField required label={t('Date')} value={data.date} onChange={(value) => value && setData('date', value)} error={errors.date} />
+          <DateField
+            required
+            label={tPages(($) => $.checks.create.date)}
+            value={data.date}
+            onChange={(value) => value && setData('date', value)}
+            error={errors.date}
+          />
 
-          <InputField label={t('Note')} value={data.note} onChange={(value) => setData('note', value)} error={errors.note} />
+          <InputField
+            label={tPages(($) => $.checks.create.note)}
+            value={data.note}
+            onChange={(value) => setData('note', value)}
+            error={errors.note}
+          />
         </Form>
       </div>
     </AppLayout>

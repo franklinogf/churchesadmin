@@ -1,32 +1,32 @@
 import { DatatableCell } from '@/components/custom-ui/datatable/DatatableCell';
-import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTableColumnHeader';
 import { Badge } from '@/components/ui/badge';
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { TenantPermission } from '@/enums/TenantPermission';
 import { useUser } from '@/hooks/use-user';
 
 import MissionaryController from '@/actions/App/Http/Controllers/MissionaryController';
-import { DatatableActionsDropdown } from '@/components/custom-ui/datatable/data-table-actions-dropdown';
-import { useTranslations } from '@/hooks/use-translations';
-import useConfirmationStore from '@/stores/confirmationStore';
+import { DatatableActionsDropdown } from '@/components/custom-ui/datatable/datatable-actions-dropdown';
+import { DatatableHeader } from '@/components/datatable/datatable-header';
+import useConfirmationStore from '@/stores/confirmation-store';
 import { type Missionary } from '@/types/models/missionary';
 import { Link, router } from '@inertiajs/react';
 import { type ColumnDef } from '@tanstack/react-table';
 import { Edit2Icon, Trash2Icon, User2Icon } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export const columns: ColumnDef<Missionary>[] = [
   {
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Name" />,
+    header: ({ column }) => <DatatableHeader column={column} title="Name" />,
     enableHiding: false,
     accessorKey: 'name',
   },
   {
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Last name" />,
+    header: ({ column }) => <DatatableHeader column={column} title="Last name" />,
     enableHiding: false,
     accessorKey: 'lastName',
   },
   {
-    header: ({ column }) => <DataTableColumnHeader justify="center" column={column} title="Phone" />,
+    header: ({ column }) => <DatatableHeader justify="center" column={column} title="Phone" />,
     accessorKey: 'phone',
     enableSorting: false,
     cell: ({ row }) => {
@@ -34,13 +34,13 @@ export const columns: ColumnDef<Missionary>[] = [
     },
   },
   {
-    header: ({ column }) => <DataTableColumnHeader justify="center" column={column} title="Gender" />,
+    header: ({ column }) => <DatatableHeader justify="center" column={column} title="Gender" />,
     accessorKey: 'gender',
     cell: function CellComponent({ row }) {
-      const { t } = useTranslations();
+      const { t: tEnum } = useTranslation('enum');
       return (
         <DatatableCell justify="center">
-          <Badge className="w-24">{t(`enum.gender.${row.original.gender}`)}</Badge>
+          <Badge className="w-24">{tEnum(($) => $.gender[row.original.gender])}</Badge>
         </DatatableCell>
       );
     },
@@ -51,7 +51,7 @@ export const columns: ColumnDef<Missionary>[] = [
     enableSorting: false,
     size: 0,
     cell: function CellComponent({ row }) {
-      const { t } = useTranslations();
+      const { t: tPages } = useTranslation('pages');
       const { openConfirmation } = useConfirmationStore();
       const { can: userCan } = useUser();
       return (
@@ -59,14 +59,14 @@ export const columns: ColumnDef<Missionary>[] = [
           <DropdownMenuItem asChild>
             <Link href={MissionaryController.show(row.original.id).url}>
               <User2Icon className="size-3" />
-              <span>{t('View')}</span>
+              <span>{tPages(($) => $.main.missionaries.includes.columns.view)}</span>
             </Link>
           </DropdownMenuItem>
           {userCan(TenantPermission.MISSIONARIES_UPDATE) && (
             <DropdownMenuItem asChild>
               <Link href={MissionaryController.edit(row.original.id).url}>
                 <Edit2Icon className="size-3" />
-                <span>{t('Edit')}</span>
+                <span>{tPages(($) => $.main.missionaries.includes.columns.edit)}</span>
               </Link>
             </DropdownMenuItem>
           )}
@@ -75,11 +75,13 @@ export const columns: ColumnDef<Missionary>[] = [
               variant="destructive"
               onClick={() => {
                 openConfirmation({
-                  title: t('Are you sure you want to delete this :model?', { model: t('Missionary') }),
-                  description: t('You can restore it any time.'),
-                  actionLabel: t('Delete'),
+                  title: tPages(($) => $.main.missionaries.includes.columns.areYouSureYouWantToDeleteThisModel, {
+                    model: tPages(($) => $.main.missionaries.includes.columns.missionary),
+                  }),
+                  description: tPages(($) => $.main.missionaries.includes.columns.youCanRestoreItAnyTime),
+                  actionLabel: tPages(($) => $.main.missionaries.includes.columns.delete),
                   actionVariant: 'destructive',
-                  cancelLabel: t('Cancel'),
+                  cancelLabel: tPages(($) => $.main.missionaries.includes.columns.cancel),
                   onAction: () => {
                     router.visit(MissionaryController.destroy(row.original.id).url);
                   },
@@ -87,7 +89,7 @@ export const columns: ColumnDef<Missionary>[] = [
               }}
             >
               <Trash2Icon className="size-3" />
-              <span>{t('Delete')}</span>
+              <span>{tPages(($) => $.main.missionaries.includes.columns.delete)}</span>
             </DropdownMenuItem>
           )}
         </DatatableActionsDropdown>

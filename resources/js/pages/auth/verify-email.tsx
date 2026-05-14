@@ -6,18 +6,21 @@ import EmailVerificationNotificationController from '@/actions/App/Http/Controll
 import { SubmitButton } from '@/components/forms/SubmitButton';
 import TextLink from '@/components/text-link';
 import { FieldGroup } from '@/components/ui/field';
-import { useTranslations } from '@/hooks/use-translations';
 import AuthLayout from '@/layouts/auth-layout';
+import { useTranslation } from 'react-i18next';
 
 export default function VerifyEmail({ status }: { status?: string }) {
-  const { t } = useTranslations();
+  const { t: tPages } = useTranslation('pages');
   return (
-    <AuthLayout title={t('Verify email')} description={t('Please verify your email address by clicking on the link we just emailed to you.')}>
-      <Head title={t('Email verification')} />
+    <AuthLayout
+      title={tPages(($) => $.auth.verifyEmail.verifyEmail)}
+      description={tPages(($) => $.auth.verifyEmail.pleaseVerifyYourEmailAddressByClickingOnThe)}
+    >
+      <Head title={tPages(($) => $.auth.verifyEmail.emailVerification)} />
 
       {status === 'verification-link-sent' && (
         <div className="mb-4 text-center text-sm font-medium text-green-600">
-          {t('A new verification link has been sent to the email address you provided during registration.')}
+          {tPages(($) => $.auth.verifyEmail.aNewVerificationLinkHasBeenSentToThe)}
         </div>
       )}
 
@@ -25,11 +28,11 @@ export default function VerifyEmail({ status }: { status?: string }) {
         {({ processing }) => (
           <FieldGroup>
             <SubmitButton isSubmitting={processing} variant="secondary">
-              {t('Resend verification email')}
+              {tPages(($) => $.auth.verifyEmail.resendVerificationEmail)}
             </SubmitButton>
 
             <TextLink href={AuthenticatedSessionController.destroy()} method="post" className="mx-auto block text-sm">
-              {t('Log out')}
+              {tPages(($) => $.auth.verifyEmail.logOut)}
             </TextLink>
           </FieldGroup>
         )}

@@ -1,11 +1,10 @@
 import CalendarEventController from '@/actions/App/Http/Controllers/CalendarEventController';
 import CalendarEventPdfController from '@/actions/App/Http/Controllers/Pdf/CalendarEventPdfController';
-import { selectionHeader } from '@/components/custom-ui/datatable/columns';
-import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTableColumnHeader';
+import { selectionHeader } from '@/components/datatable/columns';
+import { DatatableHeader } from '@/components/datatable/datatable-header';
 import { FormErrorList } from '@/components/forms/form-error-list';
 import { PageTitle } from '@/components/PageTitle';
 import { PdfGeneratorProvider, usePdfGenerator } from '@/contexts/pdf-generator-context';
-import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import { OpenPdfButton } from '@/pages/reports/components/open-pdf-button';
 import { PdfControls } from '@/pages/reports/components/pdf-controls';
@@ -16,6 +15,7 @@ import type { CalendarEvent } from '@/types/models/calendar-event';
 import { usePage } from '@inertiajs/react';
 import { type ColumnDef } from '@tanstack/react-table';
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface CalendarEventsReportProps {
   events: CalendarEvent[];
@@ -43,20 +43,20 @@ function CalendarEventsReportContent({ events, dataColumns }: CalendarEventsRepo
 }
 
 export default function CalendarEventsReport({ events, columns }: CalendarEventsReportProps) {
-  const { t } = useTranslations();
+  const { t: tPages } = useTranslation('pages');
   const dataColumns = useMemo<ColumnDef<CalendarEvent>[]>(
     () => [
       selectionHeader as ColumnDef<CalendarEvent>,
       {
         enableHiding: false,
         accessorKey: 'title',
-        header: ({ column }) => <DataTableColumnHeader column={column} title={'Event title'} />,
+        header: ({ column }) => <DatatableHeader column={column} title={'Event title'} />,
         cell: ({ row }) => row.original.title,
       },
       {
         enableHiding: false,
         accessorKey: 'location',
-        header: ({ column }) => <DataTableColumnHeader column={column} title={'Location'} />,
+        header: ({ column }) => <DatatableHeader column={column} title={'Location'} />,
         cell: ({ row }) => row.original.location || '-',
       },
     ],
@@ -65,13 +65,13 @@ export default function CalendarEventsReport({ events, columns }: CalendarEvents
 
   return (
     <AppLayout
-      title={t(':model report', { model: t('Calendar Events') })}
+      title={tPages(($) => $.reports.calendarEvents.modelReport, { model: tPages(($) => $.reports.calendarEvents.calendarEvents) })}
       breadcrumbs={[
-        { title: t('Calendar Events'), href: CalendarEventController.index().url },
-        { title: t(':model report', { model: t('Calendar Events') }) },
+        { title: tPages(($) => $.reports.calendarEvents.calendarEvents), href: CalendarEventController.index().url },
+        { title: tPages(($) => $.reports.calendarEvents.modelReport, { model: tPages(($) => $.reports.calendarEvents.calendarEvents) }) },
       ]}
     >
-      <PageTitle>{t(':model report', { model: t('Calendar Events') })}</PageTitle>
+      <PageTitle>{tPages(($) => $.reports.calendarEvents.modelReport, { model: tPages(($) => $.reports.calendarEvents.calendarEvents) })}</PageTitle>
       <FormErrorList errors={usePage().props.errors} />
       <PdfGeneratorProvider columns={columns} route={CalendarEventPdfController.index().url}>
         <CalendarEventsReportContent events={events} dataColumns={dataColumns} />

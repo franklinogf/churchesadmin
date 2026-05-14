@@ -1,19 +1,19 @@
 import { DatatableCell } from '@/components/custom-ui/datatable/DatatableCell';
-import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTableColumnHeader';
+import { DatatableHeader } from '@/components/datatable/datatable-header';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
-import { useTranslations } from '@/hooks/use-translations';
 import { cleanProperty } from '@/lib/utils';
 import type { ActivityLog } from '@/types/models/activity-log';
 import { type ColumnDef } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { EyeIcon } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export const columns: ColumnDef<ActivityLog>[] = [
   {
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Type" />,
+    header: ({ column }) => <DatatableHeader column={column} title="Type" />,
     accessorKey: 'logName',
     enableHiding: false,
     cell: function CellComponent({
@@ -31,7 +31,7 @@ export const columns: ColumnDef<ActivityLog>[] = [
     },
   },
   {
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Event" />,
+    header: ({ column }) => <DatatableHeader column={column} title="Event" />,
     accessorKey: 'event',
     enableHiding: false,
     cell: function CellComponent({
@@ -49,7 +49,7 @@ export const columns: ColumnDef<ActivityLog>[] = [
     },
   },
   {
-    header: ({ column }) => <DataTableColumnHeader column={column} title="User" />,
+    header: ({ column }) => <DatatableHeader column={column} title="User" />,
     accessorKey: 'causer.name',
     enableHiding: false,
     filterFn: 'equals',
@@ -63,7 +63,7 @@ export const columns: ColumnDef<ActivityLog>[] = [
     },
   },
   {
-    header: ({ column }) => <DataTableColumnHeader column={column} title="IP" />,
+    header: ({ column }) => <DatatableHeader column={column} title="IP" />,
     accessorKey: 'properties.extra.ip_address',
     enableHiding: false,
     filterFn: 'equals',
@@ -77,7 +77,7 @@ export const columns: ColumnDef<ActivityLog>[] = [
     },
   },
   {
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Description" />,
+    header: ({ column }) => <DatatableHeader column={column} title="Description" />,
     accessorKey: 'description',
     enableHiding: false,
     enableColumnFilter: false,
@@ -101,15 +101,15 @@ export const columns: ColumnDef<ActivityLog>[] = [
     },
   },
   {
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Changes" />,
+    header: ({ column }) => <DatatableHeader column={column} title="Changes" />,
     accessorKey: 'properties',
     enableHiding: false,
     enableColumnFilter: false,
     cell: function CellComponent({ row: { original } }) {
-      const { t } = useTranslations();
+      const { t: tPages } = useTranslation('pages');
       const { properties, subjectId, subjectType } = original;
       if (!properties || Object.keys(properties).length === 0) {
-        return <DatatableCell className="text-gray-400">{t('No changes')}</DatatableCell>;
+        return <DatatableCell className="text-gray-400">{tPages(($) => $.activityLogs.includes.columns.noChanges)}</DatatableCell>;
       }
 
       return (
@@ -118,14 +118,14 @@ export const columns: ColumnDef<ActivityLog>[] = [
             <DialogTrigger asChild>
               <Button variant="outline" size="icon">
                 <EyeIcon className="h-4 w-4" />
-                <span className="sr-only">{t('View Changes')}</span>
+                <span className="sr-only">{tPages(($) => $.activityLogs.includes.columns.viewChanges)}</span>
               </Button>
             </DialogTrigger>
             <DialogContent className="max-w-2xl">
               <DialogHeader>
-                <DialogTitle>{t('Changes')}</DialogTitle>
+                <DialogTitle>{tPages(($) => $.activityLogs.includes.columns.changes)}</DialogTitle>
                 <DialogDescription>
-                  {t('Here are the changes made to the :subject_type with the id :subject_id', {
+                  {tPages(($) => $.activityLogs.includes.columns.hereAreTheChangesMadeToTheSubjectType, {
                     subject_type: subjectType,
                     subject_id: subjectId.toString(),
                   })}
@@ -134,7 +134,7 @@ export const columns: ColumnDef<ActivityLog>[] = [
               <div className="space-y-4">
                 {properties.old && (
                   <div>
-                    <div className="font-medium">{t('Old:')}</div>
+                    <div className="font-medium">{tPages(($) => $.activityLogs.includes.columns.old)}</div>
                     <div className="prose">
                       <pre className="rounded p-2 wrap-break-word whitespace-pre-wrap">
                         {Object.entries(properties.old)
@@ -147,7 +147,7 @@ export const columns: ColumnDef<ActivityLog>[] = [
 
                 {properties.attributes && (
                   <div>
-                    <div className="font-medium">{t('New:')}</div>
+                    <div className="font-medium">{tPages(($) => $.activityLogs.includes.columns.new)}</div>
                     <div className="prose">
                       <pre className="rounded p-2 wrap-break-word whitespace-pre-wrap">
                         {Object.entries(properties.attributes)
@@ -165,7 +165,7 @@ export const columns: ColumnDef<ActivityLog>[] = [
     },
   },
   {
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Date" />,
+    header: ({ column }) => <DatatableHeader column={column} title="Date" />,
     accessorKey: 'createdAt',
     enableHiding: false,
     enableColumnFilter: false,

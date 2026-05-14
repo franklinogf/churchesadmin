@@ -43,7 +43,6 @@
         "fakerphp/faker": "^1.24.1",
         "franklinogf/laravel-utils": "^0.2.3",
         "larastan/larastan": "^3.9.6",
-        "laravel-lang/lang": "^15.29.5",
         "laravel/boost": "^2.4.6",
         "laravel/pail": "^1.2.6",
         "laravel/pint": "^1.29.1",

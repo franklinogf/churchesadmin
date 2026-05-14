@@ -1,6 +1,6 @@
-import { useTranslations } from '@/hooks/use-translations';
 import { cn } from '@/lib/utils';
 import { Link } from '@inertiajs/react';
+import { useTranslation } from 'react-i18next';
 import { Button } from './ui/button';
 
 interface PageTitleProps {
@@ -12,14 +12,14 @@ interface PageTitleProps {
 }
 
 export function PageTitle({ children, className, backLink, labelClassName, description }: PageTitleProps) {
-  const { t } = useTranslations();
+  const { t: tCommon } = useTranslation('common');
   return (
     <header className={cn('my-2 flex flex-col items-center gap-2', className)}>
       <h1 className={cn('my-2 text-center text-4xl font-bold', labelClassName)}>{children}</h1>
       {description && <p className="text-muted-foreground">{description}</p>}
       {backLink && (
         <Button variant="outline" size="sm" asChild>
-          <Link href={backLink}>{t('Go back')}</Link>
+          <Link href={backLink}>{tCommon(($) => $.components.PageTitle.goBack)}</Link>
         </Button>
       )}
     </header>

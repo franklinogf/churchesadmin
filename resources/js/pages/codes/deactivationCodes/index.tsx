@@ -1,25 +1,28 @@
-import { DataTable } from '@/components/custom-ui/datatable/data-table';
+import Datatable from '@/components/datatable/datatable';
 import { DeactivationCodeForm } from '@/components/forms/deactivation-code-form';
 import { PageTitle } from '@/components/PageTitle';
 import { Button } from '@/components/ui/button';
-import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import { type DeactivationCode } from '@/types/models/deactivation-code';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { columns } from './includes/columns';
 
 export default function DeactivationCodesIndex({ deactivationCodes }: { deactivationCodes: DeactivationCode[] }) {
-  const { t } = useTranslations();
+  const { t: tPages } = useTranslation('pages');
   const [open, setOpen] = useState(false);
   return (
-    <AppLayout title={t('Deactivation codes')} breadcrumbs={[{ title: t('Deactivation codes') }]}>
-      <PageTitle>{t('Deactivation codes')}</PageTitle>
+    <AppLayout
+      title={tPages(($) => $.codes.deactivationCodes.index.deactivationCodes)}
+      breadcrumbs={[{ title: tPages(($) => $.codes.deactivationCodes.index.deactivationCodes) }]}
+    >
+      <PageTitle>{tPages(($) => $.codes.deactivationCodes.index.deactivationCodes)}</PageTitle>
       <DeactivationCodeForm open={open} setOpen={setOpen} />
       <div className="mx-auto w-full max-w-xl">
-        <DataTable
-          headerButton={
+        <Datatable
+          renderLeftTop={
             <Button size="sm" onClick={() => setOpen(true)}>
-              {t('Add :model', { model: t('Deactivation code') })}
+              {tPages(($) => $.codes.deactivationCodes.index.addModel, { model: tPages(($) => $.codes.deactivationCodes.index.deactivationCode) })}
             </Button>
           }
           data={deactivationCodes}

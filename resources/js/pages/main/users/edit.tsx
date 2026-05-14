@@ -7,12 +7,12 @@ import { SwitchField } from '@/components/forms/inputs/SwitchField';
 import { PageTitle } from '@/components/PageTitle';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { TenantRole } from '@/enums/TenantRole';
-import { useTranslations } from '@/hooks/use-translations';
 import { useUser } from '@/hooks/use-user';
 import AppLayout from '@/layouts/app-layout';
 import { convertRolesToMultiselectOptions, getMultiselecOptionsValues } from '@/lib/mutliselect';
 import type { Permission, Role, User } from '@/types/models/user';
 import { useForm } from '@inertiajs/react';
+import { useTranslation } from 'react-i18next';
 import { getUniquePermissions } from './includes/functions';
 
 type EditForm = {
@@ -29,7 +29,7 @@ interface EditPageProps {
 }
 
 export default function Edit({ user, permissions, roles }: EditPageProps) {
-  const { t } = useTranslations();
+  const { t: tPages } = useTranslation('pages');
   const { hasRole } = useUser();
 
   const userPermissions = user.permissions?.map((permission) => permission.name);
@@ -53,16 +53,25 @@ export default function Edit({ user, permissions, roles }: EditPageProps) {
 
   return (
     <AppLayout
-      title={t('Users')}
-      breadcrumbs={[{ title: t('Users'), href: UserController.index().url }, { title: t('Edit :model', { model: t('User') }) }]}
+      title={tPages(($) => $.main.users.edit.users)}
+      breadcrumbs={[
+        { title: tPages(($) => $.main.users.edit.users), href: UserController.index().url },
+        { title: tPages(($) => $.main.users.edit.editModel, { model: tPages(($) => $.main.users.edit.user) }) },
+      ]}
     >
-      <PageTitle>{t('Edit :model', { model: t('User') })}</PageTitle>
+      <PageTitle>{tPages(($) => $.main.users.edit.editModel, { model: tPages(($) => $.main.users.edit.user) })}</PageTitle>
       <div className="mt-2 flex w-full items-center justify-center">
         <Form className="w-full max-w-2xl" onSubmit={handleSubmit} isSubmitting={processing}>
-          <InputField required label={t('Name')} value={data.name} error={errors.name} onChange={(value) => setData('name', value)} />
           <InputField
             required
-            label={t('Email')}
+            label={tPages(($) => $.main.users.edit.name)}
+            value={data.name}
+            error={errors.name}
+            onChange={(value) => setData('name', value)}
+          />
+          <InputField
+            required
+            label={tPages(($) => $.main.users.edit.email)}
             type="email"
             value={data.email}
             error={errors.email}
@@ -71,7 +80,7 @@ export default function Edit({ user, permissions, roles }: EditPageProps) {
           {hasRole(TenantRole.SUPER_ADMIN) && (
             <MultiSelectField
               required
-              label={t('Roles')}
+              label={tPages(($) => $.main.users.edit.roles)}
               options={convertRolesToMultiselectOptions(roles)}
               value={data.roles}
               error={errors.roles}
@@ -84,7 +93,7 @@ export default function Edit({ user, permissions, roles }: EditPageProps) {
 
           {(hasRole(TenantRole.SUPER_ADMIN) || hasRole(TenantRole.ADMIN)) && (
             <div className="space-y-4">
-              <p className="text-lg font-medium">{t('Assigned permissions')}</p>
+              <p className="text-lg font-medium">{tPages(($) => $.main.users.edit.assignedPermissions)}</p>
               <ScrollArea className="h-60 w-full">
                 <div className="flex flex-col flex-wrap gap-2">
                   {permissions.map((permission) => {

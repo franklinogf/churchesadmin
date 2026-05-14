@@ -1,10 +1,10 @@
 import { Button } from '@/components/ui/button';
 import { Field, FieldError, FieldLabel } from '@/components/ui/field';
 import { Select, SelectContent, SelectItem, SelectSeparator, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { useTranslations } from '@/hooks/use-translations';
 import { cn } from '@/lib/utils';
 import { type InputBaseProps, type SelectOption } from '@/types';
 import React, { useId, type ComponentProps } from 'react';
+import { useTranslation } from 'react-i18next';
 
 type DefaultSelectFieldProps = InputBaseProps &
   ComponentProps<typeof Select> & {
@@ -36,7 +36,7 @@ export function SelectField({
   onValueChange,
   ...props
 }: SelectFieldProps) {
-  const { t } = useTranslations();
+  const { t: tCommon } = useTranslation('common');
   const id = useId();
   return (
     <Field data-disabled={disabled} data-invalid={!!error} className={className}>
@@ -69,7 +69,7 @@ export function SelectField({
                 className="w-full"
                 variant="secondary"
               >
-                {t('Deselect')}
+                {tCommon(($) => $.components.forms.inputs.SelectField.deselect)}
               </Button>
             </>
           )}

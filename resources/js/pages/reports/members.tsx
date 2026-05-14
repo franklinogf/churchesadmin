@@ -1,11 +1,10 @@
 import MemberPdfController from '@/actions/App/Http/Controllers/Pdf/MemberPdfController';
 import ReportController from '@/actions/App/Http/Controllers/ReportController';
-import { selectionHeader } from '@/components/custom-ui/datatable/columns';
-import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTableColumnHeader';
+import { selectionHeader } from '@/components/datatable/columns';
+import { DatatableHeader } from '@/components/datatable/datatable-header';
 import { FormErrorList } from '@/components/forms/form-error-list';
 import { PageTitle } from '@/components/PageTitle';
 import { PdfGeneratorProvider, usePdfGenerator } from '@/contexts/pdf-generator-context';
-import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import { OpenPdfButton } from '@/pages/reports/components/open-pdf-button';
 import { PdfControls } from '@/pages/reports/components/pdf-controls';
@@ -16,6 +15,7 @@ import type { Member } from '@/types/models/member';
 import { usePage } from '@inertiajs/react';
 import { type ColumnDef } from '@tanstack/react-table';
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface MembersReportProps {
   members: Member[];
@@ -43,14 +43,14 @@ function MembersReportContent({ members, dataColumns }: MembersReportContentProp
 }
 
 export default function MembersReport({ members, columns }: MembersReportProps) {
-  const { t } = useTranslations();
+  const { t: tPages } = useTranslation('pages');
   const dataColumns = useMemo<ColumnDef<Member>[]>(
     () => [
       selectionHeader as ColumnDef<Member>,
       {
         enableHiding: false,
         accessorKey: 'name',
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Name" />,
+        header: ({ column }) => <DatatableHeader column={column} title="Name" />,
         cell: ({ row }) => `${row.original.name} ${row.original.lastName}`,
       },
     ],
@@ -59,10 +59,13 @@ export default function MembersReport({ members, columns }: MembersReportProps) 
 
   return (
     <AppLayout
-      title={t(':model report', { model: t('Members') })}
-      breadcrumbs={[{ title: t('Reports'), href: ReportController().url }, { title: t(':model report', { model: t('Members') }) }]}
+      title={tPages(($) => $.reports.members.modelReport, { model: tPages(($) => $.reports.members.members) })}
+      breadcrumbs={[
+        { title: tPages(($) => $.reports.members.reports), href: ReportController().url },
+        { title: tPages(($) => $.reports.members.modelReport, { model: tPages(($) => $.reports.members.members) }) },
+      ]}
     >
-      <PageTitle>{t(':model report', { model: t('Members') })}</PageTitle>
+      <PageTitle>{tPages(($) => $.reports.members.modelReport, { model: tPages(($) => $.reports.members.members) })}</PageTitle>
       <FormErrorList errors={usePage().props.errors} />
       <PdfGeneratorProvider columns={columns} route="reports.members.pdf">
         <MembersReportContent members={members} dataColumns={dataColumns} />

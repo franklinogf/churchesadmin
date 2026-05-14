@@ -8,11 +8,11 @@ import { PhoneField } from '@/components/forms/inputs/PhoneField';
 import { SelectField } from '@/components/forms/inputs/SelectField';
 import { PageTitle } from '@/components/PageTitle';
 import { Separator } from '@/components/ui/separator';
-import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import type { BreadcrumbItem, SelectOption } from '@/types';
 import { type Missionary } from '@/types/models/missionary';
 import { useForm } from '@inertiajs/react';
+import { useTranslation } from 'react-i18next';
 
 type EditForm = {
   name: string;
@@ -39,7 +39,7 @@ interface EditPageProps {
 }
 
 export default function Edit({ genders, missionary, offeringFrequencies }: EditPageProps) {
-  const { t } = useTranslations();
+  const { t: tPages } = useTranslation('pages');
   const { data, setData, submit, errors, processing } = useForm<EditForm>({
     name: missionary.name,
     last_name: missionary.lastName,
@@ -64,53 +64,75 @@ export default function Edit({ genders, missionary, offeringFrequencies }: EditP
 
   const breadcrumbs: BreadcrumbItem[] = [
     {
-      title: t('Missionaries'),
+      title: tPages(($) => $.main.missionaries.edit.missionaries),
       href: MissionaryController.index().url,
     },
     {
-      title: t('Edit :model', { model: t('Missionary') }),
+      title: tPages(($) => $.main.missionaries.edit.editModel, { model: tPages(($) => $.main.missionaries.edit.missionary) }),
     },
   ];
 
   return (
-    <AppLayout breadcrumbs={breadcrumbs} title={t('Missionaries')}>
-      <PageTitle>{t('Edit :model', { model: t('Missionary') })}</PageTitle>
+    <AppLayout breadcrumbs={breadcrumbs} title={tPages(($) => $.main.missionaries.edit.missionaries)}>
+      <PageTitle>{tPages(($) => $.main.missionaries.edit.editModel, { model: tPages(($) => $.main.missionaries.edit.missionary) })}</PageTitle>
       <div className="mt-2 flex items-center justify-center">
         <Form isSubmitting={processing} className="w-full max-w-2xl" onSubmit={handleSubmit}>
-          <InputField required label={t('Name')} value={data.name} onChange={(value) => setData('name', value)} error={errors.name} />
           <InputField
             required
-            label={t('Last Name')}
+            label={tPages(($) => $.main.missionaries.edit.name)}
+            value={data.name}
+            onChange={(value) => setData('name', value)}
+            error={errors.name}
+          />
+          <InputField
+            required
+            label={tPages(($) => $.main.missionaries.edit.lastName)}
             value={data.last_name}
             onChange={(value) => setData('last_name', value)}
             error={errors.last_name}
           />
           <FieldsGrid>
-            <InputField label={t('Email')} type="email" value={data.email} onChange={(value) => setData('email', value)} error={errors.email} />
-            <PhoneField label={t('Phone')} value={data.phone} onChange={(value) => setData('phone', value)} error={errors.phone} />
+            <InputField
+              label={tPages(($) => $.main.missionaries.edit.email)}
+              type="email"
+              value={data.email}
+              onChange={(value) => setData('email', value)}
+              error={errors.email}
+            />
+            <PhoneField
+              label={tPages(($) => $.main.missionaries.edit.phone)}
+              value={data.phone}
+              onChange={(value) => setData('phone', value)}
+              error={errors.phone}
+            />
           </FieldsGrid>
           <FieldsGrid>
             <SelectField
               required
-              label={t('Gender')}
+              label={tPages(($) => $.main.missionaries.edit.gender)}
               value={data.gender}
               onValueChange={(value) => setData('gender', value)}
               options={genders}
               error={errors.gender}
             />
           </FieldsGrid>
-          <InputField label={t('Church')} value={data.church} onChange={(value) => setData('church', value)} error={errors.church} />
+          <InputField
+            label={tPages(($) => $.main.missionaries.edit.church)}
+            value={data.church}
+            onChange={(value) => setData('church', value)}
+            error={errors.church}
+          />
           <FieldsGrid>
             <CurrencyField
               placeholder="0.00"
-              label={t('Offering')}
+              label={tPages(($) => $.main.missionaries.edit.offering)}
               value={data.offering}
               onValueChange={(value) => value !== undefined && setData('offering', value)}
               error={errors.offering}
             />
             <SelectField
               clearable
-              label={t('Offering Frequency')}
+              label={tPages(($) => $.main.missionaries.edit.offeringFrequency)}
               value={data.offering_frequency}
               onValueChange={(value) => setData('offering_frequency', value)}
               options={offeringFrequencies}

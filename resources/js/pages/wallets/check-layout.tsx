@@ -8,13 +8,13 @@ import { PageTitle } from '@/components/PageTitle';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { useTranslations } from '@/hooks/use-translations';
 import { type BreadcrumbItem, type SelectOption } from '@/types';
 import type { CheckLayout } from '@/types/models/check-layout';
 import type { Wallet } from '@/types/models/wallet';
 import { Link, router } from '@inertiajs/react';
 import { AlertCircleIcon } from 'lucide-react';
 import { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { CheckLayoutEditor } from './components/check-layout-editor';
 
 const NEW_LAYOUT = 'new_layout';
@@ -25,7 +25,7 @@ interface CheckLayoutProps {
 }
 
 export default function CheckLayout({ checkLayouts, wallet, checkLayout }: CheckLayoutProps) {
-  const { t } = useTranslations();
+  const { t: tPages } = useTranslation('pages');
   const isMobile = useIsMobile();
   const [activeLayout, setActiveLayout] = useState(checkLayout?.id.toString() || NEW_LAYOUT);
 
@@ -35,40 +35,51 @@ export default function CheckLayout({ checkLayouts, wallet, checkLayout }: Check
   }
 
   const breadcrumbs: BreadcrumbItem[] = useMemo(
-    () => [{ title: t('Wallets'), href: WalletController.index().url }, { title: t('Check layout') }],
-    [t],
+    () => [
+      { title: tPages(($) => $.wallets.checkLayout.wallets), href: WalletController.index().url },
+      { title: tPages(($) => $.wallets.checkLayout.checkLayout) },
+    ],
+    [tPages],
   );
   const isWalletLayout = wallet.checkLayout?.id.toString() === activeLayout;
 
   return (
-    <AppLayout title={t('Check layout')} breadcrumbs={breadcrumbs}>
+    <AppLayout title={tPages(($) => $.wallets.checkLayout.checkLayout)} breadcrumbs={breadcrumbs}>
       {isMobile ? (
         <div className="space-y-6">
           <Alert variant="warning">
             <AlertCircleIcon className="size-4" />
-            <AlertTitle>{t('Check layout is not available on mobile devices')}</AlertTitle>
-            <AlertDescription>{t('Please use a desktop device to edit the check layout')}</AlertDescription>
+            <AlertTitle>{tPages(($) => $.wallets.checkLayout.checkLayoutIsNotAvailableOnMobileDevices)}</AlertTitle>
+            <AlertDescription>{tPages(($) => $.wallets.checkLayout.pleaseUseADesktopDeviceToEditTheCheck)}</AlertDescription>
           </Alert>
 
           {wallet.checkLayout ? (
-            <p>{t('Using the :name layout', { name: wallet.checkLayout?.name })}</p>
+            <p>{tPages(($) => $.wallets.checkLayout.usingTheNameLayout, { name: wallet.checkLayout?.name })}</p>
           ) : (
-            <p>{t('No check layout selected for this wallet')}</p>
+            <p>{tPages(($) => $.wallets.checkLayout.noCheckLayoutSelectedForThisWallet)}</p>
           )}
         </div>
       ) : (
         <div className="space-y-6">
           <div className="mx-auto max-w-xl space-y-6">
-            <PageTitle description={t('Here you can update the printing check layout')}>{t('Check layout')}</PageTitle>
+            <PageTitle description={tPages(($) => $.wallets.checkLayout.hereYouCanUpdateThePrintingCheckLayout)}>
+              {tPages(($) => $.wallets.checkLayout.checkLayout)}
+            </PageTitle>
 
             <section className="space-y-4">
               <div className="mt-8 flex items-center gap-2">
                 <SelectField
                   className="grow"
-                  label={t('Select the layout you want to use for this wallet or create a new one')}
+                  label={tPages(($) => $.wallets.checkLayout.selectTheLayoutYouWantToUseForThis)}
                   value={activeLayout}
                   onValueChange={handleChangeActiveLayout}
-                  options={[{ value: NEW_LAYOUT, label: t('Create a new :model', { model: t('Check layout') }) }, ...checkLayouts]}
+                  options={[
+                    {
+                      value: NEW_LAYOUT,
+                      label: tPages(($) => $.wallets.checkLayout.createANewModel, { model: tPages(($) => $.wallets.checkLayout.checkLayout) }),
+                    },
+                    ...checkLayouts,
+                  ]}
                 />
                 {activeLayout !== NEW_LAYOUT && (
                   <Button disabled={isWalletLayout} variant="outline" className="self-end" asChild>
@@ -79,7 +90,9 @@ export default function CheckLayout({ checkLayouts, wallet, checkLayout }: Check
                       preserveScroll
                       as="button"
                     >
-                      {isWalletLayout ? t('You are using this layout') : t('Use this layout')}
+                      {isWalletLayout
+                        ? tPages(($) => $.wallets.checkLayout.youAreUsingThisLayout)
+                        : tPages(($) => $.wallets.checkLayout.useThisLayout)}
                     </Link>
                   </Button>
                 )}

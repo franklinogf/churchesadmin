@@ -4,7 +4,6 @@ type MergeTypes<TypesArray extends any[], Res = {}> = TypesArray extends [infer 
 
 type OnlyFirst<F, S> = F & { [Key in keyof Omit<S, keyof F>]?: never };
 
-// eslint-disable-next-line
 export type OneOf<TypesArray extends any[], Res = never, AllProperties = MergeTypes<TypesArray>> = TypesArray extends [infer Head, ...infer Rem]
   ? OneOf<Rem, Res | OnlyFirst<Head, AllProperties>, AllProperties>
   : Res;

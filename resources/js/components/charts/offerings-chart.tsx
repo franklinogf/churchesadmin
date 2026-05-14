@@ -1,7 +1,7 @@
 import { ChartCard } from '@/components/charts/chart-card';
 import { ChartTooltip, ChartTooltipContent, type ChartConfig } from '@/components/ui/chart';
-import { useTranslations } from '@/hooks/use-translations';
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Bar, BarChart, CartesianGrid, LabelList, XAxis, YAxis } from 'recharts';
 export type OfferingChart = {
   month: string;
@@ -15,12 +15,12 @@ export const chartConfig = {
 } satisfies ChartConfig;
 
 export default function OfferingsChart({ data }: { data: OfferingChart[] }) {
-  const { t } = useTranslations();
+  const { t: tCommon } = useTranslation('common');
   const total = useMemo(() => data.reduce((acc, item) => acc + parseFloat(item.total), 0), [data]);
   return (
     <ChartCard
       noData={total === 0}
-      title={t('Offerings by month')}
+      title={tCommon(($) => $.components.charts.offeringsChart.offeringsByMonth)}
       chartConfig={chartConfig}
       description={`$${total.toLocaleString(undefined, { minimumFractionDigits: 2 })}`}
     >

@@ -1,13 +1,13 @@
-import { useTranslations } from '@/hooks/use-translations';
+import { useTranslation } from 'react-i18next';
 export function useCurrency() {
-  const { currentLocale } = useTranslations();
+  const { i18n } = useTranslation();
 
   function formatCurrency(amount: number | string): string {
     const parsedAmount = typeof amount === 'string' ? parseFloat(amount) : amount;
     if (isNaN(parsedAmount)) {
       return '';
     }
-    return new Intl.NumberFormat(currentLocale(), { style: 'currency', currency: 'USD' }).format(parsedAmount);
+    return new Intl.NumberFormat(i18n.language, { style: 'currency', currency: 'USD' }).format(parsedAmount);
   }
 
   function toPositive(amount: number | string): string {

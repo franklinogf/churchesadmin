@@ -8,10 +8,10 @@ import { FileField } from '@/components/forms/inputs/FileField';
 import { InputField } from '@/components/forms/inputs/InputField';
 import { SubmitButton } from '@/components/forms/SubmitButton';
 import HeadingSmall from '@/components/heading-small';
-import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/church-layout';
 import type { Church } from '@/types/models/church';
+import { useTranslation } from 'react-i18next';
 
 type GeneralForm = {
   name: string;
@@ -19,7 +19,7 @@ type GeneralForm = {
 };
 
 export default function Language({ church }: { church: Church }) {
-  const { t } = useTranslations();
+  const { t: tPages } = useTranslation('pages');
   const { data, setData, submit, errors, processing, recentlySuccessful } = useForm<Required<GeneralForm>>({
     name: church.name,
     logo: null,
@@ -33,19 +33,28 @@ export default function Language({ church }: { church: Church }) {
     });
   };
 
-  const breadcrumbs: BreadcrumbItem[] = useMemo(() => [{ title: t('Church Settings') }, { title: t('General information') }], [t]);
+  const breadcrumbs: BreadcrumbItem[] = useMemo(
+    () => [
+      { title: tPages(($) => $.settings.church.general.churchSettings) },
+      { title: tPages(($) => $.settings.church.general.generalInformation) },
+    ],
+    [tPages],
+  );
 
   return (
     <AppLayout title="Church Settings" breadcrumbs={breadcrumbs}>
       <SettingsLayout>
         <div className="space-y-6">
-          <HeadingSmall title={t('General information')} description={t('Update the church information')} />
+          <HeadingSmall
+            title={tPages(($) => $.settings.church.general.generalInformation)}
+            description={tPages(($) => $.settings.church.general.updateTheChurchInformation)}
+          />
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <InputField
               required
               className="max-w-xs"
-              label={t('Church Name')}
+              label={tPages(($) => $.settings.church.general.churchName)}
               value={data.name}
               onChange={(value) => setData('name', value)}
               error={errors.name}
@@ -65,7 +74,7 @@ export default function Language({ church }: { church: Church }) {
             />
 
             <div className="flex items-center gap-4">
-              <SubmitButton isSubmitting={processing}>{t('Save')}</SubmitButton>
+              <SubmitButton isSubmitting={processing}>{tPages(($) => $.settings.church.general.save)}</SubmitButton>
 
               <Transition
                 show={recentlySuccessful}
@@ -74,7 +83,7 @@ export default function Language({ church }: { church: Church }) {
                 leave="transition ease-in-out"
                 leaveTo="opacity-0"
               >
-                <p className="text-sm text-neutral-600">{t('Saved')}</p>
+                <p className="text-sm text-neutral-600">{tPages(($) => $.settings.church.general.saved)}</p>
               </Transition>
             </div>
           </form>

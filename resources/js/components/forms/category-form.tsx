@@ -4,21 +4,31 @@ import { SwitchField } from '@/components/forms/inputs/SwitchField';
 import { ResponsiveModal, ResponsiveModalFooterSubmit } from '@/components/responsive-modal';
 import { FieldGroup, FieldSet } from '@/components/ui/field';
 import { TenantPermission } from '@/enums/TenantPermission';
-import { useTranslations } from '@/hooks/use-translations';
 import { useUser } from '@/hooks/use-user';
 import type { Tag } from '@/types/models/tag';
 import { Form } from '@inertiajs/react';
+import { useTranslation } from 'react-i18next';
 
 export function CategoryForm({ category, open, setOpen }: { category?: Tag; open: boolean; setOpen: (open: boolean) => void }) {
-  const { t } = useTranslations();
+  const { t: tCommon } = useTranslation('common');
   const { can: userCan } = useUser();
 
   return (
     <ResponsiveModal
       open={open}
       setOpen={setOpen}
-      title={category ? t('Edit :model', { model: t('Category') }) : t('Add :model', { model: t('Category') })}
-      description={category ? t('Edit the details of this :model', { model: t('Category') }) : t('Create a new :model', { model: t('Category') })}
+      title={
+        category
+          ? tCommon(($) => $.components.forms.categoryForm.editModel, { model: tCommon(($) => $.components.forms.categoryForm.category) })
+          : tCommon(($) => $.components.forms.categoryForm.addModel, { model: tCommon(($) => $.components.forms.categoryForm.category) })
+      }
+      description={
+        category
+          ? tCommon(($) => $.components.forms.categoryForm.editTheDetailsOfThisModel, {
+              model: tCommon(($) => $.components.forms.categoryForm.category),
+            })
+          : tCommon(($) => $.components.forms.categoryForm.createANewModel, { model: tCommon(($) => $.components.forms.categoryForm.category) })
+      }
     >
       <Form
         disableWhileProcessing
@@ -31,17 +41,22 @@ export function CategoryForm({ category, open, setOpen }: { category?: Tag; open
         {({ errors, processing }) => (
           <FieldSet>
             <FieldGroup>
-              <InputField defaultValue={category?.name} label={t('Name')} name="name" error={errors.name} />
+              <InputField
+                defaultValue={category?.name}
+                label={tCommon(($) => $.components.forms.categoryForm.name)}
+                name="name"
+                error={errors.name}
+              />
               {userCan(category ? TenantPermission.REGULAR_TAGS_UPDATE : TenantPermission.REGULAR_TAGS_CREATE) && (
                 <SwitchField
-                  description={t('Only admins would be allowed to edit and delete this category')}
-                  label={t('Mark this category as regular')}
+                  description={tCommon(($) => $.components.forms.categoryForm.onlyAdminsWouldBeAllowedToEditAndDelete)}
+                  label={tCommon(($) => $.components.forms.categoryForm.markThisCategoryAsRegular)}
                   name="is_regular"
                   defaultChecked={category?.isRegular}
                   error={errors.is_regular}
                 />
               )}
-              <ResponsiveModalFooterSubmit isSubmitting={processing} label={t('Save')} />
+              <ResponsiveModalFooterSubmit isSubmitting={processing} label={tCommon(($) => $.components.forms.categoryForm.save)} />
             </FieldGroup>
           </FieldSet>
         )}

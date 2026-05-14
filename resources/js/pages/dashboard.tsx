@@ -3,8 +3,8 @@ import ExpensesChart from '@/components/charts/expenses-chart';
 import OfferingsChart, { type OfferingChart } from '@/components/charts/offerings-chart';
 import { PersonsChart, type PersonChart } from '@/components/charts/persons-chart';
 import { WalletsChart } from '@/components/charts/wallets-chart';
-import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
+import { useTranslation } from 'react-i18next';
 interface DashboardProps {
   expenses: ExpenseChart[];
   offerings: OfferingChart[];
@@ -13,9 +13,9 @@ interface DashboardProps {
 }
 
 export default function Dashboard({ expenses, offerings, persons, wallets }: DashboardProps) {
-  const { t } = useTranslations();
+  const { t: tPages } = useTranslation('pages');
   return (
-    <AppLayout breadcrumbs={[{ title: t('Dashboard') }]} title={t('Dashboard')}>
+    <AppLayout breadcrumbs={[{ title: tPages(($) => $.dashboard.dashboard) }]} title={tPages(($) => $.dashboard.dashboard)}>
       <div className="flex h-full flex-1 flex-col gap-4 rounded-xl">
         <div className="grid auto-rows-min gap-4 md:grid-cols-3">
           <ExpensesChart data={expenses} />

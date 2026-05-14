@@ -3,33 +3,33 @@ import ProfileController from '@/actions/App/Http/Controllers/Settings/ProfileCo
 import Heading from '@/components/heading';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
-import { useTranslations } from '@/hooks/use-translations';
 import { cn } from '@/lib/utils';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
 import { useMemo, type PropsWithChildren } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function SettingsLayout({ children }: PropsWithChildren) {
-  const { t } = useTranslations();
+  const { t: tCommon } = useTranslation('common');
   const sidebarNavItems: NavItem[] = useMemo(
     () => [
       {
-        title: t('Profile'),
+        title: tCommon(($) => $.layouts.settings.profileLayout.profile),
         href: ProfileController.edit(),
         icon: null,
       },
       {
-        title: t('Password'),
+        title: tCommon(($) => $.layouts.settings.profileLayout.password),
         href: PasswordController.edit(),
         icon: null,
       },
       {
-        title: t('Appearance'),
+        title: tCommon(($) => $.layouts.settings.profileLayout.appearance),
         href: '/settings/appearance',
         icon: null,
       },
     ],
-    [t],
+    [tCommon],
   );
   // When server-side rendering, we only render the layout on the client...
   if (typeof window === 'undefined') {
@@ -38,7 +38,10 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
 
   return (
     <div className="px-4 py-6">
-      <Heading title={t('Settings')} description={t('Manage your profile and account settings')} />
+      <Heading
+        title={tCommon(($) => $.layouts.settings.profileLayout.settings)}
+        description={tCommon(($) => $.layouts.settings.profileLayout.manageYourProfileAndAccountSettings)}
+      />
 
       <div className="flex flex-col space-y-8 lg:flex-row lg:space-y-0 lg:space-x-12">
         <aside className="w-full max-w-xl lg:w-48">

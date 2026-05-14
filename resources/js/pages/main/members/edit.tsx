@@ -16,11 +16,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Separator } from '@/components/ui/separator';
 import { TenantPermission } from '@/enums/TenantPermission';
-import { useTranslations } from '@/hooks/use-translations';
 import { useUser } from '@/hooks/use-user';
 import AppLayout from '@/layouts/app-layout';
 import { convertTagsToMultiselectOptions, getMultiselecOptionsLabels } from '@/lib/mutliselect';
-import useConfirmationStore from '@/stores/confirmationStore';
+import useConfirmationStore from '@/stores/confirmation-store';
 import type { BreadcrumbItem, SelectOption } from '@/types';
 import { type AddressFormData } from '@/types/models/address';
 import { type DeactivationCode } from '@/types/models/deactivation-code';
@@ -29,6 +28,7 @@ import { type Tag } from '@/types/models/tag';
 import { router, useForm } from '@inertiajs/react';
 import { CheckCircleIcon, XCircleIcon } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 type EditForm = {
   name: string;
@@ -53,7 +53,7 @@ interface EditPageProps {
   deactivationCodes: DeactivationCode[];
 }
 export default function Edit({ member, genders, civilStatuses, skills, categories, deactivationCodes }: EditPageProps) {
-  const { t } = useTranslations();
+  const { t: tPages } = useTranslation('pages');
   const { can: userCan } = useUser();
   const { openConfirmation } = useConfirmationStore();
   const [deactivateDialogOpen, setDeactivateDialogOpen] = useState(false);
@@ -90,16 +90,16 @@ export default function Edit({ member, genders, civilStatuses, skills, categorie
   };
   const breadcrumbs: BreadcrumbItem[] = [
     {
-      title: t('Members'),
+      title: tPages(($) => $.main.members.edit.members),
       href: MemberController.index().url,
     },
     {
-      title: t('Edit :model', { model: t('Member') }),
+      title: tPages(($) => $.main.members.edit.editModel, { model: tPages(($) => $.main.members.edit.member) }),
     },
   ];
   return (
-    <AppLayout breadcrumbs={breadcrumbs} title={t('Members')}>
-      <PageTitle>{t('Edit :model', { model: t('Member') })}</PageTitle>
+    <AppLayout breadcrumbs={breadcrumbs} title={tPages(($) => $.main.members.edit.members)}>
+      <PageTitle>{tPages(($) => $.main.members.edit.editModel, { model: tPages(($) => $.main.members.edit.member) })}</PageTitle>
       <div className="mx-auto mt-6 grid max-w-7xl grid-cols-1 gap-6 px-4 lg:grid-cols-3">
         {/* Main Form - Takes 2/3 of the space on large screens */}
         <div className="lg:col-span-2">
@@ -121,7 +121,7 @@ export default function Edit({ member, genders, civilStatuses, skills, categorie
 
             <DateField
               maxDate="today"
-              label={t('Baptism date')}
+              label={tPages(($) => $.main.members.edit.baptismDate)}
               value={data.baptism_date}
               onChange={(value) => setData('baptism_date', value)}
               error={errors.baptism_date}
@@ -130,7 +130,7 @@ export default function Edit({ member, genders, civilStatuses, skills, categorie
             <FieldsGrid>
               <SelectField
                 required
-                label={t('Gender')}
+                label={tPages(($) => $.main.members.edit.gender)}
                 value={data.gender}
                 onValueChange={(value) => setData('gender', value)}
                 options={genders}
@@ -138,7 +138,7 @@ export default function Edit({ member, genders, civilStatuses, skills, categorie
               />
               <SelectField
                 required
-                label={t('Civil status')}
+                label={tPages(($) => $.main.members.edit.civilStatus)}
                 value={data.civil_status}
                 onValueChange={(value) => setData('civil_status', value)}
                 options={civilStatuses}
@@ -148,14 +148,14 @@ export default function Edit({ member, genders, civilStatuses, skills, categorie
 
             <FieldsGrid>
               <MultiSelectField
-                label={t('Skills')}
+                label={tPages(($) => $.main.members.edit.skills)}
                 value={data.skills}
                 onChange={(value) => setData('skills', value)}
                 options={skills}
                 error={errors.skills}
               />
               <MultiSelectField
-                label={t('Categories')}
+                label={tPages(($) => $.main.members.edit.categories)}
                 value={data.categories}
                 onChange={(value) => setData('categories', value)}
                 options={categories}
@@ -186,14 +186,14 @@ export default function Edit({ member, genders, civilStatuses, skills, categorie
                       <div className="flex h-8 w-8 items-center justify-center rounded-full bg-green-100">
                         <CheckCircleIcon className="h-5 w-5 text-green-600" />
                       </div>
-                      {t('Status')}
+                      {tPages(($) => $.main.members.edit.status)}
                     </>
                   ) : (
                     <>
                       <div className="flex h-8 w-8 items-center justify-center rounded-full bg-red-100">
                         <XCircleIcon className="h-5 w-5 text-red-600" />
                       </div>
-                      {t('Status')}
+                      {tPages(($) => $.main.members.edit.status)}
                     </>
                   )}
                 </CardTitle>
@@ -201,15 +201,15 @@ export default function Edit({ member, genders, civilStatuses, skills, categorie
               <CardContent className="space-y-6">
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-muted-foreground text-sm font-medium">{t('Status')}</span>
+                    <span className="text-muted-foreground text-sm font-medium">{tPages(($) => $.main.members.edit.status)}</span>
                     <Badge variant={member.active ? 'default' : 'destructive'} className="text-sm font-semibold">
-                      {member.active ? t('Active') : t('Inactive')}
+                      {member.active ? tPages(($) => $.main.members.edit.active) : tPages(($) => $.main.members.edit.inactive)}
                     </Badge>
                   </div>
 
                   {!member.active && member.deactivationCode && (
                     <div className="flex items-center justify-between">
-                      <span className="text-muted-foreground text-sm font-medium">{t('Deactivation code')}</span>
+                      <span className="text-muted-foreground text-sm font-medium">{tPages(($) => $.main.members.edit.deactivationCode)}</span>
                       <Badge variant="outline" className="text-sm">
                         {member.deactivationCode.name}
                       </Badge>
@@ -217,13 +217,11 @@ export default function Edit({ member, genders, civilStatuses, skills, categorie
                   )}
 
                   {member.active && (
-                    <p className="text-muted-foreground text-sm">
-                      {t('This member is currently active and will appear in member lists and reports')}
-                    </p>
+                    <p className="text-muted-foreground text-sm">{tPages(($) => $.main.members.edit.thisMemberIsCurrentlyActiveAndWillAppearIn)}</p>
                   )}
 
                   {!member.active && (
-                    <p className="text-muted-foreground text-sm">{t('This member is inactive and will not appear in member lists by default.')}</p>
+                    <p className="text-muted-foreground text-sm">{tPages(($) => $.main.members.edit.thisMemberIsInactiveAndWillNotAppearIn)}</p>
                   )}
                 </div>
                 <Separator />
@@ -235,26 +233,28 @@ export default function Edit({ member, genders, civilStatuses, skills, categorie
                         <DialogTrigger asChild>
                           <Button variant="destructive" size="sm" className="w-full justify-start">
                             <XCircleIcon className="mr-2 h-4 w-4" />
-                            {t('Deactivate')} {t('Member')}
+                            {tPages(($) => $.main.members.edit.deactivate)} {tPages(($) => $.main.members.edit.member)}
                           </Button>
                         </DialogTrigger>
                         <DialogContent className="sm:max-w-md">
                           <DialogHeader>
                             <DialogTitle className="flex items-center gap-2">
                               <XCircleIcon className="h-5 w-5 text-red-600" />
-                              {t('Deactivate')} {t('Member')}
+                              {tPages(($) => $.main.members.edit.deactivate)} {tPages(($) => $.main.members.edit.member)}
                             </DialogTitle>
                             <DialogDescription className="pt-2">
-                              {t('Are you sure you want to deactivate this :model?', { model: t('Member') })}
+                              {tPages(($) => $.main.members.edit.areYouSureYouWantToDeactivateThisModel, {
+                                model: tPages(($) => $.main.members.edit.member),
+                              })}
                               <br />
                               <span className="text-muted-foreground mt-2 block text-sm">
-                                {t('Please select a reason for deactivation. This will remove the member from active lists.')}
+                                {tPages(($) => $.main.members.edit.pleaseSelectAReasonForDeactivationThisWillRemove)}
                               </span>
                             </DialogDescription>
                           </DialogHeader>
                           <div className="space-y-4 py-4">
                             <SelectField
-                              label={t('Deactivation code')}
+                              label={tPages(($) => $.main.members.edit.deactivationCode)}
                               value={selectedDeactivationCode}
                               onValueChange={setSelectedDeactivationCode}
                               options={deactivationCodes.map((code) => ({ value: code.id.toString(), label: code.name }))}
@@ -263,7 +263,7 @@ export default function Edit({ member, genders, civilStatuses, skills, categorie
                           </div>
                           <DialogFooter className="gap-2">
                             <Button variant="outline" onClick={() => setDeactivateDialogOpen(false)} className="flex-1">
-                              {t('Cancel')}
+                              {tPages(($) => $.main.members.edit.cancel)}
                             </Button>
                             <Button
                               variant="destructive"
@@ -286,7 +286,7 @@ export default function Edit({ member, genders, civilStatuses, skills, categorie
                               className="flex-1"
                             >
                               <XCircleIcon className="mr-2 h-4 w-4" />
-                              {t('Deactivate')}
+                              {tPages(($) => $.main.members.edit.deactivate)}
                             </Button>
                           </DialogFooter>
                         </DialogContent>
@@ -300,11 +300,13 @@ export default function Edit({ member, genders, civilStatuses, skills, categorie
                         className="w-full justify-start"
                         onClick={() => {
                           openConfirmation({
-                            title: t('Activate'),
-                            description: t('Are you sure you want to activate this :model?', { model: t('Member') }),
-                            actionLabel: t('Activate'),
+                            title: tPages(($) => $.main.members.edit.activate),
+                            description: tPages(($) => $.main.members.edit.areYouSureYouWantToActivateThisModel, {
+                              model: tPages(($) => $.main.members.edit.member),
+                            }),
+                            actionLabel: tPages(($) => $.main.members.edit.activate),
                             actionVariant: 'default',
-                            cancelLabel: t('Cancel'),
+                            cancelLabel: tPages(($) => $.main.members.edit.cancel),
                             onAction: () => {
                               router.visit(MemberStatusController.update(member.id), {
                                 preserveState: true,
@@ -315,7 +317,7 @@ export default function Edit({ member, genders, civilStatuses, skills, categorie
                         }}
                       >
                         <CheckCircleIcon className="mr-2 h-4 w-4" />
-                        {t('Activate')} {t('Member')}
+                        {tPages(($) => $.main.members.edit.activate)} {tPages(($) => $.main.members.edit.member)}
                       </Button>
                     )}
                   </div>
@@ -328,13 +330,13 @@ export default function Edit({ member, genders, civilStatuses, skills, categorie
               <CardContent className="p-4">
                 <h4 className="mb-2 flex items-center gap-2 text-sm font-semibold">
                   <span className="h-2 w-2 rounded-full bg-blue-500"></span>
-                  {t('Quick Info')}
+                  {tPages(($) => $.main.members.edit.quickInfo)}
                 </h4>
                 <div className="text-muted-foreground space-y-2 text-xs">
-                  <p>• {t('Active members appear in member lists and reports')}</p>
-                  <p>• {t('Inactive members are hidden from default views')}</p>
-                  <p>• {t('Deactivation reasons help track why members left')}</p>
-                  <p>• {t('Members can be reactivated at any time')}</p>
+                  <p>• {tPages(($) => $.main.members.edit.activeMembersAppearInMemberListsAndReports)}</p>
+                  <p>• {tPages(($) => $.main.members.edit.inactiveMembersAreHiddenFromDefaultViews)}</p>
+                  <p>• {tPages(($) => $.main.members.edit.deactivationReasonsHelpTrackWhyMembersLeft)}</p>
+                  <p>• {tPages(($) => $.main.members.edit.membersCanBeReactivatedAtAnyTime)}</p>
                 </div>
               </CardContent>
             </Card>

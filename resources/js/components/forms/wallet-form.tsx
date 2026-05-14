@@ -3,9 +3,9 @@ import { CurrencyField } from '@/components/forms/inputs/CurrencyField';
 import { FieldsGrid } from '@/components/forms/inputs/FieldsGrid';
 import { InputField } from '@/components/forms/inputs/InputField';
 import { ResponsiveModal, ResponsiveModalFooterSubmit } from '@/components/responsive-modal';
-import { useTranslations } from '@/hooks/use-translations';
 import type { Wallet } from '@/types/models/wallet';
 import { Form } from '@inertiajs/react';
+import { useTranslation } from 'react-i18next';
 import { FieldGroup } from '../ui/field';
 
 type WalletForm = {
@@ -18,8 +18,7 @@ type WalletForm = {
 };
 
 export function WalletForm({ wallet, open, setOpen }: { wallet?: Wallet; open: boolean; setOpen: (open: boolean) => void }) {
-  const { t } = useTranslations();
-
+  const { t: tCommon } = useTranslation('common');
   //   const { data, setData, submit, errors, reset, processing } = useForm<WalletForm>({
   //     name: wallet?.name ?? '',
   //     description: wallet?.description ?? '',
@@ -29,13 +28,21 @@ export function WalletForm({ wallet, open, setOpen }: { wallet?: Wallet; open: b
   //     bank_routing_number: wallet?.bankRoutingNumber ?? '',
   //   });
 
-  const MODEL = t('Wallet');
+  const MODEL = tCommon(($) => $.components.forms.walletForm.wallet);
   return (
     <ResponsiveModal
       open={open}
       setOpen={setOpen}
-      title={wallet ? t('Edit :model', { model: MODEL }) : t('Add :model', { model: MODEL })}
-      description={wallet ? t('Edit the details of this :model', { model: MODEL }) : t('Create a new :model', { model: MODEL })}
+      title={
+        wallet
+          ? tCommon(($) => $.components.forms.walletForm.editModel, { model: MODEL })
+          : tCommon(($) => $.components.forms.walletForm.addModel, { model: MODEL })
+      }
+      description={
+        wallet
+          ? tCommon(($) => $.components.forms.walletForm.editTheDetailsOfThisModel, { model: MODEL })
+          : tCommon(($) => $.components.forms.walletForm.createANewModel, { model: MODEL })
+      }
     >
       <Form
         disableWhileProcessing
@@ -46,34 +53,56 @@ export function WalletForm({ wallet, open, setOpen }: { wallet?: Wallet; open: b
       >
         {({ errors, processing }) => (
           <FieldGroup>
-            <InputField required label={t('Name')} name="name" error={errors.name} defaultValue={wallet?.name} />
+            <InputField
+              required
+              label={tCommon(($) => $.components.forms.walletForm.name)}
+              name="name"
+              error={errors.name}
+              defaultValue={wallet?.name}
+            />
 
-            <InputField label={t('Description')} name="description" error={errors.description} defaultValue={wallet?.description ?? ''} />
+            <InputField
+              label={tCommon(($) => $.components.forms.walletForm.description)}
+              name="description"
+              error={errors.description}
+              defaultValue={wallet?.description ?? ''}
+            />
 
             {(!wallet || wallet?.transactionsCount === 0) && (
-              <CurrencyField label={t('Initial Amount')} name="balance" error={errors.balance} defaultValue={wallet?.balanceFloat ?? ''} />
+              <CurrencyField
+                label={tCommon(($) => $.components.forms.walletForm.initialAmount)}
+                name="balance"
+                error={errors.balance}
+                defaultValue={wallet?.balanceFloat ?? ''}
+              />
             )}
 
-            <InputField required label={t('Bank Name')} name="bank_name" error={errors.bank_name} defaultValue={wallet?.bankName ?? ''} />
+            <InputField
+              required
+              label={tCommon(($) => $.components.forms.walletForm.bankName)}
+              name="bank_name"
+              error={errors.bank_name}
+              defaultValue={wallet?.bankName ?? ''}
+            />
 
             <FieldsGrid cols={2}>
               <InputField
                 required
-                label={t('Routing Number')}
+                label={tCommon(($) => $.components.forms.walletForm.routingNumber)}
                 name="bank_routing_number"
                 error={errors.bank_routing_number}
                 defaultValue={wallet?.bankRoutingNumber ?? ''}
               />
               <InputField
                 required
-                label={t('Account Number')}
+                label={tCommon(($) => $.components.forms.walletForm.accountNumber)}
                 name="bank_account_number"
                 error={errors.bank_account_number}
                 defaultValue={wallet?.bankAccountNumber ?? ''}
               />
             </FieldsGrid>
 
-            <ResponsiveModalFooterSubmit isSubmitting={processing} label={t('Save')} />
+            <ResponsiveModalFooterSubmit isSubmitting={processing} label={tCommon(($) => $.components.forms.walletForm.save)} />
           </FieldGroup>
         )}
       </Form>

@@ -1,23 +1,23 @@
 import OfferingController from '@/actions/App/Http/Controllers/OfferingController';
-import { DatatableActionsDropdown } from '@/components/custom-ui/datatable/data-table-actions-dropdown';
+import { DatatableActionsDropdown } from '@/components/custom-ui/datatable/datatable-actions-dropdown';
 import { DatatableCell } from '@/components/custom-ui/datatable/DatatableCell';
-import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTableColumnHeader';
+import { DatatableHeader } from '@/components/datatable/datatable-header';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
-import { useTranslations } from '@/hooks/use-translations';
 import { offeringTypeIsMissionary } from '@/lib/utils';
-import useConfirmationStore from '@/stores/confirmationStore';
+import useConfirmationStore from '@/stores/confirmation-store';
 import type { Offering } from '@/types/models/offering';
 import { Link, router } from '@inertiajs/react';
 import { type ColumnDef } from '@tanstack/react-table';
 import { Edit2Icon, Trash2Icon } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export const columns: ColumnDef<Offering>[] = [
   {
     enableHiding: false,
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Donor" />,
+    header: ({ column }) => <DatatableHeader column={column} title="Donor" />,
     accessorKey: 'donor',
     cell: ({ row }) => {
       const { donor } = row.original;
@@ -36,7 +36,7 @@ export const columns: ColumnDef<Offering>[] = [
   },
   {
     enableHiding: false,
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Offering type" />,
+    header: ({ column }) => <DatatableHeader column={column} title="Offering type" />,
     accessorKey: 'offeringType',
     sortingFn: (rowA, rowB) => {
       const offeringTypeA = rowA.original.offeringType;
@@ -58,7 +58,7 @@ export const columns: ColumnDef<Offering>[] = [
   },
   {
     enableHiding: false,
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Wallet" />,
+    header: ({ column }) => <DatatableHeader column={column} title="Wallet" />,
     accessorKey: 'transaction',
     cell: ({ row }) => (
       <DatatableCell justify="center">
@@ -68,13 +68,13 @@ export const columns: ColumnDef<Offering>[] = [
   },
   {
     enableHiding: false,
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Payment method" />,
+    header: ({ column }) => <DatatableHeader column={column} title="Payment method" />,
     accessorKey: 'paymentMethod',
     cell: function CellComponent({ row }) {
-      const { t } = useTranslations();
+      const { t: tEnum } = useTranslation('enum');
       return (
         <DatatableCell justify="center">
-          <Badge>{t(`enum.payment_method.${row.original.paymentMethod}`)}</Badge>
+          <Badge>{tEnum(($) => $.paymentMethod[row.original.paymentMethod])}</Badge>
         </DatatableCell>
       );
     },
@@ -82,12 +82,12 @@ export const columns: ColumnDef<Offering>[] = [
   {
     enableHiding: false,
     accessorKey: 'amountFloat',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Amount" />,
+    header: ({ column }) => <DatatableHeader column={column} title="Amount" />,
     cell: ({ row }) => <DatatableCell justify="end">${row.original.transaction.amountFloat}</DatatableCell>,
   },
   {
     accessorKey: 'date',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Date" />,
+    header: ({ column }) => <DatatableHeader column={column} title="Date" />,
     cell: ({ row }) => <DatatableCell justify="center">{row.original.date}</DatatableCell>,
   },
   {
@@ -96,7 +96,7 @@ export const columns: ColumnDef<Offering>[] = [
     enableSorting: false,
     size: 0,
     cell: function CellComponent({ row }) {
-      const { t } = useTranslations();
+      const { t: tPages } = useTranslation('pages');
       const { openConfirmation } = useConfirmationStore();
 
       return (
@@ -104,18 +104,20 @@ export const columns: ColumnDef<Offering>[] = [
           <DropdownMenuItem asChild>
             <Link href={OfferingController.edit({ offering: row.original.id })}>
               <Edit2Icon className="size-3" />
-              <span>{t('Edit')}</span>
+              <span>{tPages(($) => $.offerings.includes.columns.edit)}</span>
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem
             variant="destructive"
             onClick={() => {
               openConfirmation({
-                title: t('Are you sure you want to delete this :model?', { model: t('Offering') }),
-                description: t('You can restore it any time.'),
-                actionLabel: t('Delete'),
+                title: tPages(($) => $.offerings.includes.columns.areYouSureYouWantToDeleteThisModel, {
+                  model: tPages(($) => $.offerings.includes.columns.offering),
+                }),
+                description: tPages(($) => $.offerings.includes.columns.youCanRestoreItAnyTime),
+                actionLabel: tPages(($) => $.offerings.includes.columns.delete),
                 actionVariant: 'destructive',
-                cancelLabel: t('Cancel'),
+                cancelLabel: tPages(($) => $.offerings.includes.columns.cancel),
                 onAction: () => {
                   router.visit(OfferingController.destroy(row.original.id));
                 },
@@ -123,7 +125,7 @@ export const columns: ColumnDef<Offering>[] = [
             }}
           >
             <Trash2Icon className="size-3" />
-            <span>{t('Delete')}</span>
+            <span>{tPages(($) => $.offerings.includes.columns.delete)}</span>
           </DropdownMenuItem>
         </DatatableActionsDropdown>
       );

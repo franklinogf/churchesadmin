@@ -1,10 +1,10 @@
-import { DataTable } from '@/components/custom-ui/datatable/data-table';
+import Datatable, { type StringOrNumberKeyOf } from '@/components/datatable/datatable';
 import { usePdfGenerator } from '@/contexts/pdf-generator-context';
 import type { ColumnDef } from '@tanstack/react-table';
 
-export function PdfRowsTable<TData>({ data, columns, rowId }: { data: TData[]; columns: ColumnDef<TData>[]; rowId?: keyof TData }) {
+export function PdfRowsTable<TData>({ data, columns, rowId }: { data: TData[]; columns: ColumnDef<TData>[]; rowId?: StringOrNumberKeyOf<TData> }) {
   const { setRows } = usePdfGenerator();
-  rowId = rowId || ('id' as keyof TData); // Default to 'id' if not provided
+  const resolvedRowId = rowId || ('id' as StringOrNumberKeyOf<TData>);
 
-  return <DataTable onSelectedRowsChange={setRows} columns={columns} rowId={rowId} data={data} />;
+  return <Datatable onSelectedRowsChange={setRows} columns={columns} rowId={resolvedRowId} data={data} />;
 }

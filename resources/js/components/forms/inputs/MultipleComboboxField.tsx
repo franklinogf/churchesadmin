@@ -1,10 +1,10 @@
 import { FieldContainer } from '@/components/forms/inputs/FieldContainer';
 import { FieldError } from '@/components/forms/inputs/FieldError';
 import { FieldLabel } from '@/components/forms/inputs/FieldLabel';
-import { useTranslations } from '@/hooks/use-translations';
 import { type SelectOptionWithModel } from '@/types';
 import { Check, ChevronsUpDown } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Button } from '@/components/ui/button';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
@@ -35,9 +35,8 @@ export function MultipleComboboxField({
   required,
 }: MultipleComboboxFieldProps) {
   const [open, setOpen] = useState(false);
-
-  const { t } = useTranslations();
-  placeholder = placeholder ?? t('Select an option');
+  const { t: tCommon } = useTranslation('common');
+  placeholder = placeholder ?? tCommon(($) => $.components.forms.inputs.MultipleComboboxField.selectAnOption);
   return (
     <FieldContainer className={className}>
       <FieldLabel disabled={disabled} label={label} required={required} />
@@ -71,7 +70,7 @@ export function MultipleComboboxField({
           >
             <CommandInput placeholder={placeholder} />
             <CommandList>
-              <CommandEmpty>{t('No options found')}</CommandEmpty>
+              <CommandEmpty>{tCommon(($) => $.components.forms.inputs.MultipleComboboxField.noOptionsFound)}</CommandEmpty>
 
               {data.map((option) => (
                 <CommandGroup key={option.heading} heading={option.heading}>

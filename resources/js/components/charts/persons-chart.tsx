@@ -1,7 +1,7 @@
 import { ChartCard } from '@/components/charts/chart-card';
 import { ChartLegend, ChartLegendContent, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
-import { useTranslations } from '@/hooks/use-translations';
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts';
 
 export type PersonChart = {
@@ -12,28 +12,33 @@ export type PersonChart = {
 };
 
 export function PersonsChart({ data }: { data: PersonChart[] }) {
-  const { t } = useTranslations();
+  const { t: tCommon } = useTranslation('common');
   const chartConfig = useMemo(
     () => ({
       members: {
-        label: t('Members'),
+        label: tCommon(($) => $.components.charts.personsChart.members),
         color: 'var(--chart-1)',
       },
       missionaries: {
-        label: t('Missionaries'),
+        label: tCommon(($) => $.components.charts.personsChart.missionaries),
         color: 'var(--chart-2)',
       },
       visitors: {
-        label: t('Visitors'),
+        label: tCommon(($) => $.components.charts.personsChart.visitors),
         color: 'var(--chart-3)',
       },
     }),
-    [t],
+    [tCommon],
   );
   const total = useMemo(() => data.reduce((acc, item) => acc + item.members + item.missionaries + item.visitors, 0), [data]);
 
   return (
-    <ChartCard title={t('Persons by month')} chartConfig={chartConfig} description={`${t(':count persons', { count: total })}`} noData={total === 0}>
+    <ChartCard
+      title={tCommon(($) => $.components.charts.personsChart.personsByMonth)}
+      chartConfig={chartConfig}
+      description={`${tCommon(($) => $.components.charts.personsChart.countPersons, { count: total })}`}
+      noData={total === 0}
+    >
       <BarChart accessibilityLayer data={data}>
         <CartesianGrid vertical={false} />
         <YAxis domain={[0, (dataMax: number) => Math.ceil(dataMax * 1.1)]} type="number" hide />

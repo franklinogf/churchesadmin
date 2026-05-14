@@ -9,7 +9,6 @@ import { PageTitle } from '@/components/PageTitle';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { useCurrency } from '@/hooks/use-currency';
-import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem, type SelectOption } from '@/types';
 import type { ExpenseType } from '@/types/models/expense-type';
@@ -18,6 +17,7 @@ import { useForm } from '@inertiajs/react';
 import { formatDate } from 'date-fns';
 import { TrashIcon } from 'lucide-react';
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface CreatePageProps {
   wallets: Wallet[];
@@ -39,7 +39,7 @@ interface CreateForm {
 }
 
 export default function Create({ wallets, memberOptions, expenseTypes, expenseTypesOptions, walletOptions }: CreatePageProps) {
-  const { t } = useTranslations();
+  const { t: tPages } = useTranslation('pages');
   const { formatCurrency } = useCurrency();
 
   const initialExpense: CreateForm['expenses'][number] = {
@@ -116,17 +116,17 @@ export default function Create({ wallets, memberOptions, expenseTypes, expenseTy
 
   const breadcrumbs: BreadcrumbItem[] = [
     {
-      title: t('Expenses'),
+      title: tPages(($) => $.expenses.create.expenses),
       href: ExpenseController.index().url,
     },
     {
-      title: t('New :model', { model: t('Expense') }),
+      title: tPages(($) => $.expenses.create.newModel, { model: tPages(($) => $.expenses.create.expense) }),
     },
   ];
 
   return (
-    <AppLayout title={t('Expenses')} breadcrumbs={breadcrumbs}>
-      <PageTitle>{t('New :model', { model: t('Expense') })}</PageTitle>
+    <AppLayout title={tPages(($) => $.expenses.create.expenses)} breadcrumbs={breadcrumbs}>
+      <PageTitle>{tPages(($) => $.expenses.create.newModel, { model: tPages(($) => $.expenses.create.expense) })}</PageTitle>
       <div className="mt-2 flex items-center justify-center">
         <Form isSubmitting={processing} className="w-full max-w-2xl" onSubmit={handleSubmit}>
           <div className="space-y-4 py-2">
@@ -145,7 +145,7 @@ export default function Create({ wallets, memberOptions, expenseTypes, expenseTy
                   <FieldsGrid className="grow">
                     <DateField
                       required
-                      label={t('Date of Expense')}
+                      label={tPages(($) => $.expenses.create.dateOfExpense)}
                       value={expense.date}
                       onChange={(value) => value && handleUpdateExpense(index, 'date', value)}
                       error={errors[`expenses.${index}.date` as keyof typeof data]}
@@ -153,7 +153,7 @@ export default function Create({ wallets, memberOptions, expenseTypes, expenseTy
                     <div className="flex flex-col">
                       <SelectField
                         required
-                        label={t('Wallet')}
+                        label={tPages(($) => $.expenses.create.wallet)}
                         value={expense.wallet_id}
                         onValueChange={(value) => {
                           handleUpdateExpense(index, 'wallet_id', value);
@@ -163,14 +163,15 @@ export default function Create({ wallets, memberOptions, expenseTypes, expenseTy
                       />
                       {wallet && (
                         <p className="text-muted-foreground flex justify-end text-xs">
-                          {t('Current balance')}: <span className="font-semibold">{formatCurrency(wallet.balanceFloat)}</span>
+                          {tPages(($) => $.expenses.create.currentBalance)}:{' '}
+                          <span className="font-semibold">{formatCurrency(wallet.balanceFloat)}</span>
                         </p>
                       )}
                     </div>
                   </FieldsGrid>
                   <FieldsGrid cols={3} className="grow">
                     <SelectField
-                      label={t('Member')}
+                      label={tPages(($) => $.expenses.create.member)}
                       value={expense.member_id}
                       onValueChange={(value) => {
                         handleUpdateExpense(index, 'member_id', value);
@@ -180,7 +181,7 @@ export default function Create({ wallets, memberOptions, expenseTypes, expenseTy
                     />
                     <SelectField
                       required
-                      label={t('Expense type')}
+                      label={tPages(($) => $.expenses.create.expenseType)}
                       value={expense.expense_type_id}
                       onValueChange={(value) => {
                         handleUpdateExpense(index, 'expense_type_id', value);
@@ -191,7 +192,7 @@ export default function Create({ wallets, memberOptions, expenseTypes, expenseTy
 
                     <CurrencyField
                       required
-                      label={t('Amount')}
+                      label={tPages(($) => $.expenses.create.amount)}
                       value={expense.amount}
                       onValueChange={(value) => {
                         handleUpdateExpense(index, 'amount', value);
@@ -200,7 +201,7 @@ export default function Create({ wallets, memberOptions, expenseTypes, expenseTy
                     />
                   </FieldsGrid>
                   <InputField
-                    label={t('Note')}
+                    label={tPages(($) => $.expenses.create.note)}
                     value={expense.note}
                     onChange={(value) => {
                       handleUpdateExpense(index, 'note', value);
@@ -213,17 +214,17 @@ export default function Create({ wallets, memberOptions, expenseTypes, expenseTy
           </div>
 
           <Button size="sm" variant="secondary" type="button" onClick={handleAddExpense}>
-            {t('Add :model', { model: 'Expense' })}
+            {tPages(($) => $.expenses.create.addModel, { model: 'Expense' })}
           </Button>
           <section className="mt-4">
             {Object.keys(walletExpenses).length > 0 && (
               <Table className="mx-auto max-w-lg">
-                <TableCaption>{t('Summary')}</TableCaption>
+                <TableCaption>{tPages(($) => $.expenses.create.summary)}</TableCaption>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>{t('Wallet')}</TableHead>
-                    <TableHead className="w-25 text-right">{t('Available funds')}</TableHead>
-                    <TableHead className="text-right">{t('Expenses')}</TableHead>
+                    <TableHead>{tPages(($) => $.expenses.create.wallet)}</TableHead>
+                    <TableHead className="w-25 text-right">{tPages(($) => $.expenses.create.availableFunds)}</TableHead>
+                    <TableHead className="text-right">{tPages(($) => $.expenses.create.expenses)}</TableHead>
                   </TableRow>
                 </TableHeader>
 
@@ -239,7 +240,7 @@ export default function Create({ wallets, memberOptions, expenseTypes, expenseTy
 
                 <TableFooter>
                   <TableRow>
-                    <TableCell colSpan={2}>{t('Expenses total')}</TableCell>
+                    <TableCell colSpan={2}>{tPages(($) => $.expenses.create.expensesTotal)}</TableCell>
                     <TableCell className="text-right">{formatCurrency(totalExpenses)}</TableCell>
                   </TableRow>
                 </TableFooter>

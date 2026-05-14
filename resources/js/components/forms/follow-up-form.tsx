@@ -3,10 +3,10 @@ import { DateField } from '@/components/forms/inputs/DateField';
 import { SelectField } from '@/components/forms/inputs/SelectField';
 import { TextareaField } from '@/components/forms/inputs/TextareaField';
 import { ResponsiveModal, ResponsiveModalFooterSubmit } from '@/components/responsive-modal';
-import { useTranslations } from '@/hooks/use-translations';
 import type { SelectOption } from '@/types';
 import type { Visit, VisitFollowUp } from '@/types/models/visit';
 import { Form } from '@inertiajs/react';
+import { useTranslation } from 'react-i18next';
 import { FieldGroup } from '../ui/field';
 
 type FollowUpForm = {
@@ -26,13 +26,23 @@ interface FollowUpFormProps {
 }
 
 export function FollowUpForm({ membersOptions, followUpTypeOptions, visit, followUp, open, setOpen }: FollowUpFormProps) {
-  const { t } = useTranslations();
+  const { t: tCommon } = useTranslation('common');
   return (
     <ResponsiveModal
       open={open}
       setOpen={setOpen}
-      title={followUp ? t('Edit :model', { model: t('Follow Up') }) : t('Add :model', { model: t('Follow Up') })}
-      description={followUp ? t('Edit the details of this :model', { model: t('Follow Up') }) : t('Create a new :model', { model: t('Follow Up') })}
+      title={
+        followUp
+          ? tCommon(($) => $.components.forms.followUpForm.editModel, { model: tCommon(($) => $.components.forms.followUpForm.followUp) })
+          : tCommon(($) => $.components.forms.followUpForm.addModel, { model: tCommon(($) => $.components.forms.followUpForm.followUp) })
+      }
+      description={
+        followUp
+          ? tCommon(($) => $.components.forms.followUpForm.editTheDetailsOfThisModel, {
+              model: tCommon(($) => $.components.forms.followUpForm.followUp),
+            })
+          : tCommon(($) => $.components.forms.followUpForm.createANewModel, { model: tCommon(($) => $.components.forms.followUpForm.followUp) })
+      }
     >
       <Form
         disableWhileProcessing
@@ -45,7 +55,7 @@ export function FollowUpForm({ membersOptions, followUpTypeOptions, visit, follo
           <FieldGroup>
             <SelectField
               required
-              label={t('Member')}
+              label={tCommon(($) => $.components.forms.followUpForm.member)}
               name="member_id"
               defaultValue={followUp?.memberId.toString()}
               error={errors.member_id}
@@ -53,16 +63,16 @@ export function FollowUpForm({ membersOptions, followUpTypeOptions, visit, follo
             />
             <SelectField
               required
-              label={t('Follow up type')}
+              label={tCommon(($) => $.components.forms.followUpForm.followUpType)}
               name="type"
               defaultValue={followUp?.type}
               error={errors.type}
               options={followUpTypeOptions}
             />
-            <DateField maxDate="today" required label={t('Follow up date')} name={'follow_up_at'} />
+            <DateField maxDate="today" required label={tCommon(($) => $.components.forms.followUpForm.followUpDate)} name={'follow_up_at'} />
 
-            <TextareaField label={t('Notes')} name="notes" error={errors.notes} />
-            <ResponsiveModalFooterSubmit isSubmitting={processing} label={t('Save')} />
+            <TextareaField label={tCommon(($) => $.components.forms.followUpForm.notes)} name="notes" error={errors.notes} />
+            <ResponsiveModalFooterSubmit isSubmitting={processing} label={tCommon(($) => $.components.forms.followUpForm.save)} />
           </FieldGroup>
         )}
       </Form>

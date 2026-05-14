@@ -9,12 +9,12 @@ import { MultipleComboboxField } from '@/components/forms/inputs/MultipleCombobo
 import { SelectField } from '@/components/forms/inputs/SelectField';
 import { PageTitle } from '@/components/PageTitle';
 import { useLocaleDate } from '@/hooks/use-locale-date';
-import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem, type SelectOption, type SelectOptionWithModel } from '@/types';
 import type { Offering } from '@/types/models/offering';
 import { useForm } from '@inertiajs/react';
 import { formatDate, parseISO } from 'date-fns';
+import { useTranslation } from 'react-i18next';
 
 interface EditPageProps {
   walletsOptions: SelectOption[];
@@ -39,7 +39,7 @@ interface CreateForm {
 }
 
 export default function Edit({ walletsOptions, paymentMethods, membersOptions, missionariesOptions, offeringTypesOptions, offering }: EditPageProps) {
-  const { t } = useTranslations();
+  const { t: tPages } = useTranslation('pages');
   const { formatLocaleDate } = useLocaleDate();
 
   const { data, setData, submit, errors, processing } = useForm<Required<CreateForm>>({
@@ -61,7 +61,7 @@ export default function Edit({ walletsOptions, paymentMethods, membersOptions, m
 
   const breadcrumbs: BreadcrumbItem[] = [
     {
-      title: t('Offerings'),
+      title: tPages(($) => $.offerings.edit.offerings),
       href: OfferingController.index().url,
     },
     {
@@ -69,18 +69,18 @@ export default function Edit({ walletsOptions, paymentMethods, membersOptions, m
       href: OfferingController.index({ query: { date: offering.date } }).url,
     },
     {
-      title: t('Edit :model', { model: t('Offering') }),
+      title: tPages(($) => $.offerings.edit.editModel, { model: tPages(($) => $.offerings.edit.offering) }),
     },
   ];
 
   return (
-    <AppLayout title={t('Offerings')} breadcrumbs={breadcrumbs}>
-      <PageTitle>{t('Edit :model', { model: t('Offering') })}</PageTitle>
+    <AppLayout title={tPages(($) => $.offerings.edit.offerings)} breadcrumbs={breadcrumbs}>
+      <PageTitle>{tPages(($) => $.offerings.edit.editModel, { model: tPages(($) => $.offerings.edit.offering) })}</PageTitle>
       <div className="mt-2 flex items-center justify-center">
         <Form isSubmitting={processing} className="w-full max-w-2xl" onSubmit={handleSubmit}>
           <ComboboxField
             placeholder=""
-            label={t('Who is this offering from?')}
+            label={tPages(($) => $.offerings.edit.whoIsThisOfferingFrom)}
             value={data.donor_id}
             onChange={(value) => setData('donor_id', value)}
             error={errors.donor_id}
@@ -89,7 +89,7 @@ export default function Edit({ walletsOptions, paymentMethods, membersOptions, m
           <FieldsGrid>
             <DateField
               required
-              label={t('Date of Offering')}
+              label={tPages(($) => $.offerings.edit.dateOfOffering)}
               value={data.date}
               onChange={(value) => value && setData('date', value)}
               error={errors.date}
@@ -100,7 +100,7 @@ export default function Edit({ walletsOptions, paymentMethods, membersOptions, m
             <FieldsGrid className="grow">
               <SelectField
                 required
-                label={t('Wallet')}
+                label={tPages(($) => $.offerings.edit.wallet)}
                 value={data.wallet_id}
                 onValueChange={(value) => {
                   setData('wallet_id', value);
@@ -110,7 +110,7 @@ export default function Edit({ walletsOptions, paymentMethods, membersOptions, m
               />
               <SelectField
                 required
-                label={t('Payment method')}
+                label={tPages(($) => $.offerings.edit.paymentMethod)}
                 value={data.payment_method}
                 onValueChange={(value) => {
                   setData('payment_method', value);
@@ -122,7 +122,7 @@ export default function Edit({ walletsOptions, paymentMethods, membersOptions, m
             <FieldsGrid className="grow">
               <MultipleComboboxField
                 required
-                label={t('Offering type')}
+                label={tPages(($) => $.offerings.edit.offeringType)}
                 value={data.offering_type}
                 onChange={(value) => {
                   setData('offering_type', value);
@@ -133,14 +133,14 @@ export default function Edit({ walletsOptions, paymentMethods, membersOptions, m
 
               <CurrencyField
                 required
-                label={t('Amount')}
+                label={tPages(($) => $.offerings.edit.amount)}
                 value={data.amount}
                 onValueChange={(value) => value !== undefined && setData('amount', value)}
                 error={errors.amount}
               />
             </FieldsGrid>
             <InputField
-              label={t('Note')}
+              label={tPages(($) => $.offerings.edit.note)}
               value={data.note}
               onChange={(value) => {
                 setData('note', value);

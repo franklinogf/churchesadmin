@@ -1,4 +1,3 @@
-import { DataTable } from '@/components/custom-ui/datatable/data-table';
 import { FieldError } from '@/components/forms/inputs/FieldError';
 import { FieldsGrid } from '@/components/forms/inputs/FieldsGrid';
 import { InputField } from '@/components/forms/inputs/InputField';
@@ -11,13 +10,14 @@ import CheckController from '@/actions/App/Http/Controllers/CheckController';
 import ConfirmMultipleCheckController from '@/actions/App/Http/Controllers/ConfirmMultipleCheckController';
 import GenerateCheckNumberController from '@/actions/App/Http/Controllers/GenerateCheckNumberController';
 import ChecksPdfController from '@/actions/App/Http/Controllers/Pdf/ChecksPdfController';
+import Datatable from '@/components/datatable/datatable';
 import { DatatableFallback } from '@/components/fallbacks/data-table-fallback';
-import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import type { SharedData } from '@/types';
 import type { Check } from '@/types/models/check';
 import { Deferred, Link, useForm } from '@inertiajs/react';
 import { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { confirmedColumns } from './includes/confirmedColumns';
 import { unconfirmedColumns } from './includes/unconfirmedColumns';
 
@@ -39,7 +39,7 @@ enum UnconfirmedFormAction {
 }
 
 export default function Index({ unconfirmedChecks, confirmedChecks, flash, nextCheckNumber }: IndexPageProps) {
-  const { t } = useTranslations();
+  const { t: tPages } = useTranslation('pages');
   const [confirmedSelectedRows, setConfirmedSelectedRows] = useState<string[]>([]);
   const [unconfirmedAction, setUnconfirmedAction] = useState<UnconfirmedFormAction | null>(null);
 
@@ -84,13 +84,16 @@ export default function Index({ unconfirmedChecks, confirmedChecks, flash, nextC
   const unconfirmedSelected = data.checks.length > 0;
 
   return (
-    <AppLayout title={t('Checks')} breadcrumbs={[{ title: t('Checks'), href: CheckController.index().url }]}>
-      <PageTitle>{t('Checks')}</PageTitle>
+    <AppLayout
+      title={tPages(($) => $.checks.index.checks)}
+      breadcrumbs={[{ title: tPages(($) => $.checks.index.checks), href: CheckController.index().url }]}
+    >
+      <PageTitle>{tPages(($) => $.checks.index.checks)}</PageTitle>
       <section className="mx-auto mt-4 w-full max-w-5xl space-y-16">
         <div>
           <header className="mt-8 flex items-center justify-between space-y-2">
             <Button size="sm">
-              <Link href={CheckController.create()}>{t('New :model', { model: t('Check') })}</Link>
+              <Link href={CheckController.create()}>{tPages(($) => $.checks.index.newModel, { model: tPages(($) => $.checks.index.check) })}</Link>
             </Button>
 
             <div className="space-y-2">
@@ -102,7 +105,7 @@ export default function Index({ unconfirmedChecks, confirmedChecks, flash, nextC
                     required
                     disabled={!unconfirmedSelected || processing}
                     errorOnTop
-                    placeholder={t('Initial check number')}
+                    placeholder={tPages(($) => $.checks.index.initialCheckNumber)}
                     value={data.initial_check_number}
                     onChange={(value) => setData('initial_check_number', value)}
                   />
@@ -111,7 +114,7 @@ export default function Index({ unconfirmedChecks, confirmedChecks, flash, nextC
                     isSubmitting={processing && unconfirmedAction === UnconfirmedFormAction.GENERATE}
                     size="sm"
                   >
-                    {t('Generate check numbers')}
+                    {tPages(($) => $.checks.index.generateCheckNumbers)}
                   </SubmitButton>
                 </FieldsGrid>
               </form>
@@ -123,7 +126,7 @@ export default function Index({ unconfirmedChecks, confirmedChecks, flash, nextC
                   variant="secondary"
                   size="sm"
                 >
-                  {t('Confirm checks and print')}
+                  {tPages(($) => $.checks.index.confirmChecksAndPrint)}
                 </SubmitButton>
                 <SubmitButton
                   disabled={!unconfirmedSelected || processing}
@@ -132,20 +135,20 @@ export default function Index({ unconfirmedChecks, confirmedChecks, flash, nextC
                   size="sm"
                   onClick={confirmChecks}
                 >
-                  {t('Confirm checks')}
+                  {tPages(($) => $.checks.index.confirmChecks)}
                 </SubmitButton>
               </div>
             </div>
           </header>
           <div className="flex flex-col items-start justify-between gap-y-2">
-            <h2 className="text-left text-lg font-semibold">{t('Unconfirmed Checks')}</h2>
+            <h2 className="text-left text-lg font-semibold">{tPages(($) => $.checks.index.unconfirmedChecks)}</h2>
             {flash.message && (
               <Alert className="w-full max-w-fit">
                 <AlertDescription>{flash.message}</AlertDescription>
               </Alert>
             )}
           </div>
-          <DataTable
+          <Datatable
             rowId="id"
             onSelectedRowsChange={handleUnconfirmedSelection}
             sortingState={[{ id: 'date', desc: true }]}
@@ -156,17 +159,17 @@ export default function Index({ unconfirmedChecks, confirmedChecks, flash, nextC
         </div>
         <div>
           <header className="mt-8 flex items-center justify-between space-y-2">
-            <h2 className="text-left text-lg font-semibold">{t('Confirmed Checks')}</h2>
+            <h2 className="text-left text-lg font-semibold">{tPages(($) => $.checks.index.confirmedChecks)}</h2>
             <div className="space-y-2">
               <div className="flex items-center justify-end gap-2">
                 <Button size="sm" variant="secondary" disabled={confirmedSelectedRows.length === 0} onClick={handlePrintConfirmedChecks}>
-                  {t('Print checks')}
+                  {tPages(($) => $.checks.index.printChecks)}
                 </Button>
               </div>
             </div>
           </header>
           <Deferred data="confirmedChecks" fallback={<DatatableFallback cols={6} />}>
-            <DataTable
+            <Datatable
               rowId="id"
               onSelectedRowsChange={handleConfirmedSelection}
               sortingState={[{ id: 'date', desc: true }]}

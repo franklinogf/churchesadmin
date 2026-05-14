@@ -5,43 +5,43 @@ import Heading from '@/components/heading';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { TenantPermission } from '@/enums/TenantPermission';
-import { useTranslations } from '@/hooks/use-translations';
 import { useUser } from '@/hooks/use-user';
 import { cn } from '@/lib/utils';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
 import { useMemo, type PropsWithChildren } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function SettingsLayout({ children }: PropsWithChildren) {
-  const { t } = useTranslations();
+  const { t: tCommon } = useTranslation('common');
   const { can: userCan } = useUser();
 
   const sidebarNavItems: NavItem[] = useMemo<NavItem[]>(
     () => [
       {
-        title: t('General'),
+        title: tCommon(($) => $.layouts.settings.churchLayout.general),
         href: TenantGeneralController.edit(),
       },
       {
-        title: t('Language'),
+        title: tCommon(($) => $.layouts.settings.churchLayout.language),
         href: TenantLanguageController.edit(),
         permissionNeeded: TenantPermission.SETTINGS_CHANGE_LANGUAGE,
       },
       {
-        title: t('Year End Closing'),
+        title: tCommon(($) => $.layouts.settings.churchLayout.yearEndClosing),
         href: TenantYearEndController.edit(),
         permissionNeeded: TenantPermission.SETTINGS_CLOSE_YEAR,
       },
       //   {
-      //     title: t('Contact Information'),
+      //     title: tCommon(($) => $.layouts.settings.churchLayout.contactInformation),
       //     href: route('church.contact.edit'),
       //   },
       //   {
-      //     title: t('Social Media'),
+      //     title: tCommon(($) => $.layouts.settings.churchLayout.socialMedia),
       //     href: route('church.social.edit'),
       //   },
     ],
-    [t],
+    [tCommon],
   );
 
   // When server-side rendering, we only render the layout on the client...
@@ -52,7 +52,10 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
 
   return (
     <div className="px-4 py-6">
-      <Heading title={t('Church Settings')} description={t('Manage church information')} />
+      <Heading
+        title={tCommon(($) => $.layouts.settings.churchLayout.churchSettings)}
+        description={tCommon(($) => $.layouts.settings.churchLayout.manageChurchInformation)}
+      />
 
       <div className="flex flex-col space-y-8 lg:flex-row lg:space-y-0 lg:space-x-12">
         <aside className="w-full max-w-xl lg:w-48">

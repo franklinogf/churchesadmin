@@ -1,10 +1,10 @@
 import { FieldContainer } from '@/components/forms/inputs/FieldContainer';
 import { FieldError } from '@/components/forms/inputs/FieldError';
 import { FieldLabel } from '@/components/forms/inputs/FieldLabel';
-import { useTranslations } from '@/hooks/use-translations';
 import { type SelectOption } from '@/types';
 import { Check, ChevronsUpDown } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { Button } from '@/components/ui/button';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command';
@@ -25,8 +25,8 @@ interface ComboboxFieldProps {
 
 export function ComboboxField({ error, label, disabled, className, placeholder, options, value, onChange, required }: ComboboxFieldProps) {
   const [open, setOpen] = useState(false);
-  const { t } = useTranslations();
-  placeholder = placeholder ?? t('Select an option');
+  const { t: tCommon } = useTranslation('common');
+  placeholder = placeholder ?? tCommon(($) => $.components.forms.inputs.ComboboxField.selectAnOption);
   return (
     <FieldContainer className={className}>
       <FieldLabel disabled={disabled} label={label} required={required} />
@@ -55,7 +55,7 @@ export function ComboboxField({ error, label, disabled, className, placeholder, 
           >
             <CommandInput placeholder={placeholder} />
             <CommandList>
-              <CommandEmpty>{t('No options found')}</CommandEmpty>
+              <CommandEmpty>{tCommon(($) => $.components.forms.inputs.ComboboxField.noOptionsFound)}</CommandEmpty>
               <CommandGroup>
                 {options.map((option) => (
                   <CommandItem

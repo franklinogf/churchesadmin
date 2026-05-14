@@ -1,7 +1,7 @@
 import { ChartCard } from '@/components/charts/chart-card';
 import { ChartTooltip, ChartTooltipContent, type ChartConfig } from '@/components/ui/chart';
-import { useTranslations } from '@/hooks/use-translations';
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Bar, BarChart, CartesianGrid, LabelList, XAxis, YAxis } from 'recharts';
 export type ExpenseChart = {
   month: string;
@@ -15,14 +15,13 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export default function ExpensesChart({ data }: { data: ExpenseChart[] }) {
-  const { t } = useTranslations();
-
+  const { t: tCommon } = useTranslation('common');
   const total = useMemo(() => data.reduce((acc, item) => acc + parseFloat(item.total), 0), [data]);
 
   return (
     <ChartCard
       noData={total === 0}
-      title={t('Expenses by month')}
+      title={tCommon(($) => $.components.charts.expensesChart.expensesByMonth)}
       chartConfig={chartConfig}
       description={`$${total.toLocaleString(undefined, { minimumFractionDigits: 2 })}`}
     >

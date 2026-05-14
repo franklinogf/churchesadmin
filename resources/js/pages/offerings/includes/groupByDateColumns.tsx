@@ -1,24 +1,24 @@
 import OfferingController from '@/actions/App/Http/Controllers/OfferingController';
-import { DatatableActionsDropdown } from '@/components/custom-ui/datatable/data-table-actions-dropdown';
+import { DatatableActionsDropdown } from '@/components/custom-ui/datatable/datatable-actions-dropdown';
 import { DatatableCell } from '@/components/custom-ui/datatable/DatatableCell';
-import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTableColumnHeader';
+import { DatatableHeader } from '@/components/datatable/datatable-header';
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { useCurrency } from '@/hooks/use-currency';
-import { useTranslations } from '@/hooks/use-translations';
 import type { OfferingGroupedByDate } from '@/types/models/offering';
 import { Link } from '@inertiajs/react';
 import { type ColumnDef } from '@tanstack/react-table';
 import { FilesIcon } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export const groupByDateColumns: ColumnDef<OfferingGroupedByDate>[] = [
   {
     enableHiding: false,
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Date" />,
+    header: ({ column }) => <DatatableHeader column={column} title="Date" />,
     accessorKey: 'date',
   },
   {
     enableHiding: false,
-    header: ({ column }) => <DataTableColumnHeader justify="end" column={column} title="Cash" />,
+    header: ({ column }) => <DatatableHeader justify="end" column={column} title="Cash" />,
     accessorKey: 'cash',
     cell: function CellComponent({ row }) {
       const { formatCurrency } = useCurrency();
@@ -27,7 +27,7 @@ export const groupByDateColumns: ColumnDef<OfferingGroupedByDate>[] = [
   },
   {
     enableHiding: false,
-    header: ({ column }) => <DataTableColumnHeader justify="end" column={column} title="Check" />,
+    header: ({ column }) => <DatatableHeader justify="end" column={column} title="Check" />,
     accessorKey: 'check',
     cell: function CellComponent({ row }) {
       const { formatCurrency } = useCurrency();
@@ -36,7 +36,7 @@ export const groupByDateColumns: ColumnDef<OfferingGroupedByDate>[] = [
   },
   {
     enableHiding: false,
-    header: ({ column }) => <DataTableColumnHeader justify="end" column={column} title="Total" />,
+    header: ({ column }) => <DatatableHeader justify="end" column={column} title="Total" />,
     accessorKey: 'total',
     cell: function CellComponent({ row }) {
       const { formatCurrency } = useCurrency();
@@ -49,14 +49,13 @@ export const groupByDateColumns: ColumnDef<OfferingGroupedByDate>[] = [
     enableSorting: false,
     size: 0,
     cell: function CellComponent({ row }) {
-      const { t } = useTranslations();
-
+      const { t: tPages } = useTranslation('pages');
       return (
         <DatatableActionsDropdown>
           <DropdownMenuItem asChild>
             <Link href={OfferingController.index({ query: { date: row.original.date } })}>
               <FilesIcon className="size-3" />
-              <span>{t('Offerings')}</span>
+              <span>{tPages(($) => $.offerings.includes.groupByDateColumns.offerings)}</span>
             </Link>
           </DropdownMenuItem>
         </DatatableActionsDropdown>

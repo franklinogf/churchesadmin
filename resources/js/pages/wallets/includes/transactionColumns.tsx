@@ -1,35 +1,36 @@
 import { DatatableCellBoolean } from '@/components/custom-ui/datatable/datatable-cell-boolean';
 import { DatatableCell } from '@/components/custom-ui/datatable/DatatableCell';
-import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTableColumnHeader';
+import { DatatableHeader } from '@/components/datatable/datatable-header';
 import { Badge } from '@/components/ui/badge';
-import { useTranslations } from '@/hooks/use-translations';
 import type { Transaction } from '@/types/models/transaction';
 import { type ColumnDef } from '@tanstack/react-table';
+import { useTranslation } from 'react-i18next';
 
 export const transactionColumns: ColumnDef<Transaction>[] = [
   {
     enableHiding: false,
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Type" />,
+    header: ({ column }) => <DatatableHeader column={column} title="Type" />,
     accessorKey: 'type',
     cell: function CellColumn({ row }) {
-      const { t } = useTranslations();
+      const { t: tEnum } = useTranslation('enum');
       return (
         <DatatableCell justify="center">
-          <Badge>{t(`enum.transaction_type.${row.original.type}`)}</Badge>
+          <Badge>{tEnum(($) => $.transactionType[row.original.type as keyof typeof $.transactionType])}</Badge>
         </DatatableCell>
       );
     },
   },
   {
     enableHiding: false,
-    header: ({ column }) => <DataTableColumnHeader column={column} title="From" />,
+    header: ({ column }) => <DatatableHeader column={column} title="From" />,
     accessorKey: 'meta',
     cell: function CellColumn({ row }) {
-      const { t } = useTranslations();
-      if (!row.original.meta) return null;
+      const { t: tEnum } = useTranslation('enum');
+      const meta = row.original.meta;
+      if (!meta) return null;
       return (
         <DatatableCell justify="center">
-          <Badge variant="outline">{t(`enum.transaction_meta_type.${row.original.meta.type}`)}</Badge>
+          <Badge variant="outline">{tEnum(($) => $.transactionMetaType[meta.type as keyof typeof $.transactionMetaType])}</Badge>
         </DatatableCell>
       );
     },
@@ -37,17 +38,17 @@ export const transactionColumns: ColumnDef<Transaction>[] = [
   {
     enableHiding: false,
     accessorKey: 'amountFloat',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Amount" />,
+    header: ({ column }) => <DatatableHeader column={column} title="Amount" />,
     cell: ({ row }) => <DatatableCell justify="end">${row.original.amountFloat}</DatatableCell>,
   },
   {
     accessorKey: 'confirmed',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Confirmed" />,
+    header: ({ column }) => <DatatableHeader column={column} title="Confirmed" />,
     cell: ({ row }) => <DatatableCellBoolean trueCondition={row.original.confirmed} />,
   },
   {
     accessorKey: 'createdAt',
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Date" />,
+    header: ({ column }) => <DatatableHeader column={column} title="Date" />,
     cell: ({ row }) => <DatatableCell justify="center">{row.original.createdAt}</DatatableCell>,
   },
 ];

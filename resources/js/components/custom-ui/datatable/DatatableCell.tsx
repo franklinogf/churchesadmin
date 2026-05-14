@@ -1,42 +1,44 @@
-import { Badge } from '@/components/ui/badge';
-import { cva, type VariantProps } from 'class-variance-authority';
+import {
+  DatatableCell as BaseDatatableCell,
+  DatatableCellBoolean as BaseDatatableCellBoolean,
+  DatatableCellBadge,
+} from '@/components/datatable/datatable-cell';
 
-export const cellVariants = cva('flex items-center', {
-  variants: {
-    justify: {
-      start: 'justify-start',
-      end: 'justify-end',
-      center: 'justify-center',
-    },
-  },
-  defaultVariants: {
-    justify: 'start',
-  },
-});
+type Alignment = 'start' | 'center' | 'end';
 
-interface DatatableCellCenterProps extends VariantProps<typeof cellVariants> {
+type DatatableCellProps = {
   children: React.ReactNode;
   className?: string;
-}
+  justify?: Alignment;
+  align?: Alignment;
+};
 
-export function DatatableCell({ children, justify = 'start', className }: DatatableCellCenterProps) {
-  return <div className={cellVariants({ justify, className })}>{children}</div>;
+export function DatatableCell({ children, className, justify, align }: DatatableCellProps) {
+  return (
+    <BaseDatatableCell align={align ?? justify} className={className}>
+      {children}
+    </BaseDatatableCell>
+  );
 }
 
 export function DatatableBadgeCell({
   children,
-  variant = 'secondary',
   className,
+  variant,
 }: {
   children: React.ReactNode;
-  variant?: VariantProps<typeof Badge>['variant'];
   className?: string;
+  variant?: React.ComponentProps<typeof DatatableCellBadge>['variant'];
 }) {
   return (
-    <DatatableCell justify="center">
-      <Badge className={className} variant={variant}>
-        {children}
-      </Badge>
-    </DatatableCell>
+    <DatatableCellBadge className={className} variant={variant}>
+      {children}
+    </DatatableCellBadge>
   );
+}
+
+export { DatatableCellBadge };
+
+export function DatatableCellBoolean({ trueCondition, value }: { trueCondition?: boolean; value?: boolean }) {
+  return <BaseDatatableCellBoolean value={value ?? trueCondition ?? false} />;
 }

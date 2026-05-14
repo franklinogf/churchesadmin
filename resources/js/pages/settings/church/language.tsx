@@ -7,19 +7,20 @@ import TenantLanguageController from '@/actions/App/Http/Controllers/Settings/Te
 import { SelectField } from '@/components/forms/inputs/SelectField';
 import HeadingSmall from '@/components/heading-small';
 import { Button } from '@/components/ui/button';
-import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/church-layout';
+import { useTranslation } from 'react-i18next';
 
 type LanguageForm = {
   locale: string;
 };
 
 export default function Language({ languages }: { languages: SelectOption[] }) {
-  const { t, setLocale, currentLocale } = useTranslations();
+  const { i18n } = useTranslation();
 
+  const { t: tPages } = useTranslation('pages');
   const { data, setData, submit, errors, processing, recentlySuccessful } = useForm<Required<LanguageForm>>({
-    locale: currentLocale(),
+    locale: i18n.language,
   });
 
   const handleSubmit = (e: SubmitEvent<HTMLFormElement>) => {
@@ -28,31 +29,37 @@ export default function Language({ languages }: { languages: SelectOption[] }) {
     submit(TenantLanguageController.update(), {
       preserveScroll: true,
       onSuccess: () => {
-        setLocale(data.locale);
+        void i18n.changeLanguage(data.locale);
         router.flushAll();
       },
     });
   };
 
-  const breadcrumbs: BreadcrumbItem[] = useMemo(() => [{ title: t('Church Settings') }, { title: t('Church language') }], [t]);
+  const breadcrumbs: BreadcrumbItem[] = useMemo(
+    () => [{ title: tPages(($) => $.settings.church.language.churchSettings) }, { title: tPages(($) => $.settings.church.language.churchLanguage) }],
+    [tPages],
+  );
 
   return (
-    <AppLayout title={t('Church Settings')} breadcrumbs={breadcrumbs}>
+    <AppLayout title={tPages(($) => $.settings.church.language.churchSettings)} breadcrumbs={breadcrumbs}>
       <SettingsLayout>
         <div className="space-y-6">
-          <HeadingSmall title={t('Language')} description={t('Update the website language')} />
+          <HeadingSmall
+            title={tPages(($) => $.settings.church.language.language)}
+            description={tPages(($) => $.settings.church.language.updateTheWebsiteLanguage)}
+          />
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <SelectField
               className="max-w-xs"
               options={languages}
-              label={t('Language')}
+              label={tPages(($) => $.settings.church.language.language)}
               value={data.locale}
               onValueChange={(value) => setData('locale', value)}
               error={errors.locale}
             />
             <div className="flex items-center gap-4">
-              <Button disabled={processing}>{t('Save')}</Button>
+              <Button disabled={processing}>{tPages(($) => $.settings.church.language.save)}</Button>
 
               <Transition
                 show={recentlySuccessful}
@@ -61,7 +68,7 @@ export default function Language({ languages }: { languages: SelectOption[] }) {
                 leave="transition ease-in-out"
                 leaveTo="opacity-0"
               >
-                <p className="text-sm text-neutral-600">{t('Saved')}</p>
+                <p className="text-sm text-neutral-600">{tPages(($) => $.settings.church.language.saved)}</p>
               </Transition>
             </div>
           </form>
