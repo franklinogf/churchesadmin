@@ -6,7 +6,6 @@ namespace App\Policies;
 
 use App\Enums\TenantPermission;
 use App\Models\TenantUser;
-use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
 final class CheckLayoutPolicy

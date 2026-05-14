@@ -17,6 +17,7 @@ test('creates a check with all fields', function (): void {
     $wallet = ChurchWallet::factory()->create();
     // Ensure the wallet has enough balance
     $wallet->depositFloat('100.00');
+
     $member = Member::factory()->create();
     $expenseType = ExpenseType::factory()->create();
 
@@ -60,6 +61,7 @@ test('creates a check with minimal fields', function (): void {
     $wallet = ChurchWallet::factory()->create();
     // Ensure the wallet has enough balance
     $wallet->depositFloat('100.00');
+
     $member = Member::factory()->create();
     $expenseType = ExpenseType::factory()->create();
 

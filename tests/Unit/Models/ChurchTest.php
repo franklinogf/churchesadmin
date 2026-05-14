@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 use App\Enums\LanguageCode;
 use App\Models\Church;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
-uses(Illuminate\Foundation\Testing\RefreshDatabase::class);
+uses(RefreshDatabase::class);
 
 test('to array', function (): void {
     $church = Church::createQuietly([

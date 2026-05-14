@@ -6,6 +6,7 @@ namespace App\Http\Requests\Pdf;
 
 use App\Enums\PdfFormat;
 use App\Enums\PdfOrientation;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -22,7 +23,7 @@ final class GeneratePdfRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {
@@ -44,6 +45,7 @@ final class GeneratePdfRequest extends FormRequest
         if (! $this->has('rows')) {
             return [];
         }
+
         /**
          * @var array<string> $rows
          */
@@ -62,6 +64,7 @@ final class GeneratePdfRequest extends FormRequest
         if (! $this->has('unSelectedColumns')) {
             return [];
         }
+
         /**
          * @var array<string> $unSelectedColumns
          */

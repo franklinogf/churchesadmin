@@ -9,7 +9,6 @@ use App\Models\CalendarEvent;
 use App\Models\Member;
 use App\Notifications\CalendarEventNotification;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 final class SendCalendarEventToMembersController extends Controller
 {

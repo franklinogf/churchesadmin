@@ -16,6 +16,8 @@ use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
+use function array_key_exists;
+
 final readonly class UpdateWalletAction
 {
     public function __construct(
@@ -86,12 +88,12 @@ final readonly class UpdateWalletAction
 
                 return $wallet->refresh();
             });
-        } catch (QueryException $e) {
-            Log::error('Error updating wallet: '.$e->getMessage(), [
+        } catch (QueryException $queryException) {
+            Log::error('Error updating wallet: '.$queryException->getMessage(), [
                 'data' => $data,
                 'wallet_id' => $wallet->id,
             ]);
-            throw new WalletException('An error occurred while updating the wallet', $e->getCode(), $e);
+            throw new WalletException('An error occurred while updating the wallet', $queryException->getCode(), $queryException);
         }
 
     }

@@ -1,7 +1,7 @@
 import { RequiredFieldIcon } from '@/components/forms/RequiredFieldIcon';
 import { SubmitButton } from '@/components/forms/SubmitButton';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader } from '@/components/ui/card';
-import { useTranslations } from '@/hooks/use-translations';
+import { useTranslation } from 'react-i18next';
 import { Progress } from '../ui/progress';
 
 interface FormProps {
@@ -15,8 +15,8 @@ interface FormProps {
 }
 
 export function Form({ children, className, isSubmitting, showRequiredHelper = true, submitLabel, onSubmit, progress }: FormProps) {
-  const { t } = useTranslations();
-  submitLabel = submitLabel || t('Save');
+  const { t: tCommon } = useTranslation('common');
+  submitLabel = submitLabel || tCommon(($) => $.components.forms.Form.save);
   return (
     <form
       className={className}
@@ -29,7 +29,7 @@ export function Form({ children, className, isSubmitting, showRequiredHelper = t
         {showRequiredHelper && (
           <CardHeader>
             <CardDescription className="flex items-center gap-1">
-              <span>{t('Required fields')}</span>
+              <span>{tCommon(($) => $.components.forms.Form.requiredFields)}</span>
               <RequiredFieldIcon />
             </CardDescription>
           </CardHeader>

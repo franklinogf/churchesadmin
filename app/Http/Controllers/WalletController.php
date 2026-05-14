@@ -113,10 +113,10 @@ final class WalletController extends Controller
         $validated = $request->validated();
         try {
             $action->handle($validated);
-        } catch (WalletException $e) {
+        } catch (WalletException $walletException) {
             return back()->with(
                 FlashMessageKey::ERROR->value,
-                $e->getMessage()
+                $walletException->getMessage()
             );
         }
 

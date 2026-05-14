@@ -10,6 +10,7 @@ use App\Enums\Traits\HasOptions;
 enum Gender: string
 {
     use EnumToArray, HasOptions;
+
     case MALE = 'male';
     case FEMALE = 'female';
 

@@ -7,10 +7,10 @@ import { InputField } from '@/components/forms/inputs/InputField';
 import { PhoneField } from '@/components/forms/inputs/PhoneField';
 import { PageTitle } from '@/components/PageTitle';
 import { Separator } from '@/components/ui/separator';
-import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import type { AddressFormData } from '@/types/models/address';
 import { useForm } from '@inertiajs/react';
+import { useTranslation } from 'react-i18next';
 
 type CreateForm = {
   name: string;
@@ -21,7 +21,7 @@ type CreateForm = {
   address: AddressFormData;
 };
 export default function VisitsCreate() {
-  const { t } = useTranslations();
+  const { t: tPages } = useTranslation('pages');
   const { data, setData, submit, errors, processing } = useForm<CreateForm>({
     name: '',
     last_name: '',
@@ -44,28 +44,48 @@ export default function VisitsCreate() {
 
   return (
     <AppLayout
-      title={t('Add :model', { model: t('Visit') })}
-      breadcrumbs={[{ title: t('Visits'), href: VisitController.index().url }, { title: t('Add :model', { model: t('Visit') }) }]}
+      title={tPages(($) => $.main.visits.create.addModel, { model: tPages(($) => $.main.visits.create.visit) })}
+      breadcrumbs={[
+        { title: tPages(($) => $.main.visits.create.visits), href: VisitController.index().url },
+        { title: tPages(($) => $.main.visits.create.addModel, { model: tPages(($) => $.main.visits.create.visit) }) },
+      ]}
     >
-      <PageTitle>{t('Add :model', { model: t('Visit') })}</PageTitle>
+      <PageTitle>{tPages(($) => $.main.visits.create.addModel, { model: tPages(($) => $.main.visits.create.visit) })}</PageTitle>
 
       <Form className="mx-auto mt-6 w-full max-w-2xl" onSubmit={handleSubmit} isSubmitting={processing}>
-        <InputField label={t('Name')} value={data.name} onChange={(value) => setData('name', value)} error={errors.name} required />
         <InputField
-          label={t('Last Name')}
+          label={tPages(($) => $.main.visits.create.name)}
+          value={data.name}
+          onChange={(value) => setData('name', value)}
+          error={errors.name}
+          required
+        />
+        <InputField
+          label={tPages(($) => $.main.visits.create.lastName)}
           value={data.last_name}
           onChange={(value) => setData('last_name', value)}
           error={errors.last_name}
           required
         />
         <FieldsGrid>
-          <PhoneField label={t('Phone')} value={data.phone} onChange={(value) => setData('phone', value)} error={errors.phone} />
-          <InputField label={t('Email')} type="email" value={data.email} onChange={(value) => setData('email', value)} error={errors.email} />
+          <PhoneField
+            label={tPages(($) => $.main.visits.create.phone)}
+            value={data.phone}
+            onChange={(value) => setData('phone', value)}
+            error={errors.phone}
+          />
+          <InputField
+            label={tPages(($) => $.main.visits.create.email)}
+            type="email"
+            value={data.email}
+            onChange={(value) => setData('email', value)}
+            error={errors.email}
+          />
         </FieldsGrid>
 
         <DateField
           maxDate="today"
-          label={t('First visit date')}
+          label={tPages(($) => $.main.visits.create.firstVisitDate)}
           value={data.first_visit_date}
           onChange={(value) => setData('first_visit_date', value)}
           error={errors.first_visit_date}

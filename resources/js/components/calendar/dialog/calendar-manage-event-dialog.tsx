@@ -11,11 +11,11 @@ import { SubmitButton } from '@/components/forms/SubmitButton';
 import { Button } from '@/components/ui/button';
 import { FieldGroup } from '@/components/ui/field';
 import { CalendarEventColorEnum } from '@/enums/CalendarEventColorEnum';
-import { useTranslations } from '@/hooks/use-translations';
-import useConfirmationStore from '@/stores/confirmationStore';
+import useConfirmationStore from '@/stores/confirmation-store';
 import type { CalendarEvent } from '@/types/models/calendar-event';
 import { useForm } from '@inertiajs/react';
 import { MailsIcon } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useCalendarContext } from '../calendar-context';
 
 interface CalendarForm {
@@ -27,7 +27,7 @@ interface CalendarForm {
   color: CalendarEventColorEnum;
 }
 export default function CalendarManageEventDialog() {
-  const { t } = useTranslations();
+  const { t: tCommon } = useTranslation('common');
   const { manageEventDialogOpen, setManageEventDialogOpen, selectedEvent, setSelectedEvent, events, setEvents } = useCalendarContext();
   const { openConfirmation } = useConfirmationStore();
 
@@ -80,11 +80,11 @@ export default function CalendarManageEventDialog() {
   function handleDelete() {
     if (!selectedEvent) return;
     openConfirmation({
-      title: t('Delete event'),
-      description: t('Are you sure you want to delete this event? This action cannot be undone.'),
-      actionLabel: t('Delete'),
+      title: tCommon(($) => $.components.calendar.dialog.calendarManageEventDialog.deleteEvent),
+      description: tCommon(($) => $.components.calendar.dialog.calendarManageEventDialog.areYouSureYouWantToDeleteThisEvent),
+      actionLabel: tCommon(($) => $.components.calendar.dialog.calendarManageEventDialog.delete),
       actionVariant: 'destructive',
-      cancelLabel: t('Cancel'),
+      cancelLabel: tCommon(($) => $.components.calendar.dialog.calendarManageEventDialog.cancel),
       onAction: () => {
         setManageEventDialogOpen(false);
 
@@ -132,10 +132,10 @@ export default function CalendarManageEventDialog() {
     <Dialog open={manageEventDialogOpen} onOpenChange={handleClose}>
       <DialogContent showCloseButton={false}>
         <DialogHeader className="flex-row items-center">
-          <DialogTitle>{t('Manage event')}</DialogTitle>
+          <DialogTitle>{tCommon(($) => $.components.calendar.dialog.calendarManageEventDialog.manageEvent)}</DialogTitle>
           <Button disabled={isLoading} className="ml-auto" variant="outline" size="sm" onClick={handleSendEmail}>
             <MailsIcon />
-            {t('Send email to members')}
+            {tCommon(($) => $.components.calendar.dialog.calendarManageEventDialog.sendEmailToMembers)}
           </Button>
           <DialogDescription hidden />
         </DialogHeader>
@@ -145,21 +145,21 @@ export default function CalendarManageEventDialog() {
             <FieldGroup>
               <InputField
                 required
-                label={t('Title')}
+                label={tCommon(($) => $.components.calendar.dialog.calendarManageEventDialog.title)}
                 name="title"
                 value={data.title}
                 onChange={(value) => setData('title', value)}
                 error={errors.title}
               />
               <InputField
-                label={t('Location')}
+                label={tCommon(($) => $.components.calendar.dialog.calendarManageEventDialog.location)}
                 name="location"
                 value={data.location}
                 onChange={(value) => setData('location', value)}
                 error={errors.location}
               />
               <TextareaField
-                label={t('Description')}
+                label={tCommon(($) => $.components.calendar.dialog.calendarManageEventDialog.description)}
                 name="description"
                 value={data.description}
                 onChange={(e) => setData('description', e.target.value)}
@@ -168,7 +168,7 @@ export default function CalendarManageEventDialog() {
               <DatetimeField
                 required
                 presetHours
-                label={t('Start at')}
+                label={tCommon(($) => $.components.calendar.dialog.calendarManageEventDialog.startAt)}
                 value={data.start_at}
                 onChange={(value) => value && setData('start_at', value)}
                 error={errors.start_at}
@@ -176,7 +176,7 @@ export default function CalendarManageEventDialog() {
               <DatetimeField
                 required
                 presetHours
-                label={t('End at')}
+                label={tCommon(($) => $.components.calendar.dialog.calendarManageEventDialog.endAt)}
                 value={data.end_at}
                 onChange={(value) => value && setData('end_at', value)}
                 error={errors.end_at}
@@ -187,12 +187,14 @@ export default function CalendarManageEventDialog() {
             <FieldGroup className="flex-row justify-end">
               <DialogClose asChild>
                 <Button disabled={isLoading} variant="outline">
-                  {t('Cancel')}
+                  {tCommon(($) => $.components.calendar.dialog.calendarManageEventDialog.cancel)}
                 </Button>
               </DialogClose>
-              <SubmitButton isSubmitting={processing}>{t('Update Event')}</SubmitButton>
+              <SubmitButton isSubmitting={processing}>
+                {tCommon(($) => $.components.calendar.dialog.calendarManageEventDialog.updateEvent)}
+              </SubmitButton>
               <Button disabled={isLoading} className="ml-auto" type="button" variant="destructive" onClick={handleDelete}>
-                {t('Delete Event')}
+                {tCommon(($) => $.components.calendar.dialog.calendarManageEventDialog.deleteEvent2)}
               </Button>
             </FieldGroup>
           </FieldGroup>

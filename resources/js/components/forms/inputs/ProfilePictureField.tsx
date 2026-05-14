@@ -13,7 +13,7 @@
 
 // export function ProfilePictureField({ label, initialFile, error, disabled, onChange, className }: ProfilePictureFieldProps) {
 //     const { t } = useTranslations();
-//     label = label ?? t('Foto de Perfil');
+//     label = label ?? tCommon(($) => $.components.forms.inputs.profilePictureField.profilePicture);
 //     return (
 //         <FileField
 //             label={label}

@@ -1,34 +1,33 @@
 import WalletController from '@/actions/App/Http/Controllers/WalletController';
-import { DataTable } from '@/components/custom-ui/datatable/data-table';
+import Datatable from '@/components/datatable/datatable';
 import { PageTitle } from '@/components/PageTitle';
 import { Badge } from '@/components/ui/badge';
-import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem } from '@/types';
 import type { MakeRequired } from '@/types/generics';
 import type { Transaction } from '@/types/models/transaction';
 import type { Wallet } from '@/types/models/wallet';
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { transactionColumns } from './includes/transactionColumns';
 
 export default function Show({ wallet, initialRow }: { wallet: MakeRequired<Wallet, 'transactions'>; initialRow: Transaction | null }) {
-  const { t } = useTranslations();
-
+  const { t: tPages } = useTranslation('pages');
   const breadcrumbs: BreadcrumbItem[] = useMemo(
     () => [
       {
-        title: t('Wallets'),
+        title: tPages(($) => $.wallets.show.wallets),
         href: WalletController.index().url,
       },
       {
         title: wallet.name,
       },
     ],
-    [wallet.name, t],
+    [wallet.name, tPages],
   );
   const walletTransactions = initialRow ? [initialRow, ...wallet.transactions] : wallet.transactions;
   return (
-    <AppLayout title={t('Wallet :name', { name: wallet.name })} breadcrumbs={breadcrumbs}>
+    <AppLayout title={tPages(($) => $.wallets.show.walletName, { name: wallet.name })} breadcrumbs={breadcrumbs}>
       <div className="flex flex-col items-center gap-4">
         <PageTitle>{wallet.name}</PageTitle>
         <Badge className="text-xl" variant="brand">
@@ -36,7 +35,7 @@ export default function Show({ wallet, initialRow }: { wallet: MakeRequired<Wall
         </Badge>
       </div>
       {wallet.transactions ? (
-        <DataTable
+        <Datatable
           data={walletTransactions}
           columns={transactionColumns}
           sortingState={[{ id: 'createdAt', desc: true }]}

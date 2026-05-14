@@ -24,6 +24,7 @@ final class TransactionalObserver
 
             return;
         }
+
         $transactionalModel->fill(['current_year_id' => $user->current_year_id]);
     }
 }

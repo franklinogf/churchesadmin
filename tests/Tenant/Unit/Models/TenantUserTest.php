@@ -6,6 +6,7 @@ use App\Models\CurrentYear;
 use App\Models\Email;
 use App\Models\TenantUser;
 use Carbon\CarbonImmutable;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 test('to array', function (): void {
     $user = TenantUser::factory()->create()->fresh();
@@ -60,7 +61,7 @@ it('belongs to a current year', function (): void {
 it('implements must verify email interface', function (): void {
     $user = TenantUser::factory()->create();
 
-    expect($user)->toBeInstanceOf(Illuminate\Contracts\Auth\MustVerifyEmail::class);
+    expect($user)->toBeInstanceOf(MustVerifyEmail::class);
 });
 
 it('uses uuid for primary key', function (): void {

@@ -9,6 +9,7 @@ use App\Http\Resources\Member\MemberResource;
 use App\Http\Resources\Missionary\MissionaryResource;
 use App\Http\Resources\Wallet\TransactionResource;
 use App\Models\Missionary;
+use App\Models\Offering;
 use App\Models\OfferingType;
 use Illuminate\Database\Eloquent\Relations\Relation;
 use Illuminate\Http\Request;
@@ -16,7 +17,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Override;
 
 /**
- * @mixin \App\Models\Offering
+ * @mixin Offering
  */
 final class OfferingResource extends JsonResource
 {

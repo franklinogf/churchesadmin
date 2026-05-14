@@ -13,6 +13,9 @@ use App\Support\ArrayFallback;
 use App\Support\DiffLogger;
 use Illuminate\Support\Facades\DB;
 
+use function array_key_exists;
+use function is_array;
+
 final readonly class UpdateMemberAction
 {
     public function __construct(private DiffLogger $logger) {}

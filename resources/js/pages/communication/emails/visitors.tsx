@@ -1,9 +1,9 @@
-import { DataTable } from '@/components/custom-ui/datatable/data-table';
-import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
+import { useTranslation } from 'react-i18next';
 
 import EmailController from '@/actions/App/Http/Controllers/Communication/EmailController';
 import SessionController from '@/actions/App/Http/Controllers/SessionController';
+import Datatable from '@/components/datatable/datatable';
 import { Button } from '@/components/ui/button';
 import { ModelMorphName } from '@/enums/ModelMorphName';
 import { SessionName } from '@/enums/SessionName';
@@ -17,8 +17,8 @@ interface Props {
 }
 export default function Index({ visitors }: Props) {
   const [selectedVisitors, setSelectedVisitors] = useState<string[]>([]);
-  const { t } = useTranslations();
 
+  const { t: tPages } = useTranslation('pages');
   function handleNewEmail() {
     router.visit(
       SessionController({
@@ -35,16 +35,20 @@ export default function Index({ visitors }: Props) {
   }
   return (
     <AppLayout
-      title={t('Send email to :name', { name: t('Visitors') })}
-      breadcrumbs={[{ title: t('Communication') }, { title: t('Emails'), href: EmailController.index().url }, { title: t('Visitors') }]}
+      title={tPages(($) => $.communication.emails.visitors.sendEmailToName, { name: tPages(($) => $.communication.emails.visitors.visitors) })}
+      breadcrumbs={[
+        { title: tPages(($) => $.communication.emails.visitors.communication) },
+        { title: tPages(($) => $.communication.emails.visitors.emails), href: EmailController.index().url },
+        { title: tPages(($) => $.communication.emails.visitors.visitors) },
+      ]}
     >
-      <EmailHeader name={t('Visitors')} />
+      <EmailHeader name={tPages(($) => $.communication.emails.visitors.visitors)} />
 
       <div className="mx-auto w-full max-w-2xl">
-        <DataTable
-          headerButton={
+        <Datatable
+          renderLeftTop={
             <Button disabled={selectedVisitors.length === 0} size="sm" onClick={handleNewEmail}>
-              {t('New :model', { model: t('Email') })}
+              {tPages(($) => $.communication.emails.visitors.newModel, { model: tPages(($) => $.communication.emails.visitors.email) })}
             </Button>
           }
           onSelectedRowsChange={setSelectedVisitors}

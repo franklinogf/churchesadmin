@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Casts\AsUcWords;
 use App\Enums\CivilStatus;
 use App\Enums\Gender;
 use App\Enums\ModelMorphName;
@@ -13,6 +12,7 @@ use App\Models\Scopes\CurrentYearScope;
 use App\Models\Scopes\LastnameScope;
 use App\Models\Traits\HasTags;
 use Carbon\CarbonImmutable;
+use Database\Factories\MemberFactory;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -53,7 +53,7 @@ use Override;
 #[ScopedBy([LastnameScope::class, ActiveMemberScope::class])]
 final class Member extends Model
 {
-    /** @use HasFactory<\Database\Factories\MemberFactory> */
+    /** @use HasFactory<MemberFactory> */
     use HasFactory,Notifiable;
 
     use HasTags;

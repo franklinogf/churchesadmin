@@ -12,10 +12,10 @@ import { SelectField } from '@/components/forms/inputs/SelectField';
 import HeadingSmall from '@/components/heading-small';
 import { Button } from '@/components/ui/button';
 import { TenantRole } from '@/enums/TenantRole';
-import { useTranslations } from '@/hooks/use-translations';
 import { useUser } from '@/hooks/use-user';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/profile-layout';
+import { useTranslation } from 'react-i18next';
 
 type ProfileForm = {
   name: string;
@@ -32,7 +32,7 @@ interface ProfileProps {
   workingYears: SelectOption[];
 }
 export default function Profile({ mustVerifyEmail, status, timezones, country, workingYears }: ProfileProps) {
-  const { t } = useTranslations();
+  const { t: tPages } = useTranslation('pages');
   const { hasRole } = useUser();
   const { auth } = usePage<SharedData>().props;
 
@@ -53,60 +53,65 @@ export default function Profile({ mustVerifyEmail, status, timezones, country, w
   const breadcrumbs: BreadcrumbItem[] = useMemo(
     () => [
       {
-        title: t('Profile Settings'),
+        title: tPages(($) => $.settings.profile.profileSettings),
         href: ProfileController.edit().url,
       },
     ],
-    [t],
+    [tPages],
   );
   return (
-    <AppLayout title={t('Profile Settings')} breadcrumbs={breadcrumbs}>
+    <AppLayout title={tPages(($) => $.settings.profile.profileSettings)} breadcrumbs={breadcrumbs}>
       <SettingsLayout>
         <div className="space-y-6">
-          <HeadingSmall title={t('Profile information')} description={t('Update your name and email address')} />
+          <HeadingSmall
+            title={tPages(($) => $.settings.profile.profileInformation)}
+            description={tPages(($) => $.settings.profile.updateYourNameAndEmailAddress)}
+          />
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <InputField
-              label={t('Name')}
+              label={tPages(($) => $.settings.profile.name)}
               value={data.name}
               onChange={(value) => setData('name', value)}
               required
               autoComplete="name"
-              placeholder={t('Full name')}
+              placeholder={tPages(($) => $.settings.profile.fullName)}
               error={errors.name}
             />
 
             <InputField
-              label={t('Email address')}
+              label={tPages(($) => $.settings.profile.emailAddress)}
               value={data.email}
               onChange={(value) => setData('email', value)}
               required
               autoComplete="username"
-              placeholder={t('Email address')}
+              placeholder={tPages(($) => $.settings.profile.emailAddress)}
               error={errors.email}
             />
             {mustVerifyEmail && auth.user.emailVerifiedAt === null && (
               <div>
                 <p className="text-muted-foreground -mt-4 text-sm">
-                  {t('Your email address is unverified.')}{' '}
+                  {tPages(($) => $.settings.profile.yourEmailAddressIsUnverified)}{' '}
                   <Link
                     href={EmailVerificationNotificationController.store()}
                     method="post"
                     as="button"
                     className="text-foreground underline decoration-neutral-300 underline-offset-4 transition-colors duration-300 ease-out hover:decoration-current! dark:decoration-neutral-500"
                   >
-                    {t('Click here to resend the verification email.')}
+                    {tPages(($) => $.settings.profile.clickHereToResendTheVerificationEmail)}
                   </Link>
                 </p>
 
                 {status === 'verification-link-sent' && (
-                  <div className="mt-2 text-sm font-medium text-green-600">{t('A new verification link has been sent to your email address.')}</div>
+                  <div className="mt-2 text-sm font-medium text-green-600">
+                    {tPages(($) => $.settings.profile.aNewVerificationLinkHasBeenSentToYour)}
+                  </div>
                 )}
               </div>
             )}
 
             <CountryField
-              label={t('Country')}
+              label={tPages(($) => $.settings.profile.country)}
               value={data.timezone_country}
               onChange={(country) => {
                 router.visit(ProfileController.edit({ query: { country } }), { preserveScroll: true, only: ['timezones', 'country'] });
@@ -117,7 +122,7 @@ export default function Profile({ mustVerifyEmail, status, timezones, country, w
               required
             />
             <ComboboxField
-              label={t('Timezone')}
+              label={tPages(($) => $.settings.profile.timezone)}
               value={data.timezone}
               onChange={(value) => setData('timezone', value)}
               required
@@ -128,7 +133,7 @@ export default function Profile({ mustVerifyEmail, status, timezones, country, w
             {hasRole(TenantRole.SUPER_ADMIN) && (
               <div>
                 <SelectField
-                  label={t('Current year')}
+                  label={tPages(($) => $.settings.profile.currentYear)}
                   value={data.current_year_id}
                   onValueChange={(value) => setData('current_year_id', value)}
                   required
@@ -136,15 +141,15 @@ export default function Profile({ mustVerifyEmail, status, timezones, country, w
                   options={workingYears}
                 />
                 <small className="text-muted-foreground text-sm">
-                  {t('This setting is only available for Super Admins.')}
+                  {tPages(($) => $.settings.profile.thisSettingIsOnlyAvailableForSuperAdmins)}
                   <br />
-                  {t('It allows you to set the current year for the application for you to work in.')}
+                  {tPages(($) => $.settings.profile.itAllowsYouToSetTheCurrentYearFor)}
                 </small>
               </div>
             )}
 
             <div className="flex items-center gap-4">
-              <Button disabled={processing}>{t('Save')}</Button>
+              <Button disabled={processing}>{tPages(($) => $.settings.profile.save)}</Button>
 
               <Transition
                 show={recentlySuccessful}
@@ -153,7 +158,7 @@ export default function Profile({ mustVerifyEmail, status, timezones, country, w
                 leave="transition ease-in-out"
                 leaveTo="opacity-0"
               >
-                <p className="text-sm text-neutral-600">{t('Saved')}</p>
+                <p className="text-sm text-neutral-600">{tPages(($) => $.settings.profile.saved)}</p>
               </Transition>
             </div>
           </form>

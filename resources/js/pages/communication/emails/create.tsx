@@ -9,9 +9,9 @@ import { RichTextField } from '@/components/forms/inputs/RichTextField';
 import { PageTitle } from '@/components/PageTitle';
 import { Badge } from '@/components/ui/badge';
 import { ModelMorphName } from '@/enums/ModelMorphName';
-import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import { useForm } from '@inertiajs/react';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   recipientsAmount: number;
@@ -25,7 +25,7 @@ type EmailForm = {
 };
 
 export default function Create({ recipientsAmount, recipientsType }: Props) {
-  const { t, tChoice } = useTranslations();
+  const { t: tPages } = useTranslation('pages');
   const { data, setData, errors, processing, submit, progress } = useForm<EmailForm>({
     subject: '',
     body: ``,
@@ -36,7 +36,11 @@ export default function Create({ recipientsAmount, recipientsType }: Props) {
     submit(EmailController.store());
   }
   const breadcrumbTitle =
-    recipientsType === ModelMorphName.MEMBER ? t('Members') : recipientsType === ModelMorphName.MISSIONARY ? t('Missionaries') : t('Visitors');
+    recipientsType === ModelMorphName.MEMBER
+      ? tPages(($) => $.communication.emails.create.members)
+      : recipientsType === ModelMorphName.MISSIONARY
+        ? tPages(($) => $.communication.emails.create.missionaries)
+        : tPages(($) => $.communication.emails.create.visitors);
   const breadcrumbHref =
     recipientsType === ModelMorphName.MEMBER
       ? EmailListMemberController()
@@ -45,28 +49,51 @@ export default function Create({ recipientsAmount, recipientsType }: Props) {
         : EmailListVisitorController();
   return (
     <AppLayout
-      title={t('New :model', { model: t('Email') })}
+      title={tPages(($) => $.communication.emails.create.newModel, { model: tPages(($) => $.communication.emails.create.email) })}
       breadcrumbs={[
-        { title: t('Email'), href: EmailController.index().url },
+        { title: tPages(($) => $.communication.emails.create.email), href: EmailController.index().url },
         {
           title: breadcrumbTitle,
           href: breadcrumbHref.url,
         },
-        { title: t('New :model', { model: t('Email') }) },
+        { title: tPages(($) => $.communication.emails.create.newModel, { model: tPages(($) => $.communication.emails.create.email) }) },
       ]}
     >
       <header className="mb-4">
-        <PageTitle description={t('Send a new email to the recipients you selected')}>{t('New :model', { model: t('Email') })}</PageTitle>
+        <PageTitle description={tPages(($) => $.communication.emails.create.sendANewEmailToTheRecipientsYouSelected)}>
+          {tPages(($) => $.communication.emails.create.newModel, { model: tPages(($) => $.communication.emails.create.email) })}
+        </PageTitle>
         <div className="flex items-center justify-center">
-          <Badge>{tChoice(':amount recipient selected|:amount recipients selected', recipientsAmount, { amount: recipientsAmount })}</Badge>
+          <Badge>
+            {tPages(($) => $.communication.emails.create.amountRecipientSelectedAmountRecipientsSelected, {
+              count: recipientsAmount,
+              amount: recipientsAmount,
+            })}
+          </Badge>
         </div>
       </header>
       <section className="mx-auto w-full max-w-4xl">
-        <Form progress={progress?.percentage} onSubmit={handleSubmit} submitLabel={t('Send email')} isSubmitting={processing}>
-          <InputField required label={t('Subject')} value={data.subject} onChange={(value) => setData('subject', value)} error={errors.subject} />
-          <RichTextField required label={t('Message')} value={data.body} onChange={(value) => setData('body', value)} />
+        <Form
+          progress={progress?.percentage}
+          onSubmit={handleSubmit}
+          submitLabel={tPages(($) => $.communication.emails.create.sendEmail)}
+          isSubmitting={processing}
+        >
+          <InputField
+            required
+            label={tPages(($) => $.communication.emails.create.subject)}
+            value={data.subject}
+            onChange={(value) => setData('subject', value)}
+            error={errors.subject}
+          />
+          <RichTextField
+            required
+            label={tPages(($) => $.communication.emails.create.message)}
+            value={data.body}
+            onChange={(value) => setData('body', value)}
+          />
           <FileField
-            label={t('Attachments')}
+            label={tPages(($) => $.communication.emails.create.attachments)}
             maxTotalFileSize="45MB"
             maxFileSize="10MB"
             allowMultiple

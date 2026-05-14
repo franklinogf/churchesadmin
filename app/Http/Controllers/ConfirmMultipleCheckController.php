@@ -30,8 +30,8 @@ final class ConfirmMultipleCheckController extends Controller
                     $action->handle($check);
                 });
             });
-        } catch (WalletException $e) {
-            return back()->with(FlashMessageKey::ERROR->value, $e->getMessage());
+        } catch (WalletException $walletException) {
+            return back()->with(FlashMessageKey::ERROR->value, $walletException->getMessage());
         }
 
         return back()->with(FlashMessageKey::SUCCESS->value, __('flash.message.check.confirmed'));

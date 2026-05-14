@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Models\CheckLayout;
 use App\Models\ChurchWallet;
 use Carbon\CarbonImmutable;
+use Spatie\MediaLibrary\HasMedia;
 
 test('to array', function (): void {
     $checkLayout = CheckLayout::factory()->create()->fresh();
@@ -40,7 +41,7 @@ it('can have wallets', function (): void {
 it('implements media interface', function (): void {
     $checkLayout = CheckLayout::factory()->create();
 
-    expect($checkLayout)->toBeInstanceOf(Spatie\MediaLibrary\HasMedia::class);
+    expect($checkLayout)->toBeInstanceOf(HasMedia::class);
 });
 
 it('can register media collections', function (): void {

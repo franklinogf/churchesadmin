@@ -9,6 +9,13 @@ use DateTimeInterface;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
 
+use function array_key_exists;
+use function count;
+use function in_array;
+use function is_array;
+use function is_bool;
+use function is_string;
+
 final class DiffLogger
 {
     /**
@@ -151,6 +158,7 @@ final class DiffLogger
             if (in_array($key, $this->ignoredFields)) {
                 continue;
             }
+
             /**
              * @var array<string, mixed>|null|string $oldValue
              */
@@ -167,6 +175,7 @@ final class DiffLogger
                     foreach ($nested->diff['old'] as $nestedKey => $nestedOldValue) {
                         $this->diff['old']["{$key}.{$nestedKey}"] = $nestedOldValue;
                     }
+
                     foreach ($nested->diff['attributes'] as $nestedKey => $nestedNewValue) {
                         $this->diff['attributes']["{$key}.{$nestedKey}"] = $nestedNewValue;
                     }
@@ -265,6 +274,7 @@ final class DiffLogger
         if ($aNorm === null && $bNorm === null) {
             return true;
         }
+
         if ($aNorm === null || $bNorm === null) {
             return false;
         }

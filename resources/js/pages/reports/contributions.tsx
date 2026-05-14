@@ -1,15 +1,14 @@
 import ContributionController from '@/actions/App/Http/Controllers/Pdf/ContributionController';
 import ContributionPdfController from '@/actions/App/Http/Controllers/Pdf/ContributionPdfController';
 import ReportController from '@/actions/App/Http/Controllers/ReportController';
-import { selectionHeader } from '@/components/custom-ui/datatable/columns';
-import { DataTable } from '@/components/custom-ui/datatable/data-table';
 import { DatatableCell } from '@/components/custom-ui/datatable/DatatableCell';
-import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTableColumnHeader';
+import { selectionHeader } from '@/components/datatable/columns';
+import Datatable from '@/components/datatable/datatable';
+import { DatatableHeader } from '@/components/datatable/datatable-header';
 import { SelectField } from '@/components/forms/inputs/SelectField';
 import { PageTitle } from '@/components/PageTitle';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import type { SelectOption } from '@/types';
 import type { CurrentYear } from '@/types/models/current-year';
@@ -17,6 +16,7 @@ import { router } from '@inertiajs/react';
 import type { ColumnDef } from '@tanstack/react-table';
 import { MailIcon, PrinterIcon } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 type ContributionsRecord = {
   id: number;
@@ -32,7 +32,7 @@ interface ContributionsPageProps {
 }
 
 export default function ContributionsPage({ contributions, year, years }: ContributionsPageProps) {
-  const { t } = useTranslations();
+  const { t: tPages } = useTranslation('pages');
   const [selectedContributions, setSelectedContributions] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -41,15 +41,15 @@ export default function ContributionsPage({ contributions, year, years }: Contri
     {
       enableHiding: false,
       accessorKey: 'name',
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Name" />,
+      header: ({ column }) => <DatatableHeader column={column} title="Name" />,
     },
     {
       accessorKey: 'email',
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Email" />,
+      header: ({ column }) => <DatatableHeader column={column} title="Email" />,
     },
     {
       accessorKey: 'contributionAmount',
-      header: ({ column }) => <DataTableColumnHeader column={column} title="Contribution" />,
+      header: ({ column }) => <DatatableHeader column={column} title="Contribution" />,
       cell: ({ row }) => <DatatableCell justify="end">{row.original.contributionAmount}</DatatableCell>,
     },
   ];
@@ -75,49 +75,64 @@ export default function ContributionsPage({ contributions, year, years }: Contri
 
   if (years.length === 0) {
     return (
-      <AppLayout title={t('Contributions')} breadcrumbs={[{ title: t('Reports'), href: ReportController().url }, { title: t('Contributions') }]}>
-        <PageTitle>{t('Contributions')}</PageTitle>
+      <AppLayout
+        title={tPages(($) => $.reports.contributions.contributions)}
+        breadcrumbs={[
+          { title: tPages(($) => $.reports.contributions.reports), href: ReportController().url },
+          { title: tPages(($) => $.reports.contributions.contributions) },
+        ]}
+      >
+        <PageTitle>{tPages(($) => $.reports.contributions.contributions)}</PageTitle>
         <Alert className="text-muted-foreground my-4" variant="warning">
-          <AlertDescription>{t('No closed fiscal years found. Please close a fiscal year to view contributions reports.')}</AlertDescription>
+          <AlertDescription>{tPages(($) => $.reports.contributions.noClosedFiscalYearsFoundPleaseCloseAFiscal)}</AlertDescription>
         </Alert>
       </AppLayout>
     );
   }
   return (
-    <AppLayout title={t('Contributions')} breadcrumbs={[{ title: t('Reports'), href: ReportController().url }, { title: t('Contributions') }]}>
-      <PageTitle description={t('Contributions of the fiscal year :year', { year: year?.year || '' })}>{t('Contributions')}</PageTitle>
+    <AppLayout
+      title={tPages(($) => $.reports.contributions.contributions)}
+      breadcrumbs={[
+        { title: tPages(($) => $.reports.contributions.reports), href: ReportController().url },
+        { title: tPages(($) => $.reports.contributions.contributions) },
+      ]}
+    >
+      <PageTitle description={tPages(($) => $.reports.contributions.contributionsOfTheFiscalYearYear, { year: year?.year || '' })}>
+        {tPages(($) => $.reports.contributions.contributions)}
+      </PageTitle>
       <small className="text-muted-foreground text-center">
         ({year?.startDate} - {year?.endDate})
       </small>
 
       {year?.isCurrent && (
         <Alert className="text-muted-foreground my-4" variant="warning">
-          <AlertDescription>
-            {t(
-              'The selected year is the current fiscal year, is not allowed to send reports for the current year. Please select a previous fiscal year to view contributions.',
-            )}
-          </AlertDescription>
+          <AlertDescription>{tPages(($) => $.reports.contributions.theSelectedYearIsTheCurrentFiscalYearIs)}</AlertDescription>
         </Alert>
       )}
 
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div className="flex-1 sm:max-w-xs">
-          <SelectField label={t('Fiscal Year')} value={year?.year} onValueChange={handleYearChange} options={years ?? []} />
+          <SelectField
+            label={tPages(($) => $.reports.contributions.fiscalYear)}
+            value={year?.year}
+            onValueChange={handleYearChange}
+            options={years ?? []}
+          />
         </div>
 
         <div className="flex gap-2">
           <Button variant="outline" size="sm" disabled={isLoading || selectedContributions.length === 0 || year?.isCurrent} onClick={handlePrintPdf}>
             <PrinterIcon className="size-4" />
-            {t('Export PDF')}
+            {tPages(($) => $.reports.contributions.exportPdf)}
           </Button>
           <Button variant="outline" size="sm" disabled={isLoading || selectedContributions.length === 0 || year?.isCurrent} onClick={handleSendEmail}>
             <MailIcon className="size-4" />
-            {t('Send Email')}
+            {tPages(($) => $.reports.contributions.sendEmail)}
           </Button>
         </div>
       </div>
 
-      <DataTable data={contributions ?? []} columns={dataColumns} rowId="id" onSelectedRowsChange={setSelectedContributions} />
+      <Datatable data={contributions ?? []} columns={dataColumns} rowId="id" onSelectedRowsChange={setSelectedContributions} />
     </AppLayout>
   );
 }

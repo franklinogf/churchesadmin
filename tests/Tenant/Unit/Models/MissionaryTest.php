@@ -71,6 +71,7 @@ it('can be restored after soft delete', function (): void {
     $missionary = Missionary::factory()->create();
 
     $missionary->delete();
+
     expect($missionary->trashed())->toBeTrue();
 
     $missionary->restore();

@@ -5,12 +5,12 @@ import { Calendar } from '@/components/ui/calendar';
 import { Field, FieldError } from '@/components/ui/field';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { useLocaleDate } from '@/hooks/use-locale-date';
-import { useTranslations } from '@/hooks/use-translations';
 import { parseLocalDate } from '@/lib/datetime';
 import type { InputBaseProps } from '@/types';
 import { format } from 'date-fns';
 import { ChevronDownIcon } from 'lucide-react';
 import { useId, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface DateFieldProps extends Omit<InputBaseProps, 'description'> {
   name?: string;
@@ -25,7 +25,7 @@ interface DateFieldProps extends Omit<InputBaseProps, 'description'> {
 
 export function DateField({ label, error, className, disabled, value, onChange, required, maxDate, minDate, name }: DateFieldProps) {
   const { getCurrentDateLocale } = useLocaleDate();
-  const { t } = useTranslations();
+  const { t: tCommon } = useTranslation('common');
   const id = useId();
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState<string | null>(value ?? null);
@@ -49,7 +49,9 @@ export function DateField({ label, error, className, disabled, value, onChange, 
       <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>
           <Button disabled={disabled} variant="outline" id={id} className="w-full justify-between font-normal">
-            {date ? format(parseLocalDate(date), 'PPP', { locale: getCurrentDateLocale() }) : t('Select a date')}
+            {date
+              ? format(parseLocalDate(date), 'PPP', { locale: getCurrentDateLocale() })
+              : tCommon(($) => $.components.forms.inputs.DateField.selectADate)}
             <ChevronDownIcon />
           </Button>
         </PopoverTrigger>

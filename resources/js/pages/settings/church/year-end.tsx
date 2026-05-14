@@ -15,41 +15,41 @@ import {
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
-import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/church-layout';
 import { Link } from '@inertiajs/react';
+import { useTranslation } from 'react-i18next';
 
 export default function YearEnd({ currentYear }: { currentYear: number }) {
-  const { t } = useTranslations();
+  const { t } = useTranslation('pages', { keyPrefix: 'settings.church.yearEnd' });
 
-  const breadcrumbs: BreadcrumbItem[] = useMemo(() => [{ title: t('Church Settings') }, { title: t('Year End Closing') }], [t]);
+  const breadcrumbs: BreadcrumbItem[] = useMemo(() => [{ title: t(($) => $.churchSettings) }, { title: t(($) => $.yearEndClosing) }], [t]);
 
   return (
-    <AppLayout title={t('Church Settings')} breadcrumbs={breadcrumbs}>
+    <AppLayout title={t(($) => $.churchSettings)} breadcrumbs={breadcrumbs}>
       <SettingsLayout>
         <div className="space-y-6">
-          <HeadingSmall title={t('Year End Closing')} description={t('Close the current fiscal year')} />
+          <HeadingSmall title={t(($) => $.yearEndClosing)} description={t(($) => $.closeTheCurrentFiscalYear)} />
 
-          <p>{t('The current fiscal year is :year', { year: currentYear })}</p>
-          <p>{t('If you close the current fiscal year, all financial data will be archived and a new fiscal year will be created.')}</p>
-          <p>{t('The next fiscal year will be :year', { year: currentYear + 1 })}</p>
-          <p>{t('This action cannot be undone.')}</p>
+          <p>{t(($) => $.theCurrentFiscalYearIsYear, { year: currentYear })}</p>
+          <p>{t(($) => $.ifYouCloseTheCurrentFiscalYearAllFinancial)}</p>
+          <p>{t(($) => $.theNextFiscalYearWillBeYear, { year: currentYear + 1 })}</p>
+          <p>{t(($) => $.thisActionCannotBeUndone)}</p>
 
           <AlertDialog>
             <AlertDialogTrigger asChild>
-              <Button variant="destructive">{t('Close Fiscal Year')}</Button>
+              <Button variant="destructive">{t(($) => $.closeFiscalYear)}</Button>
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
-                <AlertDialogTitle>{t('Close Fiscal Year')}</AlertDialogTitle>
-                <AlertDialogDescription>{t('Are you sure you want to close the fiscal year? This action cannot be undone.')}</AlertDialogDescription>
+                <AlertDialogTitle>{t(($) => $.closeFiscalYear)}</AlertDialogTitle>
+                <AlertDialogDescription>{t(($) => $.areYouSureYouWantToCloseTheFiscal)}</AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel>{t('Cancel')}</AlertDialogCancel>
+                <AlertDialogCancel>{t(($) => $.cancel)}</AlertDialogCancel>
                 <AlertDialogAction asChild>
                   <Link href={TenantYearEndController.update()} method="post">
-                    {t('Close Fiscal Year')}
+                    {t(($) => $.closeFiscalYear)}
                   </Link>
                 </AlertDialogAction>
               </AlertDialogFooter>

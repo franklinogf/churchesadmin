@@ -7,6 +7,8 @@ namespace App\Models;
 use App\Casts\AsUcWords;
 use App\Models\Scopes\LastnameScope;
 use Carbon\CarbonImmutable;
+use Database\Factories\VisitFactory;
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -38,7 +40,7 @@ use Override;
 #[ScopedBy(LastnameScope::class)]
 final class Visit extends Model
 {
-    /** @use HasFactory<\Database\Factories\VisitFactory> */
+    /** @use HasFactory<VisitFactory> */
     use HasFactory, SoftDeletes;
 
     /**
@@ -90,7 +92,8 @@ final class Visit extends Model
      *
      * @param  Builder<$this>  $query
      */
-    protected function scopeWithEmail(Builder $query): void
+    #[Scope]
+    protected function withEmail(Builder $query): void
     {
         $query->whereNotNull('email');
     }

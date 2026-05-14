@@ -8,7 +8,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog';
-import useConfirmationStore from '@/stores/confirmationStore';
+import useConfirmationStore from '@/stores/confirmation-store';
 import { Fragment } from 'react';
 import { buttonVariants } from './ui/button';
 
@@ -33,7 +33,7 @@ const ConfirmationDialog = () => {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>{cancelLabel}</AlertDialogCancel>
-          <AlertDialogAction className={buttonVariants({ variant: actionVariant })} onClick={onAction}>
+          <AlertDialogAction className={buttonVariants({ variant: actionVariant })} onClick={() => onAction?.()}>
             {actionLabel}
           </AlertDialogAction>
         </AlertDialogFooter>

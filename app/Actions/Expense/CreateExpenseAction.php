@@ -52,13 +52,13 @@ final readonly class CreateExpenseAction
                     'note' => $data['note'] ?? null,
                 ]);
             });
-        } catch (QueryException $e) {
-            Log::error('Error creating expense transaction: '.$e->getMessage(), [
+        } catch (QueryException $queryException) {
+            Log::error('Error creating expense transaction: '.$queryException->getMessage(), [
                 'data' => $data,
                 'wallet_id' => $wallet->id,
             ]);
 
-            throw new WalletException('An error occurred while creating the expense', $e->getCode(), $e);
+            throw new WalletException('An error occurred while creating the expense', $queryException->getCode(), $queryException);
         }
     }
 }

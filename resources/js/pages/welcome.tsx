@@ -4,18 +4,18 @@ import type { SharedData } from '@/types';
 import { Head, Link, usePage } from '@inertiajs/react';
 
 import HomeController from '@/actions/App/Http/Controllers/Root/HomeController';
-import { useTranslations } from '@/hooks/use-translations';
 import { DollarSignIcon, GlobeIcon, TvIcon, UsersIcon } from 'lucide-react';
 import { motion } from 'motion/react';
+import { useTranslation } from 'react-i18next';
 
 export const menuItems = [] as const;
 
 export default function Welcome({ demoLink }: { demoLink: string | null }) {
   const { appName } = usePage<SharedData>().props;
-  const { t } = useTranslations();
+  const { t: tPages } = useTranslation('pages');
   return (
     <>
-      <Head title={t('Effortless Church Administration')} />
+      <Head title={tPages(($) => $.welcome.effortlessChurchAdministration)} />
       <main className="bg-white text-black">
         <header className="sticky top-0 z-40 flex h-16 w-full items-center justify-between bg-white px-4 py-2.5 shadow-xl">
           <p className="flex gap-x-1 font-bold">
@@ -49,27 +49,25 @@ export default function Welcome({ demoLink }: { demoLink: string | null }) {
             className="bg-linear-to-r from-blue-50 to-indigo-50 px-6 py-20"
           >
             <div className="mx-auto max-w-4xl text-center">
-              <h2 className="mb-6 text-3xl font-bold text-gray-800">{t('Try ChurchesAdmin Today')}</h2>
-              <p className="mb-8 text-lg text-gray-600">
-                {t('Experience our platform firsthand with our demo church. No signup required - just log in and explore all features.')}
-              </p>
+              <h2 className="mb-6 text-3xl font-bold text-gray-800">{tPages(($) => $.welcome.tryChurchesadminToday)}</h2>
+              <p className="mb-8 text-lg text-gray-600">{tPages(($) => $.welcome.experienceOurPlatformFirsthandWithOurDemoChurchNo)}</p>
 
               <div className="mx-auto max-w-md rounded-lg bg-white p-6 shadow-lg">
-                <h3 className="mb-4 text-xl font-semibold text-gray-800">{t('Demo Login Credentials')}</h3>
+                <h3 className="mb-4 text-xl font-semibold text-gray-800">{tPages(($) => $.welcome.demoLoginCredentials)}</h3>
                 <div className="space-y-3 text-left">
                   <div className="flex justify-between">
-                    <span className="font-medium text-gray-600">{t('Email:')}</span>
+                    <span className="font-medium text-gray-600">{tPages(($) => $.welcome.email)}</span>
                     <span className="font-mono text-gray-800">admin@churchesadministration.com</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="font-medium text-gray-600">{t('Password:')}</span>
+                    <span className="font-medium text-gray-600">{tPages(($) => $.welcome.password)}</span>
                     <span className="font-mono text-gray-800">Password123</span>
                   </div>
                 </div>
                 <div className="mt-6">
                   <Button variant="brand" className="w-full">
                     <a href={demoLink} target="_blank" rel="noopener noreferrer">
-                      {t('Access Demo Church')}
+                      {tPages(($) => $.welcome.accessDemoChurch)}
                     </a>
                   </Button>
                 </div>
@@ -85,13 +83,9 @@ export default function Welcome({ demoLink }: { demoLink: string | null }) {
         >
           <div className="my-2 flex flex-col items-center">
             <h1 className="my-2 w-2xl text-center text-5xl font-semibold">
-              {t('Effortless Church')} <span className="text-brand">{t('Administration')}</span>
+              {tPages(($) => $.welcome.effortlessChurch)} <span className="text-brand">{tPages(($) => $.welcome.administration)}</span>
             </h1>
-            <p className="max-w-2xl py-10 text-center text-lg">
-              {t(
-                'ChurchesAdmin helps you manage your church with ease, while also keeping track of offerings, members and missionaries - all in one beautiful dashboard.',
-              )}
-            </p>
+            <p className="max-w-2xl py-10 text-center text-lg">{tPages(($) => $.welcome.churchesadminHelpsYouManageYourChurchWithEaseWhile)}</p>
 
             <CtaButton />
           </div>
@@ -102,20 +96,20 @@ export default function Welcome({ demoLink }: { demoLink: string | null }) {
           <div className="mx-auto grid max-w-5xl gap-10 text-center md:grid-cols-3">
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}>
               <DollarSignIcon className="text-brand mx-auto mb-4" size={32} />
-              <h3 className="mb-2 text-xl font-semibold">{t('Clergy Payroll Made Easy')}</h3>
-              <p className="text-gray-600">{t('Handle housing allowances, tax complexities, and direct deposits - all automated and accurate.')}</p>
+              <h3 className="mb-2 text-xl font-semibold">{tPages(($) => $.welcome.clergyPayrollMadeEasy)}</h3>
+              <p className="text-gray-600">{tPages(($) => $.welcome.handleHousingAllowancesTaxComplexitiesAndDirectDepositsAll)}</p>
             </motion.div>
 
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}>
               <UsersIcon className="text-brand mx-auto mb-4" size={32} />
-              <h3 className="mb-2 text-xl font-semibold">{t('Member Management')}</h3>
-              <p className="text-gray-600">{t('Keep detailed records, contact info, and family ties for every member of your congregation.')}</p>
+              <h3 className="mb-2 text-xl font-semibold">{tPages(($) => $.welcome.memberManagement)}</h3>
+              <p className="text-gray-600">{tPages(($) => $.welcome.keepDetailedRecordsContactInfoAndFamilyTiesFor)}</p>
             </motion.div>
 
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }}>
               <GlobeIcon className="text-brand mx-auto mb-4" size={32} />
-              <h3 className="mb-2 text-xl font-semibold">{t('Missionary Oversight')}</h3>
-              <p className="text-gray-600">{t('Track assignments, support levels, communication logs, and prayer requests with ease.')}</p>
+              <h3 className="mb-2 text-xl font-semibold">{tPages(($) => $.welcome.missionaryOversight)}</h3>
+              <p className="text-gray-600">{tPages(($) => $.welcome.trackAssignmentsSupportLevelsCommunicationLogsAndPrayerRequests)}</p>
             </motion.div>
           </div>
         </section>
@@ -128,17 +122,17 @@ export default function Welcome({ demoLink }: { demoLink: string | null }) {
           transition={{ duration: 0.5 }}
           className="px-6 py-20 text-center"
         >
-          <h2 className="mb-10 text-3xl font-bold">{t('What Pastors Are Saying')}</h2>
+          <h2 className="mb-10 text-3xl font-bold">{tPages(($) => $.welcome.whatPastorsAreSaying)}</h2>
           <div className="mx-auto max-w-3xl space-y-10">
             <blockquote className="text-gray-700 italic">
-              {t('ChurchesAdmin gave us peace of mind. Payroll is no longer a burden, and our team finally has time to focus on ministry.”')}
+              {tPages(($) => $.welcome.churchesadminGaveUsPeaceOfMindPayrollIsNo)}
               <br />
-              <span className="mt-3 block font-semibold">- {t('Pastor Maria, Lighthouse Church')}</span>
+              <span className="mt-3 block font-semibold">- {tPages(($) => $.welcome.pastorMariaLighthouseChurch)}</span>
             </blockquote>
             <blockquote className="text-gray-700 italic">
-              {t("“I love how we can manage both members and missionaries from the same place. It's truly built for the church.”")}
+              {tPages(($) => $.welcome.iLoveHowWeCanManageBothMembersAndMissionaries)}
               <br />
-              <span className="mt-3 block font-semibold">- {t('Rev. Daniel, Hope Mission Center')}</span>
+              <span className="mt-3 block font-semibold">- {tPages(($) => $.welcome.revDanielHopeMissionCenter)}</span>
             </blockquote>
           </div>
         </motion.section>
@@ -151,17 +145,19 @@ export default function Welcome({ demoLink }: { demoLink: string | null }) {
           transition={{ duration: 0.6 }}
           className="bg-brand/10 px-6 py-24 text-center"
         >
-          <h2 className="mb-4 text-3xl font-bold">{t('Ready to See ChurchesAdmin in Action?')}</h2>
-          <p className="mb-6 text-lg">{t("Let us walk you through how ChurchesAdmin can serve your ministry's needs.")}</p>
+          <h2 className="mb-4 text-3xl font-bold">{tPages(($) => $.welcome.readyToSeeChurchesadminInAction)}</h2>
+          <p className="mb-6 text-lg">{tPages(($) => $.welcome.letUsWalkYouThroughHowChurchesadminCanServe)}</p>
           <CtaButton />
         </motion.section>
 
         {/* Footer */}
         <footer className="px-6 py-10 text-center text-sm text-gray-500">
           <div>
-            <p>{t('Contact us: :email | :phone', { email: 'support@churchesadministration.com', phone: '689-338-5438 (5435) (5431)' })}</p>
             <p>
-              &copy; {new Date().getFullYear()} {t('ChurchesAdmin. All rights reserved.')}
+              {tPages(($) => $.welcome.contactUsEmailPhone, { email: 'support@churchesadministration.com', phone: '689-338-5438 (5435) (5431)' })}
+            </p>
+            <p>
+              &copy; {new Date().getFullYear()} {tPages(($) => $.welcome.churchesadminAllRightsReserved)}
             </p>
           </div>
         </footer>
@@ -171,11 +167,11 @@ export default function Welcome({ demoLink }: { demoLink: string | null }) {
 }
 
 function CtaButton() {
-  const { t } = useTranslations();
+  const { t: tPages } = useTranslation('pages');
   return (
     <Button variant="brand">
       <Link href={HomeController()} prefetch>
-        {t('Schedule a demo')}
+        {tPages(($) => $.welcome.scheduleADemo)}
       </Link>
     </Button>
   );

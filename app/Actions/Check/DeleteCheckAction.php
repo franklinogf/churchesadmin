@@ -15,6 +15,7 @@ final class DeleteCheckAction
             $wallet = $check->transaction->wallet;
             $check->transaction->forceDelete();
             $check->delete();
+
             $wallet->refreshBalance();
         });
     }

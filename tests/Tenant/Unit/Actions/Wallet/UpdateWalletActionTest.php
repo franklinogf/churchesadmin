@@ -114,6 +114,7 @@ it('can update existing initial balance', function (): void {
 
     // Create initial transaction
     $wallet->depositFloat('50.00', ['type' => TransactionMetaType::INITIAL->value], true);
+
     expect($wallet->balanceFloat)->toBe('50.00');
 
     $data = [
@@ -135,6 +136,7 @@ it('can remove initial balance by setting to null', function (): void {
 
     // Create initial transaction
     $wallet->depositFloat('50.00', ['type' => TransactionMetaType::INITIAL->value], true);
+
     expect($wallet->balanceFloat)->toBe('50.00');
 
     $data = [

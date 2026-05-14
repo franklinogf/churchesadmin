@@ -8,6 +8,7 @@ use App\Models\Scopes\CurrentYearScope;
 use App\Observers\TransactionalObserver;
 use Bavix\Wallet\Models\Transaction;
 use Carbon\CarbonImmutable;
+use Database\Factories\ExpenseFactory;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -33,7 +34,7 @@ use Override;
 #[ObservedBy([TransactionalObserver::class])]
 final class Expense extends Model
 {
-    /** @use HasFactory<\Database\Factories\ExpenseFactory> */
+    /** @use HasFactory<ExpenseFactory> */
     use HasFactory;
 
     /**

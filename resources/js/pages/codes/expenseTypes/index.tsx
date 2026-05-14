@@ -1,25 +1,28 @@
-import { DataTable } from '@/components/custom-ui/datatable/data-table';
+import Datatable from '@/components/datatable/datatable';
 import { ExpenseTypeForm } from '@/components/forms/expense-type-form';
 import { PageTitle } from '@/components/PageTitle';
 import { Button } from '@/components/ui/button';
-import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import type { ExpenseType } from '@/types/models/expense-type';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { columns } from './includes/columns';
 
 export default function ExpenseTypesIndex({ expenseTypes }: { expenseTypes: ExpenseType[] }) {
-  const { t } = useTranslations();
+  const { t: tPages } = useTranslation('pages');
   const [open, setOpen] = useState(false);
   return (
-    <AppLayout title={t('Expense types')} breadcrumbs={[{ title: t('Expense types') }]}>
-      <PageTitle>{t('Expense types')}</PageTitle>
+    <AppLayout
+      title={tPages(($) => $.codes.expenseTypes.index.expenseTypes)}
+      breadcrumbs={[{ title: tPages(($) => $.codes.expenseTypes.index.expenseTypes) }]}
+    >
+      <PageTitle>{tPages(($) => $.codes.expenseTypes.index.expenseTypes)}</PageTitle>
       <ExpenseTypeForm open={open} setOpen={setOpen} />
       <div className="mx-auto w-full max-w-xl">
-        <DataTable
-          headerButton={
+        <Datatable
+          renderLeftTop={
             <Button size="sm" onClick={() => setOpen(true)}>
-              {t('Add :model', { model: t('Expense type') })}
+              {tPages(($) => $.codes.expenseTypes.index.addModel, { model: tPages(($) => $.codes.expenseTypes.index.expenseType) })}
             </Button>
           }
           data={expenseTypes}

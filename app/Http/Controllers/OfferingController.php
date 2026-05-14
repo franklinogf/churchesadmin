@@ -29,6 +29,8 @@ use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 use Inertia\Response;
 
+use function is_null;
+
 final class OfferingController extends Controller
 {
     /**
@@ -128,8 +130,8 @@ final class OfferingController extends Controller
                     ]);
                 }
             });
-        } catch (WalletException $e) {
-            return back()->with(FlashMessageKey::ERROR->value, $e->getMessage());
+        } catch (WalletException $walletException) {
+            return back()->with(FlashMessageKey::ERROR->value, $walletException->getMessage());
         }
 
         return to_route('offerings.index')->with(
@@ -197,8 +199,8 @@ final class OfferingController extends Controller
         $validated = $request->validated();
         try {
             $action->handle($offering, $validated);
-        } catch (WalletException $e) {
-            return back()->with(FlashMessageKey::ERROR->value, $e->getMessage());
+        } catch (WalletException $walletException) {
+            return back()->with(FlashMessageKey::ERROR->value, $walletException->getMessage());
         }
 
         return to_route('offerings.index')->with(
@@ -216,8 +218,8 @@ final class OfferingController extends Controller
 
         try {
             $action->handle($offering);
-        } catch (WalletException $e) {
-            return back()->with(FlashMessageKey::ERROR->value, $e->getMessage());
+        } catch (WalletException $walletException) {
+            return back()->with(FlashMessageKey::ERROR->value, $walletException->getMessage());
         }
 
         return to_route('offerings.index')->with(

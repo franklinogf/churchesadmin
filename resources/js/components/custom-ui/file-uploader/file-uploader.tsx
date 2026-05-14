@@ -1,4 +1,3 @@
-import { useTranslations } from '@/hooks/use-translations';
 import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size';
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation';
@@ -6,6 +5,7 @@ import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css';
 import 'filepond/dist/filepond.min.css';
 import { FilePond, registerPlugin } from 'react-filepond';
+import { useTranslation } from 'react-i18next';
 
 // Register the plugins
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview, FilePondPluginFileValidateSize, FilePondPluginFileValidateType);
@@ -106,8 +106,7 @@ export function FileUploader({
   initialFiles,
   allowImagePreview = false,
 }: FileUploaderProps) {
-  const { tChoice, t } = useTranslations();
-
+  const { t: tCommon } = useTranslation('common');
   const acceptedFileTypes = acceptedFiles?.flatMap((fileType) => fileTypeMap[fileType as FileTypeName] ?? fileType) ?? undefined;
 
   return (
@@ -127,13 +126,13 @@ export function FileUploader({
         allowMultiple={allowMultiple}
         maxFiles={maxFiles}
         name={name}
-        labelIdle={labelIdle ?? tChoice('file_uploader.idle', allowMultiple ? maxFiles : 1)}
-        labelMaxFileSize={t('file_uploader.file_size.title')}
-        labelMaxFileSizeExceeded={t('file_uploader.file_size.exceeded')}
-        labelMaxTotalFileSize={t('file_uploader.file_size.total.title')}
-        labelMaxTotalFileSizeExceeded={t('file_uploader.file_size.total.exceeded')}
-        labelFileTypeNotAllowed={t('file_uploader.file_type.not_allowed')}
-        fileValidateTypeLabelExpectedTypes={tChoice('file_uploader.file_type.allowed', acceptedFileTypes?.length ?? 1)}
+        labelIdle={labelIdle ?? tCommon(($) => $.fileUploader.idle, { count: allowMultiple ? maxFiles : 1 })}
+        labelMaxFileSize={tCommon(($) => $.fileUploader.fileSize.title)}
+        labelMaxFileSizeExceeded={tCommon(($) => $.fileUploader.fileSize.exceeded)}
+        labelMaxTotalFileSize={tCommon(($) => $.fileUploader.fileSize.total.title)}
+        labelMaxTotalFileSizeExceeded={tCommon(($) => $.fileUploader.fileSize.total.exceeded)}
+        labelFileTypeNotAllowed={tCommon(($) => $.fileUploader.fileType.notAllowed)}
+        fileValidateTypeLabelExpectedTypes={tCommon(($) => $.fileUploader.fileType.allowed, { count: acceptedFileTypes?.length ?? 1 })}
         fileValidateTypeLabelExpectedTypesMap={fileExpectedTypesMap}
         credits={false}
       />

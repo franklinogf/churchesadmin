@@ -9,12 +9,12 @@ use App\Enums\MediaCollectionName;
 use App\Enums\ModelMorphName;
 use App\Exceptions\EmailException;
 use App\Models\Email;
-use App\Models\Member;
-use App\Models\Missionary;
 use App\Models\TenantUser;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+
+use function count;
 
 final class CreateEmailAction
 {
@@ -60,15 +60,15 @@ final class CreateEmailAction
 
                 return $email;
             });
-        } catch (EmailException $e) {
+        } catch (EmailException $emailException) {
             Log::error('Error creating email', [
-                'error' => $e->getMessage(),
+                'error' => $emailException->getMessage(),
                 'user_id' => $user->id,
                 'subject' => $data['subject'],
                 'recipients_type' => $recipientType->value,
                 'recipients_count' => count($recipientIds),
             ]);
-            throw $e;
+            throw $emailException;
         }
     }
 

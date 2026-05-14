@@ -18,6 +18,7 @@ final class CloseYearAction
         DB::transaction(function (): void {
             $currentYear = CurrentYear::current();
             $currentYear->update(['is_current' => false]);
+
             $nextYearNumber = (int) $currentYear->year + 1;
 
             $nextYear = CurrentYear::query()

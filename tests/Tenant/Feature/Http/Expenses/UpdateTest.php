@@ -40,6 +40,7 @@ describe('if user has permission', function (): void {
     it('can update an expense', function (): void {
         $wallet = ChurchWallet::factory()->create();
         $wallet->depositFloat('500.00');
+
         $expenseType = ExpenseType::factory()->create();
 
         // Create an expense with the factory

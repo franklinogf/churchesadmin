@@ -8,11 +8,11 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useLocaleDate } from '@/hooks/use-locale-date';
-import { useTranslations } from '@/hooks/use-translations';
 import { parseLocalDate } from '@/lib/datetime';
 import { format } from 'date-fns';
 import { ChevronDownIcon } from 'lucide-react';
 import { useId, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 interface DatetimeFieldProps {
   error?: string;
@@ -68,7 +68,7 @@ export function DatetimeField({
   defaultValue,
 }: DatetimeFieldProps) {
   const { getCurrentDateLocale } = useLocaleDate();
-  const { t } = useTranslations();
+  const { t: tCommon } = useTranslation('common');
   const dateId = useId();
   const timeId = useId();
   const [open, setOpen] = useState(false);
@@ -114,7 +114,9 @@ export function DatetimeField({
           <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
               <Button variant="outline" id={dateId} className="w-full justify-between font-normal">
-                {value ? format(value, 'PPP', { locale: getCurrentDateLocale() }) : t('Select a date')}
+                {value
+                  ? format(value, 'PPP', { locale: getCurrentDateLocale() })
+                  : tCommon(($) => $.components.forms.inputs.DatetimeField.selectADate)}
                 <ChevronDownIcon />
               </Button>
             </PopoverTrigger>

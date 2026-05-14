@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Casts\AsUcWords;
 use Carbon\CarbonImmutable;
+use Database\Factories\OfferingTypeFactory;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -21,7 +22,7 @@ use Override;
  */
 final class OfferingType extends Model
 {
-    /** @use HasFactory<\Database\Factories\OfferingTypeFactory> */
+    /** @use HasFactory<OfferingTypeFactory> */
     use HasFactory;
 
     /**

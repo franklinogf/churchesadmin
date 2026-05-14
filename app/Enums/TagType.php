@@ -10,6 +10,7 @@ use App\Enums\Traits\HasOptions;
 enum TagType: string
 {
     use EnumToArray, HasOptions;
+
     case SKILL = 'skill';
 
     case CATEGORY = 'category';

@@ -34,6 +34,7 @@ final class CreateUserAction
                 $user->givePermissionTo($permissions);
                 $logger->addCustom('permissions', null, $permissions);
             }
+
             activity(ModelMorphName::USER->activityLogName())
                 ->event('created')
                 ->performedOn($user)

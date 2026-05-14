@@ -15,7 +15,6 @@ import { PageTitle } from '@/components/PageTitle';
 import { Separator } from '@/components/ui/separator';
 import { CivilStatus } from '@/enums/CivilStatus';
 import { Gender } from '@/enums/Gender';
-import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import { getMultiselecOptionsLabels } from '@/lib/mutliselect';
 import type { BreadcrumbItem, SelectOption } from '@/types';
@@ -24,6 +23,7 @@ import type { Tag } from '@/types/models/tag';
 import type { Visit } from '@/types/models/visit';
 import { useForm } from '@inertiajs/react';
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 type CreateForm = {
   name: string;
@@ -48,7 +48,7 @@ interface CreatePageProps {
   visit: Visit | null;
 }
 export default function Create({ genders, civilStatuses, skills, categories, visit }: CreatePageProps) {
-  const { t } = useTranslations();
+  const { t: tPages } = useTranslation('pages');
   const { data, setData, submit, errors, processing, transform } = useForm<CreateForm>({
     visit_id: visit?.id.toString() || null,
     name: visit?.name || '',
@@ -86,48 +86,71 @@ export default function Create({ genders, civilStatuses, skills, categories, vis
       visit
         ? [
             {
-              title: t('Visits'),
+              title: tPages(($) => $.main.members.create.visits),
               href: VisitController.index().url,
             },
             { title: visit.name, href: VisitFollowUpController.index(visit.id).url },
-            { title: t('Transfer to member') },
+            { title: tPages(($) => $.main.members.create.transferToMember) },
           ]
         : [
             {
-              title: t('Members'),
+              title: tPages(($) => $.main.members.create.members),
               href: MemberController.index().url,
             },
             {
-              title: t('Add :model', { model: t('Member') }),
+              title: tPages(($) => $.main.members.create.addModel, { model: tPages(($) => $.main.members.create.member) }),
             },
           ],
-    [t, visit],
+    [tPages, visit],
   );
 
   return (
-    <AppLayout breadcrumbs={breadcrumbs} title={t('Members')}>
-      <PageTitle>{t('Add :model', { model: t('Member') })}</PageTitle>
+    <AppLayout breadcrumbs={breadcrumbs} title={tPages(($) => $.main.members.create.members)}>
+      <PageTitle>{tPages(($) => $.main.members.create.addModel, { model: tPages(($) => $.main.members.create.member) })}</PageTitle>
       <div className="mt-2 flex items-center justify-center">
         <Form isSubmitting={processing} className="w-full max-w-2xl" onSubmit={handleSubmit}>
           <FieldError error={errors.visit_id} />
-          <InputField required label={t('Name')} value={data.name} onChange={(value) => setData('name', value)} error={errors.name} />
           <InputField
             required
-            label={t('Last Name')}
+            label={tPages(($) => $.main.members.create.name)}
+            value={data.name}
+            onChange={(value) => setData('name', value)}
+            error={errors.name}
+          />
+          <InputField
+            required
+            label={tPages(($) => $.main.members.create.lastName)}
             value={data.last_name}
             onChange={(value) => setData('last_name', value)}
             error={errors.last_name}
           />
           <FieldsGrid>
-            <InputField label={t('Email')} type="email" value={data.email} onChange={(value) => setData('email', value)} error={errors.email} />
-            <PhoneField label={t('Phone')} value={data.phone} onChange={(value) => setData('phone', value)} error={errors.phone} />
+            <InputField
+              label={tPages(($) => $.main.members.create.email)}
+              type="email"
+              value={data.email}
+              onChange={(value) => setData('email', value)}
+              error={errors.email}
+            />
+            <PhoneField
+              label={tPages(($) => $.main.members.create.phone)}
+              value={data.phone}
+              onChange={(value) => setData('phone', value)}
+              error={errors.phone}
+            />
           </FieldsGrid>
-
-          <DateField maxDate="today" label={t('Date of birth')} value={data.dob} onChange={(value) => setData('dob', value)} error={errors.dob} />
 
           <DateField
             maxDate="today"
-            label={t('Baptism date')}
+            label={tPages(($) => $.main.members.create.dateOfBirth)}
+            value={data.dob}
+            onChange={(value) => setData('dob', value)}
+            error={errors.dob}
+          />
+
+          <DateField
+            maxDate="today"
+            label={tPages(($) => $.main.members.create.baptismDate)}
             value={data.baptism_date}
             onChange={(value) => setData('baptism_date', value)}
             error={errors.baptism_date}
@@ -136,7 +159,7 @@ export default function Create({ genders, civilStatuses, skills, categories, vis
           <FieldsGrid>
             <SelectField
               required
-              label={t('Gender')}
+              label={tPages(($) => $.main.members.create.gender)}
               value={data.gender}
               onValueChange={(value) => setData('gender', value)}
               options={genders}
@@ -144,7 +167,7 @@ export default function Create({ genders, civilStatuses, skills, categories, vis
             />
             <SelectField
               required
-              label={t('Civil status')}
+              label={tPages(($) => $.main.members.create.civilStatus)}
               value={data.civil_status}
               onValueChange={(value) => setData('civil_status', value)}
               options={civilStatuses}
@@ -154,14 +177,14 @@ export default function Create({ genders, civilStatuses, skills, categories, vis
 
           <FieldsGrid>
             <MultiSelectField
-              label={t('Skills')}
+              label={tPages(($) => $.main.members.create.skills)}
               value={data.skills}
               onChange={(value) => setData('skills', value)}
               options={skills}
               error={errors.skills}
             />
             <MultiSelectField
-              label={t('Categories')}
+              label={tPages(($) => $.main.members.create.categories)}
               value={data.categories}
               onChange={(value) => setData('categories', value)}
               options={categories}

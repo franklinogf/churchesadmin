@@ -8,11 +8,11 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { FieldGroup } from '@/components/ui/field';
 import { CalendarEventColorEnum } from '@/enums/CalendarEventColorEnum';
-import { useTranslations } from '@/hooks/use-translations';
 import type { CalendarEvent } from '@/types/models/calendar-event';
 import { useForm } from '@inertiajs/react';
 import { addMinutes, isToday, startOfDay } from 'date-fns';
 import { useCallback, useEffect, type SubmitEvent } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useCalendarContext } from '../calendar-context';
 interface CalendarForm {
   title: string;
@@ -23,7 +23,7 @@ interface CalendarForm {
   color: CalendarEventColorEnum;
 }
 export default function CalendarNewEventDialog() {
-  const { t } = useTranslations();
+  const { t: tCommon } = useTranslation('common');
   const { newEventDialogOpen, setNewEventDialogOpen, date, setEvents } = useCalendarContext();
 
   const { data, setData, reset, submit, setDefaults, errors, processing } = useForm<CalendarForm>({
@@ -69,7 +69,7 @@ export default function CalendarNewEventDialog() {
     <Dialog open={newEventDialogOpen} onOpenChange={handleClose}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>{t('Create event')}</DialogTitle>
+          <DialogTitle>{tCommon(($) => $.components.calendar.dialog.calendarNewEventDialog.createEvent)}</DialogTitle>
           <DialogDescription hidden />
         </DialogHeader>
 
@@ -77,21 +77,21 @@ export default function CalendarNewEventDialog() {
           <FieldGroup>
             <InputField
               required
-              label={t('Title')}
+              label={tCommon(($) => $.components.calendar.dialog.calendarNewEventDialog.title)}
               name="title"
               value={data.title}
               onChange={(value) => setData('title', value)}
               error={errors.title}
             />
             <InputField
-              label={t('Location')}
+              label={tCommon(($) => $.components.calendar.dialog.calendarNewEventDialog.location)}
               name="location"
               value={data.location}
               onChange={(value) => setData('location', value)}
               error={errors.location}
             />
             <TextareaField
-              label={t('Description')}
+              label={tCommon(($) => $.components.calendar.dialog.calendarNewEventDialog.description)}
               name="description"
               value={data.description}
               onChange={(e) => setData('description', e.target.value)}
@@ -100,7 +100,7 @@ export default function CalendarNewEventDialog() {
             <DatetimeField
               required
               presetHours
-              label={t('Start at')}
+              label={tCommon(($) => $.components.calendar.dialog.calendarNewEventDialog.startAt)}
               value={data.start_at}
               onChange={(value) => value && setData('start_at', value)}
               error={errors.start_at}
@@ -108,7 +108,7 @@ export default function CalendarNewEventDialog() {
             <DatetimeField
               required
               presetHours
-              label={t('End at')}
+              label={tCommon(($) => $.components.calendar.dialog.calendarNewEventDialog.endAt)}
               value={data.end_at}
               onChange={(value) => value && setData('end_at', value)}
               error={errors.end_at}
@@ -117,10 +117,12 @@ export default function CalendarNewEventDialog() {
             <FieldGroup className="flex-row justify-end">
               <DialogClose asChild>
                 <Button variant="outline" type="button">
-                  {t('Cancel')}
+                  {tCommon(($) => $.components.calendar.dialog.calendarNewEventDialog.cancel)}
                 </Button>
               </DialogClose>
-              <SubmitButton isSubmitting={processing}>{t('Create Event')}</SubmitButton>
+              <SubmitButton isSubmitting={processing}>
+                {tCommon(($) => $.components.calendar.dialog.calendarNewEventDialog.createEvent2)}
+              </SubmitButton>
             </FieldGroup>
           </FieldGroup>
         </form>

@@ -13,7 +13,6 @@ use App\Jobs\Email\SendEmailJob;
 use App\Models\Email;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 final class EmailRetryController extends Controller
 {

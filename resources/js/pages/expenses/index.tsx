@@ -1,12 +1,12 @@
-import { DataTable } from '@/components/custom-ui/datatable/data-table';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 
 import ExpenseController from '@/actions/App/Http/Controllers/ExpenseController';
+import Datatable from '@/components/datatable/datatable';
 import { PageTitle } from '@/components/PageTitle';
-import { useTranslations } from '@/hooks/use-translations';
 import type { Expense } from '@/types/models/expense';
 import { Link } from '@inertiajs/react';
+import { useTranslation } from 'react-i18next';
 import { columns } from './includes/columns';
 
 interface IndexPageProps {
@@ -14,14 +14,16 @@ interface IndexPageProps {
 }
 
 export default function Index({ expenses }: IndexPageProps) {
-  const { t } = useTranslations();
+  const { t: tPages } = useTranslation('pages');
   return (
-    <AppLayout title={t('Expenses')} breadcrumbs={[{ title: t('Expenses') }]}>
-      <PageTitle>{t('Expenses')}</PageTitle>
-      <DataTable
-        headerButton={
+    <AppLayout title={tPages(($) => $.expenses.index.expenses)} breadcrumbs={[{ title: tPages(($) => $.expenses.index.expenses) }]}>
+      <PageTitle>{tPages(($) => $.expenses.index.expenses)}</PageTitle>
+      <Datatable
+        renderLeftTop={
           <Button asChild>
-            <Link href={ExpenseController.create()}>{t('New :model', { model: t('Expense') })}</Link>
+            <Link href={ExpenseController.create()}>
+              {tPages(($) => $.expenses.index.newModel, { model: tPages(($) => $.expenses.index.expense) })}
+            </Link>
           </Button>
         }
         data={expenses}

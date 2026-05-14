@@ -1,9 +1,9 @@
 import { usePdfGenerator } from '@/contexts/pdf-generator-context';
-import { useTranslations } from '@/hooks/use-translations';
 import { Loader2Icon } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export function PdfPreview({ route }: { route: string }) {
-  const { t } = useTranslations();
+  const { t: tPages } = useTranslation('pages');
   const { isLoading, setIsLoading } = usePdfGenerator();
 
   return (
@@ -11,7 +11,7 @@ export function PdfPreview({ route }: { route: string }) {
       {isLoading && (
         <div className="absolute inset-0 z-10 flex flex-col items-center justify-center rounded-lg bg-white/90">
           <Loader2Icon className="animate-spin text-gray-500" size={24} />
-          <span className="text-gray-600">{t('Loading preview')}</span>
+          <span className="text-gray-600">{tPages(($) => $.reports.components.pdfPreview.loadingPreview)}</span>
         </div>
       )}
       <iframe className="h-full w-full rounded-lg border" src={route} onLoad={() => setIsLoading(false)} />

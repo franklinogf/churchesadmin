@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Actions\Missionary\ForceDeleteMissionaryAction;
+use App\Models\Address;
 use App\Models\Missionary;
 
 it('can permanently delete a missionary', function (): void {
@@ -55,5 +56,5 @@ it('can permanently delete missionary with address', function (): void {
         ->and(Missionary::withTrashed()->find($missionaryId))->toBeNull();
 
     // Address should be deleted through cascade
-    expect(App\Models\Address::find($addressId))->toBeNull();
+    expect(Address::find($addressId))->toBeNull();
 });

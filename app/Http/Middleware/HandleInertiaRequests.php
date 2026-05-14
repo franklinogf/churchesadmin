@@ -23,6 +23,7 @@ final class HandleInertiaRequests extends Middleware
      *
      * @var string
      */
+    #[Override]
     protected $rootView = 'app';
 
     /**
@@ -93,6 +94,7 @@ final class HandleInertiaRequests extends Middleware
         if (! $church instanceof Church) {
             return [];
         }
+
         /**
          * @var array<string,bool>
          */

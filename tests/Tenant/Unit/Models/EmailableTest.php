@@ -8,6 +8,7 @@ use App\Models\Emailable;
 use App\Models\Member;
 use App\Models\Missionary;
 use Carbon\CarbonImmutable;
+use Illuminate\Database\Eloquent\Relations\MorphPivot;
 
 test('to array', function (): void {
     $emailable = Emailable::factory()->create()->fresh();
@@ -69,7 +70,7 @@ it('can have missionary as recipient', function (): void {
 it('extends morph pivot', function (): void {
     $emailable = Emailable::factory()->create();
 
-    expect($emailable)->toBeInstanceOf(Illuminate\Database\Eloquent\Relations\MorphPivot::class);
+    expect($emailable)->toBeInstanceOf(MorphPivot::class);
 });
 
 it('has auto incrementing ids', function (): void {

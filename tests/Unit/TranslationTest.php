@@ -33,6 +33,7 @@ it('has :dataset counterparts for all English translations keys (php files)', fu
             );
         }
     }
+
     expect($errors)->toBeEmpty(
         "\n\nTranslation issues found in PHP files:\n\n".implode("\n\n", $errors)
     );

@@ -1,6 +1,6 @@
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from '@/components/ui/chart';
-import { useTranslations } from '@/hooks/use-translations';
 import { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from 'recharts';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
@@ -15,7 +15,8 @@ export type WalletsChart = {
 export function WalletsChart({ data }: { data: WalletsChart[] }) {
   const wallets = new Set(data.map((item) => item.wallet));
   const [selectedWallet, setSelectedWallet] = useState<string | null>([...wallets][0] || null);
-  const { t } = useTranslations();
+  const { t: tCommon } = useTranslation('common');
+  const { t: tEnum } = useTranslation('enum');
   const chartConfig = useMemo(
     () => ({
       deposits: {
@@ -44,7 +45,7 @@ export function WalletsChart({ data }: { data: WalletsChart[] }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{t('Wallets by month')}</CardTitle>
+        <CardTitle>{tCommon(($) => $.components.charts.walletsChart.walletsByMonth)}</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="mb-4 flex flex-wrap items-center justify-start">
@@ -66,7 +67,7 @@ export function WalletsChart({ data }: { data: WalletsChart[] }) {
             <XAxis type="category" dataKey="month" tickLine={false} tickMargin={10} axisLine={false} tickFormatter={(value) => value.slice(0, 3)} />
             <ChartTooltip cursor={false} content={<ChartTooltipContent indicator="line" />} />
             <Bar
-              name={`${t('enum.transaction_type.deposit')}`}
+              name={`${tEnum(($) => $.transactionType.deposit)}`}
               dataKey={`${selectedWallet}_deposits`}
               fill={'var(--color-deposits)'}
               radius={[0, 0, 2, 2]}
@@ -77,7 +78,7 @@ export function WalletsChart({ data }: { data: WalletsChart[] }) {
               fill={'var(--color-withdrawals)'}
               radius={[2, 2, 0, 0]}
               stackId="a"
-              name={`${t('enum.transaction_type.withdraw')}`}
+              name={`${tEnum(($) => $.transactionType.withdraw)}`}
             />
           </BarChart>
         </ChartContainer>

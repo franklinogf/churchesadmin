@@ -10,6 +10,7 @@ use App\Enums\Traits\HasOptions;
 enum CivilStatus: string
 {
     use EnumToArray, HasOptions;
+
     case SINGLE = 'single';
     case MARRIED = 'married';
     case DIVORCED = 'divorced';

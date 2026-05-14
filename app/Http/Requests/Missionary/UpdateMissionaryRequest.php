@@ -6,13 +6,17 @@ namespace App\Http\Requests\Missionary;
 
 use App\Enums\Gender;
 use App\Enums\OfferingFrequency;
+use App\Models\Missionary;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 
+use function array_key_exists;
+
 /**
- * @property-read \App\Models\Missionary $missionary
+ * @property-read Missionary $missionary
  */
 final class UpdateMissionaryRequest extends FormRequest
 {
@@ -27,7 +31,7 @@ final class UpdateMissionaryRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {

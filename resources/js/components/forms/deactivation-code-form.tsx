@@ -2,9 +2,9 @@ import DeactivationCodeController from '@/actions/App/Http/Controllers/Deactivat
 import { InputField } from '@/components/forms/inputs/InputField';
 import { ResponsiveModal, ResponsiveModalFooterSubmit } from '@/components/responsive-modal';
 import { FieldGroup } from '@/components/ui/field';
-import { useTranslations } from '@/hooks/use-translations';
 import { type DeactivationCode } from '@/types/models/deactivation-code';
 import { Form } from '@inertiajs/react';
+import { useTranslation } from 'react-i18next';
 
 export function DeactivationCodeForm({
   deactivationCode,
@@ -15,13 +15,20 @@ export function DeactivationCodeForm({
   open: boolean;
   setOpen: (open: boolean) => void;
 }) {
-  const { t } = useTranslations();
-
+  const { t: tCommon } = useTranslation('common');
   return (
     <ResponsiveModal
       open={open}
       setOpen={setOpen}
-      title={deactivationCode ? t('Edit :model', { model: t('Deactivation code') }) : t('Add :model', { model: t('Deactivation code') })}
+      title={
+        deactivationCode
+          ? tCommon(($) => $.components.forms.deactivationCodeForm.editModel, {
+              model: tCommon(($) => $.components.forms.deactivationCodeForm.deactivationCode),
+            })
+          : tCommon(($) => $.components.forms.deactivationCodeForm.addModel, {
+              model: tCommon(($) => $.components.forms.deactivationCodeForm.deactivationCode),
+            })
+      }
     >
       <Form
         disableWhileProcessing
@@ -32,8 +39,14 @@ export function DeactivationCodeForm({
       >
         {({ errors, processing }) => (
           <FieldGroup>
-            <InputField required label={t('Name')} defaultValue={deactivationCode?.name} name="name" error={errors.name} />
-            <ResponsiveModalFooterSubmit isSubmitting={processing} label={t('Save')} />
+            <InputField
+              required
+              label={tCommon(($) => $.components.forms.deactivationCodeForm.name)}
+              defaultValue={deactivationCode?.name}
+              name="name"
+              error={errors.name}
+            />
+            <ResponsiveModalFooterSubmit isSubmitting={processing} label={tCommon(($) => $.components.forms.deactivationCodeForm.save)} />
           </FieldGroup>
         )}
       </Form>

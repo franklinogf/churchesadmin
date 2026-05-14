@@ -8,12 +8,12 @@ import { InputField } from '@/components/forms/inputs/InputField';
 import { SelectField } from '@/components/forms/inputs/SelectField';
 import { PageTitle } from '@/components/PageTitle';
 import { useCurrency } from '@/hooks/use-currency';
-import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import type { SelectOption } from '@/types';
 import type { Check } from '@/types/models/check';
 import { useForm } from '@inertiajs/react';
 import { formatDate } from 'date-fns';
+import { useTranslation } from 'react-i18next';
 
 interface EditPageProps {
   walletOptions: SelectOption[];
@@ -35,7 +35,7 @@ type EditForm = {
 
 export default function ChecksEdit({ walletOptions, memberOptions, checkTypesOptions, expenseTypesOptions, check }: EditPageProps) {
   const { toPositive } = useCurrency();
-  const { t } = useTranslations();
+  const { t: tPages } = useTranslation('pages');
   const { data, setData, submit, errors, processing } = useForm<EditForm>({
     wallet_id: walletOptions[0]?.value.toString() ?? '',
     member_id: memberOptions[0]?.value.toString() ?? '',
@@ -52,10 +52,13 @@ export default function ChecksEdit({ walletOptions, memberOptions, checkTypesOpt
 
   return (
     <AppLayout
-      title={t('Edit :model', { model: t('Check') })}
-      breadcrumbs={[{ title: t('Checks'), href: CheckController.index().url }, { title: t('Edit :model', { model: t('Check') }) }]}
+      title={tPages(($) => $.checks.edit.editModel, { model: tPages(($) => $.checks.edit.check) })}
+      breadcrumbs={[
+        { title: tPages(($) => $.checks.edit.checks), href: CheckController.index().url },
+        { title: tPages(($) => $.checks.edit.editModel, { model: tPages(($) => $.checks.edit.check) }) },
+      ]}
     >
-      <PageTitle>{t('Edit :model', { model: t('Check') })}</PageTitle>
+      <PageTitle>{tPages(($) => $.checks.edit.editModel, { model: tPages(($) => $.checks.edit.check) })}</PageTitle>
 
       <div className="mx-auto mt-4 w-full max-w-2xl">
         <Form onSubmit={handleSubmit} isSubmitting={processing}>
@@ -63,7 +66,7 @@ export default function ChecksEdit({ walletOptions, memberOptions, checkTypesOpt
             <ComboboxField
               required
               value={data.member_id}
-              label={t('Member')}
+              label={tPages(($) => $.checks.edit.member)}
               onChange={(value) => setData('member_id', value)}
               options={memberOptions}
               error={errors.member_id}
@@ -71,7 +74,7 @@ export default function ChecksEdit({ walletOptions, memberOptions, checkTypesOpt
             <ComboboxField
               required
               value={data.expense_type_id}
-              label={t('Expense type')}
+              label={tPages(($) => $.checks.edit.expenseType)}
               onChange={(value) => setData('expense_type_id', value)}
               options={expenseTypesOptions}
               error={errors.expense_type_id}
@@ -80,7 +83,7 @@ export default function ChecksEdit({ walletOptions, memberOptions, checkTypesOpt
           <FieldsGrid>
             <SelectField
               required
-              label={t('Wallet')}
+              label={tPages(($) => $.checks.edit.wallet)}
               value={data.wallet_id}
               onValueChange={(value) => setData('wallet_id', value)}
               options={walletOptions}
@@ -88,7 +91,7 @@ export default function ChecksEdit({ walletOptions, memberOptions, checkTypesOpt
             />
             <SelectField
               required
-              label={t('Type')}
+              label={tPages(($) => $.checks.edit.type)}
               value={data.type}
               onValueChange={(value) => setData('type', value)}
               options={checkTypesOptions}
@@ -96,16 +99,22 @@ export default function ChecksEdit({ walletOptions, memberOptions, checkTypesOpt
             />
           </FieldsGrid>
           <CurrencyField
-            label={t('Amount')}
+            label={tPages(($) => $.checks.edit.amount)}
             required
             value={data.amount}
             onValueChange={(value) => value !== undefined && setData('amount', value)}
             error={errors.amount}
           />
 
-          <DateField required label={t('Date')} value={data.date} onChange={(value) => value && setData('date', value)} error={errors.date} />
+          <DateField
+            required
+            label={tPages(($) => $.checks.edit.date)}
+            value={data.date}
+            onChange={(value) => value && setData('date', value)}
+            error={errors.date}
+          />
 
-          <InputField label={t('Note')} value={data.note} onChange={(value) => setData('note', value)} error={errors.note} />
+          <InputField label={tPages(($) => $.checks.edit.note)} value={data.note} onChange={(value) => setData('note', value)} error={errors.note} />
         </Form>
       </div>
     </AppLayout>

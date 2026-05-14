@@ -1,11 +1,11 @@
-import { DataTable } from '@/components/custom-ui/datatable/data-table';
-import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
+import { useTranslation } from 'react-i18next';
 
 import { Button } from '@/components/ui/button';
 
 import EmailController from '@/actions/App/Http/Controllers/Communication/EmailController';
 import SessionController from '@/actions/App/Http/Controllers/SessionController';
+import Datatable from '@/components/datatable/datatable';
 import { ModelMorphName } from '@/enums/ModelMorphName';
 import { SessionName } from '@/enums/SessionName';
 import type { Missionary } from '@/types/models/missionary';
@@ -18,8 +18,8 @@ interface Props {
 }
 export default function Index({ missionaries }: Props) {
   const [selectedMissionaries, setSelectedMissionaries] = useState<string[]>([]);
-  const { t } = useTranslations();
 
+  const { t: tPages } = useTranslation('pages');
   function handleNewEmail() {
     router.visit(
       SessionController({
@@ -36,16 +36,22 @@ export default function Index({ missionaries }: Props) {
   }
   return (
     <AppLayout
-      title={t('Send email to :name', { name: t('Missionaries') })}
-      breadcrumbs={[{ title: t('Communication') }, { title: t('Emails'), href: EmailController.index().url }, { title: t('Missionaries') }]}
+      title={tPages(($) => $.communication.emails.missionaries.sendEmailToName, {
+        name: tPages(($) => $.communication.emails.missionaries.missionaries),
+      })}
+      breadcrumbs={[
+        { title: tPages(($) => $.communication.emails.missionaries.communication) },
+        { title: tPages(($) => $.communication.emails.missionaries.emails), href: EmailController.index().url },
+        { title: tPages(($) => $.communication.emails.missionaries.missionaries) },
+      ]}
     >
-      <EmailHeader name={t('Missionaries')} />
+      <EmailHeader name={tPages(($) => $.communication.emails.missionaries.missionaries)} />
 
       <div className="mx-auto w-full max-w-2xl">
-        <DataTable
-          headerButton={
+        <Datatable
+          renderLeftTop={
             <Button disabled={selectedMissionaries.length === 0} size="sm" onClick={handleNewEmail}>
-              {t('New :model', { model: t('Email') })}
+              {tPages(($) => $.communication.emails.missionaries.newModel, { model: tPages(($) => $.communication.emails.missionaries.email) })}
             </Button>
           }
           onSelectedRowsChange={setSelectedMissionaries}

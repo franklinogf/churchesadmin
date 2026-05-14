@@ -80,7 +80,7 @@ trait RefreshDatabaseWithTenant
                 }
             } else {
                 // For MySQL or other databases, we drop the database.
-                DB::unprepared("DROP DATABASE IF EXISTS `$dbName`");
+                DB::unprepared("DROP DATABASE IF EXISTS `{$dbName}`");
             }
 
             $storagePath = storage_path(config('tenancy.filesystem.suffix_base')."{$tenantId}");

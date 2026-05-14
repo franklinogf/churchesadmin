@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace App\Http\Resources\Codes;
 
+use App\Models\OfferingType;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Override;
 
 /**
- * @mixin \App\Models\OfferingType
+ * @mixin OfferingType
  */
 final class OfferingTypeResource extends JsonResource
 {

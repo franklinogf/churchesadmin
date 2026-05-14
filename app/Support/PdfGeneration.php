@@ -9,8 +9,8 @@ use App\Enums\PdfGeneratorColumnPosition;
 use App\Enums\PdfGeneratorColumnType;
 use App\Enums\PdfOrientation;
 use Illuminate\Support\Collection;
-use Spatie\LaravelPdf\Enums\Format;
-use Spatie\LaravelPdf\Enums\Orientation;
+
+use function in_array;
 
 final readonly class PdfGeneration
 {
@@ -31,6 +31,7 @@ final readonly class PdfGeneration
         if (! $columns instanceof Collection) {
             $columns = collect($columns);
         }
+
         $this->columnsCollection = $columns->map(function (array $column, string $name): array {
             $column['position'] = isset($column['position']) ? $column['position']->value : PdfGeneratorColumnPosition::LEFT->value;
             $column['type'] = isset($column['type']) ? $column['type']->value : PdfGeneratorColumnType::TEXT->value;

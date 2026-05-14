@@ -36,6 +36,7 @@ final class TenantYearEndController extends Controller
         if ($user->cannot(TenantPermission::SETTINGS_CLOSE_YEAR)) {
             abort(403);
         }
+
         $action->handle();
 
         return redirect()->route('church.general.year-end.edit')

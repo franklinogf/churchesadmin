@@ -1,20 +1,20 @@
 import DeactivationCodeController from '@/actions/App/Http/Controllers/DeactivationCodeController';
-import { DatatableActionsDropdown } from '@/components/custom-ui/datatable/data-table-actions-dropdown';
-import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTableColumnHeader';
+import { DatatableActionsDropdown } from '@/components/custom-ui/datatable/datatable-actions-dropdown';
+import { DatatableHeader } from '@/components/datatable/datatable-header';
 import { DeactivationCodeForm } from '@/components/forms/deactivation-code-form';
 import { DropdownMenuContent, DropdownMenuItem } from '@/components/ui/dropdown-menu';
-import { useTranslations } from '@/hooks/use-translations';
-import useConfirmationStore from '@/stores/confirmationStore';
+import useConfirmationStore from '@/stores/confirmation-store';
 import { type DeactivationCode } from '@/types/models/deactivation-code';
 import { router } from '@inertiajs/react';
 import { type ColumnDef } from '@tanstack/react-table';
 import { Edit2Icon, Trash2Icon } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export const columns: ColumnDef<DeactivationCode>[] = [
   {
     enableHiding: false,
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Name" />,
+    header: ({ column }) => <DatatableHeader column={column} title="Name" />,
     accessorKey: 'name',
   },
   {
@@ -23,7 +23,7 @@ export const columns: ColumnDef<DeactivationCode>[] = [
     enableSorting: false,
     size: 0,
     cell: function CellComponent({ row }) {
-      const { t } = useTranslations();
+      const { t: tPages } = useTranslation('pages');
       const { openConfirmation } = useConfirmationStore();
       const [isEditing, setIsEditing] = useState(false);
       const deactivationCode = row.original;
@@ -35,18 +35,20 @@ export const columns: ColumnDef<DeactivationCode>[] = [
             <DropdownMenuContent>
               <DropdownMenuItem onSelect={() => setIsEditing(true)}>
                 <Edit2Icon className="size-3" />
-                <span>{t('Edit')}</span>
+                <span>{tPages(($) => $.codes.deactivationCodes.includes.columns.edit)}</span>
               </DropdownMenuItem>
 
               <DropdownMenuItem
                 variant="destructive"
                 onClick={() => {
                   openConfirmation({
-                    title: t('Are you sure you want to delete this :model?', { model: t('Deactivation code') }),
-                    description: t('This action cannot be undone.'),
-                    actionLabel: t('Delete'),
+                    title: tPages(($) => $.codes.deactivationCodes.includes.columns.areYouSureYouWantToDeleteThisModel, {
+                      model: tPages(($) => $.codes.deactivationCodes.includes.columns.deactivationCode),
+                    }),
+                    description: tPages(($) => $.codes.deactivationCodes.includes.columns.thisActionCannotBeUndone),
+                    actionLabel: tPages(($) => $.codes.deactivationCodes.includes.columns.delete),
                     actionVariant: 'destructive',
-                    cancelLabel: t('Cancel'),
+                    cancelLabel: tPages(($) => $.codes.deactivationCodes.includes.columns.cancel),
                     onAction: () => {
                       router.visit(DeactivationCodeController.destroy(deactivationCode.id), {
                         preserveScroll: true,
@@ -56,7 +58,7 @@ export const columns: ColumnDef<DeactivationCode>[] = [
                 }}
               >
                 <Trash2Icon className="size-3" />
-                <span>{t('Delete')}</span>
+                <span>{tPages(($) => $.codes.deactivationCodes.includes.columns.delete)}</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DatatableActionsDropdown>

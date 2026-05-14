@@ -2,10 +2,10 @@ import { SelectField } from '@/components/forms/inputs/SelectField';
 import { SwitchField } from '@/components/forms/inputs/SwitchField';
 import { Card, CardContent } from '@/components/ui/card';
 import { usePdfGenerator, type PdfFormat, type PdfOrientation } from '@/contexts/pdf-generator-context';
-import { useTranslations } from '@/hooks/use-translations';
+import { useTranslation } from 'react-i18next';
 
 export function PdfControls() {
-  const { t } = useTranslations();
+  const { t: tPages } = useTranslation('pages');
   const { columns, format, setFormat, orientation, setOrientation, isColumnSelected, toggleColumnSelection, formatOptions, orientationOptions } =
     usePdfGenerator();
 
@@ -35,7 +35,7 @@ export function PdfControls() {
           </div>
 
           <div>
-            <h2 className="text-lg font-semibold">{t('Columns to show')}</h2>
+            <h2 className="text-lg font-semibold">{tPages(($) => $.reports.components.pdfControls.columnsToShow)}</h2>
             <div className="grid grid-cols-1 gap-2 overflow-y-auto md:grid-cols-2">
               {columns.map((col) => (
                 <SwitchField

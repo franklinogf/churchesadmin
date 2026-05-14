@@ -12,16 +12,19 @@ import { InputField } from '@/components/forms/inputs/InputField';
 import { SubmitButton } from '@/components/forms/SubmitButton';
 import { FieldGroup } from '@/components/ui/field';
 import { TenantRole } from '@/enums/TenantRole';
-import { useTranslations } from '@/hooks/use-translations';
 import type { SharedData } from '@/types';
+import { useTranslation } from 'react-i18next';
 
 export default function Login() {
   const { environment } = usePage<SharedData>().props;
-  const { t } = useTranslations();
 
+  const { t: tPages } = useTranslation('pages');
   return (
-    <AuthLayout title={t('Log in to your account')} description={t('Enter your email and password below to log in')}>
-      <Head title={t('Log in')} />
+    <AuthLayout
+      title={tPages(($) => $.auth.login.logInToYourAccount)}
+      description={tPages(($) => $.auth.login.enterYourEmailAndPasswordBelowToLogIn)}
+    >
+      <Head title={tPages(($) => $.auth.login.logIn)} />
       {environment !== 'production' && (
         <div className="mb-6 flex flex-col gap-2">
           <Link method="post" href={LoginLinkController()} data={{ role: TenantRole.SUPER_ADMIN }}>
@@ -47,40 +50,40 @@ export default function Login() {
         {({ processing, errors }) => (
           <FieldGroup>
             <InputField
-              label={t('Email')}
+              label={tPages(($) => $.auth.login.email)}
               type="email"
               name="email"
               required
               autoFocus
               tabIndex={1}
               autoComplete="email"
-              placeholder={t('email@example.com')}
+              placeholder={tPages(($) => $.auth.login.emailExampleCom)}
               error={errors.email}
             />
 
             <div className="grid gap-2">
               <InputField
-                label={t('Password')}
+                label={tPages(($) => $.auth.login.password)}
                 type="password"
                 name="password"
                 required
                 tabIndex={2}
                 autoComplete="current-password"
-                placeholder={t('Password')}
+                placeholder={tPages(($) => $.auth.login.password)}
                 error={errors.password}
               />
               <TextLink href={PasswordResetLinkController.create()} className="ml-auto text-sm" tabIndex={5}>
-                {t('Forgot your password?')}
+                {tPages(($) => $.auth.login.forgotYourPassword)}
               </TextLink>
             </div>
 
             <div className="flex items-center space-x-3">
               <Checkbox id="remember" name="remember" tabIndex={3} />
-              <Label htmlFor="remember">{t('Remember me')}</Label>
+              <Label htmlFor="remember">{tPages(($) => $.auth.login.rememberMe)}</Label>
             </div>
 
             <SubmitButton className="w-full" tabIndex={4} isSubmitting={processing}>
-              {t('Log in')}
+              {tPages(($) => $.auth.login.logIn)}
             </SubmitButton>
           </FieldGroup>
         )}

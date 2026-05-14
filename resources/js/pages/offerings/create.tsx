@@ -10,12 +10,12 @@ import { SelectField } from '@/components/forms/inputs/SelectField';
 import { PageTitle } from '@/components/PageTitle';
 import { Button } from '@/components/ui/button';
 import { useLocaleDate } from '@/hooks/use-locale-date';
-import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem, type SelectOption, type SelectOptionWithModel } from '@/types';
 import { useForm } from '@inertiajs/react';
 import { formatDate } from 'date-fns';
 import { TrashIcon } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface CreatePageProps {
   walletsOptions: SelectOption[];
@@ -41,7 +41,7 @@ interface CreateForm {
 }
 
 export default function Create({ walletsOptions, paymentMethods, membersOptions, missionariesOptions, offeringTypesOptions }: CreatePageProps) {
-  const { t } = useTranslations();
+  const { t: tPages } = useTranslation('pages');
   const { maxDate } = useLocaleDate();
   const { data, setData, submit, errors, processing } = useForm<Required<CreateForm>>({
     date: formatDate(new Date(), 'yyyy-MM-dd'),
@@ -100,21 +100,21 @@ export default function Create({ walletsOptions, paymentMethods, membersOptions,
 
   const breadcrumbs: BreadcrumbItem[] = [
     {
-      title: t('Offerings'),
+      title: tPages(($) => $.offerings.create.offerings),
       href: OfferingController.index().url,
     },
     {
-      title: t('New :model', { model: t('Offering') }),
+      title: tPages(($) => $.offerings.create.newModel, { model: tPages(($) => $.offerings.create.offering) }),
     },
   ];
   return (
-    <AppLayout title={t('Offerings')} breadcrumbs={breadcrumbs}>
-      <PageTitle>{t('New :model', { model: t('Offering') })}</PageTitle>
+    <AppLayout title={tPages(($) => $.offerings.create.offerings)} breadcrumbs={breadcrumbs}>
+      <PageTitle>{tPages(($) => $.offerings.create.newModel, { model: tPages(($) => $.offerings.create.offering) })}</PageTitle>
       <div className="mt-2 flex items-center justify-center">
         <Form isSubmitting={processing} className="w-full max-w-2xl" onSubmit={handleSubmit}>
           <ComboboxField
             placeholder=""
-            label={t('Who is this offering from?')}
+            label={tPages(($) => $.offerings.create.whoIsThisOfferingFrom)}
             value={data.donor_id}
             onChange={(value) => setData('donor_id', value)}
             error={errors.donor_id}
@@ -124,7 +124,7 @@ export default function Create({ walletsOptions, paymentMethods, membersOptions,
             <DateField
               maxDate={maxDate()}
               required
-              label={t('Date of Offering')}
+              label={tPages(($) => $.offerings.create.dateOfOffering)}
               value={data.date}
               onChange={(value) => value && setData('date', value)}
               error={errors.date}
@@ -132,7 +132,7 @@ export default function Create({ walletsOptions, paymentMethods, membersOptions,
           </FieldsGrid>
 
           <Button size="sm" variant="secondary" type="button" onClick={handleAddOffering}>
-            {t('Add :model', { model: t('Offering') })}
+            {tPages(($) => $.offerings.create.addModel, { model: tPages(($) => $.offerings.create.offering) })}
           </Button>
 
           <div className="space-y-4 py-2">
@@ -148,7 +148,7 @@ export default function Create({ walletsOptions, paymentMethods, membersOptions,
                 <FieldsGrid className="grow">
                   <SelectField
                     required
-                    label={t('Wallet')}
+                    label={tPages(($) => $.offerings.create.wallet)}
                     value={offering.wallet_id}
                     onValueChange={(value) => {
                       handleUpdateOffering(index, 'wallet_id', value);
@@ -158,7 +158,7 @@ export default function Create({ walletsOptions, paymentMethods, membersOptions,
                   />
                   <SelectField
                     required
-                    label={t('Payment method')}
+                    label={tPages(($) => $.offerings.create.paymentMethod)}
                     value={offering.payment_method}
                     onValueChange={(value) => {
                       handleUpdateOffering(index, 'payment_method', value);
@@ -170,7 +170,7 @@ export default function Create({ walletsOptions, paymentMethods, membersOptions,
                 <FieldsGrid className="grow">
                   <MultipleComboboxField
                     required
-                    label={t('Offering type')}
+                    label={tPages(($) => $.offerings.create.offeringType)}
                     value={offering.offering_type}
                     onChange={(value) => {
                       handleUpdateOffering(index, 'offering_type', value);
@@ -181,7 +181,7 @@ export default function Create({ walletsOptions, paymentMethods, membersOptions,
 
                   <CurrencyField
                     required
-                    label={t('Amount')}
+                    label={tPages(($) => $.offerings.create.amount)}
                     value={offering.amount}
                     onChange={(value) => {
                       handleUpdateOffering(index, 'amount', value);
@@ -190,7 +190,7 @@ export default function Create({ walletsOptions, paymentMethods, membersOptions,
                   />
                 </FieldsGrid>
                 <InputField
-                  label={t('Note')}
+                  label={tPages(($) => $.offerings.create.note)}
                   value={offering.note}
                   onChange={(value) => {
                     handleUpdateOffering(index, 'note', value);

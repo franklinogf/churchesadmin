@@ -1,14 +1,14 @@
-import { DataTable } from '@/components/custom-ui/datatable/data-table';
 import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/app-layout';
 
 import OfferingController from '@/actions/App/Http/Controllers/OfferingController';
+import Datatable from '@/components/datatable/datatable';
 import { PageTitle } from '@/components/PageTitle';
 import { useLocaleDate } from '@/hooks/use-locale-date';
-import { useTranslations } from '@/hooks/use-translations';
 import type { BreadcrumbItem } from '@/types';
 import { type Offering, type OfferingGroupedByDate } from '@/types/models/offering';
 import { Link } from '@inertiajs/react';
+import { useTranslation } from 'react-i18next';
 import { columns } from './includes/columns';
 import { groupByDateColumns } from './includes/groupByDateColumns';
 
@@ -18,10 +18,10 @@ interface IndexPageProps {
 }
 
 export default function Index({ offerings, date }: IndexPageProps) {
-  const { t } = useTranslations();
+  const { t: tPages } = useTranslation('pages');
   const { formatLocaleDate } = useLocaleDate();
 
-  const breadcrumbs: BreadcrumbItem[] = [{ title: t('Offerings'), href: OfferingController.index().url }];
+  const breadcrumbs: BreadcrumbItem[] = [{ title: tPages(($) => $.offerings.index.offerings), href: OfferingController.index().url }];
 
   if (date !== null) {
     breadcrumbs.push({
@@ -29,13 +29,15 @@ export default function Index({ offerings, date }: IndexPageProps) {
     });
   }
   return (
-    <AppLayout title={t('Offerings')} breadcrumbs={breadcrumbs}>
-      <PageTitle>{t('Offerings')}</PageTitle>
+    <AppLayout title={tPages(($) => $.offerings.index.offerings)} breadcrumbs={breadcrumbs}>
+      <PageTitle>{tPages(($) => $.offerings.index.offerings)}</PageTitle>
       {date !== null ? (
-        <DataTable
-          headerButton={
+        <Datatable
+          renderLeftTop={
             <Button asChild>
-              <Link href={OfferingController.create()}>{t('New :model', { model: t('Offering') })}</Link>
+              <Link href={OfferingController.create()}>
+                {tPages(($) => $.offerings.index.newModel, { model: tPages(($) => $.offerings.index.offering) })}
+              </Link>
             </Button>
           }
           data={offerings as Offering[]}
@@ -44,10 +46,12 @@ export default function Index({ offerings, date }: IndexPageProps) {
           visibilityState={{ confirmed: false }}
         />
       ) : (
-        <DataTable
-          headerButton={
+        <Datatable
+          renderLeftTop={
             <Button asChild>
-              <Link href={OfferingController.create()}>{t('New :model', { model: t('Offering') })}</Link>
+              <Link href={OfferingController.create()}>
+                {tPages(($) => $.offerings.index.newModel, { model: tPages(($) => $.offerings.index.offering) })}
+              </Link>
             </Button>
           }
           data={offerings as OfferingGroupedByDate[]}

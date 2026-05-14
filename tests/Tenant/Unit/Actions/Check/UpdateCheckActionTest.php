@@ -16,9 +16,11 @@ uses(RefreshDatabaseWithTenant::class);
 test('updates a check with all fields', function (): void {
     // Create dependencies with sufficient balance
     $wallet = ChurchWallet::factory()->create();
-    $wallet->depositFloat('100.00'); // Ensure wallet has enough balance
+    $wallet->depositFloat('100.00');
+    // Ensure wallet has enough balance
     $newWallet = ChurchWallet::factory()->create();
-    $newWallet->depositFloat('200.00'); // Ensure new wallet has enough balance
+    $newWallet->depositFloat('200.00');
+    // Ensure new wallet has enough balance
     $member = Member::factory()->create();
     $newMember = Member::factory()->create();
     $expenseType = ExpenseType::factory()->create();
@@ -86,7 +88,8 @@ test('updates a check with all fields', function (): void {
 test('updates a check with minimal fields', function (): void {
     // Create dependencies with sufficient balance
     $wallet = ChurchWallet::factory()->create();
-    $wallet->depositFloat('100.00'); // Ensure wallet has enough balance
+    $wallet->depositFloat('100.00');
+    // Ensure wallet has enough balance
     $member = Member::factory()->create();
     $expenseType = ExpenseType::factory()->create();
 
@@ -140,6 +143,7 @@ test('updates a check with minimal fields', function (): void {
 test('throws exception when wallet is not found', function (): void {
     $wallet = ChurchWallet::factory()->create();
     $wallet->depositFloat('100.00');
+
     $member = Member::factory()->create();
     $expenseType = ExpenseType::factory()->create();
 

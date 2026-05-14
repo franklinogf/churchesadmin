@@ -92,10 +92,10 @@ final class ExpenseController extends Controller
                 }
 
             });
-        } catch (WalletException $e) {
+        } catch (WalletException $walletException) {
             return back()->with(
                 FlashMessageKey::ERROR->value,
-                $e->getMessage()
+                $walletException->getMessage()
             );
         }
 
@@ -152,11 +152,11 @@ final class ExpenseController extends Controller
 
             $action->handle($expense, $validated);
 
-        } catch (WalletException $e) {
+        } catch (WalletException $walletException) {
 
-            return back()->with(FlashMessageKey::ERROR->value, $e->getMessage())
+            return back()->with(FlashMessageKey::ERROR->value, $walletException->getMessage())
                 ->withErrors([
-                    'wallet_id' => $e->getMessage(),
+                    'wallet_id' => $walletException->getMessage(),
                 ]);
         }
 
@@ -176,9 +176,9 @@ final class ExpenseController extends Controller
 
         try {
             $action->handle($expense);
-        } catch (WalletException $e) {
+        } catch (WalletException $walletException) {
             return back()
-                ->with(FlashMessageKey::ERROR->value, $e->getMessage());
+                ->with(FlashMessageKey::ERROR->value, $walletException->getMessage());
         }
 
         return to_route('expenses.index')->with(

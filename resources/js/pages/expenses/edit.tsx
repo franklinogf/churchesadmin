@@ -7,13 +7,13 @@ import { InputField } from '@/components/forms/inputs/InputField';
 import { SelectField } from '@/components/forms/inputs/SelectField';
 import { PageTitle } from '@/components/PageTitle';
 import { useCurrency } from '@/hooks/use-currency';
-import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import { type BreadcrumbItem, type SelectOption } from '@/types';
 import type { Expense } from '@/types/models/expense';
 import type { Wallet } from '@/types/models/wallet';
 import { useForm } from '@inertiajs/react';
 import { formatDate, parseISO } from 'date-fns';
+import { useTranslation } from 'react-i18next';
 
 interface CreatePageProps {
   expense: Expense;
@@ -33,7 +33,7 @@ interface CreateForm {
 }
 
 export default function Create({ wallets, memberOptions, expenseTypesOptions, walletOptions, expense }: CreatePageProps) {
-  const { t } = useTranslations();
+  const { t: tPages } = useTranslation('pages');
   const { formatCurrency, toPositive } = useCurrency();
 
   const { data, setData, submit, errors, processing } = useForm<Required<CreateForm>>({
@@ -54,24 +54,24 @@ export default function Create({ wallets, memberOptions, expenseTypesOptions, wa
 
   const breadcrumbs: BreadcrumbItem[] = [
     {
-      title: t('Expenses'),
+      title: tPages(($) => $.expenses.edit.expenses),
       href: ExpenseController.index().url,
     },
     {
-      title: t('Edit :model', { model: t('Expense') }),
+      title: tPages(($) => $.expenses.edit.editModel, { model: tPages(($) => $.expenses.edit.expense) }),
     },
   ];
 
   return (
-    <AppLayout title={t('Expenses')} breadcrumbs={breadcrumbs}>
-      <PageTitle>{t('Edit :model', { model: t('Expense') })}</PageTitle>
+    <AppLayout title={tPages(($) => $.expenses.edit.expenses)} breadcrumbs={breadcrumbs}>
+      <PageTitle>{tPages(($) => $.expenses.edit.editModel, { model: tPages(($) => $.expenses.edit.expense) })}</PageTitle>
       <div className="mt-2 flex items-center justify-center">
         <Form isSubmitting={processing} className="w-full max-w-2xl" onSubmit={handleSubmit}>
           <div className="space-y-4 py-2">
             <FieldsGrid className="grow">
               <DateField
                 required
-                label={t('Date of Expense')}
+                label={tPages(($) => $.expenses.edit.dateOfExpense)}
                 value={data.date}
                 onChange={(value) => value && setData('date', value)}
                 error={errors.date}
@@ -79,7 +79,7 @@ export default function Create({ wallets, memberOptions, expenseTypesOptions, wa
               <div className="flex flex-col">
                 <SelectField
                   required
-                  label={t('Wallet')}
+                  label={tPages(($) => $.expenses.edit.wallet)}
                   value={data.wallet_id}
                   onValueChange={(value) => setData('wallet_id', value)}
                   error={errors.wallet_id}
@@ -87,7 +87,7 @@ export default function Create({ wallets, memberOptions, expenseTypesOptions, wa
                 />
                 {wallet && (
                   <p className="text-muted-foreground flex justify-end gap-0.5 text-xs">
-                    {t('Current balance')}: <span className="font-semibold">{formatCurrency(wallet.balanceFloat)}</span>
+                    {tPages(($) => $.expenses.edit.currentBalance)}: <span className="font-semibold">{formatCurrency(wallet.balanceFloat)}</span>
                     <span>+</span>
                     <span className="font-semibold">{formatCurrency(toPositive(expense.transaction.amountFloat))}</span>
                   </p>
@@ -96,7 +96,7 @@ export default function Create({ wallets, memberOptions, expenseTypesOptions, wa
             </FieldsGrid>
             <FieldsGrid cols={3} className="grow">
               <SelectField
-                label={t('Member')}
+                label={tPages(($) => $.expenses.edit.member)}
                 value={data.member_id}
                 onValueChange={(value) => setData('member_id', value)}
                 error={errors.member_id}
@@ -104,7 +104,7 @@ export default function Create({ wallets, memberOptions, expenseTypesOptions, wa
               />
               <SelectField
                 required
-                label={t('Expense type')}
+                label={tPages(($) => $.expenses.edit.expenseType)}
                 value={data.expense_type_id}
                 onValueChange={(value) => setData('expense_type_id', value)}
                 error={errors.expense_type_id}
@@ -113,13 +113,18 @@ export default function Create({ wallets, memberOptions, expenseTypesOptions, wa
 
               <CurrencyField
                 required
-                label={t('Amount')}
+                label={tPages(($) => $.expenses.edit.amount)}
                 value={data.amount}
                 onValueChange={(value) => value !== undefined && setData('amount', value)}
                 error={errors.amount}
               />
             </FieldsGrid>
-            <InputField label={t('Note')} value={data.note} onChange={(value) => setData('note', value)} error={errors.note} />
+            <InputField
+              label={tPages(($) => $.expenses.edit.note)}
+              value={data.note}
+              onChange={(value) => setData('note', value)}
+              error={errors.note}
+            />
           </div>
         </Form>
       </div>

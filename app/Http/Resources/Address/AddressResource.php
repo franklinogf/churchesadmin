@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace App\Http\Resources\Address;
 
+use App\Models\Address;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Override;
 
 /**
- * @mixin \App\Models\Address
+ * @mixin Address
  */
 final class AddressResource extends JsonResource
 {

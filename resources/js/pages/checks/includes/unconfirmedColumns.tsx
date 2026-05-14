@@ -1,23 +1,23 @@
 import CheckController from '@/actions/App/Http/Controllers/CheckController';
-import { selectionHeader } from '@/components/custom-ui/datatable/columns';
-import { DatatableActionsDropdown } from '@/components/custom-ui/datatable/data-table-actions-dropdown';
+import { DatatableActionsDropdown } from '@/components/custom-ui/datatable/datatable-actions-dropdown';
 import { DatatableCell } from '@/components/custom-ui/datatable/DatatableCell';
-import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTableColumnHeader';
+import { selectionHeader } from '@/components/datatable/columns';
+import { DatatableHeader } from '@/components/datatable/datatable-header';
 import { Badge } from '@/components/ui/badge';
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { useCurrency } from '@/hooks/use-currency';
-import { useTranslations } from '@/hooks/use-translations';
-import useConfirmationStore from '@/stores/confirmationStore';
+import useConfirmationStore from '@/stores/confirmation-store';
 import type { Check } from '@/types/models/check';
 import { Link, router } from '@inertiajs/react';
 import { type ColumnDef } from '@tanstack/react-table';
 import { Edit2Icon, Trash2Icon } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export const unconfirmedColumns: ColumnDef<Check>[] = [
   selectionHeader as ColumnDef<Check>,
   {
     enableHiding: false,
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Member" />,
+    header: ({ column }) => <DatatableHeader column={column} title="Member" />,
     accessorKey: 'member',
     cell: ({ row }) => {
       const { member } = row.original;
@@ -26,7 +26,7 @@ export const unconfirmedColumns: ColumnDef<Check>[] = [
   },
   {
     enableHiding: false,
-    header: ({ column }) => <DataTableColumnHeader justify="center" column={column} title="Date" />,
+    header: ({ column }) => <DatatableHeader justify="center" column={column} title="Date" />,
     accessorKey: 'date',
     cell: ({ row }) => {
       const { date } = row.original;
@@ -35,7 +35,7 @@ export const unconfirmedColumns: ColumnDef<Check>[] = [
   },
   {
     enableHiding: false,
-    header: ({ column }) => <DataTableColumnHeader justify="center" column={column} title="Number" />,
+    header: ({ column }) => <DatatableHeader justify="center" column={column} title="Number" />,
     accessorKey: 'checkNumber',
     cell: function CellComponent({ row }) {
       const { checkNumber } = row.original;
@@ -48,20 +48,20 @@ export const unconfirmedColumns: ColumnDef<Check>[] = [
     },
   },
   {
-    header: ({ column }) => <DataTableColumnHeader justify="center" column={column} title="Type" />,
+    header: ({ column }) => <DatatableHeader justify="center" column={column} title="Type" />,
     accessorKey: 'type',
     cell: function CellComponent({ row }) {
-      const { t } = useTranslations();
+      const { t: tEnum } = useTranslation('enum');
       const { type } = row.original;
       return (
         <DatatableCell justify="center">
-          <Badge>{t(`enum.check_type.${type}`)}</Badge>
+          <Badge>{tEnum(($) => $.checkType[type])}</Badge>
         </DatatableCell>
       );
     },
   },
   {
-    header: ({ column }) => <DataTableColumnHeader justify="end" column={column} title="Expense type" />,
+    header: ({ column }) => <DatatableHeader justify="end" column={column} title="Expense type" />,
     accessorKey: 'expenseType',
     cell: function CellComponent({ row }) {
       const { expenseType } = row.original;
@@ -74,7 +74,7 @@ export const unconfirmedColumns: ColumnDef<Check>[] = [
   },
   {
     enableHiding: false,
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Amount" />,
+    header: ({ column }) => <DatatableHeader column={column} title="Amount" />,
     accessorKey: 'transaction.amountFloat',
     cell: function CellComponent({ row }) {
       const { formatCurrency, toPositive } = useCurrency();
@@ -89,7 +89,7 @@ export const unconfirmedColumns: ColumnDef<Check>[] = [
     enableSorting: false,
     size: 0,
     cell: function CellComponent({ row }) {
-      const { t } = useTranslations();
+      const { t: tPages } = useTranslation('pages');
       const { openConfirmation } = useConfirmationStore();
       const check = row.original;
 
@@ -99,7 +99,7 @@ export const unconfirmedColumns: ColumnDef<Check>[] = [
           <DropdownMenuItem asChild>
             <Link href={CheckController.edit(check.id)}>
               <Edit2Icon className="size-3" />
-              <span>{t('Edit')}</span>
+              <span>{tPages(($) => $.checks.includes.unconfirmedColumns.edit)}</span>
             </Link>
           </DropdownMenuItem>
           {/* )} */}
@@ -109,11 +109,13 @@ export const unconfirmedColumns: ColumnDef<Check>[] = [
             variant="destructive"
             onClick={() => {
               openConfirmation({
-                title: t('Are you sure you want to delete this :model?', { model: t('Check') }),
-                description: t('This action cannot be undone.'),
-                actionLabel: t('Delete'),
+                title: tPages(($) => $.checks.includes.unconfirmedColumns.areYouSureYouWantToDeleteThisModel, {
+                  model: tPages(($) => $.checks.includes.unconfirmedColumns.check),
+                }),
+                description: tPages(($) => $.checks.includes.unconfirmedColumns.thisActionCannotBeUndone),
+                actionLabel: tPages(($) => $.checks.includes.unconfirmedColumns.delete),
                 actionVariant: 'destructive',
-                cancelLabel: t('Cancel'),
+                cancelLabel: tPages(($) => $.checks.includes.unconfirmedColumns.cancel),
                 onAction: () => {
                   router.visit(CheckController.destroy(check.id), {
                     preserveState: true,
@@ -124,7 +126,7 @@ export const unconfirmedColumns: ColumnDef<Check>[] = [
             }}
           >
             <Trash2Icon className="size-3" />
-            <span>{t('Delete')}</span>
+            <span>{tPages(($) => $.checks.includes.unconfirmedColumns.delete)}</span>
           </DropdownMenuItem>
           {/* )} */}
         </DatatableActionsDropdown>

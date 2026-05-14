@@ -1,10 +1,10 @@
-import { DataTable } from '@/components/custom-ui/datatable/data-table';
-import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import type { Member } from '@/types/models/member';
+import { useTranslation } from 'react-i18next';
 
 import EmailController from '@/actions/App/Http/Controllers/Communication/EmailController';
 import SessionController from '@/actions/App/Http/Controllers/SessionController';
+import Datatable from '@/components/datatable/datatable';
 import { Button } from '@/components/ui/button';
 import { ModelMorphName } from '@/enums/ModelMorphName';
 import { SessionName } from '@/enums/SessionName';
@@ -19,8 +19,8 @@ interface Props {
 
 export default function Index({ members }: Props) {
   const [selectedMembers, setSelectedMembers] = useState<string[]>([]);
-  const { t } = useTranslations();
 
+  const { t: tPages } = useTranslation('pages');
   function handleNewEmail() {
     router.visit(
       SessionController({
@@ -37,16 +37,20 @@ export default function Index({ members }: Props) {
   }
   return (
     <AppLayout
-      title={t('Send email to :name', { name: t('Members') })}
-      breadcrumbs={[{ title: t('Communication') }, { title: t('Emails'), href: EmailController.index().url }, { title: t('Members') }]}
+      title={tPages(($) => $.communication.emails.members.sendEmailToName, { name: tPages(($) => $.communication.emails.members.members) })}
+      breadcrumbs={[
+        { title: tPages(($) => $.communication.emails.members.communication) },
+        { title: tPages(($) => $.communication.emails.members.emails), href: EmailController.index().url },
+        { title: tPages(($) => $.communication.emails.members.members) },
+      ]}
     >
-      <EmailHeader name={t('Members')} />
+      <EmailHeader name={tPages(($) => $.communication.emails.members.members)} />
 
       <div className="mx-auto w-full max-w-2xl">
-        <DataTable
-          headerButton={
+        <Datatable
+          renderLeftTop={
             <Button disabled={selectedMembers.length === 0} size="sm" onClick={handleNewEmail}>
-              {t('New :model', { model: t('Email') })}
+              {tPages(($) => $.communication.emails.members.newModel, { model: tPages(($) => $.communication.emails.members.email) })}
             </Button>
           }
           onSelectedRowsChange={setSelectedMembers}

@@ -1,10 +1,10 @@
-import { DataTable } from '@/components/custom-ui/datatable/data-table';
 import { PageTitle } from '@/components/PageTitle';
-import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import { type Wallet } from '@/types/models/wallet';
+import { useTranslation } from 'react-i18next';
 import { walletColumns } from './includes/walletColumns';
 
+import Datatable from '@/components/datatable/datatable';
 import { WalletForm } from '@/components/forms/wallet-form';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
@@ -14,23 +14,23 @@ interface IndexPageProps {
 }
 
 export default function Index({ wallets }: IndexPageProps) {
-  const { t } = useTranslations();
+  const { t: tPages } = useTranslation('pages');
   const [open, setOpen] = useState(false);
 
   return (
-    <AppLayout breadcrumbs={[{ title: t('Wallets') }]} title={t('Wallets')}>
-      <PageTitle>{t('Wallets')}</PageTitle>
+    <AppLayout breadcrumbs={[{ title: tPages(($) => $.wallets.index.wallets) }]} title={tPages(($) => $.wallets.index.wallets)}>
+      <PageTitle>{tPages(($) => $.wallets.index.wallets)}</PageTitle>
       <WalletForm open={open} setOpen={setOpen} />
       <section className="mx-auto mt-8 w-full max-w-2xl">
-        <DataTable
-          headerButton={
+        <Datatable
+          renderLeftTop={
             <Button
               size="sm"
               onClick={() => {
                 setOpen(true);
               }}
             >
-              {t('Add :model', { model: t('Wallet') })}
+              {tPages(($) => $.wallets.index.addModel, { model: tPages(($) => $.wallets.index.wallet) })}
             </Button>
           }
           data={wallets}

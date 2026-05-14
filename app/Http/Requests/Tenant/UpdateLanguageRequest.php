@@ -8,6 +8,7 @@ use App\Enums\LanguageCode;
 use App\Enums\TenantPermission;
 use App\Models\TenantUser;
 use Illuminate\Container\Attributes\CurrentUser;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -24,7 +25,7 @@ final class UpdateLanguageRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {

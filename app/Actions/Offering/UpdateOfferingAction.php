@@ -64,13 +64,13 @@ final readonly class UpdateOfferingAction
 
                 return $offering->refresh();
             });
-        } catch (QueryException $e) {
-            Log::error('Error creating deposit transaction: '.$e->getMessage(), [
+        } catch (QueryException $queryException) {
+            Log::error('Error creating deposit transaction: '.$queryException->getMessage(), [
                 'data' => $data,
                 'wallet_id' => $wallet->id,
             ]);
 
-            throw new WalletException('An error occurred while updating the offering', (int) $e->getCode(), $e);
+            throw new WalletException('An error occurred while updating the offering', (int) $queryException->getCode(), $queryException);
         }
     }
 }

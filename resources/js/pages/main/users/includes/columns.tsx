@@ -1,32 +1,32 @@
 import UserController from '@/actions/App/Http/Controllers/UserController';
-import { DatatableActionsDropdown } from '@/components/custom-ui/datatable/data-table-actions-dropdown';
+import { DatatableActionsDropdown } from '@/components/custom-ui/datatable/datatable-actions-dropdown';
 import { DatatableCell } from '@/components/custom-ui/datatable/DatatableCell';
-import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTableColumnHeader';
+import { DatatableHeader } from '@/components/datatable/datatable-header';
 import { Badge } from '@/components/ui/badge';
 import { DropdownMenuItem } from '@/components/ui/dropdown-menu';
 import { TenantPermission } from '@/enums/TenantPermission';
-import { useTranslations } from '@/hooks/use-translations';
 import { useUser } from '@/hooks/use-user';
-import useConfirmationStore from '@/stores/confirmationStore';
+import useConfirmationStore from '@/stores/confirmation-store';
 import { type Role, type User } from '@/types/models/user';
 import { Link, router } from '@inertiajs/react';
 import { type ColumnDef } from '@tanstack/react-table';
 import { Edit2Icon, Trash2Icon } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export const columns: ColumnDef<User>[] = [
   {
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Name" />,
+    header: ({ column }) => <DatatableHeader column={column} title="Name" />,
     enableHiding: false,
     accessorKey: 'name',
   },
   {
-    header: ({ column }) => <DataTableColumnHeader justify="center" column={column} title="Email" />,
+    header: ({ column }) => <DatatableHeader justify="center" column={column} title="Email" />,
     enableHiding: false,
     accessorKey: 'email',
     cell: ({ row }) => <DatatableCell justify="center">{row.getValue('email')}</DatatableCell>,
   },
   {
-    header: ({ column }) => <DataTableColumnHeader justify="center" column={column} title="Role" />,
+    header: ({ column }) => <DatatableHeader justify="center" column={column} title="Role" />,
     enableHiding: false,
     accessorKey: 'roles',
     cell: ({ row }) => {
@@ -47,7 +47,7 @@ export const columns: ColumnDef<User>[] = [
     enableSorting: false,
     size: 0,
     cell: function CellComponent({ row }) {
-      const { t } = useTranslations();
+      const { t: tPages } = useTranslation('pages');
       const { openConfirmation } = useConfirmationStore();
       const { can: userCan } = useUser();
       const user = row.original;
@@ -62,7 +62,7 @@ export const columns: ColumnDef<User>[] = [
             <DropdownMenuItem asChild>
               <Link href={UserController.edit(user.id)}>
                 <Edit2Icon className="size-3" />
-                <span>{t('Edit')}</span>
+                <span>{tPages(($) => $.main.users.includes.columns.edit)}</span>
               </Link>
             </DropdownMenuItem>
           )}
@@ -71,11 +71,13 @@ export const columns: ColumnDef<User>[] = [
               variant="destructive"
               onClick={() => {
                 openConfirmation({
-                  title: t('Are you sure you want to delete this :model?', { model: t('User') }),
-                  description: t('You can restore it any time.'),
-                  actionLabel: t('Delete'),
+                  title: tPages(($) => $.main.users.includes.columns.areYouSureYouWantToDeleteThisModel, {
+                    model: tPages(($) => $.main.users.includes.columns.user),
+                  }),
+                  description: tPages(($) => $.main.users.includes.columns.youCanRestoreItAnyTime),
+                  actionLabel: tPages(($) => $.main.users.includes.columns.delete),
                   actionVariant: 'destructive',
-                  cancelLabel: t('Cancel'),
+                  cancelLabel: tPages(($) => $.main.users.includes.columns.cancel),
                   onAction: () => {
                     router.visit(UserController.destroy(user.id), {
                       preserveState: true,
@@ -86,7 +88,7 @@ export const columns: ColumnDef<User>[] = [
               }}
             >
               <Trash2Icon className="size-3" />
-              <span>{t('Delete')}</span>
+              <span>{tPages(($) => $.main.users.includes.columns.delete)}</span>
             </DropdownMenuItem>
           )}
         </DatatableActionsDropdown>

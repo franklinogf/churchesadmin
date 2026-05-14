@@ -10,6 +10,7 @@ use App\Models\Missionary;
 use App\Models\TenantUser;
 use App\Models\Visit;
 use Carbon\CarbonImmutable;
+use Spatie\MediaLibrary\HasMedia;
 
 test('to array', function (): void {
     $email = Email::factory()->create()->fresh();
@@ -94,7 +95,7 @@ it('can have visitor recipients', function (): void {
 it('implements media interface', function (): void {
     $email = Email::factory()->create();
 
-    expect($email)->toBeInstanceOf(Spatie\MediaLibrary\HasMedia::class);
+    expect($email)->toBeInstanceOf(HasMedia::class);
 });
 
 it('can have both member and missionary recipients', function (): void {

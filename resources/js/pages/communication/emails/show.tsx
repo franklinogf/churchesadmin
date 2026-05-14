@@ -1,11 +1,9 @@
 import { PageTitle } from '@/components/PageTitle';
-import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import type { Email, EmailPivot } from '@/types/models/email';
+import { useTranslation } from 'react-i18next';
 
-import { DataTable } from '@/components/custom-ui/datatable/data-table';
 import { DatatableCell } from '@/components/custom-ui/datatable/DatatableCell';
-import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTableColumnHeader';
 import { Badge } from '@/components/ui/badge';
 
 import type { SharedData } from '@/types';
@@ -13,7 +11,7 @@ import { useEcho } from '@laravel/echo-react';
 import { type ColumnDef } from '@tanstack/react-table';
 import { useMemo, useState } from 'react';
 
-import { DatatableActionsDropdown } from '@/components/custom-ui/datatable/data-table-actions-dropdown';
+import { DatatableActionsDropdown } from '@/components/custom-ui/datatable/datatable-actions-dropdown';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import {
@@ -31,6 +29,8 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 
 import EmailController from '@/actions/App/Http/Controllers/Communication/EmailController';
 import EmailRetryController from '@/actions/App/Http/Controllers/Communication/EmailRetryController';
+import Datatable from '@/components/datatable/datatable';
+import { DatatableHeader } from '@/components/datatable/datatable-header';
 import { EmailStatus } from '@/enums/EmailStatus';
 import type { Member } from '@/types/models/member';
 import type { Missionary } from '@/types/models/missionary';
@@ -42,7 +42,8 @@ interface EmailsPageProps extends SharedData {
   email: Email;
 }
 export default function EmailsPage({ email: initialEmail, church }: EmailsPageProps) {
-  const { t } = useTranslations();
+  const { t: tEnum } = useTranslation('enum');
+  const { t: tPages } = useTranslation('pages');
   const [email, setEmail] = useState<Email>(initialEmail);
   const [datatableData, setDatatableData] = useState<(Member | Missionary | Visit)[]>(email.recipients);
   useEcho<{ email: Email }>(`${church?.id}.emails.${email.id}`, 'EmailStatusUpdatedEvent', (e) => {
@@ -76,17 +77,17 @@ export default function EmailsPage({ email: initialEmail, church }: EmailsPagePr
   const columns: ColumnDef<Member | Missionary | Visit>[] = useMemo(
     () => [
       {
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Recipient" />,
+        header: ({ column }) => <DatatableHeader column={column} title="Recipient" />,
         accessorKey: 'name',
         enableHiding: false,
         enableColumnFilter: false,
         cell: ({ row }) => <DatatableCell>{`${row.original.name} ${row.original.lastName}`}</DatatableCell>,
       },
       {
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Status" />,
+        header: ({ column }) => <DatatableHeader column={column} title="Status" />,
         accessorKey: 'emailMessage.status',
         enableHiding: false,
-        meta: { filterVariant: 'select', translationPrefix: 'enum.email_status.' },
+        meta: { filterVariant: 'select', translationPrefix: 'enum:emailStatus.' },
         cell: ({ row }) => (
           <DatatableCell justify="center">
             <Badge
@@ -98,17 +99,19 @@ export default function EmailsPage({ email: initialEmail, church }: EmailsPagePr
                     : 'secondary'
               }
             >
-              {t(`enum.email_status.${row.original.emailMessage?.status ?? 'pending'}`)}
+              {tEnum(($) => $.emailStatus[row.original.emailMessage?.status ?? 'pending'])}
             </Badge>
           </DatatableCell>
         ),
       },
       {
-        header: ({ column }) => <DataTableColumnHeader column={column} title="Sent at" />,
+        header: ({ column }) => <DatatableHeader column={column} title="Sent at" />,
         accessorKey: 'emailMessage.sentAt',
         enableHiding: false,
         enableColumnFilter: false,
-        cell: ({ row }) => <DatatableCell justify="center">{row.original.emailMessage?.sentAt ?? t('Not sent yet')}</DatatableCell>,
+        cell: ({ row }) => (
+          <DatatableCell justify="center">{row.original.emailMessage?.sentAt ?? tPages(($) => $.communication.emails.show.notSentYet)}</DatatableCell>
+        ),
       },
       {
         id: 'actions',
@@ -121,7 +124,7 @@ export default function EmailsPage({ email: initialEmail, church }: EmailsPagePr
             <>
               <ErrorMessageDialog recipient={row.original} open={open} setOpen={setOpen} />
               <DatatableActionsDropdown>
-                <DropdownMenuItem onSelect={() => setOpen(true)}>{t('View error')}</DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => setOpen(true)}>{tPages(($) => $.communication.emails.show.viewError)}</DropdownMenuItem>
               </DatatableActionsDropdown>
             </>
           );
@@ -129,7 +132,7 @@ export default function EmailsPage({ email: initialEmail, church }: EmailsPagePr
       },
     ],
 
-    [t],
+    [tEnum, tPages],
   );
 
   const existsFailingEmails = datatableData.some((recipient) => recipient.emailMessage?.status === EmailStatus.FAILED);
@@ -155,14 +158,18 @@ export default function EmailsPage({ email: initialEmail, church }: EmailsPagePr
   }
   return (
     <AppLayout
-      title={t('Emails')}
-      breadcrumbs={[{ title: t('Communication') }, { title: t('Emails'), href: EmailController.index().url }, { title: email.subject }]}
+      title={tPages(($) => $.communication.emails.show.emails)}
+      breadcrumbs={[
+        { title: tPages(($) => $.communication.emails.show.communication) },
+        { title: tPages(($) => $.communication.emails.show.emails), href: EmailController.index().url },
+        { title: email.subject },
+      ]}
     >
       <header className="mb-6 flex flex-col items-center gap-2">
         <PageTitle
-          description={t('Sent by :name on :date', {
-            name: email.sender?.name ?? t('Unknown sender'),
-            date: email.sentAt ?? t('Not sent yet'),
+          description={tPages(($) => $.communication.emails.show.sentByNameOnDate, {
+            name: email.sender?.name ?? tPages(($) => $.communication.emails.show.unknownSender),
+            date: email.sentAt ?? tPages(($) => $.communication.emails.show.notSentYet),
           })}
         >
           {email.subject}
@@ -173,40 +180,40 @@ export default function EmailsPage({ email: initialEmail, church }: EmailsPagePr
       {existsFailingEmails && (
         <Alert variant="destructive" className="mx-auto mb-6 max-w-xl">
           <AlertCircleIcon className="size-4" />
-          <AlertTitle>{t('Some emails failed to send')}</AlertTitle>
-          <AlertDescription>{t('Some recipients have failed to receive the email. Please check their error messages.')}</AlertDescription>
+          <AlertTitle>{tPages(($) => $.communication.emails.show.someEmailsFailedToSend)}</AlertTitle>
+          <AlertDescription>{tPages(($) => $.communication.emails.show.someRecipientsHaveFailedToReceiveTheEmailPlease)}</AlertDescription>
 
           <div className="col-span-full flex justify-end">
             <Button asChild variant="secondary" size="sm" className="mt-2 ml-auto">
               <Link onClick={handleRetryEmail} method="post" href={EmailRetryController({ email: email.id })}>
-                {t('Retry sending failed emails')}
+                {tPages(($) => $.communication.emails.show.retrySendingFailedEmails)}
               </Link>
             </Button>
           </div>
         </Alert>
       )}
 
-      <DataTable data={datatableData} columns={columns} visibilityState={{ attachmentsCount: false }} />
+      <Datatable data={datatableData} columns={columns} visibilityState={{ attachmentsCount: false }} />
     </AppLayout>
   );
 }
 
 function EmailDetailButton({ email }: { email: Email }) {
-  const { t } = useTranslations();
+  const { t: tPages } = useTranslation('pages');
   return (
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="outline" size="sm">
-          {t('View email')}
+          {tPages(($) => $.communication.emails.show.viewEmail)}
         </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>{email.subject}</DialogTitle>
           <DialogDescription>
-            {t('Sent by :name on :date', {
-              name: email.sender?.name ?? t('Unknown sender'),
-              date: email.sentAt ?? t('Not sent yet'),
+            {tPages(($) => $.communication.emails.show.sentByNameOnDate, {
+              name: email.sender?.name ?? tPages(($) => $.communication.emails.show.unknownSender),
+              date: email.sentAt ?? tPages(($) => $.communication.emails.show.notSentYet),
             })}
           </DialogDescription>
         </DialogHeader>
@@ -216,7 +223,7 @@ function EmailDetailButton({ email }: { email: Email }) {
           </ScrollArea>
           {email.attachments && email.attachments.length > 0 ? (
             <div>
-              <h3 className="text-lg font-semibold">{t('Attachments')}</h3>
+              <h3 className="text-lg font-semibold">{tPages(($) => $.communication.emails.show.attachments)}</h3>
               <ul className="list-disc pl-5">
                 {email.attachments.map((attachment) => (
                   <li key={attachment.id}>
@@ -228,12 +235,12 @@ function EmailDetailButton({ email }: { email: Email }) {
               </ul>
             </div>
           ) : (
-            <p className="text-muted-foreground">{t('This email has no attachments')}</p>
+            <p className="text-muted-foreground">{tPages(($) => $.communication.emails.show.thisEmailHasNoAttachments)}</p>
           )}
         </section>
         <DialogFooter>
           <DialogClose asChild>
-            <Button variant="outline">{t('Close')}</Button>
+            <Button variant="outline">{tPages(($) => $.communication.emails.show.close)}</Button>
           </DialogClose>
         </DialogFooter>
       </DialogContent>
@@ -250,27 +257,31 @@ function ErrorMessageDialog({
   open: boolean;
   setOpen: (open: boolean) => void;
 }) {
-  const { t } = useTranslations();
+  const { t: tPages } = useTranslation('pages');
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-150">
         <DialogHeader>
-          <DialogTitle>{t('Error message')}</DialogTitle>
-          <DialogDescription>{t('Email error if any')}</DialogDescription>
+          <DialogTitle>{tPages(($) => $.communication.emails.show.errorMessage)}</DialogTitle>
+          <DialogDescription>{tPages(($) => $.communication.emails.show.emailErrorIfAny)}</DialogDescription>
         </DialogHeader>
         <div className="flex flex-col gap-4">
           <ScrollArea className="max-h-100 overflow-hidden">
             <div className="prose dark:prose-invert">
-              <pre className="max-w-full text-balance">{recipient.emailMessage?.errorMessage ?? t('No error message available')}</pre>
+              <pre className="max-w-full text-balance">
+                {recipient.emailMessage?.errorMessage ?? tPages(($) => $.communication.emails.show.noErrorMessageAvailable)}
+              </pre>
             </div>
           </ScrollArea>
           <div>
-            <p className="text-muted-foreground text-sm">{t('Sent to :name', { name: recipient.email ?? t('No data') })}</p>
+            <p className="text-muted-foreground text-sm">
+              {tPages(($) => $.communication.emails.show.sentToName, { name: recipient.email ?? tPages(($) => $.communication.emails.show.noData) })}
+            </p>
           </div>
         </div>
         <DialogFooter>
           <DialogClose asChild>
-            <Button variant="outline">{t('Close')}</Button>
+            <Button variant="outline">{tPages(($) => $.communication.emails.show.close)}</Button>
           </DialogClose>
         </DialogFooter>
       </DialogContent>

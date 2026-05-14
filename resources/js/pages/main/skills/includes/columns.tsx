@@ -1,22 +1,22 @@
 import SkillController from '@/actions/App/Http/Controllers/SkillController';
-import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTableColumnHeader';
+import { DatatableHeader } from '@/components/datatable/datatable-header';
 import { SkillForm } from '@/components/forms/skill-form';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { TenantPermission } from '@/enums/TenantPermission';
-import { useTranslations } from '@/hooks/use-translations';
 import { useUser } from '@/hooks/use-user';
-import useConfirmationStore from '@/stores/confirmationStore';
+import useConfirmationStore from '@/stores/confirmation-store';
 import { type Tag } from '@/types/models/tag';
 import { router } from '@inertiajs/react';
 import { type ColumnDef } from '@tanstack/react-table';
 import { Edit2Icon, MoreHorizontalIcon, Trash2Icon } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export const columns: ColumnDef<Tag>[] = [
   {
     enableHiding: false,
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Name" />,
+    header: ({ column }) => <DatatableHeader column={column} title="Name" />,
     accessorKey: 'name',
   },
   {
@@ -25,7 +25,7 @@ export const columns: ColumnDef<Tag>[] = [
     enableSorting: false,
     size: 0,
     cell: function CellComponent({ row }) {
-      const { t } = useTranslations();
+      const { t: tPages } = useTranslation('pages');
       const { openConfirmation } = useConfirmationStore();
       const { can: userCan } = useUser();
       const [isEditing, setIsEditing] = useState(false);
@@ -45,14 +45,14 @@ export const columns: ColumnDef<Tag>[] = [
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="sm">
                 <MoreHorizontalIcon />
-                <span className="sr-only">{t('Actions')}</span>
+                <span className="sr-only">{tPages(($) => $.main.skills.includes.columns.actions)}</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
               {userCan(TenantPermission.SKILLS_UPDATE) && (
                 <DropdownMenuItem onSelect={() => setIsEditing(true)}>
                   <Edit2Icon className="size-3" />
-                  <span>{t('Edit')}</span>
+                  <span>{tPages(($) => $.main.skills.includes.columns.edit)}</span>
                 </DropdownMenuItem>
               )}
               {userCan(TenantPermission.SKILLS_DELETE) && (
@@ -60,11 +60,15 @@ export const columns: ColumnDef<Tag>[] = [
                   variant="destructive"
                   onClick={() => {
                     openConfirmation({
-                      title: t('Are you sure you want to delete this :model?', { model: t('Skill') }),
-                      description: (skill.isRegular ? t('This is marked as regular.') + '\n' : '') + t('This action cannot be undone.'),
-                      actionLabel: t('Delete'),
+                      title: tPages(($) => $.main.skills.includes.columns.areYouSureYouWantToDeleteThisModel, {
+                        model: tPages(($) => $.main.skills.includes.columns.skill),
+                      }),
+                      description:
+                        (skill.isRegular ? tPages(($) => $.main.skills.includes.columns.thisIsMarkedAsRegular) + '\n' : '') +
+                        tPages(($) => $.main.skills.includes.columns.thisActionCannotBeUndone),
+                      actionLabel: tPages(($) => $.main.skills.includes.columns.delete),
                       actionVariant: 'destructive',
-                      cancelLabel: t('Cancel'),
+                      cancelLabel: tPages(($) => $.main.skills.includes.columns.cancel),
                       onAction: () => {
                         router.visit(SkillController.destroy(skill.id), {
                           preserveState: true,
@@ -75,7 +79,7 @@ export const columns: ColumnDef<Tag>[] = [
                   }}
                 >
                   <Trash2Icon className="size-3" />
-                  <span>{t('Delete')}</span>
+                  <span>{tPages(($) => $.main.skills.includes.columns.delete)}</span>
                 </DropdownMenuItem>
               )}
             </DropdownMenuContent>

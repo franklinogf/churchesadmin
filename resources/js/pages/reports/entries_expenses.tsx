@@ -6,15 +6,15 @@ import { FieldsGrid } from '@/components/forms/inputs/FieldsGrid';
 import { SelectField } from '@/components/forms/inputs/SelectField';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import { usePage } from '@inertiajs/react';
 import { format } from 'date-fns';
 import { Printer } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function EntriesExpensesReport() {
-  const { t } = useTranslations();
+  const { t: tPages } = useTranslation('pages');
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
 
@@ -53,22 +53,25 @@ export default function EntriesExpensesReport() {
 
   return (
     <AppLayout
-      title={t('Entries and Expenses Report')}
-      breadcrumbs={[{ title: t('Reports'), href: ReportController().url }, { title: t('Entries and Expenses Report') }]}
+      title={tPages(($) => $.reports.entriesExpenses.entriesAndExpensesReport)}
+      breadcrumbs={[
+        { title: tPages(($) => $.reports.entriesExpenses.reports), href: ReportController().url },
+        { title: tPages(($) => $.reports.entriesExpenses.entriesAndExpensesReport) },
+      ]}
     >
-      <PageTitle>{t('Entries and Expenses Report')}</PageTitle>
+      <PageTitle>{tPages(($) => $.reports.entriesExpenses.entriesAndExpensesReport)}</PageTitle>
       <FormErrorList errors={usePage().props.errors} />
 
       <Card className="mx-auto mb-8 w-full max-w-2xl">
         <CardContent className="p-6">
-          <h2 className="mb-4 text-xl font-semibold">{t('Select Date Range for Report')}</h2>
+          <h2 className="mb-4 text-xl font-semibold">{tPages(($) => $.reports.entriesExpenses.selectDateRangeForReport)}</h2>
 
           <div className="mb-6 space-y-4">
             <div>
-              <label className="mb-2 block text-sm font-medium">{t('Start Date')}</label>
+              <label className="mb-2 block text-sm font-medium">{tPages(($) => $.reports.entriesExpenses.startDate)}</label>
               <FieldsGrid>
                 <SelectField
-                  label={t('Month')}
+                  label={tPages(($) => $.reports.entriesExpenses.month)}
                   value={startDate.getMonth().toString()}
                   onValueChange={handleMonthChange(startDate, setStartDate)}
                   options={months.map((month) => ({
@@ -78,7 +81,7 @@ export default function EntriesExpensesReport() {
                 />
 
                 <SelectField
-                  label={t('Year')}
+                  label={tPages(($) => $.reports.entriesExpenses.year)}
                   value={startDate.getFullYear().toString()}
                   onValueChange={handleYearChange(startDate, setStartDate)}
                   options={years.map((year) => ({ value: year.toString(), label: year.toString() }))}
@@ -87,10 +90,10 @@ export default function EntriesExpensesReport() {
             </div>
 
             <div>
-              <label className="mb-2 block text-sm font-medium">{t('End Date')}</label>
+              <label className="mb-2 block text-sm font-medium">{tPages(($) => $.reports.entriesExpenses.endDate)}</label>
               <FieldsGrid>
                 <SelectField
-                  label={t('Month')}
+                  label={tPages(($) => $.reports.entriesExpenses.month)}
                   value={endDate.getMonth().toString()}
                   onValueChange={handleMonthChange(endDate, setEndDate)}
                   options={months.map((month) => ({
@@ -100,7 +103,7 @@ export default function EntriesExpensesReport() {
                 />
 
                 <SelectField
-                  label={t('Year')}
+                  label={tPages(($) => $.reports.entriesExpenses.year)}
                   value={endDate.getFullYear().toString()}
                   onValueChange={handleYearChange(endDate, setEndDate)}
                   options={years.map((year) => ({ value: year.toString(), label: year.toString() }))}
@@ -111,13 +114,13 @@ export default function EntriesExpensesReport() {
           <div>
             <Button className="w-full" onClick={handlePrintPdf}>
               <Printer className="mr-2 h-5 w-5" />
-              {t('Generate PDF for Selected Date Range')}
+              {tPages(($) => $.reports.entriesExpenses.generatePdfForSelectedDateRange)}
             </Button>
           </div>
         </CardContent>
       </Card>
 
-      <div className="text-center text-gray-500">{t('The PDF will include all entries and expenses for the selected date range.')}</div>
+      <div className="text-center text-gray-500">{tPages(($) => $.reports.entriesExpenses.thePdfWillIncludeAllEntriesAndExpensesFor)}</div>
     </AppLayout>
   );
 }

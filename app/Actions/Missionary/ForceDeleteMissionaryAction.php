@@ -21,11 +21,13 @@ final class ForceDeleteMissionaryAction
                 if ($missionary->address) {
                     $missionary->address->delete();
                 }
+
                 $missionary->forceDelete();
             });
-        } catch (Exception $th) {
-            throw new Exception('Failed to delete missionary: '.$th->getMessage(), $th->getCode(), $th);
+        } catch (Exception $exception) {
+            throw new Exception('Failed to delete missionary: '.$exception->getMessage(), $exception->getCode(), $exception);
         }
+
         activity(ModelMorphName::MISSIONARY->activityLogName())
             ->event('force deleted')
             ->performedOn($missionary)

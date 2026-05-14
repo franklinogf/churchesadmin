@@ -1,7 +1,7 @@
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle } from '@/components/ui/drawer';
 import { useIsMobile } from '@/hooks/use-mobile';
-import { useTranslations } from '@/hooks/use-translations';
+import { useTranslation } from 'react-i18next';
 import { SubmitButton } from './forms/SubmitButton';
 import { Button } from './ui/button';
 
@@ -42,12 +42,12 @@ export function ResponsiveModal({ title, description, open, setOpen, children }:
 }
 
 export function ResponsiveModalFooterSubmit({ isSubmitting, label }: { isSubmitting: boolean; label: string }) {
-  const { t } = useTranslations();
+  const { t: tCommon } = useTranslation('common');
   return (
     <div className="grid grid-cols-1 gap-2 md:flex md:justify-end md:gap-4">
       <DrawerClose asChild>
         <Button variant="outline" className="order-2 max-md:w-full md:order-1">
-          {t('Cancel')}
+          {tCommon(($) => $.components.responsiveModal.cancel)}
         </Button>
       </DrawerClose>
       <SubmitButton className="order-1 max-md:w-full md:order-2" isSubmitting={isSubmitting}>

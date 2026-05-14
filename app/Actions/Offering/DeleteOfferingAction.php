@@ -22,15 +22,16 @@ final class DeleteOfferingAction
                 $wallet = $offering->transaction->wallet;
                 $offering->delete();
                 $offering->transaction->forceDelete();
+
                 $wallet->refreshBalance();
             });
-        } catch (QueryException $e) {
-            Log::error('Error deleting offering: '.$e->getMessage(), [
+        } catch (QueryException $queryException) {
+            Log::error('Error deleting offering: '.$queryException->getMessage(), [
                 'offering_id' => $offering->id,
                 'wallet_id' => $offering->transaction->wallet->id,
             ]);
 
-            throw new WalletException('An error occurred while deleting the offering', $e->getCode(), $e);
+            throw new WalletException('An error occurred while deleting the offering', $queryException->getCode(), $queryException);
         }
     }
 }

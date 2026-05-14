@@ -9,8 +9,8 @@ import { cn } from '@/lib/utils';
 
 // assets
 import { useCountries } from '@/hooks/use-countries';
-import { useTranslations } from '@/hooks/use-translations';
 import { CheckIcon, ChevronDown, XSquare } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '../ui/button';
 
 // Dropdown props
@@ -27,8 +27,8 @@ export function CountryDropdown({ onChange, defaultValue, disabled = false, plac
   const { countries, getCurrentCountryName } = useCountries();
   const [open, setOpen] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState('');
-  const { t } = useTranslations();
 
+  const { t: tCommon } = useTranslation('common');
   useEffect(() => {
     if (defaultValue) {
       const initialCountry = countries.find((country) => country.code === defaultValue);
@@ -90,9 +90,9 @@ export function CountryDropdown({ onChange, defaultValue, disabled = false, plac
         <Command className="max-h-[200px] w-full sm:max-h-[270px]">
           <CommandList>
             <div className="bg-popover sticky top-0 z-10">
-              <CommandInput placeholder={t('Search for a country...')} />
+              <CommandInput placeholder={tCommon(($) => $.components.customUi.CountryDropdown.searchForACountry)} />
             </div>
-            <CommandEmpty>{t('No results found.')}</CommandEmpty>
+            <CommandEmpty>{tCommon(($) => $.components.customUi.CountryDropdown.noResultsFound)}</CommandEmpty>
             <CommandGroup>
               {countries.map((country) => (
                 <CommandItem className="flex w-full items-center gap-2" key={country.code} onSelect={() => handleSelect(country.code)}>

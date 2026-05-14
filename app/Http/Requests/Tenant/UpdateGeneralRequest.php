@@ -7,6 +7,7 @@ namespace App\Http\Requests\Tenant;
 use App\Enums\TenantPermission;
 use App\Models\TenantUser;
 use Illuminate\Container\Attributes\CurrentUser;
+use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 final class UpdateGeneralRequest extends FormRequest
@@ -23,7 +24,7 @@ final class UpdateGeneralRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
+     * @return array<string, ValidationRule|array<mixed>|string>
      */
     public function rules(): array
     {

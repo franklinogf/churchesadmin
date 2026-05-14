@@ -7,12 +7,13 @@ namespace App\Http\Resources\Missionary;
 use App\Http\Resources\Address\AddressRelationshipResource;
 use App\Http\Resources\Communication\Email\EmailableResource;
 use App\Http\Resources\Communication\Email\EmailResource;
+use App\Models\Missionary;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Override;
 
 /**
- * @mixin \App\Models\Missionary
+ * @mixin Missionary
  */
 final class MissionaryResource extends JsonResource
 {

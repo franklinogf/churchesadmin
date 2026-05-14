@@ -1,13 +1,13 @@
 import { PageTitle } from '@/components/PageTitle';
-import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import type { Email } from '@/types/models/email';
 import { Link } from '@inertiajs/react';
+import { useTranslation } from 'react-i18next';
 
 import EmailListMemberController from '@/actions/App/Http/Controllers/Communication/EmailListMemberController';
 import EmailListMissionaryController from '@/actions/App/Http/Controllers/Communication/EmailListMissionaryController';
 import EmailListVisitorController from '@/actions/App/Http/Controllers/Communication/EmailListVisitorController';
-import { DataTable } from '@/components/custom-ui/datatable/data-table';
+import Datatable from '@/components/datatable/datatable';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { TenantPermission } from '@/enums/TenantPermission';
@@ -22,7 +22,7 @@ interface EmailsPageProps extends SharedData {
   emails: Email[];
 }
 export default function EmailsPage({ emails: initialEmails, church }: EmailsPageProps) {
-  const { t } = useTranslations();
+  const { t: tPages } = useTranslation('pages');
   const [emails, setEmails] = useState<Email[]>(initialEmails);
   const { can: userCan } = useUser();
 
@@ -43,9 +43,21 @@ export default function EmailsPage({ emails: initialEmails, church }: EmailsPage
   });
 
   const recipientTypes = [
-    { label: t('Members'), route: EmailListMemberController(), permissionNeeded: TenantPermission.EMAILS_SEND_TO_MEMBERS },
-    { label: t('Missionaries'), route: EmailListMissionaryController(), permissionNeeded: TenantPermission.EMAILS_SEND_TO_MISSIONARIES },
-    { label: t('Visitors'), route: EmailListVisitorController(), permissionNeeded: TenantPermission.EMAILS_SEND_TO_VISITORS },
+    {
+      label: tPages(($) => $.communication.emails.index.members),
+      route: EmailListMemberController(),
+      permissionNeeded: TenantPermission.EMAILS_SEND_TO_MEMBERS,
+    },
+    {
+      label: tPages(($) => $.communication.emails.index.missionaries),
+      route: EmailListMissionaryController(),
+      permissionNeeded: TenantPermission.EMAILS_SEND_TO_MISSIONARIES,
+    },
+    {
+      label: tPages(($) => $.communication.emails.index.visitors),
+      route: EmailListVisitorController(),
+      permissionNeeded: TenantPermission.EMAILS_SEND_TO_VISITORS,
+    },
   ];
 
   const filteredRecipientTypes = recipientTypes.filter((type) => {
@@ -53,12 +65,20 @@ export default function EmailsPage({ emails: initialEmails, church }: EmailsPage
   });
 
   return (
-    <AppLayout title={t('Emails')} breadcrumbs={[{ title: t('Communication') }, { title: t('Emails') }]}>
-      <PageTitle description={t('Manage your emails here')}>{t('Emails')}</PageTitle>
+    <AppLayout
+      title={tPages(($) => $.communication.emails.index.emails)}
+      breadcrumbs={[
+        { title: tPages(($) => $.communication.emails.index.communication) },
+        { title: tPages(($) => $.communication.emails.index.emails) },
+      ]}
+    >
+      <PageTitle description={tPages(($) => $.communication.emails.index.manageYourEmailsHere)}>
+        {tPages(($) => $.communication.emails.index.emails)}
+      </PageTitle>
       <Card className="mx-auto mb-2 max-w-lg">
         <CardHeader>
-          <CardTitle>{t('Send a message')}</CardTitle>
-          <CardDescription>{t('Select a group below to compose a new message.')}</CardDescription>
+          <CardTitle>{tPages(($) => $.communication.emails.index.sendAMessage)}</CardTitle>
+          <CardDescription>{tPages(($) => $.communication.emails.index.selectAGroupBelowToComposeANewMessage)}</CardDescription>
         </CardHeader>
 
         <CardContent className="grid grid-cols-1 gap-2 md:grid-cols-2 lg:grid-cols-3">
@@ -73,7 +93,7 @@ export default function EmailsPage({ emails: initialEmails, church }: EmailsPage
         </CardContent>
       </Card>
 
-      <DataTable data={emails} columns={columns} visibilityState={{ attachmentsCount: false }} />
+      <Datatable data={emails} columns={columns} visibilityState={{ attachmentsCount: false }} />
     </AppLayout>
   );
 }

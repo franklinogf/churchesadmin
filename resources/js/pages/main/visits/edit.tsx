@@ -7,11 +7,11 @@ import { InputField } from '@/components/forms/inputs/InputField';
 import { PhoneField } from '@/components/forms/inputs/PhoneField';
 import { PageTitle } from '@/components/PageTitle';
 import { Separator } from '@/components/ui/separator';
-import { useTranslations } from '@/hooks/use-translations';
 import AppLayout from '@/layouts/app-layout';
 import type { AddressFormData } from '@/types/models/address';
 import type { Visit } from '@/types/models/visit';
 import { useForm } from '@inertiajs/react';
+import { useTranslation } from 'react-i18next';
 
 type EditForm = {
   name: string;
@@ -22,7 +22,7 @@ type EditForm = {
   address: AddressFormData;
 };
 export default function VisitsEdit({ visit }: { visit: Visit }) {
-  const { t } = useTranslations();
+  const { t: tPages } = useTranslation('pages');
   const { data, setData, submit, errors, processing } = useForm<EditForm>({
     name: visit.name,
     last_name: visit.lastName,
@@ -45,28 +45,48 @@ export default function VisitsEdit({ visit }: { visit: Visit }) {
 
   return (
     <AppLayout
-      title={t('Edit :model', { model: t('Visit') })}
-      breadcrumbs={[{ title: t('Visits'), href: VisitController.index().url }, { title: t('Edit :model', { model: t('Visit') }) }]}
+      title={tPages(($) => $.main.visits.edit.editModel, { model: tPages(($) => $.main.visits.edit.visit) })}
+      breadcrumbs={[
+        { title: tPages(($) => $.main.visits.edit.visits), href: VisitController.index().url },
+        { title: tPages(($) => $.main.visits.edit.editModel, { model: tPages(($) => $.main.visits.edit.visit) }) },
+      ]}
     >
-      <PageTitle>{t('Edit :model', { model: t('Visit') })}</PageTitle>
+      <PageTitle>{tPages(($) => $.main.visits.edit.editModel, { model: tPages(($) => $.main.visits.edit.visit) })}</PageTitle>
 
       <Form className="mx-auto mt-6 w-full max-w-2xl" onSubmit={handleSubmit} isSubmitting={processing}>
-        <InputField label={t('Name')} value={data.name} onChange={(value) => setData('name', value)} error={errors.name} required />
         <InputField
-          label={t('Last Name')}
+          label={tPages(($) => $.main.visits.edit.name)}
+          value={data.name}
+          onChange={(value) => setData('name', value)}
+          error={errors.name}
+          required
+        />
+        <InputField
+          label={tPages(($) => $.main.visits.edit.lastName)}
           value={data.last_name}
           onChange={(value) => setData('last_name', value)}
           error={errors.last_name}
           required
         />
         <FieldsGrid>
-          <PhoneField label={t('Phone')} value={data.phone} onChange={(value) => setData('phone', value)} error={errors.phone} />
-          <InputField label={t('Email')} type="email" value={data.email} onChange={(value) => setData('email', value)} error={errors.email} />
+          <PhoneField
+            label={tPages(($) => $.main.visits.edit.phone)}
+            value={data.phone}
+            onChange={(value) => setData('phone', value)}
+            error={errors.phone}
+          />
+          <InputField
+            label={tPages(($) => $.main.visits.edit.email)}
+            type="email"
+            value={data.email}
+            onChange={(value) => setData('email', value)}
+            error={errors.email}
+          />
         </FieldsGrid>
 
         <DateField
           maxDate="today"
-          label={t('First visit date')}
+          label={tPages(($) => $.main.visits.edit.firstVisitDate)}
           value={data.first_visit_date}
           onChange={(value) => setData('first_visit_date', value)}
           error={errors.first_visit_date}

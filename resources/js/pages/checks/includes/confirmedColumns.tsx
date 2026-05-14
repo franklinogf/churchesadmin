@@ -1,17 +1,17 @@
-import { selectionHeader } from '@/components/custom-ui/datatable/columns';
 import { DatatableCell } from '@/components/custom-ui/datatable/DatatableCell';
-import { DataTableColumnHeader } from '@/components/custom-ui/datatable/DataTableColumnHeader';
+import { selectionHeader } from '@/components/datatable/columns';
+import { DatatableHeader } from '@/components/datatable/datatable-header';
 import { Badge } from '@/components/ui/badge';
 import { useCurrency } from '@/hooks/use-currency';
-import { useTranslations } from '@/hooks/use-translations';
 import type { Check } from '@/types/models/check';
 import { type ColumnDef } from '@tanstack/react-table';
+import { useTranslation } from 'react-i18next';
 
 export const confirmedColumns: ColumnDef<Check>[] = [
   selectionHeader as ColumnDef<Check>,
   {
     enableHiding: false,
-    header: ({ column }) => <DataTableColumnHeader column={column} title="Member" />,
+    header: ({ column }) => <DatatableHeader column={column} title="Member" />,
     accessorKey: 'member',
     cell: ({ row }) => {
       const { member } = row.original;
@@ -20,7 +20,7 @@ export const confirmedColumns: ColumnDef<Check>[] = [
   },
   {
     enableHiding: false,
-    header: ({ column }) => <DataTableColumnHeader justify="center" column={column} title="Date" />,
+    header: ({ column }) => <DatatableHeader justify="center" column={column} title="Date" />,
     accessorKey: 'date',
     cell: ({ row }) => {
       const { date } = row.original;
@@ -29,7 +29,7 @@ export const confirmedColumns: ColumnDef<Check>[] = [
   },
   {
     enableHiding: false,
-    header: ({ column }) => <DataTableColumnHeader justify="center" column={column} title="Number" />,
+    header: ({ column }) => <DatatableHeader justify="center" column={column} title="Number" />,
     accessorKey: 'checkNumber',
     cell: function CellComponent({ row }) {
       const { checkNumber } = row.original;
@@ -42,20 +42,20 @@ export const confirmedColumns: ColumnDef<Check>[] = [
     },
   },
   {
-    header: ({ column }) => <DataTableColumnHeader justify="center" column={column} title="Type" />,
+    header: ({ column }) => <DatatableHeader justify="center" column={column} title="Type" />,
     accessorKey: 'type',
     cell: function CellComponent({ row }) {
-      const { t } = useTranslations();
+      const { t } = useTranslation('enum');
       const { type } = row.original;
       return (
         <DatatableCell justify="center">
-          <Badge>{t(`enum.check_type.${type}`)}</Badge>
+          <Badge>{t(($) => $.checkType[type])}</Badge>
         </DatatableCell>
       );
     },
   },
   {
-    header: ({ column }) => <DataTableColumnHeader justify="center" column={column} title="Expense type" />,
+    header: ({ column }) => <DatatableHeader justify="center" column={column} title="Expense type" />,
     accessorKey: 'expenseType',
     cell: function CellComponent({ row }) {
       const { expenseType } = row.original;
@@ -68,7 +68,7 @@ export const confirmedColumns: ColumnDef<Check>[] = [
   },
   {
     enableHiding: false,
-    header: ({ column }) => <DataTableColumnHeader justify="end" column={column} title="Amount" />,
+    header: ({ column }) => <DatatableHeader justify="end" column={column} title="Amount" />,
     accessorKey: 'transaction.amountFloat',
     cell: function CellComponent({ row }) {
       const { formatCurrency, toPositive } = useCurrency();

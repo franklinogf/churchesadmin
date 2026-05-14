@@ -9,12 +9,12 @@ import { SubmitButton } from '@/components/forms/SubmitButton';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Slider } from '@/components/ui/slider';
-import { useTranslations } from '@/hooks/use-translations';
 import { Transition } from '@headlessui/react';
 import { useForm } from '@inertiajs/react';
 import { format } from 'date-fns';
 import { PlusIcon } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { CheckLayoutDraggableField } from './check-layout-draggable-field';
 import { CheckLayoutDroppableArea } from './check-layout-droppable-area';
 type CheckLayoutForm = {
@@ -23,13 +23,13 @@ type CheckLayoutForm = {
   height: number;
 };
 export function CheckLayoutEditor({ checkLayout }: { checkLayout: CheckLayout }) {
-  const { t } = useTranslations();
+  const { t: tPages } = useTranslation('pages');
   const initialFieldsMap: Record<CheckFieldName, string> = {
     date: format(new Date(), 'yyyy-MM-dd'),
     amount: '549.00',
-    amount_in_words: t('Five Hundred Forty-Nine and 00/100'),
-    payee: t('Name of Payee'),
-    memo: t('Memo'),
+    amount_in_words: tPages(($) => $.wallets.components.checkLayoutEditor.fiveHundredFortyNineAnd00100),
+    payee: tPages(($) => $.wallets.components.checkLayoutEditor.nameOfPayee),
+    memo: tPages(($) => $.wallets.components.checkLayoutEditor.memo),
   };
   const [fieldsMap, setFieldsMap] = useState<Record<CheckFieldName, string>>(initialFieldsMap);
   const { data, setData, submit, processing, recentlySuccessful, errors } = useForm<CheckLayoutForm>({
@@ -83,18 +83,20 @@ export function CheckLayoutEditor({ checkLayout }: { checkLayout: CheckLayout })
   return (
     <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
       <form onSubmit={handleSubmit} className="col-span-2 space-y-6">
-        <p className="text-muted-foreground mb-4 text-sm">{t('You can edit the layout by dragging the fields to the desired position')}</p>
+        <p className="text-muted-foreground mb-4 text-sm">
+          {tPages(($) => $.wallets.components.checkLayoutEditor.youCanEditTheLayoutByDraggingTheFields)}
+        </p>
         <FormErrorList errors={errors} />
         <FieldsGrid>
           <div className="w-full">
             <p>
-              {t('Width')} ({data.width}px)
+              {tPages(($) => $.wallets.components.checkLayoutEditor.width)} ({data.width}px)
             </p>
             <Slider value={[data.width]} max={1000} onValueChange={(value) => setData('width', value[0]!)} />
           </div>
           <div className="w-full">
             <p>
-              {t('Height')} ({data.height}px)
+              {tPages(($) => $.wallets.components.checkLayoutEditor.height)} ({data.height}px)
             </p>
             <Slider value={[data.height]} max={1000} onValueChange={(value) => setData('height', value[0]!)} />
           </div>
@@ -134,7 +136,7 @@ export function CheckLayoutEditor({ checkLayout }: { checkLayout: CheckLayout })
           </CheckLayoutDroppableArea>
         </DragDropProvider>
         <div className="flex items-center justify-center gap-4">
-          <SubmitButton isSubmitting={processing}>{t('Save')}</SubmitButton>
+          <SubmitButton isSubmitting={processing}>{tPages(($) => $.wallets.components.checkLayoutEditor.save)}</SubmitButton>
 
           <Transition
             show={recentlySuccessful}
@@ -143,15 +145,15 @@ export function CheckLayoutEditor({ checkLayout }: { checkLayout: CheckLayout })
             leave="transition ease-in-out"
             leaveTo="opacity-0"
           >
-            <p className="text-sm text-neutral-600">{t('Saved')}</p>
+            <p className="text-sm text-neutral-600">{tPages(($) => $.wallets.components.checkLayoutEditor.saved)}</p>
           </Transition>
         </div>
       </form>
       <section>
         <Card className="sticky top-5 mt-4">
           <CardHeader>
-            <CardTitle>{t('Preview')}</CardTitle>
-            <CardDescription>{t('This is how the information will look on the check layout')}</CardDescription>
+            <CardTitle>{tPages(($) => $.wallets.components.checkLayoutEditor.preview)}</CardTitle>
+            <CardDescription>{tPages(($) => $.wallets.components.checkLayoutEditor.thisIsHowTheInformationWillLookOnThe)}</CardDescription>
           </CardHeader>
           <CardContent>
             {Object.entries(fieldsMap).map(([id, value]) => (
@@ -162,7 +164,7 @@ export function CheckLayoutEditor({ checkLayout }: { checkLayout: CheckLayout })
                   type="text"
                   value={value}
                   onChange={(value) => handleFieldChange(id as CheckFieldName, value === '' ? initialFieldsMap[id as CheckFieldName] : value)}
-                  placeholder={t('Enter the value for this field')}
+                  placeholder={tPages(($) => $.wallets.components.checkLayoutEditor.enterTheValueForThisField)}
                 />
                 <Button variant="outline" size="icon" className="self-end" onClick={() => handleAddField(id as CheckFieldName)}>
                   <PlusIcon className="h-4 w-4" />

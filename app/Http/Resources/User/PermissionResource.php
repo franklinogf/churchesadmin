@@ -8,9 +8,10 @@ use App\Enums\TenantPermission;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Override;
+use Spatie\Permission\Models\Permission;
 
 /**
- * @mixin \Spatie\Permission\Models\Permission
+ * @mixin Permission
  */
 final class PermissionResource extends JsonResource
 {

@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Enums\CheckLayoutField;
 use App\Enums\MediaCollectionName;
 use Carbon\CarbonImmutable;
+use Database\Factories\CheckLayoutFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -29,7 +30,7 @@ use Spatie\MediaLibrary\MediaCollections\File;
  */
 final class CheckLayout extends Model implements HasMedia
 {
-    /** @use HasFactory<\Database\Factories\CheckLayoutFactory> */
+    /** @use HasFactory<CheckLayoutFactory> */
     use HasFactory,InteractsWithMedia;
 
     /**
@@ -42,24 +43,24 @@ final class CheckLayout extends Model implements HasMedia
         return $this->hasMany(ChurchWallet::class);
     }
 
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection(MediaCollectionName::DEFAULT->value)
+            ->singleFile()
+            ->acceptsFile(fn (File $file) => str($file->mimeType)->startsWith('image/'));
+    }
+
     /**
      * Get the attributes that should be cast.
      *
      * @return array<string,string>
      */
     #[Override]
-    public function casts(): array
+    protected function casts(): array
     {
         return [
             'fields' => 'json',
         ];
-    }
-
-    public function registerMediaCollections(): void
-    {
-        $this->addMediaCollection(MediaCollectionName::DEFAULT->value)
-            ->singleFile()
-            ->acceptsFile(fn (File $file) => str($file->mimeType)->startsWith('image/'));
     }
 
     /**

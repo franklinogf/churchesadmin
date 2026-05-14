@@ -35,7 +35,8 @@ describe('if user has permission', function (): void {
 
     it('can store a check', function (): void {
         $wallet = ChurchWallet::factory()->create();
-        $wallet->depositFloat('200.00'); // Add sufficient balance
+        $wallet->depositFloat('200.00');
+        // Add sufficient balance
         $member = Member::factory()->create();
         $expenseType = ExpenseType::factory()->create();
 
@@ -81,7 +82,8 @@ describe('if user does not have permission', function (): void {
 
     it('cannot store a check', function (): void {
         $wallet = ChurchWallet::factory()->create();
-        $wallet->depositFloat('200.00'); // Add sufficient balance
+        $wallet->depositFloat('200.00');
+        // Add sufficient balance
         $member = Member::factory()->create();
         $expenseType = ExpenseType::factory()->create();
 

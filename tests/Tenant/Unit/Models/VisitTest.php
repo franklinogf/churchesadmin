@@ -79,6 +79,7 @@ it('can be restored after soft delete', function (): void {
     $visit = Visit::factory()->create();
 
     $visit->delete();
+
     expect($visit->trashed())->toBeTrue();
 
     $visit->restore();

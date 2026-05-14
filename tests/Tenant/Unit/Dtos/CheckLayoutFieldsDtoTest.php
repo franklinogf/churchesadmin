@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use App\Dtos\CheckLayoutFieldsDto;
-use Bavix\Wallet\Services\FormatterService;
 
 describe('CheckLayoutFieldsDto', function (): void {
     it('can be instantiated', function (): void {

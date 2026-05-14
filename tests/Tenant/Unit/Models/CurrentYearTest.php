@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Models\CurrentYear;
 use Carbon\CarbonImmutable;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 test('to array', function (): void {
     $currentYear = CurrentYear::factory()->create()->fresh();
@@ -55,7 +56,7 @@ it('throws exception when no current year exists', function (): void {
     CurrentYear::factory()->create(['is_current' => false]);
 
     expect(fn (): CurrentYear => CurrentYear::current())
-        ->toThrow(Illuminate\Database\Eloquent\ModelNotFoundException::class);
+        ->toThrow(ModelNotFoundException::class);
 });
 
 it('can find previous year', function (): void {

@@ -35,7 +35,8 @@ describe('if user has permission', function (): void {
 
     it('can store an expense', function (): void {
         $wallet = ChurchWallet::factory()->create();
-        $wallet->depositFloat('200.00'); // Add balance to wallet
+        $wallet->depositFloat('200.00');
+        // Add balance to wallet
         $member = Member::factory()->create();
         $expenseType = ExpenseType::factory()->create();
 
