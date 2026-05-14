@@ -31,10 +31,6 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
     ],
     [tCommon],
   );
-  // When server-side rendering, we only render the layout on the client...
-  if (typeof window === 'undefined') {
-    return null;
-  }
 
   return (
     <div className="px-4 py-6">

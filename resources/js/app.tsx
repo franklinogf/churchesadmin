@@ -2,8 +2,6 @@ import '../css/app.css';
 
 import { createInertiaApp } from '@inertiajs/react';
 import { configureEcho } from '@laravel/echo-react';
-import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
-import { createRoot } from 'react-dom/client';
 import './components/datatable/legacy-globals';
 import { initializeTheme } from './hooks/use-appearance';
 import './i18n';
@@ -15,16 +13,8 @@ configureEcho({
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 createInertiaApp({
-  title: (title) => `${title} - ${appName}`,
-  resolve: (name) => resolvePageComponent(`./pages/${name}.tsx`, import.meta.glob('./pages/**/*.tsx')),
-  setup({ el, App, props }) {
-    const root = createRoot(el);
-    root.render(
-      //   <LaravelReactI18nProvider fallbackLocale="en" files={import.meta.glob('/lang/*.json')}>
-      <App {...props} />,
-      //   </LaravelReactI18nProvider>,
-    );
-  },
+  title: (title) => (title ? `${title} - ${appName}` : appName),
+  strictMode: true,
   progress: {
     color: '#4B5563',
   },

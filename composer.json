@@ -21,7 +21,7 @@
         "codezero/laravel-unique-translation": "^4.3.1",
         "filament/filament": "^4.11.3",
         "gboquizosanchez/filament-log-viewer": "^2.3.0",
-        "inertiajs/inertia-laravel": "^2.0.24",
+        "inertiajs/inertia-laravel": "^3.0",
         "kwn/number-to-words": "^2.12.0",
         "laravel/framework": "^12.58.0",
         "laravel/pennant": "^1.23.0",

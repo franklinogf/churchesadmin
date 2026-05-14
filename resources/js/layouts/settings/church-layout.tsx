@@ -44,10 +44,6 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
     [tCommon],
   );
 
-  // When server-side rendering, we only render the layout on the client...
-  if (typeof window === 'undefined') {
-    return null;
-  }
   const filteredItems = sidebarNavItems.filter((item) => (item.permissionNeeded !== undefined ? userCan(item.permissionNeeded) : true));
 
   return (
