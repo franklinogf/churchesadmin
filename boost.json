@@ -23,7 +23,6 @@
         "echo-development",
         "tailwindcss-development",
         "medialibrary-development",
-        "translatable-development",
-        "adding-translations"
+        "translatable-development"
     ]
 }

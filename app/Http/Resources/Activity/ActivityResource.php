@@ -32,7 +32,6 @@ final class ActivityResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'batchUuid' => $this->batch_uuid,
             'event' => $this->event,
             'logName' => $this->log_name,
             'description' => $this->description,

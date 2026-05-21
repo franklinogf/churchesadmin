@@ -54,8 +54,11 @@ final readonly class UpdateWalletAction
                         'check_layout_id' => ArrayFallback::inputOrFallback($data, 'check_layout_id', $wallet->check_layout_id),
                     ]
                 );
+                if (! array_key_exists('balance', $data)) {
+                    return $wallet->refresh();
+                }
 
-                if (array_key_exists('balance', $data) && $data['balance'] !== null) {
+                if (filled($data['balance'])) {
                     $balance = $data['balance'];
                     $transaction = $wallet->initialTransaction;
                     if ($transaction instanceof Transaction) {
@@ -79,7 +82,7 @@ final readonly class UpdateWalletAction
                         ));
                     }
 
-                } elseif (array_key_exists('balance', $data) && $data['balance'] === null) {
+                } else {
                     $transaction = $wallet->initialTransaction;
                     if ($transaction instanceof Transaction) {
                         $this->deleteTransactionAction->handle($transaction);
