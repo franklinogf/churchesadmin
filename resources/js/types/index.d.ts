@@ -1,6 +1,5 @@
 import { type LanguageCode } from '@/enums';
 
-import type { ChurchFeature } from '@/enums/ChurchFeature';
 import { type UserPermission } from '@/enums/user';
 import type { RouteDefinition } from '@/wayfinder';
 import { type LucideIcon } from 'lucide-react';
@@ -11,6 +10,10 @@ export interface Auth {
   user: AuthenticatedUser;
   permissions: string[];
 }
+
+export type TenantFeatures = {
+  books: boolean;
+};
 
 export interface BreadcrumbItem {
   title: string;
@@ -41,7 +44,7 @@ export interface SharedData {
   appName: string;
   environment: 'production' | 'local' | 'staging';
   church: Church | null;
-  features: Record<ChurchFeature, boolean>;
+  features: TenantFeatures;
   [key: string]: unknown;
 }
 

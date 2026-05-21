@@ -34,7 +34,6 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 use Inertia\ExceptionResponse;
 use Inertia\Inertia;
-use Laravel\Pennant\Feature;
 use Override;
 use Spatie\Translatable\Facades\Translatable;
 
@@ -56,7 +55,6 @@ final class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Feature::resolveScopeUsing(fn (): ?Church => Church::current());
         $this->configureCommands();
         $this->configureDates();
         $this->configureModels();

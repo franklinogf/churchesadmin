@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Casts\TenantFeaturesCast;
+use App\Data\TenantFeatures;
 use App\Enums\MediaCollectionName;
 use Bavix\Wallet\Interfaces\Wallet;
 use Bavix\Wallet\Interfaces\WalletFloat;
@@ -13,7 +15,6 @@ use Carbon\CarbonImmutable;
 use Database\Factories\ChurchFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Laravel\Pennant\Concerns\HasFeatures;
 use Override;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
@@ -30,6 +31,7 @@ use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
  * @property-read string $name
  * @property-read string $locale
  * @property-read bool $active
+ * @property-read TenantFeatures $features
  * @property-read string|null $logo
  * @property-read array<string,mixed>|null $data
  * @property-read CarbonImmutable $created_at
@@ -40,7 +42,7 @@ use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
 final class Church extends BaseTenant implements HasMedia, SingleDomainTenant, TenantWithDatabase, Wallet, WalletFloat
 {
     /** @use HasFactory<ChurchFactory> */
-    use HasDatabase, HasFactory, HasFeatures, HasWalletFloat, HasWallets, InteractsWithMedia, MaintenanceMode;
+    use HasDatabase, HasFactory, HasWalletFloat, HasWallets, InteractsWithMedia, MaintenanceMode;
 
     /**
      * Set the custom columns for the tenant model.
@@ -57,6 +59,7 @@ final class Church extends BaseTenant implements HasMedia, SingleDomainTenant, T
             'name',
             'locale',
             'active',
+            'features',
             'domain',
         ]);
     }
@@ -102,6 +105,7 @@ final class Church extends BaseTenant implements HasMedia, SingleDomainTenant, T
         return [
             ...parent::casts(),
             'active' => 'boolean',
+            'features' => TenantFeaturesCast::class,
         ];
     }
 }

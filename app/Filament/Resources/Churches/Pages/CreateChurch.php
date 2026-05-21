@@ -35,11 +35,5 @@ final class CreateChurch extends CreateRecord
 
             $user->assignRole(TenantRole::SUPER_ADMIN->value);
         });
-
-        $features = $this->data['features'] ?? [];
-
-        foreach ($features as $feature) {
-            $church->features()->activate($feature);
-        }
     }
 }

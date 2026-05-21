@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
-use App\Enums\ChurchFeature;
 use App\Enums\FlashMessageKey;
 use App\Enums\LanguageCode;
 use App\Http\Resources\ChurchResource;
@@ -95,15 +94,6 @@ final class HandleInertiaRequests extends Middleware
             return [];
         }
 
-        /**
-         * @var array<string,bool>
-         */
-        $features = collect(ChurchFeature::values())
-            ->mapWithKeys(fn (string $feature): array => [
-                $feature => $church->features()->active($feature),
-            ])
-            ->toArray();
-
-        return $features;
+        return $church->features->toArray();
     }
 }

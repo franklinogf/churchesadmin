@@ -4,17 +4,14 @@ declare(strict_types=1);
 
 namespace App\Filament\Resources\Churches\Schemas;
 
-use App\Enums\ChurchFeature;
+use App\Data\TenantFeatures;
 use App\Enums\LanguageCode;
-use App\Models\Church;
-use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Illuminate\Validation\Rules\Password;
-use Laravel\Pennant\Feature;
 
 final class ChurchForm
 {
@@ -67,27 +64,11 @@ final class ChurchForm
                     ->columns(2)
                     ->compact(),
                 Section::make('Features')
-                    ->translateLabel()
-                    ->divided()
-                    ->schema([
-                        CheckboxList::make('features')
-                            ->dehydrated(false)
-                            ->columns(2)
-                            ->label(__('Enabled Features'))
-                            ->options(ChurchFeature::class)
-                            ->afterStateHydrated(function (CheckboxList $component, ?Church $record, string $operation): void {
-                                if ($operation !== 'edit') {
-                                    return;
-                                }
-                                $activeFeatures = collect(ChurchFeature::values())
-                                    ->filter(fn (string $key) => Feature::for($record)->active($key))
-                                    ->toArray();
-
-                                $component->state($activeFeatures);
-                            }),
-                    ])
-                    ->columnSpanFull()
-                    ->compact(),
+                    ->statePath('features')
+                    ->schema(collect((new TenantFeatures)->toArray())
+                        ->map(fn (bool $value, string $key): Toggle => Toggle::make($key)->default($value))
+                        ->all()
+                    )->columns(2),
             ]);
     }
 }
