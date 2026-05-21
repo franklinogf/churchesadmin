@@ -39,6 +39,8 @@ return [
             'no_recipients_selected' => 'No se seleccionaron destinatarios para el correo electrónico.',
             'unknown_error' => 'Ocurrió un error desconocido al enviar el correo electrónico. Por favor, inténtelo de nuevo más tarde.',
             'will_be_sent' => 'El correo electrónico se enviará pronto.',
+            'retry_empty_recipients' => 'No se pudo reintentar el envío del correo electrónico, no se encontraron destinatarios fallidos.',
+            'retry_success' => 'Reintento de correo electrónico exitoso. :count destinatario(s) recibirán el correo electrónico.',
         ],
     ],
 ];
