@@ -10,7 +10,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 uses(RefreshDatabase::class);
 
 test('to array', function (): void {
-    $church = Church::createQuietly([
+    $church = Church::query()->createQuietly([
         'id' => 1,
         'name' => 'Test Church',
         'locale' => LanguageCode::ENGLISH->value,
@@ -33,7 +33,7 @@ test('to array', function (): void {
 });
 
 test('casts are correct', function (): void {
-    $church = Church::createQuietly([
+    $church = Church::query()->createQuietly([
         'id' => 1,
         'name' => 'Test Church',
         'locale' => LanguageCode::ENGLISH->value,
@@ -48,7 +48,7 @@ test('casts are correct', function (): void {
 
 describe('features cast', function (): void {
     it('stores tenant features from an array', function (): void {
-        $church = Church::createQuietly([
+        $church = Church::query()->createQuietly([
             'id' => 1,
             'name' => 'Test Church',
             'locale' => LanguageCode::ENGLISH->value,

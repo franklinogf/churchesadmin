@@ -32,8 +32,8 @@ final class CheckController extends Controller
     {
         Gate::authorize('viewAny', Check::class);
 
-        $unconfirmedChecks = Check::latest()->unconfirmed()->get();
-        $confirmedChecks = Check::latest()->confirmed()->get();
+        $unconfirmedChecks = Check::query()->latest()->unconfirmed()->get();
+        $confirmedChecks = Check::query()->latest()->confirmed()->get();
 
         /**
          * @var int $maxCheckNumber

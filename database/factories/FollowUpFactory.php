@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Enums\FollowUpType;
+use App\Models\FollowUp;
 use App\Models\Member;
 use App\Models\Visit;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\FollowUp>
+ * @extends Factory<FollowUp>
  */
 final class FollowUpFactory extends Factory
 {

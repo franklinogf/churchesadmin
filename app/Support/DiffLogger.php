@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Support;
 
-use Carbon\Carbon;
 use DateTimeInterface;
 use Exception;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Date;
 
 use function array_key_exists;
 use function count;
@@ -166,7 +166,7 @@ final class DiffLogger
 
             if (is_array($newValue) && is_array($oldValue)) {
                 // Create a nested logger for recursive comparison
-                $nested = new self();
+                $nested = new self;
                 $nested->ignoredFields = $this->ignoredFields;
                 $nested->diffRecursive($oldValue, $newValue);
                 if ($nested->hasChanges()) {
@@ -207,14 +207,14 @@ final class DiffLogger
 
         // Handle Carbon objects (including CarbonImmutable)
         if ($value instanceof DateTimeInterface) {
-            return Carbon::parse($value)->format('Y-m-d');
+            return Date::parse($value)->format('Y-m-d');
         }
 
         // Handle strings that might be dates
         if (is_string($value) && mb_trim($value) !== '') {
             if ($this->looksLikeDate($value)) {
                 try {
-                    $dt = Carbon::parse($value);
+                    $dt = Date::parse($value);
 
                     return $dt->format('Y-m-d'); // normalize date
                 } catch (Exception) {

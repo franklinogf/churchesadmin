@@ -14,7 +14,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('calendar_events', function (Blueprint $table) {
+        Schema::table('calendar_events', function (Blueprint $table): void {
             $table->string('color')->default(CalendarEventColorEnum::BLUE->value)->after('location');
         });
     }
@@ -24,7 +24,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('calendar_events', function (Blueprint $table) {
+        Schema::table('calendar_events', function (Blueprint $table): void {
             $table->dropColumn('color');
         });
     }

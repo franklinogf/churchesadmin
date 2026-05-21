@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Enums\LanguageCode;
+
 return [
 
     /*
@@ -81,9 +83,9 @@ return [
     |
     */
 
-    'locale' => env('APP_LOCALE', App\Enums\LanguageCode::SPANISH->value),
+    'locale' => env('APP_LOCALE', LanguageCode::SPANISH->value),
 
-    'fallback_locale' => env('APP_FALLBACK_LOCALE', App\Enums\LanguageCode::ENGLISH->value),
+    'fallback_locale' => env('APP_FALLBACK_LOCALE', LanguageCode::ENGLISH->value),
 
     'faker_locale' => env('APP_FAKER_LOCALE', 'es_US'),
 
@@ -104,7 +106,7 @@ return [
 
     'previous_keys' => [
         ...array_filter(
-            explode(',', env('APP_PREVIOUS_KEYS', ''))
+            explode(',', (string) env('APP_PREVIOUS_KEYS', ''))
         ),
     ],
 

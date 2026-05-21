@@ -25,7 +25,7 @@ describe('if user has permission', function (): void {
 
         assertDatabaseCount('tags', 1);
 
-        $category = Tag::withType(TagType::CATEGORY->value)->first();
+        $category = Tag::query()->withType(TagType::CATEGORY->value)->first();
 
         expect($category->name)->toBe('category name')
             ->and($category->type)->toBe(TagType::CATEGORY->value);
@@ -42,7 +42,7 @@ describe('if user has permission', function (): void {
 
         assertDatabaseCount('tags', 0);
 
-        expect(Tag::withType(TagType::CATEGORY->value)->count())->toBe(0);
+        expect(Tag::query()->withType(TagType::CATEGORY->value)->count())->toBe(0);
     });
 
     it('cannot be stored with a name that is too short', function (): void {
@@ -55,7 +55,7 @@ describe('if user has permission', function (): void {
 
         assertDatabaseCount('tags', 0);
 
-        expect(Tag::withType(TagType::CATEGORY->value)->count())->toBe(0);
+        expect(Tag::query()->withType(TagType::CATEGORY->value)->count())->toBe(0);
     });
 
     it('cannot be stored if the name already exists', function (): void {
@@ -68,7 +68,7 @@ describe('if user has permission', function (): void {
                 'name' => 'category name',
                 'is_regular' => false,
             ])->assertRedirect(route('categories.index'));
-        expect(Tag::withType(TagType::CATEGORY->value)->count())->toBe(1);
+        expect(Tag::query()->withType(TagType::CATEGORY->value)->count())->toBe(1);
 
     });
 
@@ -82,7 +82,7 @@ describe('if user has permission', function (): void {
 
         assertDatabaseCount('tags', 1);
 
-        $category = Tag::withType(TagType::CATEGORY->value)->first();
+        $category = Tag::query()->withType(TagType::CATEGORY->value)->first();
 
         expect($category->name)->toBe('category name')
             ->and($category->type)->toBe(TagType::CATEGORY->value)

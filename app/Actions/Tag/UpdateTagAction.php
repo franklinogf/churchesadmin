@@ -19,7 +19,7 @@ final class UpdateTagAction
         $tag->update([
             'name' => isset($data['name']) ? collect(LanguageCode::values())
                 ->mapWithKeys(fn (string $code): array => [$code => $data['name']])
-                ->toArray() : $tag->name,
+                ->all() : $tag->name,
             'is_regular' => $data['is_regular'] ?? $tag->is_regular,
         ]);
 

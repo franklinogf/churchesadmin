@@ -14,7 +14,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('tenants', function (Blueprint $table) {
+        Schema::table('tenants', function (Blueprint $table): void {
             $table->string('domain')->nullable()->after('active');
         });
 
@@ -27,7 +27,7 @@ return new class extends Migration
             }
         }
 
-        Schema::table('tenants', function (Blueprint $table) {
+        Schema::table('tenants', function (Blueprint $table): void {
             $table->string('domain')->nullable(false)->change();
         });
 

@@ -6,10 +6,11 @@ namespace Database\Factories;
 
 use App\Enums\Gender;
 use App\Enums\OfferingFrequency;
+use App\Models\Missionary;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Missionary>
+ * @extends Factory<Missionary>
  */
 final class MissionaryFactory extends Factory
 {

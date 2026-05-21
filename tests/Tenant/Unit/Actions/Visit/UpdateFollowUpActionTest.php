@@ -34,7 +34,7 @@ it('can update all follow-up fields', function (): void {
         'notes' => 'Updated notes',
     ];
 
-    $action = new UpdateFollowUpAction();
+    $action = new UpdateFollowUpAction;
     $updatedFollowUp = $action->handle($this->followUp, $data);
 
     expect($updatedFollowUp)->toBeInstanceOf(FollowUp::class)
@@ -51,7 +51,7 @@ it('can update partial follow-up fields', function (): void {
         'type' => FollowUpType::LETTER,
     ];
 
-    $action = new UpdateFollowUpAction();
+    $action = new UpdateFollowUpAction;
     $updatedFollowUp = $action->handle($this->followUp, $data);
 
     expect($updatedFollowUp)->toBeInstanceOf(FollowUp::class)
@@ -68,7 +68,7 @@ it('can update notes to null', function (): void {
         'notes' => null,
     ];
 
-    $action = new UpdateFollowUpAction();
+    $action = new UpdateFollowUpAction;
     $updatedFollowUp = $action->handle($this->followUp, $data);
 
     expect($updatedFollowUp)->toBeInstanceOf(FollowUp::class)

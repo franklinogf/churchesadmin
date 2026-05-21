@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('expense_types', function (Blueprint $table) {
+        Schema::create('expense_types', function (Blueprint $table): void {
             $table->id();
             $table->string('name')->unique();
             $table->decimal('default_amount', 10, 2)->nullable();

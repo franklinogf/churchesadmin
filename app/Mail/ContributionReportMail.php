@@ -18,7 +18,8 @@ use function is_string;
 
 final class ContributionReportMail extends Mailable
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     private string $selectedYear;
 

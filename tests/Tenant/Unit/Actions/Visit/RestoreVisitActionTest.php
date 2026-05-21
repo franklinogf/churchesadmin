@@ -14,13 +14,13 @@ it('can restore a soft deleted visit', function (): void {
     $visit = Visit::factory()->create();
     $visit->delete(); // Soft delete
 
-    expect(Visit::count())->toBe(0)
+    expect(Visit::query()->count())->toBe(0)
         ->and(Visit::withTrashed()->count())->toBe(1);
 
-    $action = new RestoreVisitAction();
+    $action = new RestoreVisitAction;
     $action->handle($visit);
 
-    expect(Visit::count())->toBe(1)
+    expect(Visit::query()->count())->toBe(1)
         ->and(Visit::withTrashed()->count())->toBe(1)
         ->and($visit->refresh()->deleted_at)->toBeNull();
 });

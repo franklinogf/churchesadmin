@@ -24,9 +24,7 @@ final class TenantGeneralController extends Controller
     public function edit(#[CurrentUser] TenantUser $user): Response
     {
 
-        if ($user->cannot(TenantPermission::SETTINGS_MANAGE)) {
-            abort(403);
-        }
+        abort_if($user->cannot(TenantPermission::SETTINGS_MANAGE), 403);
 
         $church = Church::currentOrFail();
 

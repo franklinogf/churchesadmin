@@ -49,7 +49,7 @@ final class SelectOptionWithModel implements ValidationRule
             $fail('The model does not exist.');
         }
 
-        if ($modelClass !== null && $modelClass::where('id', $id)->doesntExist()) {
+        if ($modelClass !== null && $modelClass::query()->where('id', $id)->doesntExist()) {
             $fail('The selected :attribute is invalid.');
         }
 

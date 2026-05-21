@@ -18,19 +18,13 @@ final class ChecksPdfController extends Controller
     public function __invoke(Request $request): Response
     {
         $checkIds = $request->array('checks');
-        if (empty($checkIds)) {
-            abort(404, 'No checks selected');
-        }
+        abort_if(empty($checkIds), 404, 'No checks selected');
 
-        $checks = Check::whereIn('id', $checkIds)->get();
+        $checks = Check::query()->whereIn('id', $checkIds)->get();
 
-        if ($checks->isEmpty()) {
-            abort(404, 'No checks found');
-        }
+        abort_if($checks->isEmpty(), 404, 'No checks found');
 
-        if ($checks->contains(fn (Check $check): bool => ! $check->isConfirmed())) {
-            abort(403, 'Some of the selected checks are not confirmed');
-        }
+        abort_if($checks->contains(fn (Check $check): bool => ! $check->isConfirmed()), 403, 'Some of the selected checks are not confirmed');
 
         $pdf = DomPdf::loadView('pdf.checks', [
             'checks' => $checks,

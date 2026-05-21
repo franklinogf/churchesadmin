@@ -6,11 +6,12 @@ namespace Database\Factories;
 
 use App\Enums\EmailStatus;
 use App\Models\Email;
+use App\Models\Emailable;
 use App\Models\Member;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Emailable>
+ * @extends Factory<Emailable>
  */
 final class EmailableFactory extends Factory
 {

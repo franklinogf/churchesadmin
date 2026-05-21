@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Models\DeactivationCode;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\DeactivationCode>
+ * @extends Factory<DeactivationCode>
  */
 final class DeactivationCodeFactory extends Factory
 {

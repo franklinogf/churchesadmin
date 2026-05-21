@@ -8,7 +8,7 @@ use App\Models\ChurchWallet;
 it('can delete a wallet', function (): void {
     $wallet = ChurchWallet::factory()->create();
 
-    $action = new DeleteWalletAction();
+    $action = new DeleteWalletAction;
     $action->handle($wallet);
 
     $this->assertSoftDeleted('church_wallets', [
@@ -25,7 +25,7 @@ it('can delete wallet with transactions', function (): void {
 
     expect($wallet->walletTransactions()->get())->toHaveCount(2);
 
-    $action = new DeleteWalletAction();
+    $action = new DeleteWalletAction;
     $action->handle($wallet);
 
     $this->assertSoftDeleted('church_wallets', [

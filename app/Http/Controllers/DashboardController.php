@@ -82,7 +82,7 @@ final class DashboardController extends Controller
                 'deposits' => $transaction[$month]['deposits'] ?? '0',
                 'withdrawals' => $transaction[$month]['withdrawals'] ?? '0',
             ])
-            ->toArray())->toArray();
+            ->all())->all();
 
         return $data;
 
@@ -122,7 +122,7 @@ final class DashboardController extends Controller
                 'total' => $offerings->get($month, [])['total'] ?? '0',
             ])
             ->values()
-            ->toArray();
+            ->all();
 
         return $data;
     }
@@ -152,7 +152,7 @@ final class DashboardController extends Controller
                 'total' => $expenses->get($month, [])['total'] ?? '0',
             ])
             ->values()
-            ->toArray();
+            ->all();
 
         return $data;
     }
@@ -195,7 +195,7 @@ final class DashboardController extends Controller
                 'visitors' => $visitsByMonth->get($month, collect())->count(),
             ])
             ->values()
-            ->toArray();
+            ->all();
 
         return $data;
     }

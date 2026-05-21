@@ -12,7 +12,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create($this->table(), static function (Blueprint $table) {
+        Schema::create($this->table(), static function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->morphs('holder');
             $table->string('name');
@@ -33,7 +33,7 @@ return new class extends Migration
             $table->unique(['holder_type', 'holder_id', 'slug']);
         });
 
-        Schema::table($this->transactionTable(), function (Blueprint $table) {
+        Schema::table($this->transactionTable(), function (Blueprint $table): void {
             $table->foreign('wallet_id')
                 ->references('id')
                 ->on($this->table())

@@ -20,7 +20,7 @@ it('can update missionary basic data', function (): void {
         'church' => 'New Mission Org',
     ];
 
-    $action = new UpdateMissionaryAction();
+    $action = new UpdateMissionaryAction;
     $action->handle($missionary, $updateData);
 
     $missionary->refresh();
@@ -43,7 +43,7 @@ it('can create address when missionary has none', function (): void {
         'country' => 'US',
     ];
 
-    $action = new UpdateMissionaryAction();
+    $action = new UpdateMissionaryAction;
     $action->handle($missionary, $updateData, $addressData);
 
     $missionary->refresh();
@@ -63,7 +63,7 @@ it('can update existing address', function (): void {
         'city' => 'Updated Mission City',
     ];
 
-    $action = new UpdateMissionaryAction();
+    $action = new UpdateMissionaryAction;
     $action->handle($missionary, $updateData, $addressData);
 
     $missionary->refresh();
@@ -80,7 +80,7 @@ it('can delete address when set to null', function (): void {
 
     $updateData = [];
 
-    $action = new UpdateMissionaryAction();
+    $action = new UpdateMissionaryAction;
     $action->handle($missionary, $updateData);
 
     $missionary->refresh();
@@ -104,7 +104,7 @@ it('can update all data at once', function (): void {
         'city' => 'Complete Mission City',
     ];
 
-    $action = new UpdateMissionaryAction();
+    $action = new UpdateMissionaryAction;
     $action->handle($missionary, $updateData, $addressData);
 
     $missionary->refresh();

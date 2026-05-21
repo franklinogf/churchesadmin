@@ -31,7 +31,7 @@ final class SelectOption
             'label' => is_array($labels)
             ? implode($separator, array_map(fn (string $label) => $item->{$label}, $labels))
              : $item->{$labels},
-        ])->toArray();
+        ])->all();
     }
 
     /**
@@ -55,7 +55,7 @@ final class SelectOption
                 'label' => is_array($labels)
                     ? implode($separator, array_map(fn (string $label) => $item->{$label}, $labels))
                     : $item->{$labels},
-            ])->toArray(),
+            ])->all(),
         ];
 
     }
@@ -76,7 +76,7 @@ final class SelectOption
                 'value' => $case instanceof BackedEnum ? $case->value : $case->name,
                 'label' => $case->name,
             ])
-            ->toArray();
+            ->all();
 
         return $data;
     }

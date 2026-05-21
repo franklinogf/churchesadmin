@@ -35,9 +35,9 @@ final class CreateMemberAction
     {
         return DB::transaction(function () use ($data, $address): Member {
             // Create a logger for tracking the creation
-            $logger = new DiffLogger();
+            $logger = new DiffLogger;
 
-            $member = Member::create([
+            $member = Member::query()->create([
                 'name' => $data['name'],
                 'last_name' => $data['last_name'],
                 'email' => $data['email'] ?? null,

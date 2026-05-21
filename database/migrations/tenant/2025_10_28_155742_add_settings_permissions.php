@@ -19,7 +19,7 @@ return new class extends Migration
         $guardName = 'tenant';
 
         // Clear permission cache
-        app()[PermissionRegistrar::class]->forgetCachedPermissions();
+        app()->make(PermissionRegistrar::class)->forgetCachedPermissions();
 
         // Create the new permissions
         $newPermissions = [
@@ -29,19 +29,19 @@ return new class extends Migration
         ];
 
         foreach ($newPermissions as $permission) {
-            Permission::firstOrCreate([
+            Permission::query()->firstOrCreate([
                 'name' => $permission,
                 'guard_name' => $guardName,
             ]);
         }
 
         // Assign permissions to roles
-        $superAdminRole = Role::where('name', TenantRole::SUPER_ADMIN->value)->first();
+        $superAdminRole = Role::query()->where('name', TenantRole::SUPER_ADMIN->value)->first();
         if ($superAdminRole) {
             $superAdminRole->givePermissionTo($newPermissions);
         }
 
-        $adminRole = Role::where('name', TenantRole::ADMIN->value)->first();
+        $adminRole = Role::query()->where('name', TenantRole::ADMIN->value)->first();
         if ($adminRole) {
             $adminRole->givePermissionTo([
                 TenantPermission::SETTINGS_MANAGE->value,
@@ -50,6 +50,6 @@ return new class extends Migration
         }
 
         // Clear permission cache again
-        app()[PermissionRegistrar::class]->forgetCachedPermissions();
+        app()->make(PermissionRegistrar::class)->forgetCachedPermissions();
     }
 };

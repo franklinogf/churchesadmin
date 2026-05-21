@@ -29,7 +29,6 @@ final readonly class CheckLayoutFieldsDto implements Arrayable, JsonSerializable
 
     /**
      * @param  array{date:string,amount:string,payee:string,memo?:string|null}  $data
-     * @return CheckLayoutFieldsDto
      */
     public static function fromArray(array $data): static
     {
@@ -73,6 +72,6 @@ final readonly class CheckLayoutFieldsDto implements Arrayable, JsonSerializable
 
     private static function getAmountInWords(string $amount): string
     {
-        return NumberToWords::transformCurrency('en', (int) app(FormatterService::class)->intValue($amount, 2), 'USD');
+        return NumberToWords::transformCurrency('en', (int) resolve(FormatterService::class)->intValue($amount, 2), 'USD');
     }
 }

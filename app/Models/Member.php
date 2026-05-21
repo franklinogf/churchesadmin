@@ -12,7 +12,6 @@ use App\Models\Scopes\CurrentYearScope;
 use App\Models\Scopes\LastnameScope;
 use App\Models\Traits\HasTags;
 use Carbon\CarbonImmutable;
-use Database\Factories\MemberFactory;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -53,10 +52,9 @@ use Override;
 #[ScopedBy([LastnameScope::class, ActiveMemberScope::class])]
 final class Member extends Model
 {
-    /** @use HasFactory<MemberFactory> */
-    use HasFactory,Notifiable;
-
+    use HasFactory;
     use HasTags;
+    use Notifiable;
 
     /**
      * The name of the table associated with the Tag model.

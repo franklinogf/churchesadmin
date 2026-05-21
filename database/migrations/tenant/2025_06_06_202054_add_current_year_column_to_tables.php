@@ -13,19 +13,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('users', function (Blueprint $table): void {
             $table->foreignId('current_year_id')->after('timezone_country')->constrained('current_years');
         });
 
-        Schema::table('offerings', function (Blueprint $table) {
+        Schema::table('offerings', function (Blueprint $table): void {
             $table->foreignId('current_year_id')->after('note')->constrained('current_years');
         });
 
-        Schema::table('expenses', function (Blueprint $table) {
+        Schema::table('expenses', function (Blueprint $table): void {
             $table->foreignId('current_year_id')->after('note')->constrained('current_years');
         });
 
-        Schema::table('checks', function (Blueprint $table) {
+        Schema::table('checks', function (Blueprint $table): void {
             $table->foreignId('current_year_id')->after('note')->constrained('current_years');
         });
     }

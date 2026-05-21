@@ -6,19 +6,76 @@ namespace App\Providers;
 
 use BackedEnum;
 use Carbon\Carbon;
-use Illuminate\Contracts\Database\Eloquent\Builder;
-use Illuminate\Routing\Route;
+use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route as RouteFacade;
 use Illuminate\Support\ServiceProvider;
+use Spatie\Permission\PermissionRegistrar;
 use Stancl\JobPipeline\JobPipeline;
 use Stancl\Tenancy\Bootstrappers\BroadcastChannelPrefixBootstrapper;
+use Stancl\Tenancy\Contracts\Tenant;
 use Stancl\Tenancy\Controllers\TenantAssetController;
-use Stancl\Tenancy\Events;
-use Stancl\Tenancy\Jobs;
-use Stancl\Tenancy\Listeners;
-use Stancl\Tenancy\Middleware;
-use Stancl\Tenancy\ResourceSyncing;
+use Stancl\Tenancy\Events\BootstrappingTenancy;
+use Stancl\Tenancy\Events\CreatingDomain;
+use Stancl\Tenancy\Events\CreatingPendingTenant;
+use Stancl\Tenancy\Events\CreatingStorageSymlink;
+use Stancl\Tenancy\Events\CreatingTenant;
+use Stancl\Tenancy\Events\DatabaseCreated;
+use Stancl\Tenancy\Events\DatabaseDeleted;
+use Stancl\Tenancy\Events\DatabaseMigrated;
+use Stancl\Tenancy\Events\DatabaseRolledBack;
+use Stancl\Tenancy\Events\DatabaseSeeded;
+use Stancl\Tenancy\Events\DeletingDomain;
+use Stancl\Tenancy\Events\DeletingTenant;
+use Stancl\Tenancy\Events\DomainCreated;
+use Stancl\Tenancy\Events\DomainDeleted;
+use Stancl\Tenancy\Events\DomainSaved;
+use Stancl\Tenancy\Events\DomainUpdated;
+use Stancl\Tenancy\Events\EndingTenancy;
+use Stancl\Tenancy\Events\InitializingTenancy;
+use Stancl\Tenancy\Events\PendingTenantCreated;
+use Stancl\Tenancy\Events\PendingTenantPulled;
+use Stancl\Tenancy\Events\PullingPendingTenant;
+use Stancl\Tenancy\Events\RemovingStorageSymlink;
+use Stancl\Tenancy\Events\RevertedToCentralContext;
+use Stancl\Tenancy\Events\RevertingToCentralContext;
+use Stancl\Tenancy\Events\SavingDomain;
+use Stancl\Tenancy\Events\SavingTenant;
+use Stancl\Tenancy\Events\StorageSymlinkCreated;
+use Stancl\Tenancy\Events\StorageSymlinkRemoved;
+use Stancl\Tenancy\Events\TenancyBootstrapped;
+use Stancl\Tenancy\Events\TenancyEnded;
+use Stancl\Tenancy\Events\TenancyInitialized;
+use Stancl\Tenancy\Events\TenantCreated;
+use Stancl\Tenancy\Events\TenantDeleted;
+use Stancl\Tenancy\Events\TenantMaintenanceModeDisabled;
+use Stancl\Tenancy\Events\TenantMaintenanceModeEnabled;
+use Stancl\Tenancy\Events\TenantSaved;
+use Stancl\Tenancy\Events\TenantUpdated;
+use Stancl\Tenancy\Events\UpdatingDomain;
+use Stancl\Tenancy\Events\UpdatingTenant;
+use Stancl\Tenancy\Jobs\CreateDatabase;
+use Stancl\Tenancy\Jobs\CreateStorageSymlinks;
+use Stancl\Tenancy\Jobs\DeleteDatabase;
+use Stancl\Tenancy\Jobs\DeleteDomains;
+use Stancl\Tenancy\Jobs\MigrateDatabase;
+use Stancl\Tenancy\Jobs\RemoveStorageSymlinks;
+use Stancl\Tenancy\Listeners\BootstrapTenancy;
+use Stancl\Tenancy\Listeners\CreateTenantStorage;
+use Stancl\Tenancy\Listeners\DeleteTenantStorage;
+use Stancl\Tenancy\Listeners\RevertToCentralContext;
+use Stancl\Tenancy\Middleware\PreventAccessFromUnwantedDomains;
+use Stancl\Tenancy\ResourceSyncing\Events\CentralResourceAttachedToTenant;
+use Stancl\Tenancy\ResourceSyncing\Events\CentralResourceDetachedFromTenant;
+use Stancl\Tenancy\ResourceSyncing\Events\SyncedResourceSaved;
+use Stancl\Tenancy\ResourceSyncing\Events\SyncedResourceSavedInForeignDatabase;
+use Stancl\Tenancy\ResourceSyncing\Events\SyncMasterDeleted;
+use Stancl\Tenancy\ResourceSyncing\Events\SyncMasterRestored;
+use Stancl\Tenancy\ResourceSyncing\Listeners\CreateTenantResource;
+use Stancl\Tenancy\ResourceSyncing\Listeners\DeleteResourceInTenant;
+use Stancl\Tenancy\ResourceSyncing\Listeners\DeleteResourcesInTenants;
+use Stancl\Tenancy\ResourceSyncing\Listeners\RestoreResourcesInTenants;
+use Stancl\Tenancy\ResourceSyncing\Listeners\UpdateOrCreateSyncedResource;
 
 final class TenancyServiceProvider extends ServiceProvider
 {
@@ -29,121 +86,122 @@ final class TenancyServiceProvider extends ServiceProvider
     {
         return [
             // Tenant events
-            Events\CreatingTenant::class => [],
-            Events\TenantCreated::class => [
+            CreatingTenant::class => [],
+            TenantCreated::class => [
                 JobPipeline::make([
-                    Jobs\CreateDatabase::class,
-                    Jobs\MigrateDatabase::class,
+                    CreateDatabase::class,
+                    MigrateDatabase::class,
                     // Jobs\SeedDatabase::class,
-                    Jobs\CreateStorageSymlinks::class,
+                    CreateStorageSymlinks::class,
 
                     // Your own jobs to prepare the tenant.
                     // Provision API keys, create S3 buckets, anything you want!
-                ])->send(fn (Events\TenantCreated $event): \Stancl\Tenancy\Contracts\Tenant => $event->tenant)->shouldBeQueued(false), // `false` by default, but you likely want to make this `true` in production.
+                ])->send(fn (TenantCreated $event): Tenant => $event->tenant)->shouldBeQueued(false), // `false` by default, but you likely want to make this `true` in production.
 
-                Listeners\CreateTenantStorage::class,
+                CreateTenantStorage::class,
             ],
-            Events\SavingTenant::class => [],
-            Events\TenantSaved::class => [],
-            Events\UpdatingTenant::class => [],
-            Events\TenantUpdated::class => [],
-            Events\DeletingTenant::class => [
+            SavingTenant::class => [],
+            TenantSaved::class => [],
+            UpdatingTenant::class => [],
+            TenantUpdated::class => [],
+            DeletingTenant::class => [
                 JobPipeline::make([
-                    Jobs\DeleteDomains::class,
-                    Jobs\RemoveStorageSymlinks::class,
-                ])->send(fn (Events\DeletingTenant $event): \Stancl\Tenancy\Contracts\Tenant => $event->tenant)->shouldBeQueued(false),
+                    DeleteDomains::class,
+                    RemoveStorageSymlinks::class,
+                ])->send(fn (DeletingTenant $event): Tenant => $event->tenant)->shouldBeQueued(false),
 
-                Listeners\DeleteTenantStorage::class,
+                DeleteTenantStorage::class,
             ],
-            Events\TenantDeleted::class => [
+            TenantDeleted::class => [
                 JobPipeline::make([
-                    Jobs\DeleteDatabase::class,
-                ])->send(fn (Events\TenantDeleted $event): \Stancl\Tenancy\Contracts\Tenant => $event->tenant)->shouldBeQueued(false), // `false` by default, but you probably want to make this `true` for production.
+                    DeleteDatabase::class,
+                ])->send(fn (TenantDeleted $event): Tenant => $event->tenant)->shouldBeQueued(false), // `false` by default, but you probably want to make this `true` for production.
             ],
 
-            Events\TenantMaintenanceModeEnabled::class => [],
-            Events\TenantMaintenanceModeDisabled::class => [],
+            TenantMaintenanceModeEnabled::class => [],
+            TenantMaintenanceModeDisabled::class => [],
 
             // Pending tenant events
-            Events\CreatingPendingTenant::class => [],
-            Events\PendingTenantCreated::class => [],
-            Events\PullingPendingTenant::class => [],
-            Events\PendingTenantPulled::class => [],
+            CreatingPendingTenant::class => [],
+            PendingTenantCreated::class => [],
+            PullingPendingTenant::class => [],
+            PendingTenantPulled::class => [],
 
             // Domain events
-            Events\CreatingDomain::class => [],
-            Events\DomainCreated::class => [],
-            Events\SavingDomain::class => [],
-            Events\DomainSaved::class => [],
-            Events\UpdatingDomain::class => [],
-            Events\DomainUpdated::class => [],
-            Events\DeletingDomain::class => [],
-            Events\DomainDeleted::class => [],
+            CreatingDomain::class => [],
+            DomainCreated::class => [],
+            SavingDomain::class => [],
+            DomainSaved::class => [],
+            UpdatingDomain::class => [],
+            DomainUpdated::class => [],
+            DeletingDomain::class => [],
+            DomainDeleted::class => [],
 
             // Database events
-            Events\DatabaseCreated::class => [],
-            Events\DatabaseMigrated::class => [],
-            Events\DatabaseSeeded::class => [],
-            Events\DatabaseRolledBack::class => [],
-            Events\DatabaseDeleted::class => [],
+            DatabaseCreated::class => [],
+            DatabaseMigrated::class => [],
+            DatabaseSeeded::class => [],
+            DatabaseRolledBack::class => [],
+            DatabaseDeleted::class => [],
 
             // Tenancy events
-            Events\InitializingTenancy::class => [],
-            Events\TenancyInitialized::class => [
-                Listeners\BootstrapTenancy::class,
-                function (Events\TenancyInitialized $event): void {
+            InitializingTenancy::class => [],
+            TenancyInitialized::class => [
+                BootstrapTenancy::class,
+                function (TenancyInitialized $event): void {
                     // Ensure locale is converted to a string if it's an enum
                     $locale = $event->tenancy->tenant->locale;
                     if ($locale instanceof BackedEnum) {
                         $locale = $locale->value;
                     }
+
                     Carbon::setLocale($locale ?? config('app.locale'));
                 },
             ],
 
-            Events\EndingTenancy::class => [],
-            Events\TenancyEnded::class => [
-                function (Events\TenancyEnded $event): void {
-                    $permissionRegistrar = app(\Spatie\Permission\PermissionRegistrar::class);
+            EndingTenancy::class => [],
+            TenancyEnded::class => [
+                function (TenancyEnded $event): void {
+                    $permissionRegistrar = resolve(PermissionRegistrar::class);
                     $permissionRegistrar->cacheKey = 'spatie.permission.cache';
                 },
-                Listeners\RevertToCentralContext::class,
+                RevertToCentralContext::class,
             ],
 
-            Events\BootstrappingTenancy::class => [],
-            Events\TenancyBootstrapped::class => [
-                function (Events\TenancyBootstrapped $event): void {
-                    $permissionRegistrar = app(\Spatie\Permission\PermissionRegistrar::class);
+            BootstrappingTenancy::class => [],
+            TenancyBootstrapped::class => [
+                function (TenancyBootstrapped $event): void {
+                    $permissionRegistrar = resolve(PermissionRegistrar::class);
                     $permissionRegistrar->cacheKey = 'spatie.permission.cache.tenant.'.$event->tenancy->tenant->getTenantKey();
                 },
             ],
-            Events\RevertingToCentralContext::class => [],
-            Events\RevertedToCentralContext::class => [],
+            RevertingToCentralContext::class => [],
+            RevertedToCentralContext::class => [],
 
             // Resource syncing
-            ResourceSyncing\Events\SyncedResourceSaved::class => [
-                ResourceSyncing\Listeners\UpdateOrCreateSyncedResource::class,
+            SyncedResourceSaved::class => [
+                UpdateOrCreateSyncedResource::class,
             ],
-            ResourceSyncing\Events\SyncMasterDeleted::class => [
-                ResourceSyncing\Listeners\DeleteResourcesInTenants::class,
+            SyncMasterDeleted::class => [
+                DeleteResourcesInTenants::class,
             ],
-            ResourceSyncing\Events\SyncMasterRestored::class => [
-                ResourceSyncing\Listeners\RestoreResourcesInTenants::class,
+            SyncMasterRestored::class => [
+                RestoreResourcesInTenants::class,
             ],
-            ResourceSyncing\Events\CentralResourceAttachedToTenant::class => [
-                ResourceSyncing\Listeners\CreateTenantResource::class,
+            CentralResourceAttachedToTenant::class => [
+                CreateTenantResource::class,
             ],
-            ResourceSyncing\Events\CentralResourceDetachedFromTenant::class => [
-                ResourceSyncing\Listeners\DeleteResourceInTenant::class,
+            CentralResourceDetachedFromTenant::class => [
+                DeleteResourceInTenant::class,
             ],
             // Fired only when a synced resource is changed in a different DB than the origin DB (to avoid infinite loops)
-            ResourceSyncing\Events\SyncedResourceSavedInForeignDatabase::class => [],
+            SyncedResourceSavedInForeignDatabase::class => [],
 
             // Storage symlinks
-            Events\CreatingStorageSymlink::class => [],
-            Events\StorageSymlinkCreated::class => [],
-            Events\RemovingStorageSymlink::class => [],
-            Events\StorageSymlinkRemoved::class => [],
+            CreatingStorageSymlink::class => [],
+            StorageSymlinkCreated::class => [],
+            RemovingStorageSymlink::class => [],
+            StorageSymlinkRemoved::class => [],
         ];
     }
 
@@ -216,7 +274,7 @@ final class TenancyServiceProvider extends ServiceProvider
     {
         $this->app->booted(function (): void {
             if (file_exists(base_path('routes/tenant.php'))) {
-                RouteFacade::namespace(static::$controllerNamespace)
+                RouteFacade::namespace(self::$controllerNamespace)
                     ->middleware('tenant')
                     ->group(base_path('routes/tenant.php'));
             }
@@ -228,10 +286,10 @@ final class TenancyServiceProvider extends ServiceProvider
     private function makeTenancyMiddlewareHighestPriority(): void
     {
         // PreventAccessFromUnwantedDomains has even higher priority than the identification middleware
-        $tenancyMiddleware = array_merge([Middleware\PreventAccessFromUnwantedDomains::class], config('tenancy.identification.middleware'));
+        $tenancyMiddleware = array_merge([PreventAccessFromUnwantedDomains::class], config('tenancy.identification.middleware'));
 
         foreach (array_reverse($tenancyMiddleware) as $middleware) {
-            $this->app[\Illuminate\Contracts\Http\Kernel::class]->prependToMiddlewarePriority($middleware);
+            $this->app->make(Kernel::class)->prependToMiddlewarePriority($middleware);
         }
     }
 }

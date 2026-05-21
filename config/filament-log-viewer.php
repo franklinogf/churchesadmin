@@ -44,7 +44,7 @@ return [
 
     'pattern' => [
         'prefix' => 'laravel-',
-        'date' => '[0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]',
+        'date' => '\d\d\d\d-\d\d-\d\d',
         'extension' => '.log',
     ],
 

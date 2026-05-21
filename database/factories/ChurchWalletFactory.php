@@ -9,7 +9,7 @@ use App\Models\ChurchWallet;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ChurchWallet>
+ * @extends Factory<ChurchWallet>
  */
 final class ChurchWalletFactory extends Factory
 {

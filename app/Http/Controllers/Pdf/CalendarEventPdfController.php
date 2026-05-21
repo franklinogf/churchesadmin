@@ -41,7 +41,7 @@ final class CalendarEventPdfController extends Controller
             $query->where('end_at', '<=', $request->input('end_date'));
         }
 
-        $events = $query->orderBy('start_at', 'asc')->get();
+        $events = $query->oldest('start_at')->get();
 
         return Inertia::render('reports/calendar-events', [
             'events' => CalendarEventResource::collection($events),
@@ -68,7 +68,7 @@ final class CalendarEventPdfController extends Controller
                 $query->where('end_at', '<=', $endDate);
             });
 
-        $events = $query->orderBy('start_at', 'asc')->get();
+        $events = $query->oldest('start_at')->get();
 
         return Pdf::loadView('pdf.generated', [
             'title' => __('Calendar Events'),

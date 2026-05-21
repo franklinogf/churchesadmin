@@ -35,7 +35,7 @@ test('creates a check with all fields', function (): void {
 
     // Create the action
 
-    $action = app(CreateCheckAction::class);
+    $action = resolve(CreateCheckAction::class);
 
     // Execute the action
     $check = $action->handle($checkData);
@@ -76,7 +76,7 @@ test('creates a check with minimal fields', function (): void {
     ];
 
     // Create the action
-    $action = app(CreateCheckAction::class);
+    $action = resolve(CreateCheckAction::class);
 
     // Execute the action
     $check = $action->handle($checkData);
@@ -112,7 +112,7 @@ test('throws exception when wallet balance is insufficient', function (): void {
     ];
 
     // Create the action
-    $action = app(CreateCheckAction::class);
+    $action = resolve(CreateCheckAction::class);
 
     // Execute and expect exception
     expect(fn () => $action->handle($checkData))
@@ -135,7 +135,7 @@ test('throws exception when wallet is not found', function (): void {
     ];
 
     // Create the action
-    $action = app(CreateCheckAction::class);
+    $action = resolve(CreateCheckAction::class);
 
     // Execute and expect exception
     expect(fn () => $action->handle($checkData))

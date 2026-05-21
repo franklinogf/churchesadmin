@@ -17,7 +17,7 @@ final class SendCalendarEventToMembersController extends Controller
      */
     public function __invoke(CalendarEvent $calendarEvent): RedirectResponse
     {
-        $membersWithEmail = Member::whereNotNull('email')->limit(1)->get();
+        $membersWithEmail = Member::query()->whereNotNull('email')->limit(1)->get();
 
         foreach ($membersWithEmail as $member) {
 

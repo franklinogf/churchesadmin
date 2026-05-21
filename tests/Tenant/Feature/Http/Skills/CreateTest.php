@@ -25,7 +25,7 @@ describe('if user has permission', function (): void {
 
         assertDatabaseCount('tags', 1);
 
-        $skill = Tag::withType(TagType::SKILL->value)->first();
+        $skill = Tag::query()->withType(TagType::SKILL->value)->first();
 
         expect($skill->name)->toBe('skill name')
             ->and($skill->type)->toBe(TagType::SKILL->value);
@@ -42,7 +42,7 @@ describe('if user has permission', function (): void {
 
         assertDatabaseCount('tags', 0);
 
-        expect(Tag::withType(TagType::SKILL->value)->count())->toBe(0);
+        expect(Tag::query()->withType(TagType::SKILL->value)->count())->toBe(0);
     });
 
     it('cannot be stored with a name that is too short', function (): void {
@@ -55,7 +55,7 @@ describe('if user has permission', function (): void {
 
         assertDatabaseCount('tags', 0);
 
-        expect(Tag::withType(TagType::SKILL->value)->count())->toBe(0);
+        expect(Tag::query()->withType(TagType::SKILL->value)->count())->toBe(0);
     });
 
     it('cannot be stored if the name already exists', function (): void {
@@ -68,7 +68,7 @@ describe('if user has permission', function (): void {
                 'name' => 'skill name',
                 'is_regular' => false,
             ])->assertRedirect(route('skills.index'));
-        expect(Tag::withType(TagType::SKILL->value)->count())->toBe(1);
+        expect(Tag::query()->withType(TagType::SKILL->value)->count())->toBe(1);
 
     });
 
@@ -82,7 +82,7 @@ describe('if user has permission', function (): void {
 
         assertDatabaseCount('tags', 1);
 
-        $skill = Tag::withType(TagType::SKILL->value)->first();
+        $skill = Tag::query()->withType(TagType::SKILL->value)->first();
 
         expect($skill->name)->toBe('skill name')
             ->and($skill->type)->toBe(TagType::SKILL->value)

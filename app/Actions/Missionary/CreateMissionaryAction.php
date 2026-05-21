@@ -21,7 +21,7 @@ final class CreateMissionaryAction
     {
         return DB::transaction(function () use ($data, $address): Missionary {
             $logger = new DiffLogger;
-            $missionary = Missionary::create($data);
+            $missionary = Missionary::query()->create($data);
 
             // Log missionary creation with all provided data
             $missionaryData = $missionary->only([

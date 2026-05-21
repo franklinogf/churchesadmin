@@ -18,16 +18,16 @@ return new class extends Migration
     {
         $guardName = 'tenant';
         // Seeding permissions first
-        app()[PermissionRegistrar::class]->forgetCachedPermissions();
+        app()->make(PermissionRegistrar::class)->forgetCachedPermissions();
 
         $permissions = collect(TenantPermission::values())
             ->map(fn (string $permission): array => ['name' => $permission, 'guard_name' => $guardName]);
 
-        Permission::query()->insert($permissions->toArray());
+        Permission::query()->insert($permissions->all());
 
         // seeding roles with the permissions
 
-        app()[PermissionRegistrar::class]->forgetCachedPermissions();
+        app()->make(PermissionRegistrar::class)->forgetCachedPermissions();
 
         Role::create(['name' => TenantRole::SUPER_ADMIN, 'guard_name' => $guardName])
             ->givePermissionTo(TenantPermission::values());
@@ -35,14 +35,14 @@ return new class extends Migration
         Role::create(['name' => TenantRole::ADMIN, 'guard_name' => $guardName])
             ->givePermissionTo(
                 collect(TenantPermission::values())
-                    ->filter(fn (string $permission): bool => ! str($permission)->startsWith('users'))
-                    ->toArray()
+                    ->reject(fn (string $permission): bool => str($permission)->startsWith('users'))
+                    ->all()
             );
 
         Role::create(['name' => TenantRole::SECRETARY, 'guard_name' => $guardName])
             ->givePermissionTo(collect(TenantPermission::values())
                 ->filter(fn (string $permission): bool => ! str($permission)->endsWith('delete') && ! str($permission)->startsWith('users'))
-                ->toArray()
+                ->all()
             );
 
         Role::create(['name' => TenantRole::NO_ROLE, 'guard_name' => $guardName]);

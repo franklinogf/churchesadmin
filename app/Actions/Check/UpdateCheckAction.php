@@ -30,7 +30,7 @@ final readonly class UpdateCheckAction
      */
     public function handle(Check $check, array $data): Check
     {
-        $wallet = ChurchWallet::find($data['wallet_id'] ?? $check->transaction->wallet->holder_id);
+        $wallet = ChurchWallet::query()->find($data['wallet_id'] ?? $check->transaction->wallet->holder_id);
 
         if (! $wallet instanceof ChurchWallet) {
             throw WalletException::notFound();

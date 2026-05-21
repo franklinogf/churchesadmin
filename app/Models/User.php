@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Carbon\CarbonImmutable;
-use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
+use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -27,21 +27,16 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @property-read CarbonImmutable|null $created_at
  * @property-read CarbonImmutable|null $updated_at
  */
+#[Hidden([
+    'password',
+    'remember_token',
+])]
 final class User extends Authenticatable implements FilamentUser
 {
-    /** @use HasFactory<UserFactory> */
-    use CentralConnection, HasFactory, HasUuids, Notifiable;
-
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
-    #[Override]
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    use CentralConnection;
+    use HasFactory;
+    use HasUuids;
+    use Notifiable;
 
     public function canAccessPanel(Panel $panel): bool
     {

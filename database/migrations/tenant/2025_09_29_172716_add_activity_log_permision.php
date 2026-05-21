@@ -19,7 +19,7 @@ return new class extends Migration
         $guardName = 'tenant';
 
         // Clear permission cache
-        app()[PermissionRegistrar::class]->forgetCachedPermissions();
+        app()->make(PermissionRegistrar::class)->forgetCachedPermissions();
 
         // Create the new DeactivationCode permissions
         $newPermissions = [
@@ -27,25 +27,25 @@ return new class extends Migration
         ];
 
         foreach ($newPermissions as $permission) {
-            Permission::firstOrCreate([
+            Permission::query()->firstOrCreate([
                 'name' => $permission,
                 'guard_name' => $guardName,
             ]);
         }
 
         // Assign permissions to roles
-        $superAdminRole = Role::where('name', TenantRole::SUPER_ADMIN->value)->first();
+        $superAdminRole = Role::query()->where('name', TenantRole::SUPER_ADMIN->value)->first();
         if ($superAdminRole) {
             $superAdminRole->givePermissionTo($newPermissions);
         }
 
-        $adminRole = Role::where('name', TenantRole::ADMIN->value)->first();
+        $adminRole = Role::query()->where('name', TenantRole::ADMIN->value)->first();
         if ($adminRole) {
             $adminRole->givePermissionTo($newPermissions);
         }
 
         // Clear permission cache again
-        app()[PermissionRegistrar::class]->forgetCachedPermissions();
+        app()->make(PermissionRegistrar::class)->forgetCachedPermissions();
     }
 
     /**
@@ -56,24 +56,24 @@ return new class extends Migration
         $guardName = 'tenant';
 
         // Clear permission cache
-        app()[PermissionRegistrar::class]->forgetCachedPermissions();
+        app()->make(PermissionRegistrar::class)->forgetCachedPermissions();
 
         $permissionsToRemove = [
             TenantPermission::ACTIVITY_LOGS_MANAGE->value,
         ];
 
         // Remove permissions from roles
-        $roles = Role::whereIn('name', [TenantRole::SUPER_ADMIN->value, TenantRole::ADMIN->value])->get();
+        $roles = Role::query()->whereIn('name', [TenantRole::SUPER_ADMIN->value, TenantRole::ADMIN->value])->get();
         foreach ($roles as $role) {
             $role->revokePermissionTo($permissionsToRemove);
         }
 
         // Delete the permissions
-        Permission::whereIn('name', $permissionsToRemove)
+        Permission::query()->whereIn('name', $permissionsToRemove)
             ->where('guard_name', $guardName)
             ->delete();
 
         // Clear permission cache again
-        app()[PermissionRegistrar::class]->forgetCachedPermissions();
+        app()->make(PermissionRegistrar::class)->forgetCachedPermissions();
     }
 };

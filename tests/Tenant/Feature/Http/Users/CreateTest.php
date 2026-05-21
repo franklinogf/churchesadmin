@@ -48,7 +48,7 @@ describe('if user has permission', function (): void {
             ->assertSessionDoesntHaveErrors()
             ->assertRedirect(route('users.index'));
 
-        $user = TenantUser::latest()->first();
+        $user = TenantUser::query()->latest()->first();
 
         expect($user)->not->toBeNull()
             ->and($user->name)->toBe('John')
@@ -71,7 +71,7 @@ describe('if user has permission', function (): void {
             ->assertSessionDoesntHaveErrors()
             ->assertRedirect(route('users.index'));
 
-        $user = TenantUser::latest()->first();
+        $user = TenantUser::query()->latest()->first();
 
         expect($user)->not->toBeNull()
             ->and($user->name)->toBe('John')

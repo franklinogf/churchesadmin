@@ -8,8 +8,8 @@ use App\Models\TenantUser;
 it('can delete a user', function (): void {
     $user = TenantUser::factory()->create();
 
-    $action = new DeleteUserAction();
+    $action = new DeleteUserAction;
     $action->handle($user);
 
-    expect(TenantUser::count())->toBe(0);
+    expect(TenantUser::query()->count())->toBe(0);
 });

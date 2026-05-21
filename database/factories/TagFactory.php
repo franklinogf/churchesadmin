@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Enums\TagType;
+use App\Models\Tag;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Tag>
+ * @extends Factory<Tag>
  */
 final class TagFactory extends Factory
 {
@@ -33,21 +34,21 @@ final class TagFactory extends Factory
 
     public function category(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn (array $attributes): array => [
             'type' => TagType::CATEGORY->value,
         ]);
     }
 
     public function skill(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn (array $attributes): array => [
             'type' => TagType::SKILL->value,
         ]);
     }
 
     public function regular(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn (array $attributes): array => [
             'is_regular' => true,
         ]);
     }

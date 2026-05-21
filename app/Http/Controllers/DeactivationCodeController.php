@@ -23,7 +23,7 @@ final class DeactivationCodeController extends Controller
     {
         Gate::authorize('viewAny', DeactivationCode::class);
 
-        $deactivationCodes = DeactivationCode::latest()->get();
+        $deactivationCodes = DeactivationCode::query()->latest()->get();
 
         return Inertia::render('codes/deactivationCodes/index', [
             'deactivationCodes' => DeactivationCodeResource::collection($deactivationCodes),
@@ -37,7 +37,7 @@ final class DeactivationCodeController extends Controller
     {
         Gate::authorize('create', DeactivationCode::class);
 
-        DeactivationCode::create($request->validated());
+        DeactivationCode::query()->create($request->validated());
 
         return to_route('codes.deactivationCodes.index')->with(
             FlashMessageKey::SUCCESS->value,

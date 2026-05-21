@@ -41,7 +41,7 @@ final class ChurchesTable
                             ->action(function (Church $record, Component $livewire) use ($id): void {
                                 $token = tenancy()->impersonate($record, $id, '/dashboard', 'tenant');
                                 $url = create_tenant_url($record, 'impersonate', ['token' => $token]);
-                                $livewire->js("window.open('$url', '_blank');");
+                                $livewire->js("window.open('{$url}', '_blank');");
 
                             })
                             ->icon('heroicon-o-user-circle')
@@ -113,11 +113,10 @@ final class ChurchesTable
                     ->schema(function (Church $record): array {
 
                         $users = $record->run(fn (): Collection => TenantUser::query()->with('roles')->get(['id', 'name', 'email']));
-                        $schema = $users->isEmpty()
+
+                        return $users->isEmpty()
                         ? [TextEntry::make('no_users')->default('No users found.')]
                         : $users->map(fn (TenantUser $user): Section => userSchema($user))->toArray();
-
-                        return $schema;
                     }),
 
                 EditAction::make(),

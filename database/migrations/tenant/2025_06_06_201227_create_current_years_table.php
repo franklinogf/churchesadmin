@@ -14,7 +14,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('current_years', function (Blueprint $table) {
+        Schema::create('current_years', function (Blueprint $table): void {
             $table->id();
             $table->year('year')->unique();
             $table->date('start_date')->nullable();

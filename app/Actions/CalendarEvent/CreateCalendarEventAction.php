@@ -16,7 +16,7 @@ final class CreateCalendarEventAction
      */
     public function handle(array $data, TenantUser $user): CalendarEvent
     {
-        return CalendarEvent::create([
+        return CalendarEvent::query()->create([
             ...$data,
             'created_by' => $user->id,
         ]);

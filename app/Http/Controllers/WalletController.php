@@ -63,7 +63,7 @@ final class WalletController extends Controller
         ]);
 
         $currentYear = $user->currentYear;
-        $prevYear = CurrentYear::where('year', ((int) $currentYear->year) - 1)->first();
+        $prevYear = CurrentYear::query()->where('year', ((int) $currentYear->year) - 1)->first();
 
         $initialRow = null;
 
@@ -82,7 +82,7 @@ final class WalletController extends Controller
                 'id' => 0,
                 'uuid' => 0,
                 'amount' => $previousBalance,
-                'amountFloat' => app(FormatterService::class)->floatValue($previousBalance, 2),
+                'amountFloat' => resolve(FormatterService::class)->floatValue($previousBalance, 2),
                 'confirmed' => true,
                 'type' => TransactionType::PREVIOUS->value,
                 'meta' => null,
@@ -120,7 +120,7 @@ final class WalletController extends Controller
             );
         }
 
-        return redirect()->route('wallets.index')->with(
+        return to_route('wallets.index')->with(
             FlashMessageKey::SUCCESS->value,
             __('flash.message.created', ['model' => __('Wallet')])
         );
@@ -144,7 +144,7 @@ final class WalletController extends Controller
 
         $action->handle($wallet, $validated);
 
-        return redirect()->route('wallets.index')->with(
+        return to_route('wallets.index')->with(
             FlashMessageKey::SUCCESS->value,
             __('flash.message.updated', ['model' => __('Wallet')])
         );
@@ -159,7 +159,7 @@ final class WalletController extends Controller
 
         $action->handle($wallet);
 
-        return redirect()->route('wallets.index')->with(
+        return to_route('wallets.index')->with(
             FlashMessageKey::SUCCESS->value,
             __('flash.message.deleted', replace: ['model' => __('Wallet')])
         );
@@ -173,7 +173,7 @@ final class WalletController extends Controller
         Gate::authorize('restore', $wallet);
         $action->handle($wallet);
 
-        return redirect()->route('wallets.index')->with(
+        return to_route('wallets.index')->with(
             FlashMessageKey::SUCCESS->value,
             __('flash.message.restored', ['model' => __('Wallet')])
         );

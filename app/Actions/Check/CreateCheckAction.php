@@ -28,7 +28,7 @@ final readonly class CreateCheckAction
      */
     public function handle(array $data): Check
     {
-        $wallet = ChurchWallet::find($data['wallet_id']);
+        $wallet = ChurchWallet::query()->find($data['wallet_id']);
 
         if (! $wallet instanceof ChurchWallet) {
             throw WalletException::notFound();
@@ -44,7 +44,7 @@ final readonly class CreateCheckAction
                 confirmed: false,
             ));
 
-            return Check::create([
+            return Check::query()->create([
                 'transaction_id' => $transaction->id,
                 'member_id' => $data['member_id'],
                 'date' => $data['date'],

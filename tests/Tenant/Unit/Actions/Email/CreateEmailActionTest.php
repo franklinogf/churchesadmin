@@ -27,7 +27,7 @@ it('creates an email successfully with member recipients', function (): void {
         'subject' => 'Test Subject',
         'body' => 'Test Body Content',
     ];
-    $action = new CreateEmailAction();
+    $action = new CreateEmailAction;
 
     $email = $action->handle(
         $user,
@@ -58,7 +58,7 @@ it('creates an email successfully with missionary recipients', function (): void
         'subject' => 'Test Subject',
         'body' => 'Test Body Content',
     ];
-    $action = new CreateEmailAction();
+    $action = new CreateEmailAction;
 
     $email = $action->handle(
         $user,
@@ -87,7 +87,7 @@ it('creates an email with attachments', function (): void {
         'body' => 'Please find attached document',
     ];
     $file = UploadedFile::fake()->create('document.pdf', 100);
-    $action = new CreateEmailAction();
+    $action = new CreateEmailAction;
 
     $email = $action->handle(
         $user,
@@ -111,7 +111,7 @@ test('throws exception for invalid recipient type', function (): void {
         'subject' => 'Invalid Recipient Test',
         'body' => 'This should fail',
     ];
-    $action = new CreateEmailAction();
+    $action = new CreateEmailAction;
 
     $action->handle(
         $user,

@@ -22,9 +22,7 @@ final class AsUcWords implements CastsAttributes
      */
     public function get(Model $model, string $key, mixed $value, array $attributes): string
     {
-        if (! is_string($value)) {
-            throw new InvalidArgumentException('The value must be a string.');
-        }
+        throw_unless(is_string($value), InvalidArgumentException::class, 'The value must be a string.');
 
         return ucwords(mb_strtolower(mb_trim($value)));
     }
@@ -36,9 +34,7 @@ final class AsUcWords implements CastsAttributes
      */
     public function set(Model $model, string $key, mixed $value, array $attributes): string
     {
-        if (! is_string($value)) {
-            throw new InvalidArgumentException('The value must be a string.');
-        }
+        throw_unless(is_string($value), InvalidArgumentException::class, 'The value must be a string.');
 
         return ucwords(mb_strtolower(mb_trim($value)));
 

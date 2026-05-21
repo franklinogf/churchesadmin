@@ -19,7 +19,7 @@ it('can create a deposit transaction', function (): void {
         confirmed: true
     );
 
-    $action = new WalletDepositAction();
+    $action = new WalletDepositAction;
     $transaction = $action->handle($wallet, $transactionDto);
 
     expect($transaction)->toBeInstanceOf(Transaction::class);
@@ -37,7 +37,7 @@ it('can create unconfirmed deposit transaction', function (): void {
         confirmed: false
     );
 
-    $action = new WalletDepositAction();
+    $action = new WalletDepositAction;
     $transaction = $action->handle($wallet, $transactionDto);
 
     expect($transaction->amountFloat)->toBe('75.25');
@@ -49,7 +49,7 @@ it('can create unconfirmed deposit transaction', function (): void {
 
 it('can handle multiple deposits', function (): void {
     $wallet = ChurchWallet::factory()->create();
-    $action = new WalletDepositAction();
+    $action = new WalletDepositAction;
 
     $transaction1 = $action->handle($wallet, new TransactionDto(
         amount: '50.00',
@@ -70,7 +70,7 @@ it('can handle multiple deposits', function (): void {
 
 it('can handle different transaction meta types', function (): void {
     $wallet = ChurchWallet::factory()->create();
-    $action = new WalletDepositAction();
+    $action = new WalletDepositAction;
 
     $offeringTransaction = $action->handle($wallet, new TransactionDto(
         amount: '100.00',
@@ -97,7 +97,7 @@ it('throws exception for invalid amount', function (): void {
         confirmed: true
     );
 
-    $action = new WalletDepositAction();
+    $action = new WalletDepositAction;
 
     expect(fn (): Transaction => $action->handle($wallet, $transactionDto))
         ->toThrow(WalletException::class);
@@ -111,7 +111,7 @@ it('handles zero amount deposits', function (): void {
         confirmed: true
     );
 
-    $action = new WalletDepositAction();
+    $action = new WalletDepositAction;
     $transaction = $action->handle($wallet, $transactionDto);
 
     expect($transaction->amountFloat)->toBe('0.00');
@@ -126,7 +126,7 @@ it('handles decimal amounts correctly', function (): void {
         confirmed: true
     );
 
-    $action = new WalletDepositAction();
+    $action = new WalletDepositAction;
     $transaction = $action->handle($wallet, $transactionDto);
 
     expect($transaction->amountFloat)->toBe('123.45');
@@ -141,7 +141,7 @@ it('creates transaction with correct wallet relationship', function (): void {
         confirmed: true
     );
 
-    $action = new WalletDepositAction();
+    $action = new WalletDepositAction;
     $transaction = $action->handle($wallet, $transactionDto);
 
     expect($transaction->wallet->holder_id)->toBe($wallet->id);

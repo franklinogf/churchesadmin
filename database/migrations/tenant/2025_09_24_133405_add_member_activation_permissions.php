@@ -19,7 +19,7 @@ return new class extends Migration
         $guardName = 'tenant';
 
         // Clear permission cache
-        app()[PermissionRegistrar::class]->forgetCachedPermissions();
+        app()->make(PermissionRegistrar::class)->forgetCachedPermissions();
 
         // Create the new DeactivationCode permissions
         $newPermissions = [
@@ -28,34 +28,32 @@ return new class extends Migration
         ];
 
         foreach ($newPermissions as $permission) {
-            Permission::firstOrCreate([
+            Permission::query()->firstOrCreate([
                 'name' => $permission,
                 'guard_name' => $guardName,
             ]);
         }
 
         // Assign permissions to roles
-        $superAdminRole = Role::where('name', TenantRole::SUPER_ADMIN->value)->first();
+        $superAdminRole = Role::query()->where('name', TenantRole::SUPER_ADMIN->value)->first();
         if ($superAdminRole) {
             $superAdminRole->givePermissionTo($newPermissions);
         }
 
-        $adminRole = Role::where('name', TenantRole::ADMIN->value)->first();
+        $adminRole = Role::query()->where('name', TenantRole::ADMIN->value)->first();
         if ($adminRole) {
             $adminRole->givePermissionTo($newPermissions);
         }
 
-        $secretaryRole = Role::where('name', TenantRole::SECRETARY->value)->first();
+        $secretaryRole = Role::query()->where('name', TenantRole::SECRETARY->value)->first();
         if ($secretaryRole) {
             // Secretary gets all permissions except delete (following existing pattern)
-            $secretaryPermissions = array_filter($newPermissions, function ($permission) {
-                return ! str_ends_with($permission, '.delete');
-            });
+            $secretaryPermissions = array_filter($newPermissions, fn (string $permission): bool => ! str_ends_with($permission, '.delete'));
             $secretaryRole->givePermissionTo($secretaryPermissions);
         }
 
         // Clear permission cache again
-        app()[PermissionRegistrar::class]->forgetCachedPermissions();
+        app()->make(PermissionRegistrar::class)->forgetCachedPermissions();
     }
 
     /**
@@ -66,7 +64,7 @@ return new class extends Migration
         $guardName = 'tenant';
 
         // Clear permission cache
-        app()[PermissionRegistrar::class]->forgetCachedPermissions();
+        app()->make(PermissionRegistrar::class)->forgetCachedPermissions();
 
         // Remove the DeactivationCode permissions
         $permissionsToRemove = [
@@ -74,11 +72,11 @@ return new class extends Migration
             TenantPermission::MEMBERS_DEACTIVATE->value,
         ];
 
-        Permission::whereIn('name', $permissionsToRemove)
+        Permission::query()->whereIn('name', $permissionsToRemove)
             ->where('guard_name', $guardName)
             ->delete();
 
         // Clear permission cache again
-        app()[PermissionRegistrar::class]->forgetCachedPermissions();
+        app()->make(PermissionRegistrar::class)->forgetCachedPermissions();
     }
 };

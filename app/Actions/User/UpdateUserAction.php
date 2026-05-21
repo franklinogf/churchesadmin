@@ -21,7 +21,7 @@ final class UpdateUserAction
     public function handle(TenantUser $user, array $data = [], ?array $roles = null, ?array $permissions = null): void
     {
         DB::transaction(function () use ($user, $data, $roles, $permissions): void {
-            $logger = new DiffLogger();
+            $logger = new DiffLogger;
             $originalUser = $user->replicate();
             /** @var array<string, array<string>> */
             $originalRoles = $user->roles->pluck('name')->toArray();

@@ -23,7 +23,7 @@ final class OfferingTypeController extends Controller
     {
         Gate::authorize('viewAny', OfferingType::class);
 
-        $offeringTypes = OfferingType::latest()->get();
+        $offeringTypes = OfferingType::query()->latest()->get();
 
         return Inertia::render('codes/offeringTypes/index', [
             'offeringTypes' => OfferingTypeResource::collection($offeringTypes),
@@ -37,7 +37,7 @@ final class OfferingTypeController extends Controller
     {
         Gate::authorize('create', OfferingType::class);
 
-        OfferingType::create($request->validated());
+        OfferingType::query()->create($request->validated());
 
         return to_route('codes.offeringTypes.index')->with(
             FlashMessageKey::SUCCESS->value,

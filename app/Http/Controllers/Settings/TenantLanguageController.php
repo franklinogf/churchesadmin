@@ -22,9 +22,7 @@ final class TenantLanguageController extends Controller
      */
     public function edit(#[CurrentUser] TenantUser $user): Response
     {
-        if ($user->cannot(TenantPermission::SETTINGS_CHANGE_LANGUAGE)) {
-            abort(403);
-        }
+        abort_if($user->cannot(TenantPermission::SETTINGS_CHANGE_LANGUAGE), 403);
 
         $languages = LanguageCode::options();
 

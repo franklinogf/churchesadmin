@@ -30,7 +30,7 @@ enum CheckLayoutField: string
                         'y' => $index * 20,
                     ],
                 ],
-            ])->toArray();
+            ])->all();
 
         return $initialLayout;
     }

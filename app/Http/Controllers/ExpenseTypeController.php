@@ -23,7 +23,7 @@ final class ExpenseTypeController extends Controller
     {
         Gate::authorize('viewAny', ExpenseType::class);
 
-        $expenseTypes = ExpenseType::latest()->get();
+        $expenseTypes = ExpenseType::query()->latest()->get();
 
         return Inertia::render('codes/expenseTypes/index', [
             'expenseTypes' => ExpenseTypeResource::collection($expenseTypes),
@@ -37,7 +37,7 @@ final class ExpenseTypeController extends Controller
     {
         $validated = $request->validated();
 
-        ExpenseType::create($validated);
+        ExpenseType::query()->create($validated);
 
         return to_route('codes.expenseTypes.index')->with(FlashMessageKey::SUCCESS->value,
             __('flash.message.created', ['model' => 'Expense type']));

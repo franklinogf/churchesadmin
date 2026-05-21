@@ -11,7 +11,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table($this->table(), static function (Blueprint $table) {
+        Schema::table($this->table(), static function (Blueprint $table): void {
             $table->json('extra')
                 ->nullable()
                 ->after('fee');

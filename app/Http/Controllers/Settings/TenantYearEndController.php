@@ -19,9 +19,7 @@ final class TenantYearEndController extends Controller
 {
     public function edit(#[CurrentUser] TenantUser $user): Response
     {
-        if ($user->cannot(TenantPermission::SETTINGS_CLOSE_YEAR)) {
-            abort(403);
-        }
+        abort_if($user->cannot(TenantPermission::SETTINGS_CLOSE_YEAR), 403);
 
         $currentYear = CurrentYear::current();
 
@@ -33,13 +31,11 @@ final class TenantYearEndController extends Controller
 
     public function update(CloseYearAction $action, #[CurrentUser] TenantUser $user): RedirectResponse
     {
-        if ($user->cannot(TenantPermission::SETTINGS_CLOSE_YEAR)) {
-            abort(403);
-        }
+        abort_if($user->cannot(TenantPermission::SETTINGS_CLOSE_YEAR), 403);
 
         $action->handle();
 
-        return redirect()->route('church.general.year-end.edit')
+        return to_route('church.general.year-end.edit')
             ->with(FlashMessageKey::SUCCESS->value, __('Fiscal year closed successfully.'));
     }
 }

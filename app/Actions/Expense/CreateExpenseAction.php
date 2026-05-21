@@ -28,7 +28,7 @@ final readonly class CreateExpenseAction
      */
     public function handle(array $data): Expense
     {
-        $wallet = ChurchWallet::find($data['wallet_id']);
+        $wallet = ChurchWallet::query()->find($data['wallet_id']);
 
         if ($wallet === null) {
             throw WalletException::notFound();
@@ -44,7 +44,7 @@ final readonly class CreateExpenseAction
                         )
                     ));
 
-                return Expense::create([
+                return Expense::query()->create([
                     'transaction_id' => $transaction->id,
                     'date' => $data['date'],
                     'member_id' => $data['member_id'] ?? null,

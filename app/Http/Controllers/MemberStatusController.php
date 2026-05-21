@@ -28,7 +28,7 @@ final class MemberStatusController extends Controller
 
         $action->handle($member, $validated['deactivation_code_id']);
 
-        return redirect()->back()->with(FlashMessageKey::SUCCESS->value, __('Member has been deactivated successfully.'));
+        return back()->with(FlashMessageKey::SUCCESS->value, __('Member has been deactivated successfully.'));
     }
 
     /**
@@ -45,6 +45,6 @@ final class MemberStatusController extends Controller
 
         $action->handle($member);
 
-        return redirect()->back()->with(FlashMessageKey::SUCCESS->value, __('Member has been activated successfully.'));
+        return back()->with(FlashMessageKey::SUCCESS->value, __('Member has been activated successfully.'));
     }
 }

@@ -24,7 +24,7 @@ it('can update wallet basic information', function (): void {
         'bank_account_number' => '222222222',
     ];
 
-    $action = app(UpdateWalletAction::class);
+    $action = resolve(UpdateWalletAction::class);
     $updatedWallet = $action->handle($wallet, $data);
 
     expect($updatedWallet->name)->toBe('Updated Name');
@@ -52,7 +52,7 @@ it('can update wallet with partial data', function (): void {
         'name' => 'Updated Name Only',
     ];
 
-    $action = app(UpdateWalletAction::class);
+    $action = resolve(UpdateWalletAction::class);
     $updatedWallet = $action->handle($wallet, $data);
 
     expect($updatedWallet->name)->toBe('Updated Name Only');
@@ -72,7 +72,7 @@ it('can update wallet check layout', function (): void {
         'check_layout_id' => $newLayout->id,
     ];
 
-    $action = app(UpdateWalletAction::class);
+    $action = resolve(UpdateWalletAction::class);
     $updatedWallet = $action->handle($wallet, $data);
 
     expect($updatedWallet->check_layout_id)->toBe($newLayout->id);
@@ -87,7 +87,7 @@ it('can set description to null', function (): void {
         'description' => null,
     ];
 
-    $action = app(UpdateWalletAction::class);
+    $action = resolve(UpdateWalletAction::class);
     $updatedWallet = $action->handle($wallet, $data);
 
     expect($updatedWallet->description)->toBeNull();
@@ -103,7 +103,7 @@ it('can set check layout to null', function (): void {
         'check_layout_id' => null,
     ];
 
-    $action = app(UpdateWalletAction::class);
+    $action = resolve(UpdateWalletAction::class);
     $updatedWallet = $action->handle($wallet, $data);
 
     expect($updatedWallet->check_layout_id)->toBeNull();
@@ -121,7 +121,7 @@ it('can update existing initial balance', function (): void {
         'balance' => '75.25',
     ];
 
-    $action = app(UpdateWalletAction::class);
+    $action = resolve(UpdateWalletAction::class);
     $updatedWallet = $action->handle($wallet, $data);
 
     expect($updatedWallet->balanceFloat)->toBe('75.25');
@@ -143,7 +143,7 @@ it('can remove initial balance by setting to null', function (): void {
         'balance' => null,
     ];
 
-    $action = app(UpdateWalletAction::class);
+    $action = resolve(UpdateWalletAction::class);
     $updatedWallet = $action->handle($wallet, $data);
 
     expect($updatedWallet->balanceFloat)->toBe('0.00');

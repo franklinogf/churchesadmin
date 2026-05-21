@@ -23,8 +23,7 @@ final class ActivityLogController extends Controller
             ->when($request->filled('log_name'), fn (Builder $q): Builder => $q->where('log_name', $request->string('log_name')))
             ->when($request->filled('start_date'), fn (Builder $q): Builder => $q->whereDate('created_at', '>=', $request->date('start_date')))
             ->when($request->filled('end_date'), fn (Builder $q): Builder => $q->whereDate('created_at', '<=', $request->date('end_date')))
-            ->with(['subject', 'causer'])
-            ->orderByDesc('created_at')
+            ->with(['subject', 'causer'])->latest()
             ->get();
 
         // Get unique log names for the filter dropdown

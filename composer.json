@@ -104,18 +104,19 @@
     ],
     "test:refactor": "rector --dry-run",
     "test:lint": "pint --parallel --bail",
-    "test:types": [
-      "phpstan analyse",
-      "pest --type-coverage --compact --colors=always --min=100"
-    ],
+    "test:types": "phpstan analyse",
+    "test:types-coverage": "pest --type-coverage --compact --colors=always --min=100",
     "test:unit": "pest --testsuite=Unit --stop-on-failure",
     "test:feature": "pest --testsuite=Feature --stop-on-failure",
     "test:all": "pest --parallel --coverage --compact --colors=always --profile --stop-on-failure",
     "test:cleanup": "php artisan test:cleanup",
     "test:migrate": "php artisan migrate --database=testing",
     "test": [
+      "@php artisan config:clear --ansi",
+      "@test:cleanup",
       "@test:refactor",
       "@test:types",
+      "@test:types-coverage",
       "@test:lint",
       "@test:all"
     ]

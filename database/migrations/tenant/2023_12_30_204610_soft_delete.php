@@ -13,26 +13,26 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table((new Wallet)->getTable(), static function (Blueprint $table) {
+        Schema::table((new Wallet)->getTable(), static function (Blueprint $table): void {
             $table->softDeletesTz();
         });
-        Schema::table((new Transfer)->getTable(), static function (Blueprint $table) {
+        Schema::table((new Transfer)->getTable(), static function (Blueprint $table): void {
             $table->softDeletesTz();
         });
-        Schema::table((new Transaction)->getTable(), static function (Blueprint $table) {
+        Schema::table((new Transaction)->getTable(), static function (Blueprint $table): void {
             $table->softDeletesTz();
         });
     }
 
     public function down(): void
     {
-        Schema::table((new Wallet)->getTable(), static function (Blueprint $table) {
+        Schema::table((new Wallet)->getTable(), static function (Blueprint $table): void {
             $table->dropSoftDeletes();
         });
-        Schema::table((new Transfer)->getTable(), static function (Blueprint $table) {
+        Schema::table((new Transfer)->getTable(), static function (Blueprint $table): void {
             $table->dropSoftDeletes();
         });
-        Schema::table((new Transaction)->getTable(), static function (Blueprint $table) {
+        Schema::table((new Transaction)->getTable(), static function (Blueprint $table): void {
             $table->dropSoftDeletes();
         });
     }

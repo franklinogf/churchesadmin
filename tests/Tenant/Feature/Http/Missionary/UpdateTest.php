@@ -56,7 +56,7 @@ describe('if user has permission', function (): void {
 
         assertDatabaseCount('addresses', 0);
 
-        $updatedMissionary = Missionary::latest()->first();
+        $updatedMissionary = Missionary::query()->latest()->first();
 
         expect($updatedMissionary)->not->toBeNull()
             ->and($updatedMissionary->name)->toBe('Nicole')
@@ -101,7 +101,7 @@ describe('if user has permission', function (): void {
 
         assertDatabaseCount('addresses', 0);
 
-        $updatedMissionary = Missionary::find($missionary->id);
+        $updatedMissionary = Missionary::query()->find($missionary->id);
 
         expect($updatedMissionary)->not->toBeNull()
             ->and($updatedMissionary->name)->toBe('John')
@@ -181,7 +181,7 @@ describe('if user has permission', function (): void {
 
         assertDatabaseCount('addresses', 1);
 
-        $updatedMissionary = Missionary::latest()->first();
+        $updatedMissionary = Missionary::query()->latest()->first();
 
         expect($updatedMissionary)->not->toBeNull()
             ->and($updatedMissionary->name)->toBe('John')

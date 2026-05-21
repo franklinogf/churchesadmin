@@ -57,7 +57,7 @@ final readonly class PdfGeneration
         $data = $this->columnsCollection
             ->map(fn (array $col, string $name): array => ['name' => $name, 'label' => $col['label'], 'selected' => true])
             ->values()
-            ->toArray();
+            ->all();
 
         return $data;
     }
@@ -74,8 +74,8 @@ final readonly class PdfGeneration
          * @var array<string,array{label:string,position:string,type:string}> $data
          */
         $data = $this->columnsCollection
-            ->filter(fn (array $_, string $name): bool => ! in_array($name, $unSelectedColumns))
-            ->toArray();
+            ->reject(fn (array $_, string $name): bool => in_array($name, $unSelectedColumns))
+            ->all();
 
         return $data;
     }

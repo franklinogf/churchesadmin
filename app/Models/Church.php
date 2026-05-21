@@ -12,7 +12,6 @@ use Bavix\Wallet\Interfaces\WalletFloat;
 use Bavix\Wallet\Traits\HasWalletFloat;
 use Bavix\Wallet\Traits\HasWallets;
 use Carbon\CarbonImmutable;
-use Database\Factories\ChurchFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Override;
@@ -41,8 +40,12 @@ use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
  */
 final class Church extends BaseTenant implements HasMedia, SingleDomainTenant, TenantWithDatabase, Wallet, WalletFloat
 {
-    /** @use HasFactory<ChurchFactory> */
-    use HasDatabase, HasFactory, HasWalletFloat, HasWallets, InteractsWithMedia, MaintenanceMode;
+    use HasDatabase;
+    use HasFactory;
+    use HasWalletFloat;
+    use HasWallets;
+    use InteractsWithMedia;
+    use MaintenanceMode;
 
     /**
      * Set the custom columns for the tenant model.

@@ -24,5 +24,5 @@ test('to array', function (): void {
 test('can access panel', function (): void {
     $user = User::factory()->create();
 
-    expect($user->canAccessPanel(app(Panel::class)))->toBeTrue();
+    expect($user->canAccessPanel(resolve(Panel::class)))->toBeTrue();
 });

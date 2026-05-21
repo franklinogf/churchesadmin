@@ -11,7 +11,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table($this->table(), function (Blueprint $table) {
+        Schema::table($this->table(), function (Blueprint $table): void {
             $table->dropIndex(['from_type', 'from_id']);
             $table->dropIndex(['to_type', 'to_id']);
 
@@ -24,7 +24,7 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::table($this->table(), static function (Blueprint $table) {
+        Schema::table($this->table(), static function (Blueprint $table): void {
             $table->string('from_type')
                 ->after('from_id');
             $table->string('to_type')

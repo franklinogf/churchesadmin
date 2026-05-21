@@ -23,7 +23,7 @@ describe('if user has permission', function (): void {
 
         assertDatabaseCount('offering_types', 1);
 
-        $offeringType = OfferingType::latest()->first();
+        $offeringType = OfferingType::query()->latest()->first();
 
         expect($offeringType)->not->toBeNull()
             ->and($offeringType->name)->toBe('Test Offering Type');

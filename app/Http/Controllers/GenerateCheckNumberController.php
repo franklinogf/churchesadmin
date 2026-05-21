@@ -31,7 +31,7 @@ final class GenerateCheckNumberController extends Controller
         Check::unconfirmed()->update(['check_number' => null]);
 
         foreach ($checkIds as $checkId) {
-            $check = Check::find($checkId);
+            $check = Check::query()->find($checkId);
 
             if (! $check instanceof Check) {
                 continue;

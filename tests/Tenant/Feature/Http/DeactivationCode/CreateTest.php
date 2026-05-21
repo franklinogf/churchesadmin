@@ -23,7 +23,7 @@ describe('if user has permission', function (): void {
 
         assertDatabaseCount('deactivation_codes', 1);
 
-        $deactivationCode = DeactivationCode::latest()->first();
+        $deactivationCode = DeactivationCode::query()->latest()->first();
 
         expect($deactivationCode)->not->toBeNull()
             ->and($deactivationCode->name)->toBe('Test Deactivation Code');

@@ -14,7 +14,7 @@ it('can update tag name and regular status', function (): void {
         'is_regular' => true,
     ];
 
-    $action = new UpdateTagAction();
+    $action = new UpdateTagAction;
     $action->handle($tag, $updateData);
 
     $tag->refresh();
@@ -32,7 +32,7 @@ it('can update only the name', function (): void {
         'name' => 'New Name Only',
     ];
 
-    $action = new UpdateTagAction();
+    $action = new UpdateTagAction;
     $action->handle($tag, $updateData);
 
     $tag->refresh();
@@ -50,7 +50,7 @@ it('can toggle regular status', function (): void {
         'is_regular' => false,
     ];
 
-    $action = new UpdateTagAction();
+    $action = new UpdateTagAction;
     $action->handle($tag, $updateData);
 
     $tag->refresh();
@@ -71,7 +71,7 @@ it('preserves tag type during update', function (): void {
         'is_regular' => true,
     ];
 
-    $action = new UpdateTagAction();
+    $action = new UpdateTagAction;
     $action->handle($tag, $updateData);
 
     $tag->refresh();

@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Models\OfferingType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\OfferingType>
+ * @extends Factory<OfferingType>
  */
 final class OfferingTypeFactory extends Factory
 {

@@ -12,14 +12,14 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\TenantUser>
+ * @extends Factory<TenantUser>
  */
 final class TenantUserFactory extends Factory
 {
     /**
      * The current password being used by the factory.
      */
-    protected static ?string $password;
+    private static ?string $password;
 
     /**
      * Define the model's default state.
@@ -36,7 +36,7 @@ final class TenantUserFactory extends Factory
             'remember_token' => Str::random(10),
             'timezone' => 'America/New_York',
             'timezone_country' => 'US',
-            'current_year_id' => CurrentYear::first()?->id ?? CurrentYear::factory(),
+            'current_year_id' => CurrentYear::query()->first()?->id ?? CurrentYear::factory(),
         ];
     }
 
@@ -45,55 +45,47 @@ final class TenantUserFactory extends Factory
      */
     public function unverified(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn (array $attributes): array => [
             'email_verified_at' => null,
         ]);
     }
 
     public function superAdmin(): static
     {
-        return $this->state(function (array $attributes) {
-            return [
-                'name' => 'Super Admin',
-                'email' => 'superadmin@example.com',
-            ];
-        })->afterCreating(function (TenantUser $user) {
+        return $this->state(fn (array $attributes): array => [
+            'name' => 'Super Admin',
+            'email' => 'superadmin@example.com',
+        ])->afterCreating(function (TenantUser $user): void {
             $user->assignRole(TenantRole::SUPER_ADMIN);
         });
     }
 
     public function admin(): static
     {
-        return $this->state(function (array $attributes) {
-            return [
-                'name' => 'Admin',
-                'email' => 'admin@example.com',
-            ];
-        })->afterCreating(function (TenantUser $user) {
+        return $this->state(fn (array $attributes): array => [
+            'name' => 'Admin',
+            'email' => 'admin@example.com',
+        ])->afterCreating(function (TenantUser $user): void {
             $user->assignRole(TenantRole::ADMIN);
         });
     }
 
     public function secretary(): static
     {
-        return $this->state(function (array $attributes) {
-            return [
-                'name' => 'Secretary',
-                'email' => 'secretary@example.com',
-            ];
-        })->afterCreating(function (TenantUser $user) {
+        return $this->state(fn (array $attributes): array => [
+            'name' => 'Secretary',
+            'email' => 'secretary@example.com',
+        ])->afterCreating(function (TenantUser $user): void {
             $user->assignRole(TenantRole::SECRETARY);
         });
     }
 
     public function noRole(): static
     {
-        return $this->state(function (array $attributes) {
-            return [
-                'name' => 'No Role',
-                'email' => 'norole@example.com',
-            ];
-        })->afterCreating(function (TenantUser $user) {
+        return $this->state(fn (array $attributes): array => [
+            'name' => 'No Role',
+            'email' => 'norole@example.com',
+        ])->afterCreating(function (TenantUser $user): void {
             $user->assignRole(TenantRole::NO_ROLE);
         });
     }

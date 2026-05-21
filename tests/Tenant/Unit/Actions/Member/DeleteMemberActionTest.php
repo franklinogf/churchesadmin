@@ -15,10 +15,10 @@ it('can delete a member', function (): void {
 
     $memberId = $member->id;
 
-    $action = new DeleteMemberAction();
+    $action = new DeleteMemberAction;
     $action->handle($member);
 
-    expect(Member::find($memberId))->toBeNull();
+    expect(Member::query()->find($memberId))->toBeNull();
 
 });
 
@@ -27,11 +27,11 @@ it('can delete member with address', function (): void {
     $memberId = $member->id;
     $addressId = $member->address->id;
 
-    $action = new DeleteMemberAction();
+    $action = new DeleteMemberAction;
     $action->handle($member);
 
-    expect(Member::find($memberId))->toBeNull()
-        ->and(Address::find($addressId))->toBeNull();
+    expect(Member::query()->find($memberId))->toBeNull()
+        ->and(Address::query()->find($addressId))->toBeNull();
 });
 
 it('can delete member with tags', function (): void {
@@ -45,10 +45,10 @@ it('can delete member with tags', function (): void {
 
     $memberId = $member->id;
 
-    $action = new DeleteMemberAction();
+    $action = new DeleteMemberAction;
     $action->handle($member);
 
     // Member should be soft deleted
-    expect(Member::find($memberId))->toBeNull();
+    expect(Member::query()->find($memberId))->toBeNull();
 
 });

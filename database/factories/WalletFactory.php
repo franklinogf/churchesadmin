@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Models\ChurchWallet;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ChurchWallet>
+ * @extends Factory<ChurchWallet>
  */
 final class WalletFactory extends Factory
 {

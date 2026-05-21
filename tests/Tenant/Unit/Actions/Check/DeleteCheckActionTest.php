@@ -27,7 +27,7 @@ test('deletes a check and its transaction', function (): void {
     );
 
     // Create a check with the transaction
-    $check = Check::create([
+    $check = Check::query()->create([
         'transaction_id' => $transaction->id,
         'member_id' => $member->id,
         'date' => now()->format('Y-m-d'),
@@ -40,7 +40,7 @@ test('deletes a check and its transaction', function (): void {
     expect($wallet->balanceFloat)->toBe('100.00');
 
     // Create the action
-    $action = new DeleteCheckAction();
+    $action = new DeleteCheckAction;
 
     // Execute the action
     $action->handle($check);
@@ -49,7 +49,7 @@ test('deletes a check and its transaction', function (): void {
     $wallet->refresh();
 
     // Check that the check was deleted
-    expect(Check::find($check->id))->toBeNull();
+    expect(Check::query()->find($check->id))->toBeNull();
 
     // Check that the transaction was deleted
     $transactionExists = DB::table('transactions')->where('id', $transaction->id)->exists();

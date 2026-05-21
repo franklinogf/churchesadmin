@@ -18,7 +18,7 @@ it('can update user basic data', function (): void {
         'email' => 'jane.smith@example.com',
     ];
 
-    $action = new UpdateUserAction();
+    $action = new UpdateUserAction;
     $action->handle($user, $updateData);
 
     $user->refresh();
@@ -37,7 +37,7 @@ it('can update user roles', function (): void {
 
     $newRoles = ['role2'];
 
-    $action = new UpdateUserAction();
+    $action = new UpdateUserAction;
     $action->handle($user, roles: $newRoles);
 
     $user->refresh();
@@ -60,7 +60,7 @@ it('can update user permissions', function (): void {
 
     $newPermissions = ['permission3'];
 
-    $action = new UpdateUserAction();
+    $action = new UpdateUserAction;
     $action->handle($user, permissions: $newPermissions);
 
     $user->refresh();
@@ -83,7 +83,7 @@ it('can clear all roles and permissions', function (): void {
     $roles = []; // Empty array to clear all roles
     $permissions = []; // Empty array to clear all permissions
 
-    $action = new UpdateUserAction();
+    $action = new UpdateUserAction;
     $action->handle($user, roles: $roles, permissions: $permissions);
 
     $user->refresh();
