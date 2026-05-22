@@ -9,6 +9,7 @@ use App\Enums\Gender;
 use App\Enums\OfferingFrequency;
 use App\Models\Scopes\LastnameScope;
 use Carbon\CarbonImmutable;
+use Database\Factories\MissionaryFactory;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
@@ -44,7 +45,9 @@ use Override;
 #[ScopedBy(LastnameScope::class)]
 final class Missionary extends Model
 {
+    /** @use HasFactory<MissionaryFactory> */
     use HasFactory;
+
     use SoftDeletes;
 
     /**

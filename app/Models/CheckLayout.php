@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Enums\CheckLayoutField;
 use App\Enums\MediaCollectionName;
 use Carbon\CarbonImmutable;
+use Database\Factories\CheckLayoutFactory;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -29,7 +30,9 @@ use Spatie\MediaLibrary\MediaCollections\File;
  */
 final class CheckLayout extends Model implements HasMedia
 {
+    /** @use HasFactory<CheckLayoutFactory> */
     use HasFactory;
+
     use InteractsWithMedia;
 
     /**

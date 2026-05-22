@@ -10,6 +10,7 @@ export default {
       main: 'Main',
       dashboard: 'Dashboard',
       skills: 'Skills',
+      books: 'Books',
       categories: 'Categories',
       members: 'Members',
       missionaries: 'Missionaries',
@@ -199,6 +200,7 @@ export default {
         markThisSkillAsRegular: 'Mark this skill as regular',
         save: 'Save',
       },
+
       walletForm: {
         wallet: 'Wallet',
         editModel: 'Edit {{model}}',

@@ -22,6 +22,10 @@ enum TenantPermission: string
     case SKILLS_CREATE = 'skills.create';
     case SKILLS_UPDATE = 'skills.update';
     case SKILLS_DELETE = 'skills.delete';
+    case BOOKS_MANAGE = 'books.manage';
+    case BOOKS_CREATE = 'books.create';
+    case BOOKS_UPDATE = 'books.update';
+    case BOOKS_DELETE = 'books.delete';
     case CATEGORIES_MANAGE = 'categories.manage';
     case CATEGORIES_CREATE = 'categories.create';
     case CATEGORIES_UPDATE = 'categories.update';

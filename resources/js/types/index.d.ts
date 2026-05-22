@@ -27,6 +27,7 @@ export type NavItem = BaseNavMenu & {
   icon?: LucideIcon | null;
   isActive?: boolean;
   permissionNeeded?: UserPermission;
+  featureNeeded?: keyof TenantFeatures;
 };
 
 export type NavGroup = BaseNavMenu & {

@@ -468,6 +468,35 @@ export default {
         skill: 'Habilidad',
       },
     },
+    books: {
+      includes: {
+        columns: {
+          actions: 'Acciones',
+          print: 'Imprimir',
+          edit: 'Editar',
+          areYouSureYouWantToDeleteThisModel: '¿Estás seguro de que deseas eliminar este {{model}}?',
+          baptismCertificate: 'Certificado de bautismo',
+          thisActionCannotBeUndone: 'Esta acción no se puede deshacer.',
+          delete: 'Eliminar',
+          cancel: 'Cancelar',
+        },
+      },
+      index: {
+        books: 'Libros',
+        addModel: 'Agregar {{model}}',
+        baptismCertificate: 'Certificado de bautismo',
+      },
+      create: {
+        books: 'Libros',
+        addModel: 'Agregar {{model}}',
+        baptismCertificate: 'Certificado de bautismo',
+      },
+      edit: {
+        books: 'Libros',
+        editModel: 'Editar {{model}}',
+        baptismCertificate: 'Certificado de bautismo',
+      },
+    },
     users: {
       create: {
         users: 'Usuarios',

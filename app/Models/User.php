@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Carbon\CarbonImmutable;
+use Database\Factories\UserFactory;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
@@ -34,7 +35,10 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
 final class User extends Authenticatable implements FilamentUser
 {
     use CentralConnection;
+
+    /** @use HasFactory<UserFactory> */
     use HasFactory;
+
     use HasUuids;
     use Notifiable;
 

@@ -1,0 +1,28 @@
+export type BaptismCertificate = {
+  id: number;
+  book: string;
+  folio: string;
+  recordNumber: string;
+  baptizedName: string;
+  baptizedAt: string | null;
+  priest: string | null;
+  birthPlace: string | null;
+  birthDate: string | null;
+  fatherName: string | null;
+  fatherOriginPlace: string | null;
+  fatherResidencePlace: string | null;
+  motherName: string | null;
+  motherOriginPlace: string | null;
+  motherResidencePlace: string | null;
+  paternalGrandfatherName: string | null;
+  paternalGrandmotherName: string | null;
+  maternalGrandfatherName: string | null;
+  maternalGrandmotherName: string | null;
+  godfatherName: string | null;
+  godmotherName: string | null;
+  issuedPlace: string | null;
+  issuedAt: string | null;
+  marginalNote: string | null;
+  createdAt: string;
+  updatedAt: string;
+};

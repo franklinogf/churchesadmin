@@ -110,7 +110,7 @@
     </style>
 </head>
 
-<body class="bg-white text-black antialiased">
+<body class="relative bg-white text-black antialiased">
     @if (!$noHeader)
         <div class="relative mb-12 mt-3 text-center">
             @if (tenant('logo'))
@@ -118,7 +118,9 @@
                      width="250px" />
             @endif
             <h1 class="text-3xl font-extrabold">{{ tenant('name') }}</h1>
-            <p class="text-xl">{{ $title }}</p>
+            @if ($title)
+                <p class="text-xl">{{ $title }}</p>
+            @endif
         </div>
     @endif
     {{ $slot }}

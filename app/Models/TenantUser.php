@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Carbon\CarbonImmutable;
+use Database\Factories\TenantUserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Attributes\Table;
@@ -42,7 +43,9 @@ use Spatie\Permission\Traits\HasRoles;
 #[Table(name: 'users')]
 final class TenantUser extends Authenticatable implements MustVerifyEmail
 {
+    /** @use HasFactory<TenantUserFactory> */
     use HasFactory;
+
     use HasRoles;
     use HasUuids;
     use Notifiable;

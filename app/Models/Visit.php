@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Casts\AsUcWords;
 use App\Models\Scopes\LastnameScope;
 use Carbon\CarbonImmutable;
+use Database\Factories\VisitFactory;
 use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
@@ -39,7 +40,9 @@ use Override;
 #[ScopedBy(LastnameScope::class)]
 final class Visit extends Model
 {
+    /** @use HasFactory<VisitFactory> */
     use HasFactory;
+
     use SoftDeletes;
 
     /**

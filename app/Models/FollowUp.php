@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Enums\FollowUpType;
 use Carbon\CarbonImmutable;
+use Database\Factories\FollowUpFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -27,7 +28,9 @@ use Override;
  */
 final class FollowUp extends Model
 {
+    /** @use HasFactory<FollowUpFactory> */
     use HasFactory;
+
     use SoftDeletes;
 
     /**

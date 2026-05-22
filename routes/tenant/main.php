@@ -2,11 +2,13 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\BaptismCertificateController;
 use App\Http\Controllers\CalendarEventController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\MemberStatusController;
 use App\Http\Controllers\MissionaryController;
+use App\Http\Controllers\Pdf\BaptismCertificatePdfController;
 use App\Http\Controllers\Pdf\CalendarEventPdfController;
 use App\Http\Controllers\SendCalendarEventToMembersController;
 use App\Http\Controllers\SkillController;
@@ -18,6 +20,12 @@ use Illuminate\Support\Facades\Route;
 Route::resource('skills', SkillController::class)
     ->parameter('skills', 'tag')
     ->except(['show', 'create', 'edit']);
+
+Route::resource('books', BaptismCertificateController::class)
+    ->parameters(['books' => 'baptismCertificate'])
+    ->except(['show']);
+Route::get('books/{baptismCertificate}/pdf', BaptismCertificatePdfController::class)
+    ->name('books.pdf');
 
 Route::resource('categories', CategoryController::class)
     ->parameter('categories', 'tag')

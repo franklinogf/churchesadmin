@@ -12,6 +12,7 @@ use Bavix\Wallet\Models\Transaction;
 use Bavix\Wallet\Traits\CanConfirm;
 use Bavix\Wallet\Traits\HasWalletFloat;
 use Carbon\CarbonImmutable;
+use Database\Factories\ChurchWalletFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -40,7 +41,10 @@ use Illuminate\Support\Collection;
 final class ChurchWallet extends Model implements Confirmable, Wallet, WalletFloat
 {
     use CanConfirm;
+
+    /** @use HasFactory<ChurchWalletFactory> */
     use HasFactory;
+
     use HasWalletFloat;
     use SoftDeletes;
 
