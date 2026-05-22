@@ -7,10 +7,14 @@ namespace App\Http\Requests\BaptismCertificate;
 use App\Models\BaptismCertificate;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 
+/**
+ * @property-read BaptismCertificate $baptismCertificate
+ */
 final class UpdateBaptismCertificateRequest extends FormRequest
 {
     /**
@@ -58,7 +62,7 @@ final class UpdateBaptismCertificateRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
-                Rule::unique(BaptismCertificate::class)->where(fn ($query) => $query
+                Rule::unique(BaptismCertificate::class)->where(fn (Builder $query): Builder => $query
                     ->where('book', $this->string('book')->value())
                     ->where('folio', $this->string('folio')->value()))
                     ->ignore($baptismCertificate->id),
