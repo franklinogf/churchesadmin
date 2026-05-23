@@ -30,7 +30,7 @@ describe('serverDate helper', function (): void {
     });
 
     it('parses strings according to the authenticated tenant user timezone', function (): void {
-        $user = new TenantUser();
+        $user = new TenantUser;
         $user->forceFill([
             'id' => (string) Str::uuid(),
             'name' => 'Test User',
@@ -52,7 +52,7 @@ describe('serverDate helper', function (): void {
 
 describe('create_tenant_url helper', function () use ($http): void {
     it('builds tenant-aware urls for named routes', function () use ($http): void {
-        $church = Church::make([
+        $church = Church::query()->make([
             'id' => 'demo-church',
             'domain' => 'demo',
         ]);
@@ -64,7 +64,7 @@ describe('create_tenant_url helper', function () use ($http): void {
 
     it('includes route parameters when generating the url', function () use ($http): void {
 
-        $church = Church::make([
+        $church = Church::query()->make([
             'id' => 'demo-church',
             'domain' => 'demo',
         ]);
@@ -79,7 +79,7 @@ describe('create_tenant_url helper', function () use ($http): void {
     });
 
     it('returns null when the route cannot be generated', function (): void {
-        $church = Church::make([
+        $church = Church::query()->make([
             'id' => 'demo-church',
             'domain' => 'demo',
         ]);

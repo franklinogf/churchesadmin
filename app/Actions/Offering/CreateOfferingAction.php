@@ -29,7 +29,7 @@ final readonly class CreateOfferingAction
      */
     public function handle(array $data): Offering
     {
-        $wallet = ChurchWallet::find($data['wallet_id']);
+        $wallet = ChurchWallet::query()->find($data['wallet_id']);
 
         if ($wallet === null) {
             throw WalletException::notFound();
@@ -45,7 +45,7 @@ final readonly class CreateOfferingAction
                         )
                     ));
 
-                return Offering::create([
+                return Offering::query()->create([
                     'transaction_id' => $transaction->id,
                     'date' => $data['date'],
                     'payment_method' => $data['payment_method'],

@@ -11,7 +11,7 @@ foreach (config('tenancy.identification.central_domains') as $domain) {
         Route::get('/locale/{locale}', function (string $locale): RedirectResponse {
             session(['locale' => $locale]);
 
-            return redirect()->back();
+            return back();
         })->name('root.locale');
         Route::get('/', fn (): RedirectResponse => to_route('root.home', app()->getLocale()))->name('root.index');
         Route::name('root.')

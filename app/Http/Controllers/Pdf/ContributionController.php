@@ -32,7 +32,7 @@ final class ContributionController extends Controller
             'contributionAmount' => format_to_currency($member->getPreviousYearContributionsAmount($selectedYear->year)),
         ])->filter(fn (array $data): bool => $data['contributionAmount'] !== format_to_currency(0))
             ->sortBy('name')
-            ->toArray() : [];
+            ->all() : [];
 
         $years = CurrentYear::query()
             ->where('is_current', false)

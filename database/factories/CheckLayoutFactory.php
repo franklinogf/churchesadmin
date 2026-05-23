@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Models\CheckLayout;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CheckLayout>
+ * @extends Factory<CheckLayout>
  */
 final class CheckLayoutFactory extends Factory
 {

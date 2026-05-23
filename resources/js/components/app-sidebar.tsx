@@ -1,3 +1,4 @@
+import BooksController from '@/actions/App/Http/Controllers/BooksController';
 import CalendarEventController from '@/actions/App/Http/Controllers/CalendarEventController';
 import CategoryController from '@/actions/App/Http/Controllers/CategoryController';
 import CheckController from '@/actions/App/Http/Controllers/CheckController';
@@ -28,6 +29,7 @@ import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
 import {
   BanknoteIcon,
+  BookOpenIcon,
   CalendarIcon,
   CogIcon,
   CoinsIcon,
@@ -61,6 +63,13 @@ export function AppSidebar() {
             href: SkillController.index(),
             icon: LayoutGridIcon,
             permissionNeeded: TenantPermission.SKILLS_MANAGE,
+          },
+          {
+            title: tCommon(($) => $.components.appSidebar.books),
+            href: BooksController(),
+            icon: BookOpenIcon,
+            permissionNeeded: TenantPermission.BOOKS_MANAGE,
+            featureNeeded: 'books',
           },
           {
             title: tCommon(($) => $.components.appSidebar.categories),

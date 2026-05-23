@@ -28,7 +28,7 @@ final class WalletCheckLayoutController extends Controller
 
         $checkLayoutId = $request->integer('layout', $wallet->checkLayout->id ?? 0);
 
-        $checkLayout = CheckLayout::find($checkLayoutId);
+        $checkLayout = CheckLayout::query()->find($checkLayoutId);
 
         $checkLayouts = SelectOption::create(CheckLayout::all());
 

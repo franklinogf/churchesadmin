@@ -12,6 +12,9 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * @implements Scope<Model>
+ */
 final class CurrentYearScope implements Scope
 {
     /**
@@ -29,11 +32,11 @@ final class CurrentYearScope implements Scope
 
         if ($model instanceof Transaction) {
             // If the model has a 'date' attribute, apply the scope to that attribute.
-            $builder->where('meta->year', $user->current_year_id);
+            $builder->where($model->qualifyColumn('meta->year'), $user->current_year_id);
 
             return;
         }
 
-        $builder->where('current_year_id', $user->current_year_id);
+        $builder->where($model->qualifyColumn('current_year_id'), $user->current_year_id);
     }
 }

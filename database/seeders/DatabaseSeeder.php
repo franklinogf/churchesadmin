@@ -17,7 +17,7 @@ final class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        TenantUser::create([
+        TenantUser::query()->create([
             'name' => 'Test user',
             'email' => 'test@example.com',
             'email_verified_at' => now(),
@@ -25,7 +25,7 @@ final class DatabaseSeeder extends Seeder
         ]);
 
         if (! app()->isProduction()) {
-            Church::create([
+            Church::query()->create([
                 'id' => 'demo-church',
                 'name' => 'Test Church',
                 'locale' => LanguageCode::ENGLISH->value,

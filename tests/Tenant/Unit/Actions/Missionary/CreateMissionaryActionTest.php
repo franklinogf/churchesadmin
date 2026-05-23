@@ -15,10 +15,10 @@ it('can create a missionary with basic data', function (): void {
         'church' => 'Global Mission Org',
     ];
 
-    $action = new CreateMissionaryAction();
+    $action = new CreateMissionaryAction;
     $action->handle($missionaryData);
 
-    $missionary = Missionary::where('email', 'john.missionary@example.com')->first();
+    $missionary = Missionary::query()->where('email', 'john.missionary@example.com')->first();
 
     expect($missionary)->not->toBeNull()
         ->and($missionary->name)->toBe('John')
@@ -46,10 +46,10 @@ it('can create a missionary with address', function (): void {
         'country' => 'US',
     ];
 
-    $action = new CreateMissionaryAction();
+    $action = new CreateMissionaryAction;
     $action->handle($missionaryData, $addressData);
 
-    $missionary = Missionary::where('email', 'jane.smith@example.com')->first();
+    $missionary = Missionary::query()->where('email', 'jane.smith@example.com')->first();
 
     expect($missionary)->not->toBeNull()
         ->and($missionary->address)->not->toBeNull()
@@ -70,10 +70,10 @@ it('can create a missionary without address', function (): void {
         'church' => 'Asia Mission',
     ];
 
-    $action = new CreateMissionaryAction();
+    $action = new CreateMissionaryAction;
     $action->handle($missionaryData);
 
-    $missionary = Missionary::where('email', 'bob.wilson@example.com')->first();
+    $missionary = Missionary::query()->where('email', 'bob.wilson@example.com')->first();
 
     expect($missionary)->not->toBeNull()
         ->and($missionary->address)->toBeNull()

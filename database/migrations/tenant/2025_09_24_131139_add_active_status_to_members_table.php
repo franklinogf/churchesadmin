@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('members', function (Blueprint $table) {
+        Schema::table('members', function (Blueprint $table): void {
             $table->boolean('active')->default(true)->after('civil_status');
             $table->foreignId('deactivation_code_id')->nullable()->constrained('deactivation_codes')->nullOnDelete()->after('active');
         });
@@ -24,7 +24,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('members', function (Blueprint $table) {
+        Schema::table('members', function (Blueprint $table): void {
             $table->dropForeign(['deactivation_code_id']);
             $table->dropColumn(['active', 'deactivation_code_id']);
         });

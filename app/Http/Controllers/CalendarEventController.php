@@ -40,7 +40,7 @@ final class CalendarEventController extends Controller
             $query->where('end_at', '<=', $request->input('end_date'));
         }
 
-        $events = $query->orderBy('start_at', 'desc')->get();
+        $events = $query->latest('start_at')->get();
 
         return Inertia::render('main/calendar/index', [
             'events' => CalendarEventResource::collection($events),

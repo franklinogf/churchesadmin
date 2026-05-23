@@ -105,6 +105,12 @@ return [
             'update' => 'Actualizar Habilidades',
             'delete' => 'Eliminar Habilidades',
         ],
+        'books' => [
+            'manage' => 'Gestionar Libros',
+            'create' => 'Crear Certificados',
+            'update' => 'Actualizar Certificados',
+            'delete' => 'Eliminar Certificados',
+        ],
         'categories' => [
             'manage' => 'Gestionar Categorías',
             'create' => 'Crear Categorías',

@@ -21,9 +21,9 @@ final class CreateUserAction
      */
     public function handle(array $data, ?array $roles = null, ?array $permissions = null): void
     {
-        $logger = new DiffLogger();
+        $logger = new DiffLogger;
         DB::transaction(function () use ($data, $roles, $permissions, $logger): void {
-            $user = TenantUser::create([...$data, 'current_year_id' => CurrentYear::current()->id]);
+            $user = TenantUser::query()->create([...$data, 'current_year_id' => CurrentYear::current()->id]);
             $logger->addChanges([], $user->only(['name', 'email', 'active']));
             if ($roles !== null) {
                 $user->assignRole($roles);

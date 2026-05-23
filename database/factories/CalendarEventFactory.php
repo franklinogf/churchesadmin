@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Enums\CalendarEventColorEnum;
+use App\Models\CalendarEvent;
 use App\Models\TenantUser;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\CalendarEvent>
+ * @extends Factory<CalendarEvent>
  */
 final class CalendarEventFactory extends Factory
 {

@@ -41,7 +41,7 @@ final class OfferingController extends Controller
         $date = $request->string('date')->toString() ?: null;
 
         $offerings = Offering::query()
-            ->when(! is_null($date), fn (Builder $query) => $query->whereDate('date', $date))
+            ->unless(is_null($date), fn (Builder $query) => $query->whereDate('date', $date))
             ->get()
             ->when(is_null($date), fn (Collection $collection) => $collection->groupBy(fn (Offering $offering): string => $offering->date->format('Y-m-d'))
                 ->map(function (Collection $group): array {
@@ -61,7 +61,7 @@ final class OfferingController extends Controller
                     }
 
                     return $data;
-                })->values()->toArray());
+                })->values()->all());
 
         return Inertia::render('offerings/index', [
             'offerings' => is_null($date) ? $offerings : OfferingResource::collection($offerings),

@@ -24,7 +24,7 @@ final readonly class UpdateTransactionAction
 
     public function handle(Transaction $transaction, TransactionDto $transactionDto, TransactionType $transactionType, ?ChurchWallet $wallet = null): Transaction
     {
-        $oldWallet = ChurchWallet::find($transaction->wallet->holder_id);
+        $oldWallet = ChurchWallet::query()->find($transaction->wallet->holder_id);
         $isDeposit = $transactionType === TransactionType::DEPOSIT;
 
         if (! $wallet instanceof ChurchWallet) {

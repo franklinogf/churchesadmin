@@ -17,19 +17,19 @@ it('can restore a soft deleted missionary', function (): void {
     // First soft delete the missionary
     $missionary->delete();
 
-    expect(Missionary::find($missionaryId))->toBeNull()
+    expect(Missionary::query()->find($missionaryId))->toBeNull()
         ->and(Missionary::withTrashed()->find($missionaryId))->not->toBeNull();
 
     // Now restore it
     $trashedMissionary = Missionary::withTrashed()->find($missionaryId);
-    $action = new RestoreMissionaryAction();
+    $action = new RestoreMissionaryAction;
     $action->handle($trashedMissionary);
 
     // Missionary should be restored
-    expect(Missionary::find($missionaryId))->not->toBeNull()
-        ->and(Missionary::find($missionaryId)->deleted_at)->toBeNull()
-        ->and(Missionary::find($missionaryId)->name)->toBe('John')
-        ->and(Missionary::find($missionaryId)->last_name)->toBe('Missionary');
+    expect(Missionary::query()->find($missionaryId))->not->toBeNull()
+        ->and(Missionary::query()->find($missionaryId)->deleted_at)->toBeNull()
+        ->and(Missionary::query()->find($missionaryId)->name)->toBe('John')
+        ->and(Missionary::query()->find($missionaryId)->last_name)->toBe('Missionary');
 });
 
 it('can restore missionary with address intact', function (): void {
@@ -40,14 +40,14 @@ it('can restore missionary with address intact', function (): void {
     // Soft delete the missionary
     $missionary->delete();
 
-    expect(Missionary::find($missionaryId))->toBeNull();
+    expect(Missionary::query()->find($missionaryId))->toBeNull();
 
     // Restore the missionary
     $trashedMissionary = Missionary::withTrashed()->find($missionaryId);
-    $action = new RestoreMissionaryAction();
+    $action = new RestoreMissionaryAction;
     $action->handle($trashedMissionary);
 
-    $restoredMissionary = Missionary::find($missionaryId);
+    $restoredMissionary = Missionary::query()->find($missionaryId);
 
     // Missionary and address should be restored
     expect($restoredMissionary)->not->toBeNull()

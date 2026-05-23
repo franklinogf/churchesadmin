@@ -21,7 +21,7 @@ it('can update member basic data', function (): void {
         'baptism_date' => '2005-06-15',
     ];
 
-    $action = app(UpdateMemberAction::class);
+    $action = resolve(UpdateMemberAction::class);
     $action->handle($member, $updateData);
 
     $member->refresh();
@@ -42,7 +42,7 @@ it('can update member skills', function (): void {
         'skills' => ['New Skill 1', 'New Skill 2'],
     ];
 
-    $action = app(UpdateMemberAction::class);
+    $action = resolve(UpdateMemberAction::class);
     $action->handle($member, $updateData);
 
     $memberSkills = $member->fresh()->tags()->where('type', TagType::SKILL->value)->pluck('name')->toArray();
@@ -62,7 +62,7 @@ it('can update member categories', function (): void {
         'categories' => ['New Category'],
     ];
 
-    $action = app(UpdateMemberAction::class);
+    $action = resolve(UpdateMemberAction::class);
     $action->handle($member, $updateData);
 
     $memberCategories = $member->fresh()->tags()->where('type', TagType::CATEGORY->value)->pluck('name')->toArray();
@@ -83,7 +83,7 @@ it('can create address when member has none', function (): void {
         'country' => 'US',
     ];
 
-    $action = app(UpdateMemberAction::class);
+    $action = resolve(UpdateMemberAction::class);
     $action->handle($member, $updateData, $addressData);
 
     $member->refresh();
@@ -103,7 +103,7 @@ it('can update existing address', function (): void {
         'city' => 'Updated City',
     ];
 
-    $action = app(UpdateMemberAction::class);
+    $action = resolve(UpdateMemberAction::class);
     $action->handle($member, $updateData, $addressData);
 
     $member->refresh();
@@ -120,7 +120,7 @@ it('can delete address when set to null', function (): void {
 
     $updateData = [];
 
-    $action = app(UpdateMemberAction::class);
+    $action = resolve(UpdateMemberAction::class);
     $action->handle($member, $updateData, null);
 
     $member->refresh();
@@ -145,7 +145,7 @@ it('can update all data at once', function (): void {
         'city' => 'Complete City',
     ];
 
-    $action = app(UpdateMemberAction::class);
+    $action = resolve(UpdateMemberAction::class);
     $action->handle($member, $updateData, $addressData);
 
     $member->refresh();

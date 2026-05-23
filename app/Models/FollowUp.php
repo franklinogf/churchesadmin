@@ -29,7 +29,9 @@ use Override;
 final class FollowUp extends Model
 {
     /** @use HasFactory<FollowUpFactory> */
-    use HasFactory, SoftDeletes;
+    use HasFactory;
+
+    use SoftDeletes;
 
     /**
      * The person who is of the follow-up.

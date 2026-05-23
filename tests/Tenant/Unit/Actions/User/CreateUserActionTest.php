@@ -14,10 +14,10 @@ it('can create a user with basic data', function (): void {
         'password' => 'password123',
     ];
 
-    $action = new CreateUserAction();
+    $action = new CreateUserAction;
     $action->handle($userData);
 
-    $user = TenantUser::latest()->first();
+    $user = TenantUser::query()->latest()->first();
 
     expect($user)->not->toBeNull()
         ->and($user->name)->toBe('John Doe')
@@ -37,10 +37,10 @@ it('can create a user with roles', function (): void {
 
     $roles = ['role1', 'role2'];
 
-    $action = new CreateUserAction();
+    $action = new CreateUserAction;
     $action->handle($userData, $roles);
 
-    $user = TenantUser::latest()->first();
+    $user = TenantUser::query()->latest()->first();
 
     expect($user)->not->toBeNull()
         ->and($user->hasRole($roles))->toBeTrue()
@@ -60,10 +60,10 @@ it('can create a user with permissions', function (): void {
 
     $permissions = ['permission1', 'permission2'];
 
-    $action = new CreateUserAction();
+    $action = new CreateUserAction;
     $action->handle($userData, null, $permissions);
 
-    $user = TenantUser::latest()->first();
+    $user = TenantUser::query()->latest()->first();
 
     expect($user)->not->toBeNull();
     expect($user->hasPermissionTo('permission1'))->toBeTrue()
@@ -86,10 +86,10 @@ it('can create a user with both roles and permissions', function (): void {
     $roles = ['manager'];
     $permissions = ['permission1', 'permission2'];
 
-    $action = new CreateUserAction();
+    $action = new CreateUserAction;
     $action->handle($userData, $roles, $permissions);
 
-    $user = TenantUser::where('email', 'alice.johnson@example.com')->first();
+    $user = TenantUser::query()->where('email', 'alice.johnson@example.com')->first();
 
     expect($user)->not->toBeNull();
     expect($user->hasRole('manager'))->toBeTrue()

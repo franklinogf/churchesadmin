@@ -85,7 +85,7 @@ if (! function_exists('format_to_float')) {
      */
     function format_to_float(int|string $amount, int $decimals = 2): float
     {
-        return (float) app(FormatterServiceInterface::class)->floatValue($amount, $decimals);
+        return (float) resolve(FormatterServiceInterface::class)->floatValue($amount, $decimals);
     }
 }
 

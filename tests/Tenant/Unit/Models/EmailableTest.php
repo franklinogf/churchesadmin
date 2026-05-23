@@ -74,7 +74,7 @@ it('extends morph pivot', function (): void {
 });
 
 it('has auto incrementing ids', function (): void {
-    $emailable = new Emailable();
+    $emailable = new Emailable;
 
     expect($emailable->incrementing)->toBeTrue();
 });

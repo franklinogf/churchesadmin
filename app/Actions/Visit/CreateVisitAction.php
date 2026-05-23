@@ -20,8 +20,8 @@ final class CreateVisitAction
     public function handle(array $data, ?array $address = null): Visit
     {
         return DB::transaction(function () use ($data, $address): Visit {
-            $logger = new DiffLogger();
-            $visit = Visit::create($data);
+            $logger = new DiffLogger;
+            $visit = Visit::query()->create($data);
             $visitData = $visit->only([
                 'name', 'last_name', 'email', 'phone', 'first_visit_date',
             ]);

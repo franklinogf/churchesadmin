@@ -12,11 +12,12 @@ export default defineConfig({
       refresh: true,
     }),
     inertia(),
-    react(),
+    react({
+      babel: {
+        plugins: ['babel-plugin-react-compiler'],
+      },
+    }),
     tailwindcss(),
     wayfinder({ formVariants: false, routes: false }),
   ],
-  esbuild: {
-    jsx: 'automatic',
-  },
 });

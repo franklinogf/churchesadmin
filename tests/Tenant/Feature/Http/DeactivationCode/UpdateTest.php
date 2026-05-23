@@ -24,7 +24,7 @@ describe('if user has permission', function (): void {
             ->assertSessionDoesntHaveErrors()
             ->assertRedirect(route('codes.deactivationCodes.index'));
 
-        $updatedDeactivationCode = DeactivationCode::latest()->first();
+        $updatedDeactivationCode = DeactivationCode::query()->latest()->first();
 
         expect($updatedDeactivationCode)->not->toBeNull()
             ->and($updatedDeactivationCode->name)->toBe('Updated Deactivation Code');

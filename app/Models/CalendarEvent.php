@@ -32,7 +32,9 @@ use Override;
 final class CalendarEvent extends Model
 {
     /** @use HasFactory<CalendarEventFactory> */
-    use HasFactory, SoftDeletes;
+    use HasFactory;
+
+    use SoftDeletes;
 
     /**
      * The user who created this event.

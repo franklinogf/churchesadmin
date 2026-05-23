@@ -46,7 +46,9 @@ use Override;
 final class Missionary extends Model
 {
     /** @use HasFactory<MissionaryFactory> */
-    use HasFactory,SoftDeletes;
+    use HasFactory;
+
+    use SoftDeletes;
 
     /**
      * Get the address of this model.

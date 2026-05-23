@@ -41,7 +41,9 @@ use Override;
 final class Visit extends Model
 {
     /** @use HasFactory<VisitFactory> */
-    use HasFactory, SoftDeletes;
+    use HasFactory;
+
+    use SoftDeletes;
 
     /**
      * The address of the visit.

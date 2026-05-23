@@ -21,7 +21,7 @@ final class UpdateVisitAction
     public function handle(Visit $visit, array $data, ?array $address = []): Visit
     {
         return DB::transaction(function () use ($visit, $data, $address): Visit {
-            $logger = new DiffLogger();
+            $logger = new DiffLogger;
             $originalVisit = $visit->replicate();
             $originalAddress = $visit->address?->only(['address_1', 'address_2', 'city', 'state', 'zip_code', 'country']);
 

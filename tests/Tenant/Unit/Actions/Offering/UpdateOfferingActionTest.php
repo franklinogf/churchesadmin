@@ -27,7 +27,7 @@ it('can update offering with new data', function (): void {
         'payment_method' => 'cash',
         'note' => 'Original note',
     ]);
-    $offering = Offering::latest()->first();
+    $offering = Offering::query()->latest()->first();
 
     $updateData = [
         'date' => '2024-01-15',
@@ -41,7 +41,7 @@ it('can update offering with new data', function (): void {
         ],
     ];
 
-    $action = app(UpdateOfferingAction::class);
+    $action = resolve(UpdateOfferingAction::class);
     $updatedOffering = $action->handle($offering, $updateData);
 
     expect($updatedOffering->date->format('Y-m-d'))->toBe('2024-01-15')
@@ -67,14 +67,14 @@ it('can update offering with partial data', function (): void {
         'payment_method' => PaymentMethod::CHECK,
         'note' => 'Original note',
     ]);
-    $offering = Offering::latest()->first();
+    $offering = Offering::query()->latest()->first();
 
     $updateData = [
         'note' => 'Only note updated',
         'payment_method' => PaymentMethod::CASH,
     ];
 
-    $action = app(UpdateOfferingAction::class);
+    $action = resolve(UpdateOfferingAction::class);
     $updatedOffering = $action->handle($offering, $updateData);
 
     expect($updatedOffering->note)->toBe('Only note updated')
@@ -96,14 +96,14 @@ it('can clear donor_id and note with null values', function (): void {
         'offering_type_type' => OfferingType::class,
         'note' => 'Original note',
     ]);
-    $offering = Offering::latest()->first();
+    $offering = Offering::query()->latest()->first();
 
     $updateData = [
         'donor_id' => null,
         'note' => null,
     ];
 
-    $action = app(UpdateOfferingAction::class);
+    $action = resolve(UpdateOfferingAction::class);
     $updatedOffering = $action->handle($offering, $updateData);
 
     expect($updatedOffering->donor_id)->toBeNull()
@@ -118,7 +118,7 @@ it('throws exception when wallet not found', function (): void {
         'amount' => '50.00',
     ];
 
-    $action = app(UpdateOfferingAction::class);
+    $action = resolve(UpdateOfferingAction::class);
 
     expect(fn () => $action->handle($offering, $updateData))
         ->toThrow(WalletException::class);

@@ -35,7 +35,7 @@ final class ExpenseController extends Controller
     {
         Gate::authorize('viewAny', Expense::class);
 
-        $expenses = Expense::latest('date')->with([
+        $expenses = Expense::query()->latest('date')->with([
             'transaction.wallet' => function (Relation $query): void {
                 /** @phpstan-ignore-next-line */
                 $query->withTrashed();

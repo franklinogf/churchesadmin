@@ -7,10 +7,11 @@ namespace Database\Factories;
 use App\Enums\CivilStatus;
 use App\Enums\Gender;
 use App\Models\DeactivationCode;
+use App\Models\Member;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Member>
+ * @extends Factory<Member>
  */
 final class MemberFactory extends Factory
 {
@@ -41,7 +42,7 @@ final class MemberFactory extends Factory
      */
     public function active(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn (array $attributes): array => [
             'active' => true,
             'deactivation_code_id' => null,
         ]);
@@ -52,7 +53,7 @@ final class MemberFactory extends Factory
      */
     public function inactive(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn (array $attributes): array => [
             'active' => false,
             'deactivation_code_id' => DeactivationCode::factory(),
         ]);

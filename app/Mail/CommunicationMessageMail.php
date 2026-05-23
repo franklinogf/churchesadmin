@@ -17,7 +17,8 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 final class CommunicationMessageMail extends Mailable
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     /**
      * Create a new message instance.

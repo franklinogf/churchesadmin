@@ -26,7 +26,7 @@ final class ConfirmMultipleCheckController extends Controller
 
         try {
             DB::transaction(function () use ($checkIds, $action): void {
-                Check::whereIn('id', $checkIds)->each(function (Check $check) use ($action): void {
+                Check::query()->whereIn('id', $checkIds)->each(function (Check $check) use ($action): void {
                     $action->handle($check);
                 });
             });

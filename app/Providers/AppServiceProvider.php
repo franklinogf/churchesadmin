@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Enums\FlashMessageKey;
 use App\Enums\ModelMorphName;
 use App\Models\CalendarEvent;
 use App\Models\Check;
@@ -31,9 +32,12 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
-use Laravel\Pennant\Feature;
+use Inertia\ExceptionResponse;
+use Inertia\Inertia;
 use Override;
 use Spatie\Translatable\Facades\Translatable;
+
+use function in_array;
 
 final class AppServiceProvider extends ServiceProvider
 {
@@ -51,14 +55,13 @@ final class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        Feature::resolveScopeUsing(fn (): ?Church => Church::current());
         $this->configureCommands();
         $this->configureDates();
         $this->configureModels();
         $this->configureValidations();
         $this->configureJsonResources();
         $this->configureMail();
-
+        $this->configureInertiaExceptions();
         Translatable::fallback(
             fallbackAny: true
         );
@@ -125,5 +128,23 @@ final class AppServiceProvider extends ServiceProvider
         if (! app()->isProduction()) {
             Mail::alwaysTo('franklinomarflores@gmail.com');
         }
+    }
+
+    private function configureInertiaExceptions(): void
+    {
+        Inertia::handleExceptionsUsing(function (ExceptionResponse $response) {
+            if (! app()->environment(['local', 'testing']) && in_array($response->statusCode(), [403, 404, 419, 500, 503], true)) {
+
+                if ($response->statusCode() === 419) {
+                    return back()->with(key: [
+                        FlashMessageKey::MESSAGE->value => 'The page expired, please try again.',
+                    ]);
+                }
+
+                return $response->render('error', [
+                    'status' => $response->statusCode(),
+                ]);
+            }
+        });
     }
 }

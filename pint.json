@@ -1,67 +1,96 @@
 {
-    "preset": "laravel",
-    "notPath": [
-        "tests/TestCase.php"
-    ],
-    "rules": {
-        "native_function_invocation": {
-            "include": [
-                "@compiler_optimized"
-            ],
-            "scope": "namespaced"
-        },
-        "array_push": true,
-        "backtick_to_shell_exec": true,
-        "date_time_immutable": true,
-        "declare_strict_types": true,
-        "lowercase_keywords": true,
-        "lowercase_static_reference": true,
-        "final_class": true,
-        "final_internal_class": true,
-        "final_public_method_for_abstract_class": true,
-        "fully_qualified_strict_types": true,
-        "global_namespace_import": {
-            "import_classes": true,
-            "import_constants": true,
-            "import_functions": true
-        },
-        "mb_str_functions": true,
-        "modernize_types_casting": true,
-        "new_with_parentheses": false,
-        "no_superfluous_elseif": true,
-        "no_useless_else": true,
-        "no_multiple_statements_per_line": true,
-        "ordered_class_elements": {
-            "order": [
-                "use_trait",
-                "case",
-                "constant",
-                "constant_public",
-                "constant_protected",
-                "constant_private",
-                "property_public",
-                "property_protected",
-                "property_private",
-                "construct",
-                "destruct",
-                "magic",
-                "phpunit",
-                "method_abstract",
-                "method_public_static",
-                "method_public",
-                "method_protected_static",
-                "method_protected",
-                "method_private_static",
-                "method_private"
-            ],
-            "sort_algorithm": "none"
-        },
-        "ordered_interfaces": true,
-        "ordered_traits": true,
-        "protected_to_private": true,
-        "self_accessor": true,
-        "self_static_accessor": true,
-        "strict_comparison": true,
-        "visibility_required": true
+  "preset": "laravel",
+  "notPath": ["tests/TestCase.php", "tests/TenantCase.php", "tmp"],
+  "rules": {
+    "array_push": true,
+    "backtick_to_shell_exec": true,
+    "date_time_immutable": true,
+    "declare_strict_types": {
+      "preserve_existing_declaration": false
+    },
+    "lowercase_keywords": true,
+    "lowercase_static_reference": true,
+    "final_class": true,
+    "final_internal_class": {
+      "exclude": ["final", "Entity", "ORM\\Entity", "ORM\\Mapping\\Entity", "Mapping\\Entity", "Document", "ODM\\Document"]
+    },
+    "final_public_method_for_abstract_class": true,
+    "fully_qualified_strict_types": {
+      "phpdoc_tags": [
+        "param",
+        "phpstan-param",
+        "phpstan-property",
+        "phpstan-property-read",
+        "phpstan-property-write",
+        "phpstan-return",
+        "phpstan-var",
+        "property",
+        "property-read",
+        "property-write",
+        "psalm-param",
+        "psalm-property",
+        "psalm-property-read",
+        "psalm-property-write",
+        "psalm-return",
+        "psalm-var",
+        "return",
+        "see",
+        "throws",
+        "var"
+      ]
+    },
+    "global_namespace_import": {
+      "import_classes": true,
+      "import_constants": true,
+      "import_functions": true
+    },
+    "mb_str_functions": true,
+    "modernize_types_casting": true,
+    "new_with_parentheses": {
+      "anonymous_class": false,
+      "named_class": false
+    },
+    "no_superfluous_elseif": true,
+    "no_useless_else": true,
+    "no_multiple_statements_per_line": true,
+    "ordered_class_elements": {
+      "order": [
+        "use_trait",
+        "case",
+        "constant",
+        "constant_public",
+        "constant_protected",
+        "constant_private",
+        "property_public",
+        "property_protected",
+        "property_private",
+        "construct",
+        "destruct",
+        "magic",
+        "phpunit",
+        "method_abstract",
+        "method_public_static",
+        "method_public",
+        "method_protected_static",
+        "method_protected",
+        "method_private_static",
+        "method_private"
+      ],
+      "sort_algorithm": "none"
+    },
+    "ordered_interfaces": {
+      "direction": "ascend",
+      "order": "alpha"
+    },
+    "ordered_traits": {
+      "case_sensitive": false
+    },
+    "protected_to_private": true,
+    "self_accessor": true,
+    "self_static_accessor": true,
+    "strict_comparison": true,
+    "visibility_required": {
+      "elements": ["const", "method", "property"]
     }
+  }
 }

@@ -25,7 +25,7 @@ it('can create an expense with member', function (): void {
         'note' => 'Test expense note',
     ];
 
-    $action = app(CreateExpenseAction::class);
+    $action = resolve(CreateExpenseAction::class);
     $expense = $action->handle($expenseData);
     expect($expense)->toBeInstanceOf(Expense::class)
         ->and($expense->date->format('Y-m-d'))->toBe('2024-01-01')
@@ -51,7 +51,7 @@ it('can create an expense without member', function (): void {
         'amount' => '30.00',
     ];
 
-    $action = app(CreateExpenseAction::class);
+    $action = resolve(CreateExpenseAction::class);
     $expense = $action->handle($expenseData);
     expect($expense)->toBeInstanceOf(Expense::class)
         ->and($expense->member_id)->toBeNull()
@@ -69,7 +69,7 @@ it('throws exception when wallet not found', function (): void {
         'amount' => '30.00',
     ];
 
-    $action = app(CreateExpenseAction::class);
+    $action = resolve(CreateExpenseAction::class);
 
     expect(fn () => $action->handle($expenseData))
         ->toThrow(WalletException::class);
@@ -88,7 +88,7 @@ it('throws exception when insufficient wallet balance', function (): void {
         'amount' => '50.00',
     ];
 
-    $action = app(CreateExpenseAction::class);
+    $action = resolve(CreateExpenseAction::class);
 
     expect(fn () => $action->handle($expenseData))
         ->toThrow(WalletException::class);

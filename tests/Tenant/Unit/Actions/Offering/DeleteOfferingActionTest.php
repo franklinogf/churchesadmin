@@ -10,12 +10,12 @@ it('can delete an offering and its transaction', function (): void {
 
     Offering::factory()->create();
 
-    $offering = Offering::latest()->first();
+    $offering = Offering::query()->latest()->first();
 
-    $action = new DeleteOfferingAction();
+    $action = new DeleteOfferingAction;
     $action->handle($offering);
 
     // Verify offering is deleted
-    expect(Offering::find($offering->id))->toBeNull()
-        ->and(Transaction::find($offering->transaction_id))->toBeNull();
+    expect(Offering::query()->find($offering->id))->toBeNull()
+        ->and(Transaction::query()->find($offering->transaction_id))->toBeNull();
 });

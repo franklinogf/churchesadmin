@@ -37,7 +37,7 @@ final class ProfileController extends Controller
         $timezones = collect(DateTimeZone::listIdentifiers(DateTimeZone::PER_COUNTRY, $country))
             ->map(fn (string $timezone): array => ['label' => $timezone.' ('.now()->setTimezone($timezone)->format('Y-m-d H:i:s').')', 'value' => $timezone])
             ->sort()
-            ->toArray();
+            ->all();
 
         return Inertia::render('settings/profile', [
             'mustVerifyEmail' => true,

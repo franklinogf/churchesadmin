@@ -18,10 +18,10 @@ it('can create a member with basic data', function (): void {
         'civil_status' => 'single',
     ];
 
-    $action = new CreateMemberAction();
+    $action = new CreateMemberAction;
     $action->handle($memberData);
 
-    $member = Member::where('email', 'john.doe@example.com')->first();
+    $member = Member::query()->where('email', 'john.doe@example.com')->first();
 
     expect($member)->not->toBeNull()
         ->and($member->name)->toBe('John')
@@ -43,7 +43,7 @@ it('can create a member without email and phone', function (): void {
         'civil_status' => 'single',
     ];
 
-    $action = new CreateMemberAction();
+    $action = new CreateMemberAction;
     $member = $action->handle($memberData);
 
     expect($member)->not->toBeNull()
@@ -65,10 +65,10 @@ it('can create a member with skills', function (): void {
         'skills' => ['Programming', 'Music'],
     ];
 
-    $action = new CreateMemberAction();
+    $action = new CreateMemberAction;
     $action->handle($memberData);
 
-    $member = Member::latest()->first();
+    $member = Member::query()->latest()->first();
 
     expect($member)->not->toBeNull();
 
@@ -88,10 +88,10 @@ it('can create a member with categories', function (): void {
         'categories' => ['Youth', 'Worship'],
     ];
 
-    $action = new CreateMemberAction();
+    $action = new CreateMemberAction;
     $action->handle($memberData);
 
-    $member = Member::latest()->first();
+    $member = Member::query()->latest()->first();
 
     expect($member)->not->toBeNull();
 
@@ -118,10 +118,10 @@ it('can create a member with address', function (): void {
         'country' => 'US',
     ];
 
-    $action = new CreateMemberAction();
+    $action = new CreateMemberAction;
     $action->handle($memberData, $addressData);
 
-    $member = Member::latest()->first();
+    $member = Member::query()->latest()->first();
 
     expect($member)->not->toBeNull()
         ->and($member->address)->not->toBeNull()
@@ -153,10 +153,10 @@ it('can create a member with all optional data', function (): void {
         'country' => 'US',
     ];
 
-    $action = new CreateMemberAction();
+    $action = new CreateMemberAction;
     $action->handle($memberData, $addressData);
 
-    $member = Member::latest()->first();
+    $member = Member::query()->latest()->first();
 
     expect($member)->not->toBeNull()
         ->and($member->name)->toBe('Complete')

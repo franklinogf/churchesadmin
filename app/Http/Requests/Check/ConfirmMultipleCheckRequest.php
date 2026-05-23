@@ -46,7 +46,7 @@ final class ConfirmMultipleCheckRequest extends FormRequest
         return [
             function (Validator $validator): void {
                 $checkIds = $this->array('checks');
-                if (Check::whereIn('id', $checkIds)->whereNull('check_number')->exists()) {
+                if (Check::query()->whereIn('id', $checkIds)->whereNull('check_number')->exists()) {
 
                     $validator->errors()->add(
                         'checks',

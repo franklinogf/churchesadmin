@@ -54,9 +54,10 @@ use Override;
 final class Member extends Model
 {
     /** @use HasFactory<MemberFactory> */
-    use HasFactory,Notifiable;
+    use HasFactory;
 
     use HasTags;
+    use Notifiable;
 
     /**
      * The name of the table associated with the Tag model.

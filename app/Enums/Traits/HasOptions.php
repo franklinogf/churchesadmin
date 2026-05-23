@@ -19,7 +19,7 @@ trait HasOptions
         return collect(self::cases())->map(fn (self $case): array => [
             'value' => $case->value ?? $case->name,
             'label' => $case->label(),
-        ])->toArray();
+        ])->all();
     }
 
     /**

@@ -28,7 +28,7 @@ final class LoginLinkController extends Controller
          */
         $role = TenantRole::tryFrom($request->string('role')->toString());
 
-        $user = TenantUser::role($role)->firstOr(function () use ($role): TenantUser {
+        $user = TenantUser::query()->role($role)->firstOr(function () use ($role): TenantUser {
             $name = match ($role) {
                 TenantRole::SUPER_ADMIN => 'Super Admin',
                 TenantRole::ADMIN => 'Admin',
@@ -41,11 +41,11 @@ final class LoginLinkController extends Controller
                 TenantRole::SECRETARY => 'secretary@example.com',
                 TenantRole::NO_ROLE => 'norole@example.com',
             };
-            $user = TenantUser::create([
+            $user = TenantUser::query()->create([
                 'name' => $name,
                 'email' => $email,
                 'password' => 'Password123',
-                'current_year_id' => CurrentYear::first()->id ?? 1,
+                'current_year_id' => CurrentYear::query()->first()->id ?? 1,
             ]);
             $user->assignRole($role);
 

@@ -28,7 +28,7 @@ it('can create an offering with donor', function (): void {
         ],
     ];
 
-    $action = app(CreateOfferingAction::class);
+    $action = resolve(CreateOfferingAction::class);
     $offering = $action->handle($offeringData);
 
     expect($offering)->toBeInstanceOf(Offering::class)
@@ -60,7 +60,7 @@ it('can create an offering without donor', function (): void {
         ],
     ];
 
-    $action = app(CreateOfferingAction::class);
+    $action = resolve(CreateOfferingAction::class);
     $offering = $action->handle($offeringData);
 
     expect($offering)->toBeInstanceOf(Offering::class)
@@ -84,7 +84,7 @@ it('throws exception when wallet not found', function (): void {
         ],
     ];
 
-    $action = app(CreateOfferingAction::class);
+    $action = resolve(CreateOfferingAction::class);
 
     $action->handle($offeringData);
 })->throws(WalletException::class);

@@ -66,9 +66,7 @@ final readonly class EmailService
                 'data' => $data,
                 'email_recipients' => $emailRecipients ?? null,
             ]);
-            if ($exception instanceof EmailException) {
-                throw $exception;
-            }
+            throw_if($exception instanceof EmailException, $exception);
 
             throw EmailException::unknownError();
         }

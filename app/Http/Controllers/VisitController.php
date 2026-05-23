@@ -27,7 +27,7 @@ final class VisitController extends Controller
     public function index(): Response
     {
         Gate::authorize('viewAny', Visit::class);
-        $visits = Visit::latest()->get();
+        $visits = Visit::query()->latest()->get();
 
         return Inertia::render('main/visits/index', [
             'visits' => VisitResource::collection($visits),

@@ -30,7 +30,7 @@ final class MissionaryController extends Controller
     {
         Gate::authorize('viewAny', Missionary::class);
 
-        $missionaries = Missionary::latest()->get();
+        $missionaries = Missionary::query()->latest()->get();
 
         return Inertia::render('main/missionaries/index', [
             'missionaries' => MissionaryResource::collection($missionaries),

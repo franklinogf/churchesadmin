@@ -19,9 +19,7 @@ final class EditUser extends EditRecord
         parent::mount($record);
 
         // Prevent users from editing themselves
-        if ($this->getRecord()->id === Auth::id()) {
-            abort(Response::HTTP_FORBIDDEN, 'You cannot edit your own profile.');
-        }
+        abort_if($this->getRecord()->id === Auth::id(), Response::HTTP_FORBIDDEN, 'You cannot edit your own profile.');
     }
 
     protected function getHeaderActions(): array

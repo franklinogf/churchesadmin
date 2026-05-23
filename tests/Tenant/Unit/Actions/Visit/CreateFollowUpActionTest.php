@@ -27,7 +27,7 @@ it('can create a follow-up for a visit', function (): void {
         'notes' => 'Call to check in',
     ];
 
-    $action = new CreateFollowUpAction();
+    $action = new CreateFollowUpAction;
     $followUp = $action->handle($this->visit, $data);
 
     expect($followUp)->toBeInstanceOf(FollowUp::class)
@@ -46,7 +46,7 @@ it('can create a follow-up without notes', function (): void {
         'follow_up_at' => '2025-06-02 14:30',
     ];
 
-    $action = new CreateFollowUpAction();
+    $action = new CreateFollowUpAction;
     $followUp = $action->handle($this->visit, $data);
 
     expect($followUp)->toBeInstanceOf(FollowUp::class)

@@ -23,7 +23,7 @@ it('can create a withdrawal transaction', function (): void {
         confirmed: true
     );
 
-    $action = new WalletWithdrawalAction();
+    $action = new WalletWithdrawalAction;
     $transaction = $action->handle($wallet, $transactionDto);
 
     expect($transaction)->toBeInstanceOf(Transaction::class);
@@ -43,7 +43,7 @@ it('can create unconfirmed withdrawal transaction', function (): void {
         confirmed: false
     );
 
-    $action = new WalletWithdrawalAction();
+    $action = new WalletWithdrawalAction;
     $transaction = $action->handle($wallet, $transactionDto);
 
     expect($transaction->amountFloat)->toBe('-50.00');
@@ -57,7 +57,7 @@ it('can handle multiple withdrawals', function (): void {
     $wallet = ChurchWallet::factory()->create();
     $wallet->depositFloat('300.00', ['type' => TransactionMetaType::INITIAL->value], true);
 
-    $action = new WalletWithdrawalAction();
+    $action = new WalletWithdrawalAction;
 
     $transaction1 = $action->handle($wallet, new TransactionDto(
         amount: '100.00',
@@ -86,7 +86,7 @@ it('throws exception for insufficient funds', function (): void {
         confirmed: true
     );
 
-    $action = new WalletWithdrawalAction();
+    $action = new WalletWithdrawalAction;
 
     expect(fn (): Transaction => $action->handle($wallet, $transactionDto))
         ->toThrow(WalletException::class);
@@ -102,7 +102,7 @@ it('throws exception for empty balance withdrawal', function (): void {
         confirmed: true
     );
 
-    $action = new WalletWithdrawalAction();
+    $action = new WalletWithdrawalAction;
 
     expect(fn (): Transaction => $action->handle($wallet, $transactionDto))
         ->toThrow(WalletException::class);
@@ -118,7 +118,7 @@ it('throws exception for invalid amount', function (): void {
         confirmed: true
     );
 
-    $action = new WalletWithdrawalAction();
+    $action = new WalletWithdrawalAction;
 
     expect(fn (): Transaction => $action->handle($wallet, $transactionDto))
         ->toThrow(WalletException::class);
@@ -134,7 +134,7 @@ it('can handle exact balance withdrawal', function (): void {
         confirmed: true
     );
 
-    $action = new WalletWithdrawalAction();
+    $action = new WalletWithdrawalAction;
     $transaction = $action->handle($wallet, $transactionDto);
 
     expect($transaction->amountFloat)->toBe('-100.00');
@@ -145,7 +145,7 @@ it('handles different transaction meta types', function (): void {
     $wallet = ChurchWallet::factory()->create();
     $wallet->depositFloat('500.00', ['type' => TransactionMetaType::INITIAL->value], true);
 
-    $action = new WalletWithdrawalAction();
+    $action = new WalletWithdrawalAction;
 
     $expenseTransaction = $action->handle($wallet, new TransactionDto(
         amount: '100.00',
@@ -174,7 +174,7 @@ it('handles decimal amounts correctly', function (): void {
         confirmed: true
     );
 
-    $action = new WalletWithdrawalAction();
+    $action = new WalletWithdrawalAction;
     $transaction = $action->handle($wallet, $transactionDto);
 
     expect($transaction->amountFloat)->toBe('-25.25');
@@ -191,7 +191,7 @@ it('creates transaction with correct wallet relationship', function (): void {
         confirmed: true
     );
 
-    $action = new WalletWithdrawalAction();
+    $action = new WalletWithdrawalAction;
     $transaction = $action->handle($wallet, $transactionDto);
 
     expect($transaction->wallet->holder_id)->toBe($wallet->id);

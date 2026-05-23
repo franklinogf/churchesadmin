@@ -11,37 +11,25 @@ use App\Models\Emailable;
 use Illuminate\Bus\Batchable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Queue\Attributes\Backoff;
+use Illuminate\Queue\Attributes\MaxExceptions;
+use Illuminate\Queue\Attributes\Tries;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Throwable;
 
+#[Backoff([2, 5, 10])]
+#[MaxExceptions(1)]
+#[Tries(3)]
 final class SendCommunicationMessageJob implements ShouldQueue
 {
-    use Batchable, Queueable;
+    use Batchable;
+    use Queueable;
 
     /**
      * Delete the job if its models no longer exist.
      */
     public bool $deleteWhenMissingModels = true;
-
-    /**
-     * The number of times the job may be attempted.
-     */
-    public int $tries = 3;
-
-    /**
-     * The maximum number of exceptions allowed before the job fails.
-     * If the job fails more than this number of times, it will be marked as failed.
-     */
-    public int $maxExceptions = 1;
-
-    /**
-     * The job will be retried with these delays.
-     * The first retry will be after 2 seconds, then 5 seconds, and finally 10 seconds.
-     *
-     * @var array<int, int>
-     */
-    public array $backoff = [2, 5, 10];
 
     /**
      * Create a new job instance.

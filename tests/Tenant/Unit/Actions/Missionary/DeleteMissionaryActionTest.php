@@ -14,11 +14,11 @@ it('can soft delete a missionary', function (): void {
 
     $missionaryId = $missionary->id;
 
-    $action = new DeleteMissionaryAction();
+    $action = new DeleteMissionaryAction;
     $action->handle($missionary);
 
     // Missionary should be soft deleted
-    expect(Missionary::find($missionaryId))->toBeNull()
+    expect(Missionary::query()->find($missionaryId))->toBeNull()
         ->and(Missionary::withTrashed()->find($missionaryId))->not->toBeNull()
         ->and(Missionary::withTrashed()->find($missionaryId)->deleted_at)->not->toBeNull();
 });
@@ -27,11 +27,11 @@ it('can delete missionary with address', function (): void {
     $missionary = Missionary::factory()->hasAddress()->create();
     $missionaryId = $missionary->id;
 
-    $action = new DeleteMissionaryAction();
+    $action = new DeleteMissionaryAction;
     $action->handle($missionary);
 
     // Missionary should be soft deleted
-    expect(Missionary::find($missionaryId))->toBeNull()
+    expect(Missionary::query()->find($missionaryId))->toBeNull()
         ->and(Missionary::withTrashed()->find($missionaryId))->not->toBeNull();
 
     // Address should still exist

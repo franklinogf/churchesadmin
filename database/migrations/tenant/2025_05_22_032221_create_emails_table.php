@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('emails', function (Blueprint $table) {
+        Schema::create('emails', function (Blueprint $table): void {
             $table->id();
             $table->string('subject');
             $table->text('body');
@@ -26,7 +26,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('emailables', function (Blueprint $table) {
+        Schema::create('emailables', function (Blueprint $table): void {
             $table->id();
             $table->foreignId('email_id')->constrained('emails')->cascadeOnDelete();
             $table->morphs('recipient');

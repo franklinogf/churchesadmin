@@ -13,7 +13,7 @@ it('can restore a deleted wallet', function (): void {
         'id' => $wallet->id,
     ]);
 
-    $action = new RestoreWalletAction();
+    $action = new RestoreWalletAction;
     $action->handle($wallet);
 
     $this->assertDatabaseHas('church_wallets', [

@@ -35,7 +35,7 @@ test('updates a check with all fields', function (): void {
     );
 
     // Create a check
-    $check = Check::create([
+    $check = Check::query()->create([
         'transaction_id' => $transaction->id,
         'member_id' => $member->id,
         'date' => '2023-01-01',
@@ -59,7 +59,7 @@ test('updates a check with all fields', function (): void {
     ];
 
     // Create the necessary actions
-    $action = app(UpdateCheckAction::class);
+    $action = resolve(UpdateCheckAction::class);
 
     // Execute the update
     $updatedCheck = $action->handle($check, $updateData);
@@ -101,7 +101,7 @@ test('updates a check with minimal fields', function (): void {
     );
 
     // Create a check
-    $check = Check::create([
+    $check = Check::query()->create([
         'transaction_id' => $transaction->id,
         'member_id' => $member->id,
         'date' => '2023-01-01',
@@ -117,7 +117,7 @@ test('updates a check with minimal fields', function (): void {
     ];
 
     // Create the necessary actions
-    $action = app(UpdateCheckAction::class);
+    $action = resolve(UpdateCheckAction::class);
 
     // Execute the update
     $updatedCheck = $action->handle($check, $updateData);
@@ -154,7 +154,7 @@ test('throws exception when wallet is not found', function (): void {
     );
 
     // Create a check
-    $check = Check::create([
+    $check = Check::query()->create([
         'transaction_id' => $transaction->id,
         'member_id' => $member->id,
         'date' => '2023-01-01',
@@ -177,7 +177,7 @@ test('throws exception when wallet is not found', function (): void {
     ];
 
     // Create the action
-    $action = app(UpdateCheckAction::class);
+    $action = resolve(UpdateCheckAction::class);
 
     // Execute and expect exception
     expect(fn () => $action->handle($check, $checkData))

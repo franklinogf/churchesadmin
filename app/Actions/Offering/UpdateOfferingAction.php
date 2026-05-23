@@ -30,7 +30,7 @@ final readonly class UpdateOfferingAction
      */
     public function handle(Offering $offering, array $data): Offering
     {
-        $wallet = ChurchWallet::find($data['wallet_id'] ?? $offering->transaction->wallet->holder_id);
+        $wallet = ChurchWallet::query()->find($data['wallet_id'] ?? $offering->transaction->wallet->holder_id);
 
         if ($wallet === null) {
             throw WalletException::notFound();

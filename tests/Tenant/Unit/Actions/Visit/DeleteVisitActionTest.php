@@ -10,12 +10,12 @@ use App\Models\Visit;
 it('can soft delete a visit', function (): void {
 
     $visit = Visit::factory()->create();
-    expect(Visit::count())->toBe(1);
+    expect(Visit::query()->count())->toBe(1);
 
-    $action = new DeleteVisitAction();
+    $action = new DeleteVisitAction;
     $action->handle($visit);
 
-    expect(Visit::count())->toBe(0)
+    expect(Visit::query()->count())->toBe(0)
         ->and(Visit::withTrashed()->count())->toBe(1)
         ->and($visit->refresh()->deleted_at)->not->toBeNull();
 });

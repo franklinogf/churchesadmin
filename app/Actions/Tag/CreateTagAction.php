@@ -17,10 +17,10 @@ final class CreateTagAction
      */
     public function handle(array $data, ?TagType $type = null): Tag
     {
-        return Tag::create([
+        return Tag::query()->create([
             'name' => collect(LanguageCode::values())
                 ->mapWithKeys(fn (string $code): array => [$code => $data['name']])
-                ->toArray(),
+                ->all(),
             'type' => $type?->value,
             'is_regular' => $data['is_regular'] ?? false,
         ]);

@@ -37,7 +37,9 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 final class Email extends Model implements HasMedia
 {
     /** @use HasFactory<EmailFactory> */
-    use HasFactory, InteractsWithMedia;
+    use HasFactory;
+
+    use InteractsWithMedia;
 
     /**
      * The email's sender

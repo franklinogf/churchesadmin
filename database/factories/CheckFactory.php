@@ -13,7 +13,7 @@ use App\Models\Member;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Check>
+ * @extends Factory<Check>
  */
 final class CheckFactory extends Factory
 {
@@ -41,14 +41,14 @@ final class CheckFactory extends Factory
 
     public function confirmed(): static
     {
-        return $this->afterCreating(function (Check $check) {
+        return $this->afterCreating(function (Check $check): void {
             $check->transaction->wallet->confirm($check->transaction);
         });
     }
 
     public function unconfirmed(): static
     {
-        return $this->afterCreating(function (Check $check) {
+        return $this->afterCreating(function (Check $check): void {
             // Transaction is unconfirmed by default, no action needed
         });
     }

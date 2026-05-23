@@ -13,7 +13,7 @@ final class ActivateMemberAction
 {
     public function handle(Member $member): void
     {
-        $logger = new DiffLogger();
+        $logger = new DiffLogger;
         DB::transaction(function () use ($member, $logger): void {
 
             $deactivationCode = $member->deactivationCode?->name;

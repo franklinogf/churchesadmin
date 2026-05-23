@@ -2,20 +2,46 @@
 
 declare(strict_types=1);
 
-use Stancl\Tenancy\Bootstrappers;
+use App\Models\Church;
+use Database\Seeders\TenantDatabaseSeeder;
+use Stancl\Tenancy\Bootstrappers\BroadcastChannelPrefixBootstrapper;
+use Stancl\Tenancy\Bootstrappers\CacheTenancyBootstrapper;
+use Stancl\Tenancy\Bootstrappers\DatabaseSessionBootstrapper;
+use Stancl\Tenancy\Bootstrappers\DatabaseTenancyBootstrapper;
+use Stancl\Tenancy\Bootstrappers\FilesystemTenancyBootstrapper;
+use Stancl\Tenancy\Bootstrappers\QueueTenancyBootstrapper;
+use Stancl\Tenancy\Database\Models\Domain;
+use Stancl\Tenancy\Database\Models\ImpersonationToken;
+use Stancl\Tenancy\Database\TenantDatabaseManagers\MicrosoftSQLDatabaseManager;
+use Stancl\Tenancy\Database\TenantDatabaseManagers\MySQLDatabaseManager;
+use Stancl\Tenancy\Database\TenantDatabaseManagers\PostgreSQLDatabaseManager;
+use Stancl\Tenancy\Database\TenantDatabaseManagers\SQLiteDatabaseManager;
 use Stancl\Tenancy\Enums\RouteMode;
+use Stancl\Tenancy\Features\TelescopeTags;
+use Stancl\Tenancy\Features\TenantConfig;
+use Stancl\Tenancy\Features\UserImpersonation;
 use Stancl\Tenancy\Middleware;
-use Stancl\Tenancy\Resolvers;
+use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
+use Stancl\Tenancy\Middleware\InitializeTenancyByDomainOrSubdomain;
+use Stancl\Tenancy\Middleware\InitializeTenancyByOriginHeader;
+use Stancl\Tenancy\Middleware\InitializeTenancyByPath;
+use Stancl\Tenancy\Middleware\InitializeTenancyByRequestData;
+use Stancl\Tenancy\Middleware\InitializeTenancyBySubdomain;
+use Stancl\Tenancy\Resolvers\DomainTenantResolver;
+use Stancl\Tenancy\Resolvers\PathTenantResolver;
+use Stancl\Tenancy\Resolvers\RequestDataTenantResolver;
+use Stancl\Tenancy\RLS\PolicyManagers\TableRLSManager;
 use Stancl\Tenancy\UniqueIdentifierGenerators;
+use Stancl\Tenancy\UniqueIdentifierGenerators\RandomHexGenerator;
 
 return [
     /**
      * Configuration for the models used by Tenancy.
      */
     'models' => [
-        'tenant' => App\Models\Church::class,
-        'domain' => Stancl\Tenancy\Database\Models\Domain::class,
-        'impersonation_token' => Stancl\Tenancy\Database\Models\ImpersonationToken::class,
+        'tenant' => Church::class,
+        'domain' => Domain::class,
+        'impersonation_token' => ImpersonationToken::class,
 
         /**
          * Name of the column used to relate models to tenants.
@@ -33,11 +59,11 @@ return [
          * SECURITY NOTE: Keep in mind that autoincrement IDs come with potential enumeration issues (such as tenant storage URLs).
          *
          * @see UniqueIdentifierGenerators\UUIDGenerator
-         * @see UniqueIdentifierGenerators\RandomHexGenerator
+         * @see RandomHexGenerator
          * @see UniqueIdentifierGenerators\RandomIntGenerator
          * @see UniqueIdentifierGenerators\RandomStringGenerator
          */
-        'id_generator' => UniqueIdentifierGenerators\RandomHexGenerator::class,
+        'id_generator' => RandomHexGenerator::class,
     ],
 
     'identification' => [
@@ -55,7 +81,7 @@ return [
          *
          * If you use multiple forms of identification, you can set this to the "main" approach you use.
          */
-        'default_middleware' => Middleware\InitializeTenancyBySubdomain::class,
+        'default_middleware' => InitializeTenancyBySubdomain::class,
 
         /**
          * All of the identification middleware used by the package.
@@ -63,12 +89,12 @@ return [
          * If you write your own, make sure to add them to this array.
          */
         'middleware' => [
-            Middleware\InitializeTenancyByDomain::class,
-            Middleware\InitializeTenancyBySubdomain::class,
-            Middleware\InitializeTenancyByDomainOrSubdomain::class,
-            Middleware\InitializeTenancyByPath::class,
-            Middleware\InitializeTenancyByRequestData::class,
-            Middleware\InitializeTenancyByOriginHeader::class,
+            InitializeTenancyByDomain::class,
+            InitializeTenancyBySubdomain::class,
+            InitializeTenancyByDomainOrSubdomain::class,
+            InitializeTenancyByPath::class,
+            InitializeTenancyByRequestData::class,
+            InitializeTenancyByOriginHeader::class,
         ],
 
         /**
@@ -84,9 +110,9 @@ return [
          * @see Middleware\PreventAccessFromUnwantedDomains
          */
         'domain_identification_middleware' => [
-            Middleware\InitializeTenancyByDomain::class,
-            Middleware\InitializeTenancyBySubdomain::class,
-            Middleware\InitializeTenancyByDomainOrSubdomain::class,
+            InitializeTenancyByDomain::class,
+            InitializeTenancyBySubdomain::class,
+            InitializeTenancyByDomainOrSubdomain::class,
         ],
 
         /**
@@ -101,7 +127,7 @@ return [
          * @see Stancl\Tenancy\Listeners\ForgetTenantParameter
          */
         'path_identification_middleware' => [
-            Middleware\InitializeTenancyByPath::class,
+            InitializeTenancyByPath::class,
         ],
 
         /**
@@ -111,12 +137,12 @@ return [
          * If you add your own resolvers, do not add the 'cache' key unless your resolver is based on CachedTenantResolver.
          */
         'resolvers' => [
-            Resolvers\DomainTenantResolver::class => [
+            DomainTenantResolver::class => [
                 'cache' => false,
                 'cache_ttl' => 3600, // seconds
                 'cache_store' => null, // null = default
             ],
-            Resolvers\PathTenantResolver::class => [
+            PathTenantResolver::class => [
                 'tenant_parameter_name' => 'tenant',
                 'tenant_model_column' => null, // null = tenant key
                 'tenant_route_name_prefix' => null, // null = 'tenant.'
@@ -126,7 +152,7 @@ return [
                 'cache_ttl' => 3600, // seconds
                 'cache_store' => null, // null = default
             ],
-            Resolvers\RequestDataTenantResolver::class => [
+            RequestDataTenantResolver::class => [
                 'cache' => false,
                 'cache_ttl' => 3600, // seconds
                 'cache_store' => null, // null = default
@@ -142,22 +168,22 @@ return [
      */
     'bootstrappers' => [
         // Basic Laravel features
-        Bootstrappers\DatabaseTenancyBootstrapper::class,
-        Bootstrappers\CacheTenancyBootstrapper::class,
+        DatabaseTenancyBootstrapper::class,
+        CacheTenancyBootstrapper::class,
         // Bootstrappers\CacheTagsBootstrapper::class, // Alternative to CacheTenancyBootstrapper
-        Bootstrappers\FilesystemTenancyBootstrapper::class,
-        Bootstrappers\QueueTenancyBootstrapper::class,
+        FilesystemTenancyBootstrapper::class,
+        QueueTenancyBootstrapper::class,
         // Bootstrappers\RedisTenancyBootstrapper::class, // Note: phpredis is needed
 
         // Adds support for the database session driver
-        Bootstrappers\DatabaseSessionBootstrapper::class,
+        DatabaseSessionBootstrapper::class,
 
         // Configurable bootstrappers
         // Bootstrappers\RootUrlBootstrapper::class,
         // Bootstrappers\UrlGeneratorBootstrapper::class,
         // Bootstrappers\MailConfigBootstrapper::class, // Note: Queueing mail requires using QueueTenancyBootstrapper with $forceRefresh set to true
         // Bootstrappers\BroadcastingConfigBootstrapper::class,
-        Bootstrappers\BroadcastChannelPrefixBootstrapper::class,
+        BroadcastChannelPrefixBootstrapper::class,
 
         // Integration bootstrappers
         // Bootstrappers\Integrations\FortifyRouteBootstrapper::class,
@@ -194,10 +220,10 @@ return [
          * TenantDatabaseManagers are classes that handle the creation & deletion of tenant databases.
          */
         'managers' => [
-            'sqlite' => Stancl\Tenancy\Database\TenantDatabaseManagers\SQLiteDatabaseManager::class,
-            'mysql' => Stancl\Tenancy\Database\TenantDatabaseManagers\MySQLDatabaseManager::class,
-            'pgsql' => Stancl\Tenancy\Database\TenantDatabaseManagers\PostgreSQLDatabaseManager::class,
-            'sqlsrv' => Stancl\Tenancy\Database\TenantDatabaseManagers\MicrosoftSQLDatabaseManager::class,
+            'sqlite' => SQLiteDatabaseManager::class,
+            'mysql' => MySQLDatabaseManager::class,
+            'pgsql' => PostgreSQLDatabaseManager::class,
+            'sqlsrv' => MicrosoftSQLDatabaseManager::class,
 
         /**
          * Use these database managers to have a DB user created for each tenant database.
@@ -233,10 +259,10 @@ return [
         /**
          * The RLS manager responsible for generating queries for creating policies.
          *
-         * @see Stancl\Tenancy\RLS\PolicyManagers\TableRLSManager
+         * @see TableRLSManager
          * @see Stancl\Tenancy\RLS\PolicyManagers\TraitRLSManager
          */
-        'manager' => Stancl\Tenancy\RLS\PolicyManagers\TableRLSManager::class,
+        'manager' => TableRLSManager::class,
 
         /**
          * Credentials for the tenant database user (one user for *all* tenants, not for each tenant).
@@ -391,9 +417,9 @@ return [
      * understand which ones you want to enable.
      */
     'features' => [
-        Stancl\Tenancy\Features\UserImpersonation::class,
-        Stancl\Tenancy\Features\TelescopeTags::class,
-        Stancl\Tenancy\Features\TenantConfig::class,
+        UserImpersonation::class,
+        TelescopeTags::class,
+        TenantConfig::class,
         // Stancl\Tenancy\Features\CrossDomainRedirect::class,
         // Stancl\Tenancy\Features\ViteBundler::class,
         // Stancl\Tenancy\Features\DisallowSqliteAttach::class,
@@ -447,7 +473,7 @@ return [
      * Parameters used by the tenants:seed command.
      */
     'seeder_parameters' => [
-        '--class' => Database\Seeders\TenantDatabaseSeeder::class, // root seeder class
+        '--class' => TenantDatabaseSeeder::class, // root seeder class
         '--force' => true,
     ],
 ];

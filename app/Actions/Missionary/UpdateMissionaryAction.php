@@ -21,7 +21,7 @@ final class UpdateMissionaryAction
      */
     public function handle(Missionary $missionary, array $data, ?array $address = null): void
     {
-        $logger = new DiffLogger();
+        $logger = new DiffLogger;
         $originalMissionary = $missionary->replicate();
         $originalAddress = $missionary->address?->only(['address_1', 'address_2', 'city', 'state', 'zip_code', 'country']);
         $missionary->update([

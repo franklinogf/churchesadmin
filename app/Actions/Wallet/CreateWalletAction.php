@@ -38,7 +38,7 @@ final readonly class CreateWalletAction
     {
 
         return DB::transaction(function () use ($data): ChurchWallet {
-            $wallet = ChurchWallet::create([
+            $wallet = ChurchWallet::query()->create([
                 'name' => $data['name'],
                 'description' => $data['description'] ?? null,
                 'bank_name' => $data['bank_name'],

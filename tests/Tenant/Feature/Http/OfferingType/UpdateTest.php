@@ -24,7 +24,7 @@ describe('if user has permission', function (): void {
             ->assertSessionDoesntHaveErrors()
             ->assertRedirect(route('codes.offeringTypes.index'));
 
-        $updatedOfferingType = OfferingType::latest()->first();
+        $updatedOfferingType = OfferingType::query()->latest()->first();
 
         expect($updatedOfferingType)->not->toBeNull()
             ->and($updatedOfferingType->name)->toBe('Updated Offering Type');

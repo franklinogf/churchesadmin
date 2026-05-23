@@ -105,6 +105,12 @@ return [
             'update' => 'Update Skills',
             'delete' => 'Delete Skills',
         ],
+        'books' => [
+            'manage' => 'Manage Books',
+            'create' => 'Create Certificates',
+            'update' => 'Update Certificates',
+            'delete' => 'Delete Certificates',
+        ],
         'categories' => [
             'manage' => 'Manage Categories',
             'create' => 'Create Categories',

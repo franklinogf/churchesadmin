@@ -111,7 +111,7 @@ final class MemberController extends Controller
             ], $request->getAddressData());
             $visitId = $request->string('visit_id')->value();
             if ($visitId) {
-                $visit = Visit::findOrFail($visitId);
+                $visit = Visit::query()->findOrFail($visitId);
                 $transferVisitToMemberAction->handle($visit, $member);
 
             }

@@ -164,7 +164,7 @@ describe('if user has permission', function (): void {
 
         assertDatabaseCount('addresses', 1);
 
-        $updatedMember = Member::latest()->first();
+        $updatedMember = Member::query()->latest()->first();
 
         expect($updatedMember)->not->toBeNull()
             ->and($updatedMember->name)->toBe('John')

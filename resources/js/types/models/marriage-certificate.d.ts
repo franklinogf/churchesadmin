@@ -1,0 +1,26 @@
+export type MarriageCertificate = {
+  id: number;
+  book: string;
+  folio: string;
+  recordNumber: string;
+  marriedAt: string | null;
+  priest: string | null;
+  groomName: string;
+  groomAge: string | null;
+  groomBirthplace: string | null;
+  groomResidence: string | null;
+  groomFatherName: string | null;
+  groomMotherName: string | null;
+  brideName: string;
+  brideAge: string | null;
+  brideBirthplace: string | null;
+  brideResidence: string | null;
+  brideFatherName: string | null;
+  brideMotherName: string | null;
+  witness1Name: string | null;
+  witness2Name: string | null;
+  issuedAt: string | null;
+  marginalNote: string | null;
+  createdAt: string;
+  updatedAt: string;
+};

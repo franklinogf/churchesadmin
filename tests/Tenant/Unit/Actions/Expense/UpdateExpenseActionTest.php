@@ -23,7 +23,7 @@ it('can update expense with new data', function (): void {
         'note' => 'Updated expense note',
     ];
 
-    $action = app(UpdateExpenseAction::class);
+    $action = resolve(UpdateExpenseAction::class);
     $updatedExpense = $action->handle($expense, $updateData);
 
     expect($updatedExpense->date->format('Y-m-d'))->toBe('2024-01-15')
@@ -44,7 +44,7 @@ it('can update expense with partial data', function (): void {
         'note' => 'Only note updated',
     ];
 
-    $action = app(UpdateExpenseAction::class);
+    $action = resolve(UpdateExpenseAction::class);
     $updatedExpense = $action->handle($expense, $updateData);
 
     expect($updatedExpense->note)->toBe('Only note updated')
@@ -65,7 +65,7 @@ it('can clear member_id and note with null values', function (): void {
         'note' => null,
     ];
 
-    $action = app(UpdateExpenseAction::class);
+    $action = resolve(UpdateExpenseAction::class);
     $updatedExpense = $action->handle($expense, $updateData);
 
     expect($updatedExpense->member_id)->toBeNull()
@@ -81,7 +81,7 @@ it('throws exception when wallet not found', function (): void {
         'amount' => '50.00',
     ];
 
-    $action = app(UpdateExpenseAction::class);
+    $action = resolve(UpdateExpenseAction::class);
 
     expect(fn () => $action->handle($expense, $updateData))
         ->toThrow(WalletException::class);

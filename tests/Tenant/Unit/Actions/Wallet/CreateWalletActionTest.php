@@ -15,7 +15,7 @@ it('can create a wallet without balance', function (): void {
         'bank_account_number' => '987654321',
     ];
 
-    $action = app(CreateWalletAction::class);
+    $action = resolve(CreateWalletAction::class);
     $wallet = $action->handle($data);
 
     expect($wallet)->toBeInstanceOf(ChurchWallet::class);
@@ -42,7 +42,7 @@ it('can create a wallet with initial balance', function (): void {
         'balance' => '100.50',
     ];
 
-    $action = app(CreateWalletAction::class);
+    $action = resolve(CreateWalletAction::class);
     $wallet = $action->handle($data);
 
     expect($wallet)->toBeInstanceOf(ChurchWallet::class);
@@ -69,7 +69,7 @@ it('handles null description correctly', function (): void {
         'description' => null,
     ];
 
-    $action = app(CreateWalletAction::class);
+    $action = resolve(CreateWalletAction::class);
     $wallet = $action->handle($data);
 
     expect($wallet->description)->toBeNull();
@@ -84,7 +84,7 @@ it('handles zero balance correctly', function (): void {
         'balance' => '0.00',
     ];
 
-    $action = app(CreateWalletAction::class);
+    $action = resolve(CreateWalletAction::class);
     $wallet = $action->handle($data);
 
     expect($wallet->balanceFloat)->toBe('0.00');
@@ -103,7 +103,7 @@ it('generates correct slug from name', function (): void {
         'bank_account_number' => '987654321',
     ];
 
-    $action = app(CreateWalletAction::class);
+    $action = resolve(CreateWalletAction::class);
     $wallet = $action->handle($data);
 
     expect($wallet->slug)->toBe('my-special-wallet-name');

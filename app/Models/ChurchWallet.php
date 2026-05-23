@@ -40,8 +40,13 @@ use Illuminate\Support\Collection;
  */
 final class ChurchWallet extends Model implements Confirmable, Wallet, WalletFloat
 {
+    use CanConfirm;
+
     /** @use HasFactory<ChurchWalletFactory> */
-    use CanConfirm, HasFactory, HasWalletFloat, SoftDeletes;
+    use HasFactory;
+
+    use HasWalletFloat;
+    use SoftDeletes;
 
     /**
      * The layout that the check is using.

@@ -51,7 +51,7 @@ trait RefreshDatabaseWithTenant
     public function initializeTenant(): void
     {
         // Retrieve or create the tenant with the given ID.
-        $tenant = Church::firstOr(function () {
+        $tenant = Church::query()->firstOr(function () {
             // Hardcoded tenant ID for testing purposes.
             $tenantId = $this->tenantId;
 
@@ -88,7 +88,7 @@ trait RefreshDatabaseWithTenant
             File::deleteDirectory(public_path("public-{$tenantId}".($token ? "-{$token}" : '')));
 
             // Create the tenant and associated domain if they don't exist.
-            $t = Church::create(['id' => $tenantId, 'domain' => $tenantId, 'name' => $this->tenantName, 'locale' => LanguageCode::ENGLISH->value, 'active' => true]);
+            $t = Church::query()->create(['id' => $tenantId, 'domain' => $tenantId, 'name' => $this->tenantName, 'locale' => LanguageCode::ENGLISH->value, 'active' => true]);
             // if ($t->domains()->doesntExist()) {
             //     $t->createDomain($tenantId);
             // }

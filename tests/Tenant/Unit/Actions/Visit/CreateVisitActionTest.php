@@ -17,7 +17,7 @@ it('can create a visit without an address', function (): void {
         'first_visit_date' => '2025-05-01',
     ];
 
-    $action = new CreateVisitAction();
+    $action = new CreateVisitAction;
     $visit = $action->handle($visitData);
 
     expect($visit)->toBeInstanceOf(Visit::class)
@@ -39,7 +39,7 @@ it('can create a visit without phone number', function (): void {
         'first_visit_date' => '2025-05-01',
     ];
 
-    $action = new CreateVisitAction();
+    $action = new CreateVisitAction;
     $visit = $action->handle($visitData);
 
     expect($visit)->toBeInstanceOf(Visit::class)
@@ -70,7 +70,7 @@ it('can create a visit with an address', function (): void {
         'country' => 'US',
     ];
 
-    $action = new CreateVisitAction();
+    $action = new CreateVisitAction;
     $visit = $action->handle($visitData, $addressData);
 
     expect($visit)->toBeInstanceOf(Visit::class)

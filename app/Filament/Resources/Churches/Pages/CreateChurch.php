@@ -25,21 +25,15 @@ final class CreateChurch extends CreateRecord
         $church = $this->record;
 
         tenancy()->run($church, function () use ($data): void {
-            $user = TenantUser::create([
+            $user = TenantUser::query()->create([
                 'name' => 'Super Admin',
                 'email' => $data['email'],
                 'email_verified_at' => null,
                 'password' => $data['password'],
-                'current_year_id' => CurrentYear::first()?->id ?? 1,
+                'current_year_id' => CurrentYear::query()->first()?->id ?? 1,
             ]);
 
             $user->assignRole(TenantRole::SUPER_ADMIN->value);
         });
-
-        $features = $this->data['features'] ?? [];
-
-        foreach ($features as $feature) {
-            $church->features()->activate($feature);
-        }
     }
 }

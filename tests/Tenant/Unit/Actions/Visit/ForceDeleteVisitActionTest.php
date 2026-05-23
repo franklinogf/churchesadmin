@@ -12,12 +12,12 @@ it('can force delete a visit', function (): void {
     $visit = Visit::factory()->create();
     $visit->delete(); // Soft delete first
 
-    expect(Visit::count())->toBe(0)
+    expect(Visit::query()->count())->toBe(0)
         ->and(Visit::withTrashed()->count())->toBe(1);
 
-    $action = new ForceDeleteVisitAction();
+    $action = new ForceDeleteVisitAction;
     $action->handle($visit);
 
-    expect(Visit::count())->toBe(0)
+    expect(Visit::query()->count())->toBe(0)
         ->and(Visit::withTrashed()->count())->toBe(0);
 });

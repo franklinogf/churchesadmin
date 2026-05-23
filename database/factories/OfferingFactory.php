@@ -10,11 +10,12 @@ use App\Models\ChurchWallet;
 use App\Models\CurrentYear;
 use App\Models\Member;
 use App\Models\Missionary;
+use App\Models\Offering;
 use App\Models\OfferingType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Offering>
+ * @extends Factory<Offering>
  */
 final class OfferingFactory extends Factory
 {
@@ -25,7 +26,7 @@ final class OfferingFactory extends Factory
      */
     public function definition(): array
     {
-        $currentYear = CurrentYear::first() ?? CurrentYear::factory()->create();
+        $currentYear = CurrentYear::query()->first() ?? CurrentYear::factory()->create();
         $wallet = ChurchWallet::factory()->withBalance()->create();
         $amount = fake()->randomFloat(2, 1, 100);
         $transaction = $wallet->withdrawFloat($amount, ['type' => TransactionMetaType::OFFERING->value, 'year' => $currentYear->id]);
@@ -45,34 +46,28 @@ final class OfferingFactory extends Factory
 
     public function withAmount(float $amount): static
     {
-        $currentYear = CurrentYear::first() ?? CurrentYear::factory()->create();
+        $currentYear = CurrentYear::query()->first() ?? CurrentYear::factory()->create();
 
-        return $this->state(function (array $attributes) use ($amount, $currentYear): array {
-            return [
-                'transaction_id' => ChurchWallet::factory()->create()->depositFloat($amount, ['type' => TransactionMetaType::OFFERING->value, 'year' => $currentYear->id])->id,
-            ];
-        });
+        return $this->state(fn (array $attributes): array => [
+            'transaction_id' => ChurchWallet::factory()->create()->depositFloat($amount, ['type' => TransactionMetaType::OFFERING->value, 'year' => $currentYear->id])->id,
+        ]);
     }
 
     public function prevYear(): static
     {
-        $previousYear = CurrentYear::first() ?? CurrentYear::factory()->create();
+        $previousYear = CurrentYear::query()->first() ?? CurrentYear::factory()->create();
         $previousYear->update(['year' => $previousYear->year - 1]);
 
-        return $this->state(function (array $attributes) use ($previousYear): array {
-            return [
-                'transaction_id' => ChurchWallet::factory()->create()->depositFloat(fake()->randomFloat(2, 1, 100), ['type' => TransactionMetaType::OFFERING->value, 'year' => $previousYear->id])->id,
-            ];
-        });
+        return $this->state(fn (array $attributes): array => [
+            'transaction_id' => ChurchWallet::factory()->create()->depositFloat(fake()->randomFloat(2, 1, 100), ['type' => TransactionMetaType::OFFERING->value, 'year' => $previousYear->id])->id,
+        ]);
     }
 
     public function withOfferingType(Missionary|OfferingType $model): static
     {
-        return $this->state(function (array $attributes) use ($model) {
-            return [
-                'offering_type_type' => $model->getMorphClass(),
-                'offering_type_id' => $model->getKey(),
-            ];
-        });
+        return $this->state(fn (array $attributes): array => [
+            'offering_type_type' => $model->getMorphClass(),
+            'offering_type_id' => $model->getKey(),
+        ]);
     }
 }

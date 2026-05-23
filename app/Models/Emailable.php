@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Enums\EmailStatus;
 use Carbon\CarbonImmutable;
 use Database\Factories\EmailableFactory;
+use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -29,6 +30,7 @@ use Override;
  * @property-read CarbonImmutable $created_at
  * @property-read CarbonImmutable $updated_at
  */
+#[Table(name: 'emailables')]
 final class Emailable extends MorphPivot
 {
     /** @use HasFactory<EmailableFactory> */
@@ -41,9 +43,6 @@ final class Emailable extends MorphPivot
      */
     #[Override]
     public $incrementing = true;
-
-    #[Override]
-    protected $table = 'emailables';
 
     #[Override]
     protected $attributes = [

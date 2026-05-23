@@ -31,7 +31,9 @@ use Spatie\MediaLibrary\MediaCollections\File;
 final class CheckLayout extends Model implements HasMedia
 {
     /** @use HasFactory<CheckLayoutFactory> */
-    use HasFactory,InteractsWithMedia;
+    use HasFactory;
+
+    use InteractsWithMedia;
 
     /**
      * Checks that use this layout.

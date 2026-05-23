@@ -18,7 +18,7 @@ final class ConfirmTransactionAction
      */
     public function handle(Transaction $transaction): bool
     {
-        $churchWallet = ChurchWallet::find($transaction->wallet->holder_id);
+        $churchWallet = ChurchWallet::query()->find($transaction->wallet->holder_id);
 
         if (! $churchWallet instanceof ChurchWallet) {
             throw WalletException::notFound();

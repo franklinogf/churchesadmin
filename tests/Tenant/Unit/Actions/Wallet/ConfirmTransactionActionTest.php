@@ -16,7 +16,7 @@ it('can confirm an unconfirmed deposit transaction', function (): void {
     expect($transaction->confirmed)->toBeFalse();
     expect($wallet->balanceFloat)->toBe('0.00'); // Unconfirmed doesn't affect balance
 
-    $action = new ConfirmTransactionAction();
+    $action = new ConfirmTransactionAction;
     $result = $action->handle($transaction);
 
     expect($result)->toBeTrue();
@@ -38,7 +38,7 @@ it('can confirm an unconfirmed withdrawal transaction', function (): void {
     expect($transaction->confirmed)->toBeFalse();
     expect($wallet->balanceFloat)->toBe('200.00'); // Unconfirmed doesn't affect balance
 
-    $action = new ConfirmTransactionAction();
+    $action = new ConfirmTransactionAction;
     $result = $action->handle($transaction);
 
     expect($result)->toBeTrue();
@@ -56,7 +56,7 @@ it('throws exception when confirming already confirmed transaction', function ()
 
     expect($transaction->confirmed)->toBeTrue();
 
-    $action = new ConfirmTransactionAction();
+    $action = new ConfirmTransactionAction;
 
     expect(fn (): bool => $action->handle($transaction))
         ->toThrow(WalletException::class);
@@ -69,7 +69,7 @@ it('throws exception when wallet not found', function (): void {
     // Delete the wallet to simulate not found scenario
     $wallet->forceDelete();
 
-    $action = new ConfirmTransactionAction();
+    $action = new ConfirmTransactionAction;
 
     expect(fn (): bool => $action->handle($transaction))
         ->toThrow(WalletException::class);
@@ -85,7 +85,7 @@ it('throws exception for insufficient funds when confirming withdrawal', functio
 
     expect($wallet->balanceFloat)->toBe('50.00');
 
-    $action = new ConfirmTransactionAction();
+    $action = new ConfirmTransactionAction;
 
     expect($action->handle($transaction));
 
@@ -101,7 +101,7 @@ it('throws exception for empty balance when confirming withdrawal', function ():
 
     expect($wallet->balanceFloat)->toBe('0.00');
 
-    $action = new ConfirmTransactionAction();
+    $action = new ConfirmTransactionAction;
 
     $action->handle($transaction);
 })->throws(WalletException::class);

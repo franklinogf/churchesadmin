@@ -26,7 +26,7 @@ test('confirms a check successfully', function (): void {
     );
 
     // Create a check with the transaction
-    $check = Check::create([
+    $check = Check::query()->create([
         'transaction_id' => $transaction->id,
         'member_id' => $member->id,
         'date' => now()->format('Y-m-d'),
@@ -34,7 +34,7 @@ test('confirms a check successfully', function (): void {
         'expense_type_id' => $expenseType->id,
     ]);
 
-    $action = app(abstract: ConfirmCheckAction::class);
+    $action = resolve(ConfirmCheckAction::class);
 
     // Execute the action
     $result = $action->handle($check);
@@ -63,7 +63,7 @@ test('ConfirmCheckAction handles failed confirmation for already confirmed trans
     );
 
     // Create a check with the transaction
-    $check = Check::create([
+    $check = Check::query()->create([
         'transaction_id' => $transaction->id,
         'member_id' => $member->id,
         'date' => now()->format('Y-m-d'),
@@ -72,7 +72,7 @@ test('ConfirmCheckAction handles failed confirmation for already confirmed trans
     ]);
 
     // Create the real action instance
-    $action = app(abstract: ConfirmCheckAction::class);
+    $action = resolve(ConfirmCheckAction::class);
 
     // Expect an exception since the transaction is already confirmed
     expect(fn () => $action->handle($check))

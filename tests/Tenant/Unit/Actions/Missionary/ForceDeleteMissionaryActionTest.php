@@ -15,11 +15,11 @@ it('can permanently delete a missionary', function (): void {
 
     $missionaryId = $missionary->id;
 
-    $action = new ForceDeleteMissionaryAction();
+    $action = new ForceDeleteMissionaryAction;
     $action->handle($missionary);
 
     // Missionary should be permanently deleted
-    expect(Missionary::find($missionaryId))->toBeNull()
+    expect(Missionary::query()->find($missionaryId))->toBeNull()
         ->and(Missionary::withTrashed()->find($missionaryId))->toBeNull();
 });
 
@@ -30,16 +30,16 @@ it('can permanently delete a soft deleted missionary', function (): void {
     // First soft delete
     $missionary->delete();
 
-    expect(Missionary::find($missionaryId))->toBeNull()
+    expect(Missionary::query()->find($missionaryId))->toBeNull()
         ->and(Missionary::withTrashed()->find($missionaryId))->not->toBeNull();
 
     // Now force delete
     $trashedMissionary = Missionary::withTrashed()->find($missionaryId);
-    $action = new ForceDeleteMissionaryAction();
+    $action = new ForceDeleteMissionaryAction;
     $action->handle($trashedMissionary);
 
     // Missionary should be permanently deleted
-    expect(Missionary::find($missionaryId))->toBeNull()
+    expect(Missionary::query()->find($missionaryId))->toBeNull()
         ->and(Missionary::withTrashed()->find($missionaryId))->toBeNull();
 });
 
@@ -48,13 +48,13 @@ it('can permanently delete missionary with address', function (): void {
     $missionaryId = $missionary->id;
     $addressId = $missionary->address->id;
 
-    $action = new ForceDeleteMissionaryAction();
+    $action = new ForceDeleteMissionaryAction;
     $action->handle($missionary);
 
     // Missionary should be permanently deleted
-    expect(Missionary::find($missionaryId))->toBeNull()
+    expect(Missionary::query()->find($missionaryId))->toBeNull()
         ->and(Missionary::withTrashed()->find($missionaryId))->toBeNull();
 
     // Address should be deleted through cascade
-    expect(Address::find($addressId))->toBeNull();
+    expect(Address::query()->find($addressId))->toBeNull();
 });

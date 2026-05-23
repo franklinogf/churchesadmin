@@ -19,7 +19,7 @@ final class CheckLayoutController extends Controller
         $wallet_id = $request->integer('wallet_id');
 
         $checkLayoutId = DB::transaction(function () use ($request, $wallet_id) {
-            $checkLayout = CheckLayout::create([
+            $checkLayout = CheckLayout::query()->create([
                 'name' => $request->string('name'),
                 'width' => $request->integer('width'),
                 'height' => $request->integer('height'),
@@ -27,7 +27,7 @@ final class CheckLayoutController extends Controller
             ]);
 
             $checkLayout->addMediaFromRequest('image')->toMediaCollection();
-            $wallet = ChurchWallet::find($wallet_id);
+            $wallet = ChurchWallet::query()->find($wallet_id);
             if ($wallet) {
                 $wallet->checkLayout()->associate($checkLayout);
                 $wallet->save();

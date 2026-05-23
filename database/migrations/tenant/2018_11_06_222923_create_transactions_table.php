@@ -11,7 +11,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create($this->table(), static function (Blueprint $table) {
+        Schema::create($this->table(), static function (Blueprint $table): void {
             $table->bigIncrements('id');
             $table->morphs('payable');
             $table->unsignedBigInteger('wallet_id');

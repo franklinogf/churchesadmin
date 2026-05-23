@@ -55,7 +55,7 @@ describe('if user has permission', function (): void {
         assertDatabaseCount('members', 1);
         assertDatabaseCount('addresses', 0);
 
-        $member = Member::latest()->first();
+        $member = Member::query()->latest()->first();
 
         expect($member)->not->toBeNull()
             ->and($member->name)->toBe('John')
@@ -95,7 +95,7 @@ describe('if user has permission', function (): void {
         assertDatabaseCount('members', 1);
         assertDatabaseCount('addresses', 1);
 
-        $member = Member::latest()->first();
+        $member = Member::query()->latest()->first();
 
         expect($member)->not->toBeNull()
             ->and($member->name)->toBe('John')
@@ -124,7 +124,7 @@ describe('if user has permission', function (): void {
 
         assertDatabaseCount('members', 1);
 
-        $member = Member::latest()->first();
+        $member = Member::query()->latest()->first();
 
         expect($member)->not->toBeNull()
             ->and($member->name)->toBe('Jane')

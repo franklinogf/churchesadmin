@@ -24,7 +24,7 @@ it('can update a visit without changing address', function (): void {
         'last_name' => 'User',
     ];
 
-    $action = new UpdateVisitAction();
+    $action = new UpdateVisitAction;
     $updatedVisit = $action->handle($this->visit, $visitData);
 
     expect($updatedVisit)->toBeInstanceOf(Visit::class)
@@ -51,7 +51,7 @@ it('can update a visit with a new address', function (): void {
         'country' => 'US',
     ];
 
-    $action = new UpdateVisitAction();
+    $action = new UpdateVisitAction;
     $updatedVisit = $action->handle($this->visit, $visitData, $addressData);
 
     expect($updatedVisit)->toBeInstanceOf(Visit::class)
@@ -88,7 +88,7 @@ it('can update a visit with a new address if it already has an address', functio
         'country' => 'US',
     ];
 
-    $action = new UpdateVisitAction();
+    $action = new UpdateVisitAction;
     $updatedVisit = $action->handle($this->visit, $visitData, $addressData);
 
     expect($updatedVisit)->toBeInstanceOf(Visit::class)
@@ -118,7 +118,7 @@ it('can set address to null', function (): void {
         'last_name' => 'Address',
     ];
 
-    $action = new UpdateVisitAction();
+    $action = new UpdateVisitAction;
     $updatedVisit = $action->handle($this->visit, $visitData, null);
 
     expect($updatedVisit)->toBeInstanceOf(Visit::class)

@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
 
+/**
+ * @implements Scope<Model>
+ */
 final class LastnameScope implements Scope
 {
     /**
@@ -15,6 +18,6 @@ final class LastnameScope implements Scope
      */
     public function apply(Builder $builder, Model $model): void
     {
-        $builder->orderBy('last_name');
+        $builder->orderBy($model->qualifyColumn('last_name'));
     }
 }

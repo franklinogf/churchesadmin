@@ -7,6 +7,8 @@ namespace App\Models;
 use Carbon\CarbonImmutable;
 use Database\Factories\TenantUserFactory;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Attributes\Hidden;
+use Illuminate\Database\Eloquent\Attributes\Table;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -34,29 +36,19 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read int $current_year_id
  * @property-read CurrentYear $currentYear
  */
+#[Hidden([
+    'password',
+    'remember_token',
+])]
+#[Table(name: 'users')]
 final class TenantUser extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<TenantUserFactory> */
-    use HasFactory, HasRoles, HasUuids, Notifiable;
+    use HasFactory;
 
-    /**
-     * The table associated with the model.
-     *
-     * @var string
-     */
-    #[Override]
-    protected $table = 'users';
-
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
-    #[Override]
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    use HasRoles;
+    use HasUuids;
+    use Notifiable;
 
     /**
      * The emails that this user has sent.

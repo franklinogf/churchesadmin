@@ -18,21 +18,21 @@ return new class extends Migration
         }
 
         // upgrade from 6.x
-        Schema::table($this->table(), static function (Blueprint $table) {
+        Schema::table($this->table(), static function (Blueprint $table): void {
             $table->uuid('uuid')
                 ->after('slug')
                 ->nullable()
                 ->unique();
         });
 
-        Wallet::query()->chunk(10000, static function (Collection $wallets) {
-            $wallets->each(function (Wallet $wallet) {
-                $wallet->uuid = app(IdentifierFactoryServiceInterface::class)->generate();
+        Wallet::query()->chunk(10000, static function (Collection $wallets): void {
+            $wallets->each(function (Wallet $wallet): void {
+                $wallet->uuid = resolve(IdentifierFactoryServiceInterface::class)->generate();
                 $wallet->save();
             });
         });
 
-        Schema::table($this->table(), static function (Blueprint $table) {
+        Schema::table($this->table(), static function (Blueprint $table): void {
             $table->uuid('uuid')
                 ->change();
         });
@@ -40,7 +40,7 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::table($this->table(), function (Blueprint $table) {
+        Schema::table($this->table(), function (Blueprint $table): void {
             if (Schema::hasColumn($this->table(), 'uuid')) {
                 $table->dropIndex('wallets_uuid_unique');
                 $table->dropColumn('uuid');
