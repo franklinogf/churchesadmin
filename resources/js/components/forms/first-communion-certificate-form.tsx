@@ -41,15 +41,9 @@ function getFormData(certificate?: FirstCommunionCertificate): FirstCommunionCer
   };
 }
 
-export function FirstCommunionCertificateForm({
-  firstCommunionCertificate,
-}: {
-  firstCommunionCertificate?: FirstCommunionCertificate;
-}) {
+export function FirstCommunionCertificateForm({ firstCommunionCertificate }: { firstCommunionCertificate?: FirstCommunionCertificate }) {
   const { t: tPages } = useTranslation('pages');
-  const { data, setData, submit, errors, processing } = useForm<FirstCommunionCertificateFormData>(
-    getFormData(firstCommunionCertificate),
-  );
+  const { data, setData, submit, errors, processing } = useForm<FirstCommunionCertificateFormData>(getFormData(firstCommunionCertificate));
 
   function handleSubmit() {
     submit(

@@ -21,10 +21,7 @@ export default function Index({ negativas }: IndexPageProps) {
 
   return (
     <AppLayout
-      breadcrumbs={[
-        { title: tPages(($) => $.main.books.title), href: BooksController().url },
-        { title: tPages(($) => $.main.books.negativa.label) },
-      ]}
+      breadcrumbs={[{ title: tPages(($) => $.main.books.title), href: BooksController().url }, { title: tPages(($) => $.main.books.negativa.label) }]}
       title={tPages(($) => $.main.books.negativa.label)}
     >
       <PageTitle>{tPages(($) => $.main.books.negativa.label)}</PageTitle>

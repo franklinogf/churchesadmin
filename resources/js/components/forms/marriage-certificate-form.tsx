@@ -89,17 +89,12 @@ function getFormData(certificate?: MarriageCertificate): MarriageCertificateForm
 
 export function MarriageCertificateForm({ marriageCertificate }: { marriageCertificate?: MarriageCertificate }) {
   const { t: tPages } = useTranslation('pages');
-  const { data, setData, submit, errors, processing } = useForm<MarriageCertificateFormData>(
-    getFormData(marriageCertificate),
-  );
+  const { data, setData, submit, errors, processing } = useForm<MarriageCertificateFormData>(getFormData(marriageCertificate));
 
   function handleSubmit() {
-    submit(
-      marriageCertificate
-        ? MarriageCertificateController.update(marriageCertificate.id)
-        : MarriageCertificateController.store(),
-      { preserveScroll: true },
-    );
+    submit(marriageCertificate ? MarriageCertificateController.update(marriageCertificate.id) : MarriageCertificateController.store(), {
+      preserveScroll: true,
+    });
   }
 
   return (

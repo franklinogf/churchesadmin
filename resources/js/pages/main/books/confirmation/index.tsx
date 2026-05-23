@@ -1,3 +1,4 @@
+import BooksController from '@/actions/App/Http/Controllers/BooksController';
 import ConfirmationCertificateController from '@/actions/App/Http/Controllers/ConfirmationCertificateController';
 import { Datatable } from '@/components/datatable/datatable';
 import { PageTitle } from '@/components/PageTitle';
@@ -5,7 +6,6 @@ import { Button } from '@/components/ui/button';
 import { TenantPermission } from '@/enums/TenantPermission';
 import { useUser } from '@/hooks/use-user';
 import AppLayout from '@/layouts/app-layout';
-import BooksController from '@/actions/App/Http/Controllers/BooksController';
 import type { ConfirmationCertificate } from '@/types/models/confirmation-certificate';
 import { Link } from '@inertiajs/react';
 import { useTranslation } from 'react-i18next';

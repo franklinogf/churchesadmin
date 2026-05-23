@@ -20,11 +20,11 @@ final class BooksController extends Controller
         Gate::authorize('viewAny', BaptismCertificate::class);
 
         return Inertia::render('main/books/index', [
-            'baptismCount' => BaptismCertificate::count(),
-            'confirmationCount' => ConfirmationCertificate::count(),
-            'marriageCount' => MarriageCertificate::count(),
-            'communionCount' => FirstCommunionCertificate::count(),
-            'negativaCount' => Negativa::count(),
+            'baptismCount' => BaptismCertificate::query()->count(),
+            'confirmationCount' => ConfirmationCertificate::query()->count(),
+            'marriageCount' => MarriageCertificate::query()->count(),
+            'communionCount' => FirstCommunionCertificate::query()->count(),
+            'negativaCount' => Negativa::query()->count(),
         ]);
     }
 }

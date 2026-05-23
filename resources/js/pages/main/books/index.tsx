@@ -61,16 +61,16 @@ export default function Index({ baptismCount, confirmationCount, marriageCount, 
         <div className="flex flex-col gap-4">
           {books.map((book) => (
             <Link key={book.href} href={book.href} className="group block">
-              <Card className="transition-colors hover:bg-accent/50">
+              <Card className="hover:bg-accent/50 transition-colors">
                 <CardHeader className="flex flex-row items-center gap-4 pb-2">
-                  <BookOpenIcon className="size-6 text-muted-foreground" />
+                  <BookOpenIcon className="text-muted-foreground size-6" />
                   <div className="flex-1">
                     <CardTitle className="text-base">{book.label}</CardTitle>
                     <CardDescription>{book.description}</CardDescription>
                   </div>
                   <div className="flex items-center gap-3">
-                    <span className="text-sm text-muted-foreground">{book.count}</span>
-                    <ChevronRightIcon className="size-4 text-muted-foreground transition-transform group-hover:translate-x-0.5" />
+                    <span className="text-muted-foreground text-sm">{book.count}</span>
+                    <ChevronRightIcon className="text-muted-foreground size-4 transition-transform group-hover:translate-x-0.5" />
                   </div>
                 </CardHeader>
               </Card>

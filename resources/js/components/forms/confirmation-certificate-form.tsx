@@ -68,15 +68,11 @@ function getFormData(certificate?: ConfirmationCertificate): ConfirmationCertifi
 
 export function ConfirmationCertificateForm({ confirmationCertificate }: { confirmationCertificate?: ConfirmationCertificate }) {
   const { t: tPages } = useTranslation('pages');
-  const { data, setData, submit, errors, processing } = useForm<ConfirmationCertificateFormData>(
-    getFormData(confirmationCertificate),
-  );
+  const { data, setData, submit, errors, processing } = useForm<ConfirmationCertificateFormData>(getFormData(confirmationCertificate));
 
   function handleSubmit() {
     submit(
-      confirmationCertificate
-        ? ConfirmationCertificateController.update(confirmationCertificate.id)
-        : ConfirmationCertificateController.store(),
+      confirmationCertificate ? ConfirmationCertificateController.update(confirmationCertificate.id) : ConfirmationCertificateController.store(),
       { preserveScroll: true },
     );
   }
