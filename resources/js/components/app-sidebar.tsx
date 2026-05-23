@@ -1,4 +1,4 @@
-import BaptismCertificateController from '@/actions/App/Http/Controllers/BaptismCertificateController';
+import BooksController from '@/actions/App/Http/Controllers/BooksController';
 import CalendarEventController from '@/actions/App/Http/Controllers/CalendarEventController';
 import CategoryController from '@/actions/App/Http/Controllers/CategoryController';
 import CheckController from '@/actions/App/Http/Controllers/CheckController';
@@ -66,7 +66,7 @@ export function AppSidebar() {
           },
           {
             title: tCommon(($) => $.components.appSidebar.books),
-            href: BaptismCertificateController.index(),
+            href: BooksController(),
             icon: BookOpenIcon,
             permissionNeeded: TenantPermission.BOOKS_MANAGE,
             featureNeeded: 'books',

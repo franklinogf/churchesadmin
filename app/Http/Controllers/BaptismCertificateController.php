@@ -30,7 +30,7 @@ final class BaptismCertificateController extends Controller
             ->latest()
             ->get();
 
-        return Inertia::render('main/books/index', [
+        return Inertia::render('main/books/baptism/index', [
             'baptismCertificates' => BaptismCertificateResource::collection($baptismCertificates),
         ]);
     }
@@ -42,7 +42,7 @@ final class BaptismCertificateController extends Controller
     {
         Gate::authorize('create', BaptismCertificate::class);
 
-        return Inertia::render('main/books/create');
+        return Inertia::render('main/books/baptism/create');
     }
 
     /**
@@ -52,7 +52,7 @@ final class BaptismCertificateController extends Controller
     {
         Gate::authorize('update', $baptismCertificate);
 
-        return Inertia::render('main/books/edit', [
+        return Inertia::render('main/books/baptism/edit', [
             'baptismCertificate' => new BaptismCertificateResource($baptismCertificate),
         ]);
     }
@@ -66,7 +66,7 @@ final class BaptismCertificateController extends Controller
 
         $action->handle($request->validated());
 
-        return to_route('books.index')->with(
+        return to_route('books.baptism.index')->with(
             FlashMessageKey::SUCCESS->value,
             __('flash.message.created', ['model' => __('Baptism Certificate')])
         );
@@ -84,7 +84,7 @@ final class BaptismCertificateController extends Controller
 
         $action->handle($baptismCertificate, $request->validated());
 
-        return to_route('books.index')->with(
+        return to_route('books.baptism.index')->with(
             FlashMessageKey::SUCCESS->value,
             __('flash.message.updated', ['model' => __('Baptism Certificate')])
         );
@@ -99,7 +99,7 @@ final class BaptismCertificateController extends Controller
 
         $action->handle($baptismCertificate);
 
-        return to_route('books.index')->with(
+        return to_route('books.baptism.index')->with(
             FlashMessageKey::SUCCESS->value,
             __('flash.message.deleted', ['model' => __('Baptism Certificate')])
         );

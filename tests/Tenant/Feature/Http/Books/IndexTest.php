@@ -26,7 +26,8 @@ it('can be rendered if authenticated user has permission and books feature is en
         ->assertSuccessful()
         ->assertInertia(fn (Assert $page): Assert => $page
             ->component('main/books/index')
-            ->has('baptismCertificates', 3)
+            ->has('baptismCount')
+            ->has('confirmationCount')
         );
 });
 
@@ -42,4 +43,16 @@ it('cannot be rendered if books feature is disabled', function (): void {
     asUserWithPermission(TenantPermission::BOOKS_MANAGE)
         ->get(route('books.index'))
         ->assertForbidden();
+});
+
+it('can be rendered the baptism list page', function (): void {
+    BaptismCertificate::factory(3)->create();
+
+    asUserWithPermission(TenantPermission::BOOKS_MANAGE)
+        ->get(route('books.baptism.index'))
+        ->assertSuccessful()
+        ->assertInertia(fn (Assert $page): Assert => $page
+            ->component('main/books/baptism/index')
+            ->has('baptismCertificates', 3)
+        );
 });

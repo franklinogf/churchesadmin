@@ -22,13 +22,13 @@ describe('if user has permission', function (): void {
             'baptized_name' => 'Juan Perez',
         ]);
 
-        from(route('books.index'))
-            ->put(route('books.update', ['baptismCertificate' => $baptismCertificate]), updateBaptismCertificatePayload([
+        from(route('books.baptism.index'))
+            ->put(route('books.baptism.update', ['baptismCertificate' => $baptismCertificate]), updateBaptismCertificatePayload([
                 'record_number' => '99',
                 'baptized_name' => 'Juan Perez Actualizado',
             ]))
             ->assertSessionDoesntHaveErrors()
-            ->assertRedirect(route('books.index'));
+            ->assertRedirect(route('books.baptism.index'));
 
         $baptismCertificate->refresh();
 
@@ -47,8 +47,8 @@ describe('if user does not have permission', function (): void {
             'baptized_name' => 'Juan Perez',
         ]);
 
-        from(route('books.index'))
-            ->put(route('books.update', ['baptismCertificate' => $baptismCertificate]), updateBaptismCertificatePayload([
+        from(route('books.baptism.index'))
+            ->put(route('books.baptism.update', ['baptismCertificate' => $baptismCertificate]), updateBaptismCertificatePayload([
                 'record_number' => '99',
                 'baptized_name' => 'Juan Perez Actualizado',
             ]))

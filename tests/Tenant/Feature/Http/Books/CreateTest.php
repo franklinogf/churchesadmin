@@ -20,10 +20,10 @@ describe('if user has permission', function (): void {
     });
 
     it('can be stored', function (): void {
-        from(route('books.index'))
-            ->post(route('books.store'), baptismCertificatePayload())
+        from(route('books.baptism.index'))
+            ->post(route('books.baptism.store'), baptismCertificatePayload())
             ->assertSessionDoesntHaveErrors()
-            ->assertRedirect(route('books.index'));
+            ->assertRedirect(route('books.baptism.index'));
 
         assertDatabaseCount('baptism_certificates', 1);
         assertDatabaseHas('baptism_certificates', [
@@ -41,8 +41,8 @@ describe('if user has permission', function (): void {
             'record_number' => '25',
         ]);
 
-        from(route('books.index'))
-            ->post(route('books.store'), baptismCertificatePayload())
+        from(route('books.baptism.index'))
+            ->post(route('books.baptism.store'), baptismCertificatePayload())
             ->assertSessionHasErrors('record_number');
     });
 });
@@ -53,8 +53,8 @@ describe('if user does not have permission', function (): void {
     });
 
     it('cannot be stored', function (): void {
-        from(route('books.index'))
-            ->post(route('books.store'), baptismCertificatePayload())
+        from(route('books.baptism.index'))
+            ->post(route('books.baptism.store'), baptismCertificatePayload())
             ->assertForbidden();
 
         assertDatabaseCount('baptism_certificates', 0);

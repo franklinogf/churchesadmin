@@ -21,9 +21,9 @@ describe('if user has permission', function (): void {
     it('can be deleted', function (): void {
         $baptismCertificate = BaptismCertificate::factory()->create();
 
-        from(route('books.index'))
-            ->delete(route('books.destroy', ['baptismCertificate' => $baptismCertificate]))
-            ->assertRedirect(route('books.index'));
+        from(route('books.baptism.index'))
+            ->delete(route('books.baptism.destroy', ['baptismCertificate' => $baptismCertificate]))
+            ->assertRedirect(route('books.baptism.index'));
 
         assertDatabaseCount('baptism_certificates', 0);
     });
@@ -37,8 +37,8 @@ describe('if user does not have permission', function (): void {
     it('cannot be deleted', function (): void {
         $baptismCertificate = BaptismCertificate::factory()->create();
 
-        from(route('books.index'))
-            ->delete(route('books.destroy', ['baptismCertificate' => $baptismCertificate]))
+        from(route('books.baptism.index'))
+            ->delete(route('books.baptism.destroy', ['baptismCertificate' => $baptismCertificate]))
             ->assertForbidden();
 
         assertDatabaseCount('baptism_certificates', 1);

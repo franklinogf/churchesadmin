@@ -14,7 +14,7 @@ it('can print a baptism certificate when user has permission', function (): void
     $baptismCertificate = BaptismCertificate::factory()->create();
 
     asUserWithPermission(TenantPermission::BOOKS_MANAGE)
-        ->get(route('books.pdf', ['baptismCertificate' => $baptismCertificate]))
+        ->get(route('books.baptism.pdf', ['baptismCertificate' => $baptismCertificate]))
         ->assertSuccessful()
         ->assertHeader('content-type', 'application/pdf');
 });
@@ -23,6 +23,6 @@ it('cannot print a baptism certificate when user does not have permission', func
     $baptismCertificate = BaptismCertificate::factory()->create();
 
     asUserWithoutPermission()
-        ->get(route('books.pdf', ['baptismCertificate' => $baptismCertificate]))
+        ->get(route('books.baptism.pdf', ['baptismCertificate' => $baptismCertificate]))
         ->assertForbidden();
 });

@@ -1,22 +1,22 @@
-import BaptismCertificateController from '@/actions/App/Http/Controllers/BaptismCertificateController';
-import BaptismCertificatePdfController from '@/actions/App/Http/Controllers/Pdf/BaptismCertificatePdfController';
+import ConfirmationCertificateController from '@/actions/App/Http/Controllers/ConfirmationCertificateController';
+import ConfirmationCertificatePdfController from '@/actions/App/Http/Controllers/Pdf/ConfirmationCertificatePdfController';
 import { DatatableHeader } from '@/components/datatable/datatable-header';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { TenantPermission } from '@/enums/TenantPermission';
 import { useUser } from '@/hooks/use-user';
 import useConfirmationStore from '@/stores/confirmation-store';
-import type { BaptismCertificate } from '@/types/models/baptism-certificate';
+import type { ConfirmationCertificate } from '@/types/models/confirmation-certificate';
 import { Link, router } from '@inertiajs/react';
 import type { ColumnDef } from '@tanstack/react-table';
 import { Edit2Icon, MoreHorizontalIcon, PrinterIcon, Trash2Icon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
-export const columns: ColumnDef<BaptismCertificate>[] = [
+export const columns: ColumnDef<ConfirmationCertificate>[] = [
   {
     enableHiding: false,
     header: ({ column }) => <DatatableHeader column={column} title="Nombre" />,
-    accessorKey: 'baptizedName',
+    accessorKey: 'confirmedName',
   },
   {
     header: ({ column }) => <DatatableHeader column={column} title="Libro" />,
@@ -32,7 +32,7 @@ export const columns: ColumnDef<BaptismCertificate>[] = [
   },
   {
     header: ({ column }) => <DatatableHeader column={column} title="Fecha" />,
-    accessorKey: 'baptizedAt',
+    accessorKey: 'confirmedAt',
   },
   {
     id: 'actions',
@@ -43,7 +43,7 @@ export const columns: ColumnDef<BaptismCertificate>[] = [
       const { t: tPages } = useTranslation('pages');
       const { openConfirmation } = useConfirmationStore();
       const { can: userCan } = useUser();
-      const baptismCertificate = row.original;
+      const confirmationCertificate = row.original;
 
       if (!userCan(TenantPermission.BOOKS_MANAGE) && !userCan(TenantPermission.BOOKS_UPDATE) && !userCan(TenantPermission.BOOKS_DELETE)) {
         return null;
@@ -61,7 +61,7 @@ export const columns: ColumnDef<BaptismCertificate>[] = [
             {userCan(TenantPermission.BOOKS_MANAGE) && (
               <DropdownMenuItem
                 onSelect={() => {
-                  window.open(BaptismCertificatePdfController(baptismCertificate.id).url, '_blank', 'noopener,noreferrer');
+                  window.open(ConfirmationCertificatePdfController(confirmationCertificate.id).url, '_blank', 'noopener,noreferrer');
                 }}
               >
                 <PrinterIcon className="size-3" />
@@ -70,7 +70,7 @@ export const columns: ColumnDef<BaptismCertificate>[] = [
             )}
             {userCan(TenantPermission.BOOKS_UPDATE) && (
               <DropdownMenuItem asChild>
-                <Link href={BaptismCertificateController.edit(baptismCertificate.id).url}>
+                <Link href={ConfirmationCertificateController.edit(confirmationCertificate.id).url}>
                   <Edit2Icon className="size-3" />
                   <span>{tPages(($) => $.main.books.includes.columns.edit)}</span>
                 </Link>
@@ -81,15 +81,13 @@ export const columns: ColumnDef<BaptismCertificate>[] = [
                 variant="destructive"
                 onClick={() => {
                   openConfirmation({
-                    title: tPages(($) => $.main.books.includes.columns.areYouSureYouWantToDeleteThisModel, {
-                      model: tPages(($) => $.main.books.includes.columns.baptismCertificate),
-                    }),
-                    description: tPages(($) => $.main.books.includes.columns.thisActionCannotBeUndone),
+                    title: tPages(($) => $.main.books.includes.columns.areYouSure),
+                    description: tPages(($) => $.main.books.includes.columns.cannotBeUndone),
                     actionLabel: tPages(($) => $.main.books.includes.columns.delete),
                     actionVariant: 'destructive',
                     cancelLabel: tPages(($) => $.main.books.includes.columns.cancel),
                     onAction: () => {
-                      router.visit(BaptismCertificateController.destroy(baptismCertificate.id), {
+                      router.visit(ConfirmationCertificateController.destroy(confirmationCertificate.id), {
                         preserveState: true,
                         preserveScroll: true,
                       });
