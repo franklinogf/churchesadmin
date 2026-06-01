@@ -4,31 +4,18 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
+use Illuminate\Console\Attributes\Description;
+use Illuminate\Console\Attributes\Signature;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\Isolatable;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
-use Override;
 
+#[Description('Delete all parallel test databases')]
+#[Signature('test:cleanup {db-prefix=test_churchesadmin : The prefix for the test databases}')]
 final class CleanTestDatabases extends Command implements Isolatable
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    #[Override]
-    protected $signature = 'test:cleanup {db-prefix=test_churchesadmin : The prefix for the test databases}';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    #[Override]
-    protected $description = 'Delete all parallel test databases';
-
     /**
      * Execute the console command.
      */

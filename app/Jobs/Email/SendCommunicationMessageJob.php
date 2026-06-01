@@ -12,6 +12,7 @@ use Illuminate\Bus\Batchable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\Attributes\Backoff;
+use Illuminate\Queue\Attributes\DeleteWhenMissingModels;
 use Illuminate\Queue\Attributes\MaxExceptions;
 use Illuminate\Queue\Attributes\Tries;
 use Illuminate\Support\Facades\Log;
@@ -21,15 +22,11 @@ use Throwable;
 #[Backoff([2, 5, 10])]
 #[MaxExceptions(1)]
 #[Tries(3)]
+#[DeleteWhenMissingModels]
 final class SendCommunicationMessageJob implements ShouldQueue
 {
     use Batchable;
     use Queueable;
-
-    /**
-     * Delete the job if its models no longer exist.
-     */
-    public bool $deleteWhenMissingModels = true;
 
     /**
      * Create a new job instance.
