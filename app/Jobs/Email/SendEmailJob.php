@@ -15,18 +15,15 @@ use Illuminate\Bus\Batch;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Queue\Attributes\DeleteWhenMissingModels;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
+#[DeleteWhenMissingModels]
 final class SendEmailJob implements ShouldQueue
 {
     use Queueable;
-
-    /**
-     * Delete the job if its models no longer exist.
-     */
-    public bool $deleteWhenMissingModels = true;
 
     /**
      * Create a new job instance.
